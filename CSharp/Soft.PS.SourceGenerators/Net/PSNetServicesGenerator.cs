@@ -20,12 +20,12 @@ namespace Soft.SourceGenerator.NgTable.Net
 
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
-//#if DEBUG
-//            if (!Debugger.IsAttached)
-//            {
-//                Debugger.Launch();
-//            }
-//#endif
+            //#if DEBUG
+            //            if (!Debugger.IsAttached)
+            //            {
+            //                Debugger.Launch();
+            //            }
+            //#endif
             IncrementalValuesProvider<ClassDeclarationSyntax> classDeclarations = context.SyntaxProvider
                 .CreateSyntaxProvider(
                     predicate: static (s, _) => Helper.IsSyntaxTargetForGenerationEntities(s),
@@ -89,14 +89,6 @@ namespace {{basePartOfNamespace}}.Services
 """);
             foreach (ClassDeclarationSyntax entityClass in entityClasses)
             {
-                //string baseType = entityClass.GetBaseType();
-
-                //if (baseType == null) // FT: Handling many to many, maybe you should do something else in the future
-                //    continue;
-
-                if (Helper.GetAllAttributesOfTheClass(entityClass, entityClasses).Any(x => x.Name == "ManyToMany"))
-                    continue;
-
                 string nameOfTheEntityClass = entityClass.Identifier.Text;
                 string nameOfTheEntityClassFirstLower = entityClass.Identifier.Text.FirstCharToLower();
                 SoftProperty idPropertyOfTheEntityClass = GetIdentifierProperty(entityClass, entityClasses);
@@ -116,6 +108,89 @@ namespace {{basePartOfNamespace}}.Services
                 string insertParameterNames = string.Join(", ", entityPropertiesForInsertAndUpdate.Select(x => $"@{x}"));
 
                 string updateParameterNames = string.Join(", ", entityPropertiesForInsertAndUpdate.Select(x => $"[{x}] = @{x}"));
+
+                if (Helper.GetAllAttributesOfTheClass(entityClass, entityClasses).Any(x => x.Name == "ManyToMany"))
+                {
+                    sb.AppendLine($$"""
+        #region {{nameOfTheEntityClass}}
+
+        public {{nameOfTheEntityClass}} Insert{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        {
+            if (entity == null)
+                throw new Exception("Ne možete da ubacite prazan objekat.");
+
+            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
+
+            string query = $"INSERT INTO [{{nameOfTheEntityClass}}] ({{insertColumnNames}}) VALUES ({{insertParameterNames}});";
+
+            _connection.WithTransaction(() =>
+            {
+                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                {
+                    {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
+                        .Select(x => x.Type.PropTypeIsManyToOne() ?
+                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
+                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
+                }
+            });
+
+            return entity;
+        }
+
+        public {{nameOfTheEntityClass}} Update{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        {
+            if (entity == null)
+                throw new Exception("Ne možete da ažurirate prazan objekat.");
+
+            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
+
+            string query = $"UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} where [{{idPropertyOfTheEntityClass.IdentifierText}}] = @{{idPropertyOfTheEntityClass.IdentifierText}};";
+
+            _connection.WithTransaction(() =>
+            {
+                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                {
+                    {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
+                        .Select(x => x.Type.PropTypeIsManyToOne() ? 
+                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
+                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
+
+                    cmd.ExecuteNonQuery();
+                }
+            });
+
+            return entity;
+        }
+
+        public void Delete{{nameOfTheEntityClass}}({{entityPropertiesWithoutEnumerableAndId[0].Type}} {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id, {{entityPropertiesWithoutEnumerableAndId[1].Type}} {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id)
+        {
+            string query = @$"
+DELETE
+FROM {{nameOfTheEntityClass}}
+WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id && {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id
+";
+
+            _connection.WithTransaction(() =>
+            {
+                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                {
+                    cmd.Parameters.AddWithValue("@{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id", {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id);
+                    cmd.Parameters.AddWithValue("@{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id", {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id);
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                        throw new Exception("U sistemu nismo pronašli objekat koji želite da obrišete.");
+                }
+            });
+        }
+
+        #endregion
+
+""");
+                    
+                    continue;
+                }
 
                 sb.AppendLine($$"""
         #region {{nameOfTheEntityClass}}

@@ -77,7 +77,7 @@ namespace Soft.Generator.DesktopApp.Pages.SettingPages
                 HasLatinTranslate = chb_HasLatinTranslate.Value,
                 HasDarkMode = chb_HasDarkMode.Value,
                 HasNotifications = chb_HasNotifications.Value,
-                Framework = new Framework { Id = (int)cb_Framework.SelectedValue },
+                Framework = cb_Framework.SelectedValue == null ? null : new Framework { Id = (int)cb_Framework.SelectedValue },
             };
 
             if (_validationService.IsSettingValid(setting) == false)

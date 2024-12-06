@@ -1,5 +1,6 @@
 ﻿using Soft.Generator.DesktopApp.Controllers;
 using Soft.Generator.DesktopApp.Entities;
+using Soft.Generator.DesktopApp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -41,6 +42,9 @@ namespace Soft.Generator.DesktopApp.Controls
         {
             dataGridView1.DataSource = new BindingList<T>(dataSource);
 
+            if(dataGridView1.HasColumn("Id"))
+                dataGridView1.Columns["Id"].Visible = false;
+
             btn_AddNew.Enabled = showAddButton;
             btn_AddNew.Click += addNewHandler;
 
@@ -56,6 +60,5 @@ namespace Soft.Generator.DesktopApp.Controls
 
             dataGridView1.CellContentClick += cellContentClickHandler;
         }
-
     }
 }

@@ -46,6 +46,11 @@ namespace Soft.Generator.DesktopApp.Pages.CompanyPages
 
             tb_Password.TextBoxValue = Entity.Password;
             tb_Password.InvalidMessage = _validationService.CompanyPasswordValidationMessage;
+
+            clb_Permission.DataSource = _companyController.GetPermissionList();
+            clb_Permission.ValueMember = "Id";
+            clb_Permission.DisplayMember = "Name";
+            clb_Permission.SelectedIndex = -1;
         }
 
         private void btn_Return_Click(object sender, EventArgs e)
@@ -61,6 +66,7 @@ namespace Soft.Generator.DesktopApp.Pages.CompanyPages
                 Name = tb_Name.TextBoxValue,
                 Email = tb_Email.TextBoxValue,
                 Password = tb_Password.TextBoxValue,
+                
             };
 
             if (_validationService.IsCompanyValid(company) == false)

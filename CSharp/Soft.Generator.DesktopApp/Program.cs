@@ -9,6 +9,7 @@ using System.Windows.Forms.Design;
 
 namespace Soft.Generator.DesktopApp
 {
+    // TODO NEXT: 1. zavrsi m2m odrzavanje, 2. dodaj atribute za many to many primarne kljuceve
     internal static class Program
     {
         public static IServiceProvider ServiceProvider { get; private set; }

@@ -42,7 +42,6 @@ WHERE Id = @id
                         throw new Exception("U sistemu nismo pronašli objekat koji želite da obrišete.");
                 }
             });
-
         }
 
         public void DeleteEntities<TEntity, ID>(List<ID> ids)
