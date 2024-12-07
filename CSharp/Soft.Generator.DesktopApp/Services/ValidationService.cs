@@ -18,10 +18,10 @@ namespace Soft.Generator.DesktopApp.Services
             if (CompanyNameValidationMessage(company.Name) != "")
                 return false;
 
-            if (CompanyEmailValidationMessage(company.Name) != "")
+            if (CompanyEmailValidationMessage(company.Email) != "")
                 return false;
 
-            if (CompanyPasswordValidationMessage(company.Name) != "")
+            if (CompanyPasswordValidationMessage(company.Password) != "")
                 return false;
 
             return true;

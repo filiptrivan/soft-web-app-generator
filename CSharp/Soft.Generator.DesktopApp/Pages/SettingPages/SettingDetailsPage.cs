@@ -55,10 +55,10 @@ namespace Soft.Generator.DesktopApp.Pages.SettingPages
             chb_HasNotifications.Value = Entity.HasNotifications;
             chb_HasNotifications.InvalidMessage = _validationService.SettingHasNotificationsValidationMessage;
 
-            cb_Framework.SelectedValue = Entity.Framework?.Id ?? 0;
             cb_Framework.DisplayMember = nameof(Framework.Name);
             cb_Framework.InvalidMessage = _validationService.SettingFrameworkIdValidationMessage;
             cb_Framework.Initialize<Framework>(_settingController.GetFrameworkList());
+            cb_Framework.SelectedValue = Entity.Framework?.Id ?? 0;
         }
 
         private void btn_Return_Click(object sender, EventArgs e)

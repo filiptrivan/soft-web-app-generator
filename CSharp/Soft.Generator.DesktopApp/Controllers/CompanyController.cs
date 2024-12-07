@@ -17,7 +17,7 @@ namespace Soft.Generator.DesktopApp.Controllers
             _desktopAppBusinessService = desktopAppBusinessService;
         }
 
-        public Company SaveCompany(Company company, List<Permission> selectedPermissionList)
+        public Company SaveCompany(Company company, List<int> selectedPermissionList)
         {
             return _desktopAppBusinessService.SaveCompanyExtended(company, selectedPermissionList);
         }
@@ -40,6 +40,11 @@ namespace Soft.Generator.DesktopApp.Controllers
         public List<Permission> GetPermissionList() 
         {
             return _desktopAppBusinessService.GetPermissionList();
+        }
+
+        public List<Permission> GetPermissionListForTheCompany(int companyId)
+        {
+            return _desktopAppBusinessService.GetPermissionListForCompanyList(new List<int> { companyId });
         }
     }
 }

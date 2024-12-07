@@ -91,7 +91,7 @@
             clb_Permission.FormattingEnabled = true;
             clb_Permission.Location = new Point(17, 141);
             clb_Permission.Name = "clb_Permission";
-            clb_Permission.Size = new Size(120, 94);
+            clb_Permission.Size = new Size(453, 94);
             clb_Permission.TabIndex = 5;
             // 
             // CompanyDetailsPage

@@ -111,6 +111,12 @@ namespace {{basePartOfNamespace}}.Services
 
                 if (Helper.GetAllAttributesOfTheClass(entityClass, entityClasses).Any(x => x.Name == "ManyToMany"))
                 {
+                    ClassDeclarationSyntax firstPrimaryKeyClass = Helper.GetClass(entityPropertiesWithoutEnumerableAndId[0].Type, classes);
+                    ClassDeclarationSyntax secondPrimaryKeyClass = Helper.GetClass(entityPropertiesWithoutEnumerableAndId[1].Type, classes);
+
+                    SoftProperty firstPrimaryKeyClassIdProp = GetIdentifierProperty(firstPrimaryKeyClass, classes);
+                    SoftProperty secondPrimaryKeyClassIdProp = GetIdentifierProperty(secondPrimaryKeyClass, classes);
+
                     sb.AppendLine($$"""
         #region {{nameOfTheEntityClass}}
 
@@ -131,29 +137,6 @@ namespace {{basePartOfNamespace}}.Services
                         .Select(x => x.Type.PropTypeIsManyToOne() ?
                             $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
                             $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
-                }
-            });
-
-            return entity;
-        }
-
-        public {{nameOfTheEntityClass}} Update{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
-        {
-            if (entity == null)
-                throw new Exception("Ne možete da ažurirate prazan objekat.");
-
-            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
-
-            string query = $"UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} where [{{idPropertyOfTheEntityClass.IdentifierText}}] = @{{idPropertyOfTheEntityClass.IdentifierText}};";
-
-            _connection.WithTransaction(() =>
-            {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
-                {
-                    {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
-                        .Select(x => x.Type.PropTypeIsManyToOne() ? 
-                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
-                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
 
                     cmd.ExecuteNonQuery();
                 }
@@ -162,12 +145,46 @@ namespace {{basePartOfNamespace}}.Services
             return entity;
         }
 
-        public void Delete{{nameOfTheEntityClass}}({{entityPropertiesWithoutEnumerableAndId[0].Type}} {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id, {{entityPropertiesWithoutEnumerableAndId[1].Type}} {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id)
+        /// <summary>
+        /// TODO FT: Made for M2M with additional attributes, we should remove primary key updates from the code
+        /// </summary>
+        public {{nameOfTheEntityClass}} Update{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        {
+            if (entity == null)
+                throw new Exception("Ne možete da ažurirate prazan objekat.");
+
+            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
+
+            string query = @$"
+UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} 
+WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id AND {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id
+";
+
+            _connection.WithTransaction(() =>
+            {
+                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                {
+                    {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
+                        .Select(x => x.Type.PropTypeIsManyToOne() ?
+                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
+                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
+
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                        throw new Exception("U sistemu nismo pronašli objekat koji želite da ažurirate.");
+                }
+            });
+
+            return entity;
+        }
+
+        public void Delete{{nameOfTheEntityClass}}({{firstPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id, {{secondPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id)
         {
             string query = @$"
 DELETE
 FROM {{nameOfTheEntityClass}}
-WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id && {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id
+WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id AND {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id
 ";
 
             _connection.WithTransaction(() =>
@@ -296,7 +313,7 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
 
             // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
 
-            string query = $"UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} where [{{idPropertyOfTheEntityClass.IdentifierText}}] = @{{idPropertyOfTheEntityClass.IdentifierText}};";
+            string query = $"UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} WHERE [{{idPropertyOfTheEntityClass.IdentifierText}}] = @{{idPropertyOfTheEntityClass.IdentifierText}};";
 
             _connection.WithTransaction(() =>
             {
@@ -305,7 +322,10 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
                     cmd.Parameters.AddWithValue("@{{idPropertyOfTheEntityClass.IdentifierText}}", entity.{{idPropertyOfTheEntityClass.IdentifierText}});
                     {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId.Select(x => x.Type.PropTypeIsManyToOne() ? $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" : $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
 
-                    cmd.ExecuteNonQuery();
+                    int rowsAffected = cmd.ExecuteNonQuery();
+
+                    if (rowsAffected == 0)
+                        throw new Exception("U sistemu nismo pronašli objekat koji želite da ažurirate.");
                 }
             });
 
@@ -582,7 +602,7 @@ WHERE [{{nameOfTheEntityClassFirstLower}}].[{{extractedEntityClass.Identifier.Te
                         }
                         else
                         {
-                            result.Add($"[{nameOfTheEntityClassFirstLower}{manyToOneEntity.Identifier.Text}].[{manyToOneProperty.IdentifierText}] AS [{nameOfTheEntityClass}{manyToOneProperty.IdentifierText}]");
+                            result.Add($"[{nameOfTheEntityClassFirstLower}{manyToOneEntity.Identifier.Text}].[{manyToOneProperty.IdentifierText}] AS [{nameOfTheEntityClass}{property.IdentifierText}{manyToOneProperty.IdentifierText}]");
                         }
                     }
                 }

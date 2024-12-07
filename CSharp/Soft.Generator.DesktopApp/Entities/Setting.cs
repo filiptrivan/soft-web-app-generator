@@ -28,5 +28,10 @@ namespace Soft.Generator.DesktopApp.Entities
         public virtual Framework Framework { get; set; }
 
         public virtual List<WebApplication> Applications { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

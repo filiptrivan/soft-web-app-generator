@@ -18,5 +18,10 @@ namespace Soft.Generator.DesktopApp.Entities
         public string Code { get; set; }
 
         public virtual List<Setting> Settings { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

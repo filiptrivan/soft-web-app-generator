@@ -39,28 +39,33 @@ namespace Soft.Generator.DesktopApp.Services
             if (e.RowIndex == -1)
                 return;
 
-            DataGridViewColumn detailsColumn = softDataGridView.ColumnCollection["Details"];
-
             TDetailsEntityID id = (TDetailsEntityID)softDataGridView.RowCollection[e.RowIndex].Cells["Id"].Value;
 
-            if (detailsColumn != null && e.ColumnIndex == detailsColumn.Index)
+            DataGridViewColumn detailsColumn = softDataGridView.ColumnCollection["Details"];
+            if (e.ColumnIndex == detailsColumn.Index)
             {
-                TDetailsPage detailsPage = NavigateToDetailsPage(currentPage);
-                detailsPage.Initialize(GetEntity(id));
+
+                if (detailsColumn != null && e.ColumnIndex == detailsColumn.Index)
+                {
+                    TDetailsPage detailsPage = NavigateToDetailsPage(currentPage);
+                    detailsPage.Initialize(GetEntity(id));
+                }
             }
 
             DataGridViewColumn deleteColumn = softDataGridView.ColumnCollection["Delete"];
-
-            if (deleteColumn != null && e.ColumnIndex == deleteColumn.Index)
+            if (e.ColumnIndex == deleteColumn.Index)
             {
-                DialogResult dialogResult = MessageBox.Show("Da li ste sigurni da želite da obrišete objekat?", "Potvrda brisanja", MessageBoxButtons.YesNoCancel);
-
-                if (dialogResult == DialogResult.Yes)
+                if (deleteColumn != null && e.ColumnIndex == deleteColumn.Index)
                 {
-                    DeleteEntity(id);
-                    LoadTable();
+                    DialogResult dialogResult = MessageBox.Show("Da li ste sigurni da želite da obrišete objekat?", "Potvrda brisanja", MessageBoxButtons.YesNoCancel);
 
-                    ShowSuccessfullMessage();
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        DeleteEntity(id);
+                        LoadTable();
+
+                        ShowSuccessfullMessage();
+                    }
                 }
             }
         }

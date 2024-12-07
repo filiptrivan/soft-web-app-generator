@@ -47,10 +47,23 @@ namespace Soft.Generator.DesktopApp.Pages.CompanyPages
             tb_Password.TextBoxValue = Entity.Password;
             tb_Password.InvalidMessage = _validationService.CompanyPasswordValidationMessage;
 
-            clb_Permission.DataSource = _companyController.GetPermissionList();
-            clb_Permission.ValueMember = "Id";
+            List<Permission> permissions = _companyController.GetPermissionList();
+            clb_Permission.DataSource = permissions;
             clb_Permission.DisplayMember = "Name";
             clb_Permission.SelectedIndex = -1;
+
+            List<int> selectedPermissionIds = _companyController.GetPermissionListForTheCompany(Entity.Id).Select(x => x.Id).ToList();
+            for (int i = 0; i < permissions.Count; i++)
+            {
+                if (selectedPermissionIds.Contains(permissions[i].Id))
+                {
+                    clb_Permission.SetItemChecked(i, true);
+                }
+                else
+                {
+                    clb_Permission.SetItemChecked(i, false);
+                }
+            }
         }
 
         private void btn_Return_Click(object sender, EventArgs e)
@@ -75,7 +88,7 @@ namespace Soft.Generator.DesktopApp.Pages.CompanyPages
                 return;
             }
 
-            Entity = _companyController.SaveCompany(company);
+            Entity = _companyController.SaveCompany(company, clb_Permission.CheckedItems.Cast<Permission>().Select(x => x.Id).ToList());
 
             _clientSharedService.ShowSuccessfullMessage();
         }

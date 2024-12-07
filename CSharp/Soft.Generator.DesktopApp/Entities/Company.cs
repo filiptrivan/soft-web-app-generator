@@ -23,5 +23,10 @@ namespace Soft.Generator.DesktopApp.Entities
 
         [ManyToMany("CompanyPermission")]
         public virtual List<Permission> Permissions { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

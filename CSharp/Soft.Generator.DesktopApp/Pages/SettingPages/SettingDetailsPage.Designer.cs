@@ -41,6 +41,7 @@
             // 
             // chb_HasGoogleAuth
             // 
+            chb_HasGoogleAuth.InvalidMessage = null;
             chb_HasGoogleAuth.LabelValue = "Ima Google prijavu";
             chb_HasGoogleAuth.Location = new Point(249, 5);
             chb_HasGoogleAuth.Name = "chb_HasGoogleAuth";
@@ -50,6 +51,7 @@
             // 
             // tb_PrimaryColor
             // 
+            tb_PrimaryColor.InvalidMessage = null;
             tb_PrimaryColor.LabelValue = "Primarna boja";
             tb_PrimaryColor.Location = new Point(5, 74);
             tb_PrimaryColor.Name = "tb_PrimaryColor";
@@ -59,6 +61,7 @@
             // 
             // chb_HasLatinTranslate
             // 
+            chb_HasLatinTranslate.InvalidMessage = null;
             chb_HasLatinTranslate.LabelValue = "Ima prevod na latinicu";
             chb_HasLatinTranslate.Location = new Point(249, 74);
             chb_HasLatinTranslate.Name = "chb_HasLatinTranslate";
@@ -68,6 +71,7 @@
             // 
             // chb_HasDarkMode
             // 
+            chb_HasDarkMode.InvalidMessage = null;
             chb_HasDarkMode.LabelValue = "Ima tamni režim";
             chb_HasDarkMode.Location = new Point(5, 143);
             chb_HasDarkMode.Name = "chb_HasDarkMode";
@@ -77,6 +81,7 @@
             // 
             // chb_HasNotifications
             // 
+            chb_HasNotifications.InvalidMessage = null;
             chb_HasNotifications.LabelValue = "Ima notifikacije";
             chb_HasNotifications.Location = new Point(249, 143);
             chb_HasNotifications.Name = "chb_HasNotifications";
@@ -87,14 +92,17 @@
             // cb_Framework
             // 
             cb_Framework.DisplayMember = "Id";
+            cb_Framework.InvalidMessage = null;
             cb_Framework.LabelValue = "Okvir";
             cb_Framework.Location = new Point(5, 212);
             cb_Framework.Name = "cb_Framework";
+            cb_Framework.SelectedValue = null;
             cb_Framework.Size = new Size(238, 63);
             cb_Framework.TabIndex = 5;
             // 
             // tb_Name
             // 
+            tb_Name.InvalidMessage = null;
             tb_Name.LabelValue = "Naziv";
             tb_Name.Location = new Point(5, 5);
             tb_Name.Name = "tb_Name";
@@ -120,6 +128,7 @@
             btn_Return.TabIndex = 8;
             btn_Return.Text = "Vrati se";
             btn_Return.UseVisualStyleBackColor = true;
+            btn_Return.Click += btn_Return_Click;
             // 
             // SettingDetailsPage
             // 

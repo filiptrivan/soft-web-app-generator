@@ -27,12 +27,12 @@ namespace Soft.Generator.DesktopApp.Controllers
             return _desktopAppBusinessService.GetSettingList();
         }
 
-        public Setting GetSetting(int id)
+        public Setting GetSetting(long id)
         {
             return _desktopAppBusinessService.GetSetting(id);
         }
 
-        public void DeleteSetting(int id)
+        public void DeleteSetting(long id)
         {
             _desktopAppBusinessService.DeleteSetting(id);
         }

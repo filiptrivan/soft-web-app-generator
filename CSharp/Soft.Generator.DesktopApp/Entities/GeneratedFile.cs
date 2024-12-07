@@ -25,5 +25,10 @@ namespace Soft.Generator.DesktopApp.Entities
         public virtual WebApplication Application { get; set; }
 
         public virtual DomainFolderPath DomainFolderPath { get; set; }
+
+        public override string ToString()
+        {
+            return DisplayName;
+        }
     }
 }

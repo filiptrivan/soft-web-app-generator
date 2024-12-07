@@ -19,5 +19,10 @@ namespace Soft.Generator.DesktopApp.Entities
         public virtual Company Company { get; set; }
 
         public virtual Setting Setting { get; set; }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

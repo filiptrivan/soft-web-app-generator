@@ -16,5 +16,10 @@ namespace Soft.Generator.DesktopApp.Entities
         public string Path { get; set; }
 
         public List<WebApplication> Applications { get; set; }
+
+        public override string ToString()
+        {
+            return Path;
+        }
     }
 }

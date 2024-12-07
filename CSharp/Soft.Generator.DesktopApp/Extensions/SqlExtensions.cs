@@ -59,6 +59,7 @@ namespace Soft.Generator.DesktopApp.Extensions
 
                     connection.Close();
 
+                    transactionScope.Complete();
                     transactionScope.Dispose();
                 }
             }

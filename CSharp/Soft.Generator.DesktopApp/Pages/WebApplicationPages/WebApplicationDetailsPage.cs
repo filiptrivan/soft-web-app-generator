@@ -40,15 +40,15 @@ namespace Soft.Generator.DesktopApp.Pages
             tb_Name.TextBoxValue = Entity.Name;
             tb_Name.InvalidMessage = _validationService.WebApplicationNameValidationMessage;
 
-            cb_Company.SelectedValue = Entity.Company?.Id ?? 0;
             cb_Company.DisplayMember = nameof(Company.Name);
             cb_Company.InvalidMessage = _validationService.WebApplicationCompanyIdValidationMessage;
             cb_Company.Initialize<Company>(_webApplicationController.GetCompanyList());
+            cb_Company.SelectedValue = Entity.Company?.Id ?? 0;
 
-            cb_Setting.SelectedValue = Entity.Setting?.Id ?? 0;
             cb_Setting.DisplayMember = nameof(Setting.Name);
-            cb_Company.InvalidMessage = _validationService.WebApplicationSettingIdValidationMessage;
+            cb_Setting.InvalidMessage = _validationService.WebApplicationSettingIdValidationMessage;
             cb_Setting.Initialize<Setting>(_webApplicationController.GetSettingList());
+            cb_Setting.SelectedValue = Entity.Setting?.Id ?? 0;
         }
 
         private void btn_Return_Click(object sender, EventArgs e)
@@ -63,7 +63,7 @@ namespace Soft.Generator.DesktopApp.Pages
                 Id = Entity.Id,
                 Name = tb_Name.TextBoxValue,
                 Company = cb_Company.SelectedValue == null ? null : new Company { Id = (int)cb_Company.SelectedValue },
-                Setting = cb_Setting.SelectedValue == null ? null : new Setting { Id = (int)cb_Setting.SelectedValue },
+                Setting = cb_Setting.SelectedValue == null ? null : new Setting { Id = (long)cb_Setting.SelectedValue },
             };
 
             if (_validationService.IsWebApplicationValid(webApplication) == false)

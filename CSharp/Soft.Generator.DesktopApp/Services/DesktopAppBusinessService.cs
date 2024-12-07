@@ -76,19 +76,12 @@ namespace Soft.Generator.DesktopApp.Services
 
                 List<Permission> permissionList = GetPermissionListForCompanyList(new List<int> { company.Id });
 
-                if (permissionList != null)
+                foreach (Permission permission in permissionList.ToList())
                 {
-                    foreach (Permission permission in permissionList.ToList())
-                    {
-                        if (selectedIdsHelper.Contains(permission.Id))
-                            selectedIdsHelper.Remove(permission.Id);
-                        else
-                            DeleteCompanyPermission(company.Id, permission.Id);
-                    }
-                }
-                else
-                {
-                    permissionList = new List<Permission>();
+                    if (selectedIdsHelper.Contains(permission.Id))
+                        selectedIdsHelper.Remove(permission.Id);
+                    else
+                        DeleteCompanyPermission(company.Id, permission.Id);
                 }
 
                 List<Permission> permissionListToInsert = GetPermissionList().Where(x => selectedIdsHelper.Contains(x.Id)).ToList(); // TODO FT: Add this to the generator so it is working in the SQL
@@ -104,27 +97,27 @@ namespace Soft.Generator.DesktopApp.Services
             });
         }
 
-        public void DeleteCompanyPermission(int companyId, int permissionId)
-        {
-            string query = @$"
-DELETE
-FROM CompanyPermission
-WHERE CompanyId = @companyId && PermissionId = @permissionId
-";
+//        public void DeleteCompanyPermission(int companyId, int permissionId)
+//        {
+//            string query = @$"
+//DELETE
+//FROM CompanyPermission
+//WHERE CompanyId = @companyId && PermissionId = @permissionId
+//";
 
-            _connection.WithTransaction(() =>
-            {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
-                {
-                    cmd.Parameters.AddWithValue("@companyId", companyId);
-                    cmd.Parameters.AddWithValue("@permissionId", permissionId);
+//            _connection.WithTransaction(() =>
+//            {
+//                using (SqlCommand cmd = new SqlCommand(query, _connection))
+//                {
+//                    cmd.Parameters.AddWithValue("@companyId", companyId);
+//                    cmd.Parameters.AddWithValue("@permissionId", permissionId);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
+//                    int rowsAffected = cmd.ExecuteNonQuery();
 
-                    if (rowsAffected == 0)
-                        throw new Exception("U sistemu nismo pronašli objekat koji želite da obrišete.");
-                }
-            });
-        }
+//                    if (rowsAffected == 0)
+//                        throw new Exception("U sistemu nismo pronašli objekat koji želite da obrišete.");
+//                }
+//            });
+//        }
     }
 }
