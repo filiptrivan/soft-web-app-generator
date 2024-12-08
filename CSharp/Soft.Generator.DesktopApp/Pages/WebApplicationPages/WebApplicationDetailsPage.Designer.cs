@@ -33,10 +33,12 @@
             cb_Company = new Controls.SoftCombobox();
             btn_Save = new Button();
             btn_Return = new Button();
+            clb_DllPath = new Controls.SoftCheckListBox();
             SuspendLayout();
             // 
             // tb_Name
             // 
+            tb_Name.InvalidMessage = null;
             tb_Name.LabelValue = "Naziv";
             tb_Name.Location = new Point(3, 3);
             tb_Name.Name = "tb_Name";
@@ -47,6 +49,7 @@
             // cb_Setting
             // 
             cb_Setting.DisplayMember = "Id";
+            cb_Setting.InvalidMessage = null;
             cb_Setting.LabelValue = "Podešavanje";
             cb_Setting.Location = new Point(247, 3);
             cb_Setting.Name = "cb_Setting";
@@ -57,6 +60,7 @@
             // cb_Company
             // 
             cb_Company.DisplayMember = "Id";
+            cb_Company.InvalidMessage = null;
             cb_Company.LabelValue = "Kompanija";
             cb_Company.Location = new Point(3, 72);
             cb_Company.Name = "cb_Company";
@@ -66,7 +70,7 @@
             // 
             // btn_Save
             // 
-            btn_Save.Location = new Point(15, 144);
+            btn_Save.Location = new Point(16, 291);
             btn_Save.Name = "btn_Save";
             btn_Save.Size = new Size(75, 23);
             btn_Save.TabIndex = 3;
@@ -76,7 +80,7 @@
             // 
             // btn_Return
             // 
-            btn_Return.Location = new Point(112, 144);
+            btn_Return.Location = new Point(113, 291);
             btn_Return.Name = "btn_Return";
             btn_Return.Size = new Size(75, 23);
             btn_Return.TabIndex = 4;
@@ -84,17 +88,27 @@
             btn_Return.UseVisualStyleBackColor = true;
             btn_Return.Click += btn_Return_Click;
             // 
+            // clb_DllPath
+            // 
+            clb_DllPath.DisplayMember = "Id";
+            clb_DllPath.LabelValue = "Dll putanje";
+            clb_DllPath.Location = new Point(3, 141);
+            clb_DllPath.Name = "clb_DllPath";
+            clb_DllPath.Size = new Size(481, 137);
+            clb_DllPath.TabIndex = 5;
+            // 
             // WebApplicationDetailsPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(clb_DllPath);
             Controls.Add(btn_Return);
             Controls.Add(btn_Save);
             Controls.Add(cb_Company);
             Controls.Add(cb_Setting);
             Controls.Add(tb_Name);
             Name = "WebApplicationDetailsPage";
-            Size = new Size(609, 276);
+            Size = new Size(609, 368);
             ResumeLayout(false);
         }
 
@@ -105,5 +119,6 @@
         private Controls.SoftCombobox cb_Company;
         private Button btn_Save;
         private Button btn_Return;
+        private Controls.SoftCheckListBox clb_DllPath;
     }
 }

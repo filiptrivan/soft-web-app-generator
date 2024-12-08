@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Soft.Generator.DesktopApp.Entities
 {
-    public class GeneratedFile : ISoftEntity
+    public class WebApplicationFile : ISoftEntity
     {
         [Identifier]
         public long Id { get; set; }
@@ -21,10 +21,12 @@ namespace Soft.Generator.DesktopApp.Entities
 
         public bool Regenerate { get; set; }
 
-        [ManyToOneRequired]
-        public virtual WebApplication Application { get; set; }
+        public bool Generated { get; set; }
 
-        public virtual DomainFolderPath DomainFolderPath { get; set; }
+        [ManyToOneRequired]
+        public virtual WebApplication WebApplication { get; set; }
+
+        public virtual DllPath DllPath { get; set; }
 
         public override string ToString()
         {

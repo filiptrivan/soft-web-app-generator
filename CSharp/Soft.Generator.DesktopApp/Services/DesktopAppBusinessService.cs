@@ -23,35 +23,7 @@ namespace Soft.Generator.DesktopApp.Services
             _connection = connection;
         }
 
-        public GeneratedFile InsertGeneratedFile(GeneratedFile entity)
-        {
-            if (entity == null)
-                throw new Exception("Ne možete da ubacite prazan objekat.");
-
-            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
-
-            string query = $"UPDATE GeneratedFile SET Id = @Id, DisplayName, ClassName, Namespace, Regenerate, ApplicationId, DomainFolderPathId) VALUES (@Id, @DisplayName, @ClassName, @Namespace, @Regenerate, @ApplicationId, @DomainFolderPathId);";
-
-            _connection.WithTransaction(() =>
-            {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
-                {
-                    cmd.Parameters.AddWithValue("@Id", entity.Id);
-                    cmd.Parameters.AddWithValue("@DisplayName", entity.DisplayName);
-                    cmd.Parameters.AddWithValue("@ClassName", entity.ClassName);
-                    cmd.Parameters.AddWithValue("@Namespace", entity.Namespace);
-                    cmd.Parameters.AddWithValue("@Regenerate", entity.Regenerate);
-                    cmd.Parameters.AddWithValue("@ApplicationId", entity.Application.Id);
-                    cmd.Parameters.AddWithValue("@DomainFolderPathId", entity.DomainFolderPath.Id);
-
-                    cmd.ExecuteNonQuery();
-                }
-            });
-
-            return entity;
-        }
-
-        public Company SaveCompanyExtended(Company company, List<int> selectedPermissionIds)
+        public Company SaveCompanyExtended(Company company, List<long> selectedPermissionIds)
         {
             return _connection.WithTransaction(() =>
             {
@@ -63,61 +35,116 @@ namespace Soft.Generator.DesktopApp.Services
             });
         }
 
-        public void UpdateCompanyPermissionListForCompany(Company company, List<int> selectedPermissionIds)
+        //public void UpdateCompanyPermissionListForCompany(Company company, List<long> selectedPermissionIds)
+        //{
+        //    if (selectedPermissionIds == null)
+        //        return;
+
+        //    List<long> selectedIdsHelper = selectedPermissionIds.ToList();
+
+        //    _connection.WithTransaction(() =>
+        //    {
+        //        // FT: Not doing authorization here, because we can not figure out here if we are updating while inserting object (eg. User), or updating object, we will always get the id which is not 0 here.
+
+        //        List<Permission> permissionList = GetPermissionListForCompanyList(new List<long> { company.Id });
+
+        //        foreach (Permission permission in permissionList.ToList())
+        //        {
+        //            if (selectedIdsHelper.Contains(permission.Id))
+        //                selectedIdsHelper.Remove(permission.Id);
+        //            else
+        //                DeleteCompanyPermission(company.Id, permission.Id);
+        //        }
+
+        //        List<Permission> permissionListToInsert = GetPermissionList().Where(x => selectedIdsHelper.Contains(x.Id)).ToList(); // TODO FT: Add this to the generator so it is working in the SQL
+
+        //        foreach (Permission permissionToInsert in permissionListToInsert)
+        //        {
+        //            InsertCompanyPermission(new CompanyPermission
+        //            {
+        //                Company = company,
+        //                Permission = permissionToInsert
+        //            });
+        //        }
+        //    });
+        //}
+
+        #region WebApplication
+
+        public List<DllPath> GetDllPathListForWebApplication(long webApplicationId)
         {
-            if (selectedPermissionIds == null)
-                return;
+            List<DllPath> result = new List<DllPath>();
 
-            List<int> selectedIdsHelper = selectedPermissionIds.ToList();
+            List<WebApplicationFile> webApplicationFiles = base.GetWebApplicationFileListForWebApplication(webApplicationId);
 
-            _connection.WithTransaction(() =>
+            foreach (WebApplicationFile webApplicationFile in webApplicationFiles)
             {
-                // FT: Not doing authorization here, because we can not figure out here if we are updating while inserting object (eg. User), or updating object, we will always get the id which is not 0 here.
+                if (result.Contains(webApplicationFile.DllPath) == false)
+                    result.Add(webApplicationFile.DllPath);
+            }
 
-                List<Permission> permissionList = GetPermissionListForCompanyList(new List<int> { company.Id });
+            return result;
+        }
 
-                foreach (Permission permission in permissionList.ToList())
-                {
-                    if (selectedIdsHelper.Contains(permission.Id))
-                        selectedIdsHelper.Remove(permission.Id);
-                    else
-                        DeleteCompanyPermission(company.Id, permission.Id);
-                }
+        public WebApplication SaveWebApplicationExtended(WebApplication webApplication, List<long> selectedDllPathIds)
+        {
+            return _connection.WithTransaction(() =>
+            {
+                WebApplication savedWebApplication = SaveWebApplication(webApplication);
 
-                List<Permission> permissionListToInsert = GetPermissionList().Where(x => selectedIdsHelper.Contains(x.Id)).ToList(); // TODO FT: Add this to the generator so it is working in the SQL
+                //UpdateWebApplicationDllPathListForWebApplication(webApplication, selectedDllPathIds);
 
-                foreach (Permission permissionToInsert in permissionListToInsert)
-                {
-                    InsertCompanyPermission(new CompanyPermission
-                    {
-                        Company = company,
-                        Permission = permissionToInsert
-                    });
-                }
+                return savedWebApplication;
             });
         }
 
-//        public void DeleteCompanyPermission(int companyId, int permissionId)
-//        {
-//            string query = @$"
-//DELETE
-//FROM CompanyPermission
-//WHERE CompanyId = @companyId && PermissionId = @permissionId
-//";
+        //public void UpdateWebApplicationDllPathListForWebApplication(WebApplication webApplication, List<long> selectedDllPathIds)
+        //{
+        //    if (selectedDllPathIds == null)
+        //        return;
 
-//            _connection.WithTransaction(() =>
-//            {
-//                using (SqlCommand cmd = new SqlCommand(query, _connection))
-//                {
-//                    cmd.Parameters.AddWithValue("@companyId", companyId);
-//                    cmd.Parameters.AddWithValue("@permissionId", permissionId);
+        //    List<long> selectedIdsHelper = selectedDllPathIds.ToList();
 
-//                    int rowsAffected = cmd.ExecuteNonQuery();
+        //    _connection.WithTransaction(() =>
+        //    {
+        //        // FT: Not doing authorization here, because we can not figure out here if we are updating while inserting object (eg. User), or updating object, we will always get the id which is not 0 here.
 
-//                    if (rowsAffected == 0)
-//                        throw new Exception("U sistemu nismo pronašli objekat koji želite da obrišete.");
-//                }
-//            });
-//        }
+        //        List<DllPath> dllPathList = GetDllPathListForWebApplicationList(new List<long> { webApplication.Id });
+
+        //        foreach (DllPath dllPath in dllPathList.ToList())
+        //        {
+        //            if (selectedIdsHelper.Contains(dllPath.Id))
+        //                selectedIdsHelper.Remove(dllPath.Id);
+        //            else
+        //                DeleteWebApplicationFile(webApplication.Id, dllPath.Id);
+        //        }
+
+        //        List<DllPath> dllPathListToInsert = GetDllPathList().Where(x => selectedIdsHelper.Contains(x.Id)).ToList(); // TODO FT: Add this to the generator so it is working in the SQL
+
+        //        foreach (DllPath dllPathToInsert in dllPathListToInsert)
+        //        {
+        //            InsertWebApplicationFile(new WebApplicationFile
+        //            {
+        //                WebApplication = webApplication,
+        //                DllPath = dllPathToInsert,
+                        
+        //            });
+        //        }
+        //    });
+        //}
+
+        public void DeleteWebApplicationFile(long webApplicationId, long dllPathId)
+        {
+            _connection.WithTransaction(() =>
+            {
+                WebApplicationFile webApplicationFile = GetWebApplicationFileList()
+                    .Where(x => x.WebApplication.Id == webApplicationId && x.DllPath.Id == dllPathId)
+                    .Single();
+
+                DeleteEntity<WebApplicationFile, long>(webApplicationFile.Id);
+            });
+        }
+
+        #endregion
     }
 }

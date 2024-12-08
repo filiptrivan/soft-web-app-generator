@@ -1,6 +1,6 @@
-﻿namespace Soft.Generator.DesktopApp.Pages
+﻿namespace Soft.Generator.DesktopApp.Controls
 {
-    partial class DllPathListPage
+    partial class SoftCheckListBox
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,29 +28,42 @@
         /// </summary>
         private void InitializeComponent()
         {
-            softDataGridView1 = new Controls.SoftDataGridView();
+            checkedListBox1 = new CheckedListBox();
+            label1 = new Label();
             SuspendLayout();
             // 
-            // softDataGridView1
+            // checkedListBox1
             // 
-            softDataGridView1.Dock = DockStyle.Fill;
-            softDataGridView1.Location = new Point(0, 0);
-            softDataGridView1.Name = "softDataGridView1";
-            softDataGridView1.Size = new Size(484, 217);
-            softDataGridView1.TabIndex = 0;
+            checkedListBox1.FormattingEnabled = true;
+            checkedListBox1.Location = new Point(13, 27);
+            checkedListBox1.Name = "checkedListBox1";
+            checkedListBox1.Size = new Size(452, 94);
+            checkedListBox1.TabIndex = 0;
             // 
-            // DllPathListPage
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(13, 9);
+            label1.Name = "label1";
+            label1.Size = new Size(38, 15);
+            label1.TabIndex = 1;
+            label1.Text = "label1";
+            // 
+            // SoftCheckListBox
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(softDataGridView1);
-            Name = "DllPathListPage";
-            Size = new Size(484, 217);
+            Controls.Add(label1);
+            Controls.Add(checkedListBox1);
+            Name = "SoftCheckListBox";
+            Size = new Size(481, 137);
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
-        private Controls.SoftDataGridView softDataGridView1;
+        private CheckedListBox checkedListBox1;
+        private Label label1;
     }
 }

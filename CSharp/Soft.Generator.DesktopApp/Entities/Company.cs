@@ -11,7 +11,7 @@ namespace Soft.Generator.DesktopApp.Entities
     public class Company : ISoftEntity
     {
         [Identifier]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string Name { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿using Soft.Generator.DesktopApp.Controllers;
 using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Pages.DomainFolderPathPages;
+using Soft.Generator.DesktopApp.Pages.DllPathPages;
 using Soft.Generator.DesktopApp.Services;
 using System;
 using System.Collections.Generic;
@@ -14,15 +14,15 @@ using System.Windows.Forms;
 
 namespace Soft.Generator.DesktopApp.Pages
 {
-    public partial class DomainFolderPathListPage : UserControl
+    public partial class DllPathListPage : UserControl
     {
-        DomainFolderPathController _domainFolderPathController;
+        DllPathController _dllPathController;
         PageNavigator _pageNavigator;
         ClientSharedService _clientSharedService;
 
-        public DomainFolderPathListPage(DomainFolderPathController domainFolderPathController, PageNavigator pageNavigator, ClientSharedService clientSharedService)
+        public DllPathListPage(DllPathController dllPathController, PageNavigator pageNavigator, ClientSharedService clientSharedService)
         {
-            _domainFolderPathController = domainFolderPathController;
+            _dllPathController = dllPathController;
             _pageNavigator = pageNavigator;
             _clientSharedService = clientSharedService;
 
@@ -33,24 +33,24 @@ namespace Soft.Generator.DesktopApp.Pages
 
         private void LoadTable()
         {
-            softDataGridView1.SoftInitializeComponent<DomainFolderPath>(_domainFolderPathController.GetDomainFolderPathList(), true, DomainFolderPathAddEventHandler, true, true, CellContentClickHandler);
+            softDataGridView1.SoftInitializeComponent<DllPath>(_dllPathController.GetDllPathList(), true, DllPathAddEventHandler, true, true, CellContentClickHandler);
         }
 
-        public void DomainFolderPathAddEventHandler(object sender, EventArgs e)
+        public void DllPathAddEventHandler(object sender, EventArgs e)
         {
-            DomainFolderPathDetailsPage domainFolderPathDetailsPage = _pageNavigator.NavigateToPage<DomainFolderPathDetailsPage>(this);
-            domainFolderPathDetailsPage.Initialize(new DomainFolderPath());
+            DllPathDetailsPage dllPathDetailsPage = _pageNavigator.NavigateToPage<DllPathDetailsPage>(this);
+            dllPathDetailsPage.Initialize(new DllPath());
         }
 
         public void CellContentClickHandler(object sender, DataGridViewCellEventArgs e)
         {
-            _clientSharedService.CellContentClickHandler<DomainFolderPathDetailsPage, DomainFolderPath, int>(
+            _clientSharedService.CellContentClickHandler<DllPathDetailsPage, DllPath, long>(
                 e,
                 this,
                 softDataGridView1,
-                _pageNavigator.NavigateToPage<DomainFolderPathDetailsPage>,
-                _domainFolderPathController.GetDomainFolderPath,
-                _domainFolderPathController.DeleteDomainFolderPath,
+                _pageNavigator.NavigateToPage<DllPathDetailsPage>,
+                _dllPathController.GetDllPath,
+                _dllPathController.DeleteDllPath,
                 LoadTable
             );
         }

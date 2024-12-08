@@ -68,17 +68,17 @@ namespace Soft.Generator.DesktopApp.Services
 
         #endregion
 
-        #region DomainFolderPath
+        #region DllPath
 
-        public bool IsDomainFolderPathValid(DomainFolderPath domainFolderPath)
+        public bool IsDllPathValid(DllPath dllPath)
         {
-            if (DomainFolderPathPathValidationMessage(domainFolderPath.Path) != "")
+            if (DllPathPathValidationMessage(dllPath.Path) != "")
                 return false;
 
             return true;
         }
 
-        public string DomainFolderPathPathValidationMessage(string value)
+        public string DllPathPathValidationMessage(string value)
         {
             List<string> errors = new List<string>();
 

@@ -12,20 +12,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Soft.Generator.DesktopApp.Pages.DomainFolderPathPages
+namespace Soft.Generator.DesktopApp.Pages.DllPathPages
 {
-    public partial class DomainFolderPathDetailsPage : UserControl, ISoftDetailsPage
+    public partial class DllPathDetailsPage : UserControl, ISoftDetailsPage
     {
         PageNavigator _pageNavigator;
-        DomainFolderPathController _domainFolderPathController;
+        DllPathController _dllPathController;
         ClientSharedService _clientSharedService;
         ValidationService _validationService;
 
-        private DomainFolderPath Entity { get; set; } = new DomainFolderPath();
+        private DllPath Entity { get; set; } = new DllPath();
 
-        public DomainFolderPathDetailsPage(DomainFolderPathController domainFolderPathController, PageNavigator pageNavigator, ClientSharedService clientSharedService, ValidationService validationService)
+        public DllPathDetailsPage(DllPathController dllPathController, PageNavigator pageNavigator, ClientSharedService clientSharedService, ValidationService validationService)
         {
-            _domainFolderPathController = domainFolderPathController;
+            _dllPathController = dllPathController;
             _pageNavigator = pageNavigator;
             _clientSharedService = clientSharedService;
             _validationService = validationService;
@@ -35,10 +35,10 @@ namespace Soft.Generator.DesktopApp.Pages.DomainFolderPathPages
 
         public void Initialize(ISoftEntity entity)
         {
-            Entity = (DomainFolderPath)entity;
+            Entity = (DllPath)entity;
 
             tb_Path.TextBoxValue = Entity.Path;
-            tb_Path.InvalidMessage = _validationService.DomainFolderPathPathValidationMessage;
+            tb_Path.InvalidMessage = _validationService.DllPathPathValidationMessage;
         }
 
         private void btn_Return_Click(object sender, EventArgs e)
@@ -48,19 +48,19 @@ namespace Soft.Generator.DesktopApp.Pages.DomainFolderPathPages
 
         private void btn_Save_Click(object sender, EventArgs e)
         {
-            DomainFolderPath domainFolderPath = new DomainFolderPath
+            DllPath dllPath = new DllPath
             {
                 Id = Entity.Id,
                 Path = tb_Path.TextBoxValue,
             };
 
-            if (_validationService.IsDomainFolderPathValid(domainFolderPath) == false)
+            if (_validationService.IsDllPathValid(dllPath) == false)
             {
                 ValidateAllChildControls();
                 return;
             }
 
-            Entity = _domainFolderPathController.SaveDomainFolderPath(domainFolderPath);
+            Entity = _dllPathController.SaveDllPath(dllPath);
 
             _clientSharedService.ShowSuccessfullMessage();
         }

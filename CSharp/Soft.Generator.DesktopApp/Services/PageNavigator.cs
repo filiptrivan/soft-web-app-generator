@@ -1,7 +1,7 @@
 ﻿using Soft.Generator.DesktopApp.Controllers;
 using Soft.Generator.DesktopApp.Pages;
 using Soft.Generator.DesktopApp.Pages.CompanyPages;
-using Soft.Generator.DesktopApp.Pages.DomainFolderPathPages;
+using Soft.Generator.DesktopApp.Pages.DllPathPages;
 using Soft.Generator.DesktopApp.Pages.FrameworkPages;
 using Soft.Generator.DesktopApp.Pages.SettingPages;
 using System;
@@ -18,7 +18,7 @@ namespace Soft.Generator.DesktopApp.Services
         private readonly CompanyController _companyController;
         private readonly FrameworkController _frameworkController;
         private readonly HomeController _homeController;
-        private readonly DomainFolderPathController _pathToDomainFolderController;
+        private readonly DllPathController _pathToDomainFolderController;
         private readonly PermissionController _permissionController;
         private readonly SettingController _settingController;
 
@@ -31,7 +31,7 @@ namespace Soft.Generator.DesktopApp.Services
         public PageNavigator(
             ClientSharedService clientSharedService,
             CompanyController companyController, FrameworkController frameworkController, HomeController homeController,
-            DomainFolderPathController pathToDomainFolderController, PermissionController permissionController, SettingController settingController, WebApplicationController webApplicationController,
+            DllPathController pathToDomainFolderController, PermissionController permissionController, SettingController settingController, WebApplicationController webApplicationController,
             ValidationService validationService
             )
         {
@@ -111,13 +111,13 @@ namespace Soft.Generator.DesktopApp.Services
             {
                 return new HomePage() as T;
             }
-            else if (typeof(T) == typeof(DomainFolderPathListPage))
+            else if (typeof(T) == typeof(DllPathListPage))
             {
-                return new DomainFolderPathListPage(_pathToDomainFolderController, this, _clientSharedService) as T;
+                return new DllPathListPage(_pathToDomainFolderController, this, _clientSharedService) as T;
             }
-            else if (typeof(T) == typeof(DomainFolderPathDetailsPage))
+            else if (typeof(T) == typeof(DllPathDetailsPage))
             {
-                return new DomainFolderPathDetailsPage(_pathToDomainFolderController, this, _clientSharedService, _validationService) as T;
+                return new DllPathDetailsPage(_pathToDomainFolderController, this, _clientSharedService, _validationService) as T;
             }
             else if (typeof(T) == typeof(PermissionListPage))
             {
@@ -157,10 +157,10 @@ namespace Soft.Generator.DesktopApp.Services
                     return new FrameworkDetailsPage(_frameworkController, this, _clientSharedService, _validationService);
                 case nameof(HomePage):
                     return new HomePage();
-                case nameof(DomainFolderPathListPage):
-                    return new DomainFolderPathListPage(_pathToDomainFolderController, this, _clientSharedService);
-                case nameof(DomainFolderPathDetailsPage):
-                    return new DomainFolderPathDetailsPage(_pathToDomainFolderController, this, _clientSharedService, _validationService);
+                case nameof(DllPathListPage):
+                    return new DllPathListPage(_pathToDomainFolderController, this, _clientSharedService);
+                case nameof(DllPathDetailsPage):
+                    return new DllPathDetailsPage(_pathToDomainFolderController, this, _clientSharedService, _validationService);
                 case nameof(PermissionListPage):
                     return new PermissionListPage(_permissionController);
                 case nameof(SettingListPage):

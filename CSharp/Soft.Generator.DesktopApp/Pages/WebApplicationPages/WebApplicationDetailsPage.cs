@@ -49,6 +49,11 @@ namespace Soft.Generator.DesktopApp.Pages
             cb_Setting.InvalidMessage = _validationService.WebApplicationSettingIdValidationMessage;
             cb_Setting.Initialize<Setting>(_webApplicationController.GetSettingList());
             cb_Setting.SelectedValue = Entity.Setting?.Id ?? 0;
+
+            List<DllPath> dllPaths = _webApplicationController.GetDllPathList();
+            List<long> selectedDllPathIds = _webApplicationController.GetDllPathListForTheWebApplication(Entity.Id).Select(x => x.Id).ToList();
+            clb_DllPath.DisplayMember = nameof(DllPath.Path);
+            clb_DllPath.Initialize(dllPaths, selectedDllPathIds);
         }
 
         private void btn_Return_Click(object sender, EventArgs e)
@@ -62,7 +67,7 @@ namespace Soft.Generator.DesktopApp.Pages
             {
                 Id = Entity.Id,
                 Name = tb_Name.TextBoxValue,
-                Company = cb_Company.SelectedValue == null ? null : new Company { Id = (int)cb_Company.SelectedValue },
+                Company = cb_Company.SelectedValue == null ? null : new Company { Id = (long)cb_Company.SelectedValue },
                 Setting = cb_Setting.SelectedValue == null ? null : new Setting { Id = (long)cb_Setting.SelectedValue },
             };
 
@@ -72,7 +77,7 @@ namespace Soft.Generator.DesktopApp.Pages
                 return;
             }
 
-            Entity = _webApplicationController.SaveWebApplication(webApplication);
+            Entity = _webApplicationController.SaveWebApplication(webApplication, clb_DllPath.CheckedValues);
 
             _clientSharedService.ShowSuccessfullMessage();
         }

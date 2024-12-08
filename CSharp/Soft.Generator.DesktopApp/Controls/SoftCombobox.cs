@@ -40,7 +40,6 @@ namespace Soft.Generator.DesktopApp.Controls
             comboBox1.Validating += comboBox1_Validating;
 
             comboBox1.ValueMember = "Id";
-            comboBox1.SelectedIndex = -1;
         }
 
         public void Initialize<T>(

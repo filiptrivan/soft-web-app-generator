@@ -1,6 +1,6 @@
-﻿namespace Soft.Generator.DesktopApp.Pages.DomainFolderPathPages
+﻿namespace Soft.Generator.DesktopApp.Pages.DllPathPages
 {
-    partial class DomainFolderPathDetailsPage
+    partial class DllPathDetailsPage
     {
         /// <summary> 
         /// Required designer variable.
@@ -63,14 +63,14 @@
             btn_Return.UseVisualStyleBackColor = true;
             btn_Return.Click += btn_Return_Click;
             // 
-            // DomainFolderPathDetailsPage
+            // DllPathDetailsPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(btn_Return);
             Controls.Add(btn_Save);
             Controls.Add(tb_Path);
-            Name = "DomainFolderPathDetailsPage";
+            Name = "DllPathDetailsPage";
             Size = new Size(520, 251);
             ResumeLayout(false);
         }

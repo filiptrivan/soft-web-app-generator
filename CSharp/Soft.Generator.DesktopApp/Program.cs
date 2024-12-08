@@ -52,7 +52,7 @@ namespace Soft.Generator.DesktopApp
             services.AddScoped<CompanyController>();
             services.AddScoped<FrameworkController>();
             services.AddScoped<HomeController>();
-            services.AddScoped<DomainFolderPathController>();
+            services.AddScoped<DllPathController>();
             services.AddScoped<PermissionController>();
             services.AddScoped<SettingController>();
 

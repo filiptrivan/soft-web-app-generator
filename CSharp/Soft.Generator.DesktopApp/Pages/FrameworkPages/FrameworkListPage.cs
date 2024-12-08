@@ -44,7 +44,7 @@ namespace Soft.Generator.DesktopApp.Pages
 
         public void CellContentClickHandler(object sender, DataGridViewCellEventArgs e)
         {
-            _clientSharedService.CellContentClickHandler<FrameworkDetailsPage, Framework, int>(
+            _clientSharedService.CellContentClickHandler<FrameworkDetailsPage, Framework, long>(
                 e,
                 this,
                 softDataGridView1,

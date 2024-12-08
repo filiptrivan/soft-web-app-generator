@@ -8,14 +8,12 @@ using System.Threading.Tasks;
 
 namespace Soft.Generator.DesktopApp.Entities
 {
-    public class DomainFolderPath : ISoftEntity
+    public class DllPath : ISoftEntity
     {
         [Identifier]
         public long Id { get; set; }
 
         public string Path { get; set; }
-
-        public List<WebApplication> Applications { get; set; }
 
         public override string ToString()
         {

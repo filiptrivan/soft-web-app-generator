@@ -391,6 +391,47 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
                     ClassDeclarationSyntax extractedEntityClass = Helper.ExtractEntityFromList(entityProperty.Type, entityClasses);
                     SoftProperty extractedEntityIdProperty = GetIdentifierProperty(extractedEntityClass, entityClasses);
 
+                    if (entityProperty.Attributes.Any(x => x.Name == "ManyToMany"))
+                    {
+                        string manyToManyName = entityProperty.Attributes.Where(x => x.Name == "ManyToMany").Select(x => x.Value).SingleOrDefault();
+
+                        result.Add($$"""
+        public void Update{{manyToManyName}}ListFor{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} {{nameOfTheEntityClassFirstLower}}, List<{{extractedEntityIdProperty.Type}}> selected{{extractedEntityClass.Identifier.Text}}Ids)
+        {
+            if (selected{{extractedEntityClass.Identifier.Text}}Ids == null)
+                return;
+
+            List<{{extractedEntityIdProperty.Type}}> selectedIdsHelper = selected{{extractedEntityClass.Identifier.Text}}Ids.ToList();
+
+            _connection.WithTransaction(() =>
+            {
+                // FT: Not doing authorization here, because we can not figure out here if we are updating while inserting object (eg. User), or updating object, we will always get the id which is not 0 here.
+
+                List<{{extractedEntityClass.Identifier.Text}}> {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}List = Get{{extractedEntityClass.Identifier.Text}}ListFor{{nameOfTheEntityClass}}List(new List<{{extractedEntityIdProperty.Type}}> { {{nameOfTheEntityClassFirstLower}}.Id });
+
+                foreach ({{extractedEntityClass.Identifier.Text}} {{extractedEntityClass.Identifier.Text.FirstCharToLower()}} in {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}List.ToList())
+                {
+                    if (selectedIdsHelper.Contains({{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id))
+                        selectedIdsHelper.Remove({{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id);
+                    else
+                        Delete{{manyToManyName}}({{nameOfTheEntityClassFirstLower}}.Id, {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id);
+                }
+
+                List<{{extractedEntityClass.Identifier.Text}}> {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ListToInsert = Get{{extractedEntityClass.Identifier.Text}}List().Where(x => selectedIdsHelper.Contains(x.Id)).ToList(); // TODO FT: Add this to the generator so it is working in the SQL
+
+                foreach ({{extractedEntityClass.Identifier.Text}} {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ToInsert in {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ListToInsert)
+                {
+                    Insert{{manyToManyName}}(new {{manyToManyName}}
+                    {
+                        {{nameOfTheEntityClass}} = {{nameOfTheEntityClassFirstLower}},
+                        {{extractedEntityClass.Identifier.Text}} = {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ToInsert
+                    });
+                }
+            });
+        }
+""");
+                    }
+
                     result.Add($$"""
         public List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}List(List<{{extractedEntityIdProperty.Type}}> ids)
         {

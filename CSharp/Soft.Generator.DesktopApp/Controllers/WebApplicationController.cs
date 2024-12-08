@@ -17,9 +17,9 @@ namespace Soft.Generator.DesktopApp.Controllers
             _desktopAppBusinessService = desktopAppBusinessService;
         }
 
-        public WebApplication SaveWebApplication(WebApplication entity)
+        public WebApplication SaveWebApplication(WebApplication webApplication, List<long> selectedDllPathIds)
         {
-            return _desktopAppBusinessService.SaveWebApplication(entity);
+            return _desktopAppBusinessService.SaveWebApplicationExtended(webApplication, selectedDllPathIds);
         }
 
         public void DeleteWebApplication(long id)
@@ -45,6 +45,16 @@ namespace Soft.Generator.DesktopApp.Controllers
         public List<Setting> GetSettingList()
         {
             return _desktopAppBusinessService.GetSettingList();
+        }
+
+        public List<DllPath> GetDllPathList()
+        {
+            return _desktopAppBusinessService.GetDllPathList();
+        }
+
+        public List<DllPath> GetDllPathListForTheWebApplication(long webApplicationId)
+        {
+            return _desktopAppBusinessService.GetDllPathListForWebApplication(webApplicationId);
         }
     }
 }

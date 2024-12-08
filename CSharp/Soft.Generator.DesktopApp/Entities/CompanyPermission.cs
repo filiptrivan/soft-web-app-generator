@@ -12,7 +12,7 @@ namespace Soft.Generator.DesktopApp.Entities
     /// Cascade delete is done in sql
     /// </summary>
     [ManyToMany]
-    public class CompanyPermission : ISoftEntity
+    public class CompanyPermission
     {
         public virtual Company Company { get; set; }
 

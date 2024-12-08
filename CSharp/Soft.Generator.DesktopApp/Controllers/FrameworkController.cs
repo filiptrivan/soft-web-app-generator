@@ -27,12 +27,12 @@ namespace Soft.Generator.DesktopApp.Controllers
             return _desktopAppBusinessService.GetFrameworkList();
         }
 
-        public Framework GetFramework(int id)
+        public Framework GetFramework(long id)
         {
             return _desktopAppBusinessService.GetFramework(id);
         }
 
-        public void DeleteFramework(int id)
+        public void DeleteFramework(long id)
         {
             _desktopAppBusinessService.DeleteFramework(id);
         }

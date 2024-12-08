@@ -8,5 +8,6 @@ namespace Soft.Generator.DesktopApp.Interfaces
 {
     public interface ISoftEntity
     {
+        public long Id { get; set; }
     }
 }

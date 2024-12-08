@@ -33,7 +33,7 @@
             tb_Password = new SoftTextbox();
             btn_Save = new Button();
             btn_Return = new Button();
-            clb_Permission = new CheckedListBox();
+            clb_Permission = new Controls.SoftCheckListBox();
             SuspendLayout();
             // 
             // tb_Name
@@ -68,7 +68,7 @@
             // 
             // btn_Save
             // 
-            btn_Save.Location = new Point(17, 260);
+            btn_Save.Location = new Point(17, 289);
             btn_Save.Name = "btn_Save";
             btn_Save.Size = new Size(75, 23);
             btn_Save.TabIndex = 3;
@@ -78,7 +78,7 @@
             // 
             // btn_Return
             // 
-            btn_Return.Location = new Point(108, 260);
+            btn_Return.Location = new Point(108, 289);
             btn_Return.Name = "btn_Return";
             btn_Return.Size = new Size(75, 23);
             btn_Return.TabIndex = 4;
@@ -88,10 +88,11 @@
             // 
             // clb_Permission
             // 
-            clb_Permission.FormattingEnabled = true;
-            clb_Permission.Location = new Point(17, 141);
+            clb_Permission.DisplayMember = "Id";
+            clb_Permission.LabelValue = "Permisije";
+            clb_Permission.Location = new Point(3, 141);
             clb_Permission.Name = "clb_Permission";
-            clb_Permission.Size = new Size(453, 94);
+            clb_Permission.Size = new Size(481, 137);
             clb_Permission.TabIndex = 5;
             // 
             // CompanyDetailsPage
@@ -105,7 +106,7 @@
             Controls.Add(tb_Email);
             Controls.Add(tb_Name);
             Name = "CompanyDetailsPage";
-            Size = new Size(584, 311);
+            Size = new Size(584, 411);
             ResumeLayout(false);
         }
 
@@ -116,6 +117,6 @@
         private SoftTextbox tb_Password;
         private Button btn_Save;
         private Button btn_Return;
-        private CheckedListBox clb_Permission;
+        private Controls.SoftCheckListBox clb_Permission;
     }
 }
