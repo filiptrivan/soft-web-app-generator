@@ -31,12 +31,13 @@
             tb_Path = new SoftTextbox();
             btn_Save = new Button();
             btn_Return = new Button();
+            cb_WebApplication = new Controls.SoftCombobox();
             SuspendLayout();
             // 
             // tb_Path
             // 
             tb_Path.InvalidMessage = null;
-            tb_Path.LabelValue = "Putanja domenskog foldera";
+            tb_Path.LabelValue = "Dll putanja";
             tb_Path.Location = new Point(3, 3);
             tb_Path.Name = "tb_Path";
             tb_Path.Size = new Size(238, 63);
@@ -45,7 +46,7 @@
             // 
             // btn_Save
             // 
-            btn_Save.Location = new Point(16, 72);
+            btn_Save.Location = new Point(16, 81);
             btn_Save.Name = "btn_Save";
             btn_Save.Size = new Size(75, 23);
             btn_Save.TabIndex = 1;
@@ -55,7 +56,7 @@
             // 
             // btn_Return
             // 
-            btn_Return.Location = new Point(109, 72);
+            btn_Return.Location = new Point(109, 81);
             btn_Return.Name = "btn_Return";
             btn_Return.Size = new Size(75, 23);
             btn_Return.TabIndex = 2;
@@ -63,10 +64,22 @@
             btn_Return.UseVisualStyleBackColor = true;
             btn_Return.Click += btn_Return_Click;
             // 
+            // cb_WebApplication
+            // 
+            cb_WebApplication.DisplayMember = "Id";
+            cb_WebApplication.InvalidMessage = null;
+            cb_WebApplication.LabelValue = "Web aplikacija";
+            cb_WebApplication.Location = new Point(247, 3);
+            cb_WebApplication.Name = "cb_WebApplication";
+            cb_WebApplication.SelectedValue = null;
+            cb_WebApplication.Size = new Size(238, 63);
+            cb_WebApplication.TabIndex = 3;
+            // 
             // DllPathDetailsPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(cb_WebApplication);
             Controls.Add(btn_Return);
             Controls.Add(btn_Save);
             Controls.Add(tb_Path);
@@ -80,5 +93,6 @@
         private SoftTextbox tb_Path;
         private Button btn_Save;
         private Button btn_Return;
+        private Controls.SoftCombobox cb_WebApplication;
     }
 }

@@ -33,7 +33,8 @@
             cb_Company = new Controls.SoftCombobox();
             btn_Save = new Button();
             btn_Return = new Button();
-            clb_DllPath = new Controls.SoftCheckListBox();
+            btn_GenerateWebApplication = new Button();
+            clb_GeneratedFile = new Controls.SoftCheckListBox();
             SuspendLayout();
             // 
             // tb_Name
@@ -70,7 +71,7 @@
             // 
             // btn_Save
             // 
-            btn_Save.Location = new Point(16, 291);
+            btn_Save.Location = new Point(16, 151);
             btn_Save.Name = "btn_Save";
             btn_Save.Size = new Size(75, 23);
             btn_Save.TabIndex = 3;
@@ -80,7 +81,7 @@
             // 
             // btn_Return
             // 
-            btn_Return.Location = new Point(113, 291);
+            btn_Return.Location = new Point(113, 151);
             btn_Return.Name = "btn_Return";
             btn_Return.Size = new Size(75, 23);
             btn_Return.TabIndex = 4;
@@ -88,27 +89,38 @@
             btn_Return.UseVisualStyleBackColor = true;
             btn_Return.Click += btn_Return_Click;
             // 
-            // clb_DllPath
+            // btn_GenerateWebApplication
             // 
-            clb_DllPath.DisplayMember = "Id";
-            clb_DllPath.LabelValue = "Dll putanje";
-            clb_DllPath.Location = new Point(3, 141);
-            clb_DllPath.Name = "clb_DllPath";
-            clb_DllPath.Size = new Size(481, 137);
-            clb_DllPath.TabIndex = 5;
+            btn_GenerateWebApplication.Location = new Point(16, 347);
+            btn_GenerateWebApplication.Name = "btn_GenerateWebApplication";
+            btn_GenerateWebApplication.Size = new Size(135, 23);
+            btn_GenerateWebApplication.TabIndex = 6;
+            btn_GenerateWebApplication.Text = "Generiši aplikaciju";
+            btn_GenerateWebApplication.UseVisualStyleBackColor = true;
+            btn_GenerateWebApplication.Click += btn_GenerateWebApplication_Click;
+            // 
+            // clb_GeneratedFile
+            // 
+            clb_GeneratedFile.DisplayMember = "Id";
+            clb_GeneratedFile.LabelValue = "Generisane datoteke";
+            clb_GeneratedFile.Location = new Point(3, 196);
+            clb_GeneratedFile.Name = "clb_GeneratedFile";
+            clb_GeneratedFile.Size = new Size(481, 137);
+            clb_GeneratedFile.TabIndex = 7;
             // 
             // WebApplicationDetailsPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(clb_DllPath);
+            Controls.Add(clb_GeneratedFile);
+            Controls.Add(btn_GenerateWebApplication);
             Controls.Add(btn_Return);
             Controls.Add(btn_Save);
             Controls.Add(cb_Company);
             Controls.Add(cb_Setting);
             Controls.Add(tb_Name);
             Name = "WebApplicationDetailsPage";
-            Size = new Size(609, 368);
+            Size = new Size(609, 561);
             ResumeLayout(false);
         }
 
@@ -119,6 +131,7 @@
         private Controls.SoftCombobox cb_Company;
         private Button btn_Save;
         private Button btn_Return;
-        private Controls.SoftCheckListBox clb_DllPath;
+        private Button btn_GenerateWebApplication;
+        private Controls.SoftCheckListBox clb_GeneratedFile;
     }
 }

@@ -36,5 +36,13 @@ namespace Soft.Generator.DesktopApp.Controllers
         {
             _desktopAppBusinessService.DeleteDllPath(id);
         }
+
+        /// <summary>
+        /// TODO FT: This method returns all web applications, it should return only web applications for currently logged in user
+        /// </summary>
+        public List<WebApplication> GetWebApplicationList()
+        {
+            return _desktopAppBusinessService.GetWebApplicationList();
+        }
     }
 }

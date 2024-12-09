@@ -49,11 +49,6 @@ namespace Soft.Generator.DesktopApp.Pages
             cb_Setting.InvalidMessage = _validationService.WebApplicationSettingIdValidationMessage;
             cb_Setting.Initialize<Setting>(_webApplicationController.GetSettingList());
             cb_Setting.SelectedValue = Entity.Setting?.Id ?? 0;
-
-            List<DllPath> dllPaths = _webApplicationController.GetDllPathList();
-            List<long> selectedDllPathIds = _webApplicationController.GetDllPathListForTheWebApplication(Entity.Id).Select(x => x.Id).ToList();
-            clb_DllPath.DisplayMember = nameof(DllPath.Path);
-            clb_DllPath.Initialize(dllPaths, selectedDllPathIds);
         }
 
         private void btn_Return_Click(object sender, EventArgs e)
@@ -77,7 +72,7 @@ namespace Soft.Generator.DesktopApp.Pages
                 return;
             }
 
-            Entity = _webApplicationController.SaveWebApplication(webApplication, clb_DllPath.CheckedValues);
+            Entity = _webApplicationController.SaveWebApplication(webApplication);
 
             _clientSharedService.ShowSuccessfullMessage();
         }
@@ -87,6 +82,14 @@ namespace Soft.Generator.DesktopApp.Pages
             tb_Name.StartValidation();
             cb_Company.StartValidation();
             cb_Setting.StartValidation();
+        }
+
+        private void btn_GenerateWebApplication_Click(object sender, EventArgs e)
+        {
+            if (Entity.Id == 0)
+                throw new Exception("Da biste generisali web aplikaciju, prvo morate da sačuvate objekat.");
+
+            _webApplicationController.GenerateWebApplication(Entity.Id);
         }
     }
 }

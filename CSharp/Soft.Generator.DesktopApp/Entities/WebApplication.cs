@@ -20,6 +20,8 @@ namespace Soft.Generator.DesktopApp.Entities
 
         public virtual Setting Setting { get; set; }
 
+        public virtual List<DllPath> DllPaths { get; set; }
+
         public override string ToString()
         {
             return Name;

@@ -33,8 +33,8 @@ CREATE TABLE Framework (
 CREATE TABLE DllPath (
     Id BIGINT PRIMARY KEY IDENTITY(1,1),
     Path NVARCHAR(1000) NOT NULL,
-	--WebApplicationId BIGINT NOT NULL,
-    --FOREIGN KEY (WebApplicationId) REFERENCES WebApplication(Id),
+	WebApplicationId BIGINT NOT NULL,
+    FOREIGN KEY (WebApplicationId) REFERENCES WebApplication(Id),
 );
 
 CREATE TABLE Setting (

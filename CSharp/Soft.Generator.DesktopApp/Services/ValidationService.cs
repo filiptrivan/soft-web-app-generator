@@ -75,6 +75,9 @@ namespace Soft.Generator.DesktopApp.Services
             if (DllPathPathValidationMessage(dllPath.Path) != "")
                 return false;
 
+            if (DllPathWebApplicationIdValidationMessage(dllPath.WebApplication?.Id) != "")
+                return false;
+
             return true;
         }
 
@@ -89,6 +92,14 @@ namespace Soft.Generator.DesktopApp.Services
                 errors.Add("Maksimalan broj karaktera za ovo polje je 1000.");
 
             return string.Join(" ", errors);
+        }
+
+        public string DllPathWebApplicationIdValidationMessage(object? value)
+        {
+            if (value == null)
+                return "Polje ne sme biti prazno.";
+
+            return string.Empty;
         }
 
         #endregion

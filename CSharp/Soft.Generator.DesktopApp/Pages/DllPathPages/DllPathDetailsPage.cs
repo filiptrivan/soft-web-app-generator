@@ -39,6 +39,11 @@ namespace Soft.Generator.DesktopApp.Pages.DllPathPages
 
             tb_Path.TextBoxValue = Entity.Path;
             tb_Path.InvalidMessage = _validationService.DllPathPathValidationMessage;
+
+            cb_WebApplication.DisplayMember = nameof(WebApplication.Name);
+            cb_WebApplication.InvalidMessage = _validationService.DllPathWebApplicationIdValidationMessage;
+            cb_WebApplication.Initialize<WebApplication>(_dllPathController.GetWebApplicationList());
+            cb_WebApplication.SelectedValue = Entity.WebApplication?.Id ?? 0;
         }
 
         private void btn_Return_Click(object sender, EventArgs e)
@@ -52,6 +57,7 @@ namespace Soft.Generator.DesktopApp.Pages.DllPathPages
             {
                 Id = Entity.Id,
                 Path = tb_Path.TextBoxValue,
+                WebApplication = cb_WebApplication.SelectedValue == null ? null : new WebApplication { Id = (long)cb_WebApplication.SelectedValue },
             };
 
             if (_validationService.IsDllPathValid(dllPath) == false)
@@ -68,6 +74,7 @@ namespace Soft.Generator.DesktopApp.Pages.DllPathPages
         public void ValidateAllChildControls()
         {
             tb_Path.StartValidation();
+            cb_WebApplication.StartValidation();
         }
     }
 }
