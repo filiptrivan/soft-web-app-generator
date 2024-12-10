@@ -65,6 +65,10 @@ namespace Soft.Generator.DesktopApp.Services
         {
             _connection.WithTransaction(() =>
             {
+                WebApplication webApplication = GetWebApplication(webApplicationId);
+                List<DllPath> dllPaths = GetDllPathListForWebApplication(webApplicationId);
+
+                GeneratorService generatorService = new GeneratorService(dllPaths);
                 // dovuci web aplikaciju
                 // dovuci sve asembli path-ove za web aplikaciju
                 // 

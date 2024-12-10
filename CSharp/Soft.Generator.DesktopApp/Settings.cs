@@ -9,5 +9,8 @@ namespace Soft.Generator.DesktopApp
     public static class Settings
     {
         public static string ConnectionString = "Data source=DESKTOP-LRUAM92\\SQLEXPRESS;Initial Catalog=SoftGeneratorDA;Integrated Security=True;Encrypt=false";
+
+        public static string EntitiesNamespaceEnding = "Entities";
+        public static string DTONamespaceEnding = "DTO";
     }
 }
