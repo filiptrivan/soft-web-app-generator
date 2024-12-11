@@ -1,4 +1,5 @@
 ﻿using Soft.Generator.DesktopApp.Entities;
+using Soft.Generator.DesktopApp.Generator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,15 +35,15 @@ namespace Soft.Generator.DesktopApp.Services
 
         public void Generate()
         {
-            //GenerateNetControllerMethods();
+            NetControllerMethodsGenerator.Generate();
 
-            //GenerateAngularModules();
+            AngularModulesGenerator();
 
-            //GenerateAngularListTs();
-            //GenerateAngularListHtml();
+            AngularTableTsGenerator();
+            AngularTableHtmlGenerator();
 
-            //GenerateAngularDetailsTs();
-            //GenerateAngularDetailsHtml();
+            AngularDetailsTsGenerator();
+            AngularDetailsHtmlGenerator();
         }
 
         #region Assembly Load Helpers

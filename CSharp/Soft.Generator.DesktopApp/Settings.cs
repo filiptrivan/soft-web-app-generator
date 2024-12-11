@@ -12,5 +12,7 @@ namespace Soft.Generator.DesktopApp
 
         public static string EntitiesNamespaceEnding = "Entities";
         public static string DTONamespaceEnding = "DTO";
+        public static string BaseProjectNamespace = "Playerty.Loyals";
+        public static string BaseBusinessServiceName = "Loyals";
     }
 }
