@@ -8,6 +8,6 @@ namespace Soft.Generator.DesktopApp.Interfaces
 {
     public interface IFileGenerator
     {
-        string Generate(List<Type> entities);
+        void Generate(List<Type> entities);
     }
 }

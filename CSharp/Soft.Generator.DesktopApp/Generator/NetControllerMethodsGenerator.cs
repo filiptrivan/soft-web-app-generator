@@ -11,7 +11,7 @@ namespace Soft.Generator.DesktopApp.Generator
 {
     public class NetControllerMethodsGenerator : IFileGenerator
     {
-        public string Generate(List<Type> entities)
+        public void Generate(List<Type> entities)
         {
             GenerateControllerCode(entities);
         }
@@ -63,9 +63,9 @@ namespace {{Settings.BaseProjectNamespace}}.WebAPI.Controllers
         {
             List<string> result = new List<string>();
 
-            result.AddRange(GetEntityControllerMethods(entity));
+            //result.AddRange(GetEntityControllerMethods(entity));
 
-            result.AddRange(GetEntityOneToManyControllerMethods(entity));
+            //result.AddRange(GetEntityOneToManyControllerMethods(entity));
 
             return result;
         }
@@ -116,16 +116,16 @@ public async Task<StoreDTO> SaveStore(StoreDTO storeDTO)
             foreach (PropertyInfo manyToOneProperty in entity.GetProperties().Where(x => x.PropertyType.IsManyToOneType()))
             {
                 // TODO FT: When you make these methods, check if the type is ManyToMany first, if it's not throw exception
-                if (manyToOneProperty.IsAutocomplete())
-                {
+                //if (manyToOneProperty.IsAutocomplete())
+                //{
                     
-                }
+                //}
 
-                if (manyToOneProperty.IsDropdown())
-                {
+                //if (manyToOneProperty.IsDropdown())
+                //{
 
-                }
-                result.Add
+                //}
+                //result.Add
             }
 
             return result;

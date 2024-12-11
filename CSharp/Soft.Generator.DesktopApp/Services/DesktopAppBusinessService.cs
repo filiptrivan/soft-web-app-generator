@@ -69,9 +69,8 @@ namespace Soft.Generator.DesktopApp.Services
                 List<DllPath> dllPaths = GetDllPathListForWebApplication(webApplicationId);
 
                 GeneratorService generatorService = new GeneratorService(dllPaths);
-                // dovuci web aplikaciju
-                // dovuci sve asembli path-ove za web aplikaciju
-                // 
+
+                generatorService.Generate();
             });
 
             return null;

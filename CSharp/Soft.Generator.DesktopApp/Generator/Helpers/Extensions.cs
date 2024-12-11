@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,5 +23,10 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
         {
             return type.IsClass || type.IsInterface;
         }
+
+        //private List<PropertyInfo> GetPropertiesForTheTable(this Type DTOEntity)
+        //{
+        //    return DTOEntity.GetProperties().Where(x => x.);
+        //}
     }
 }

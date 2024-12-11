@@ -11,10 +11,10 @@ namespace Soft.Generator.DesktopApp.Services
 {
     public class GeneratorService
     {
-        public static List<string> _projectEntityNamespaces = new List<string>();
-        public static List<Assembly> _projectAssemblies = new List<Assembly>();
-        public static List<Type> _DTOTypes = new List<Type>();
-        public static List<Type> _entityTypes = new List<Type>();
+        public List<string> _projectEntityNamespaces = new List<string>();
+        public List<Assembly> _projectAssemblies = new List<Assembly>();
+        public List<Type> _DTOTypes = new List<Type>();
+        public List<Type> _entityTypes = new List<Type>();
 
         public GeneratorService(List<DllPath> dllPaths)
         {
@@ -35,15 +35,15 @@ namespace Soft.Generator.DesktopApp.Services
 
         public void Generate()
         {
-            NetControllerMethodsGenerator.Generate();
+            //new NetControllerMethodsGenerator().Generate(_entityTypes);
 
-            AngularModulesGenerator();
+            //AngularModulesGenerator();
 
-            AngularTableTsGenerator();
-            AngularTableHtmlGenerator();
+            new AngularTableTsGenerator().Generate(_entityTypes);
+            //AngularTableHtmlGenerator();
 
-            AngularDetailsTsGenerator();
-            AngularDetailsHtmlGenerator();
+            //AngularDetailsTsGenerator();
+            //AngularDetailsHtmlGenerator();
         }
 
         #region Assembly Load Helpers
