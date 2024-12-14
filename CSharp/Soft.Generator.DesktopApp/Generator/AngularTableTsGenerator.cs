@@ -18,7 +18,6 @@ namespace Soft.Generator.DesktopApp.Generator
 
         private void GenerateTableCode(List<Type> entities)
         {
-            List<string> helperForDelete = new List<string>();
 
             foreach (Type entity in entities)
             {
@@ -29,14 +28,16 @@ import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { ApiService } from 'src/app/business/services/api/api.service';
 import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { {{entity.Name}} } from 'src/app/business/entities/generated/business-entities.generated';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
-    selector: '{{entity.Name}}-table',
-    templateUrl: './{{entity.Name}}-table.component.html',
+    selector: '{{entity.Name.FromPascalToKebabCase()}}-table',
+    templateUrl: './{{entity.Name.FromPascalToKebabCase()}}-table.component.html',
     styles: []
 })
 export class {{entity.Name}}TableComponent implements OnInit {
-    cols: Column[];
+    cols: Column<{{entity.Name}}>[];
 
     load{{entity.Name}}TableDataObservableMethod = this.apiService.load{{entity.Name}}TableData;
     export{{entity.Name}}TableDataToExcelObservableMethod = this.apiService.export{{entity.Name}}TableDataToExcel;
@@ -60,41 +61,8 @@ export class {{entity.Name}}TableComponent implements OnInit {
 }
 """);
 
-                helperForDelete.Add($$"""
-    {{entity.Name.ToUpper()}}:
-
-    HTML:
-
-<ng-container *transloco="let t">
-    <soft-data-table 
-    [tableTitle]="t('{{entity.Name}}List')" 
-    [cols]="cols" 
-    [loadTableDataObservableMethod]="load{{entity.Name}}TableDataObservableMethod" 
-    [exportTableDataToExcelObservableMethod]="export{{entity.Name}}TableDataToExcelObservableMethod"
-    [deleteItemFromTableObservableMethod]="delete{{entity.Name}}ObservableMethod"
-    >
-    </soft-data-table>
-</ng-container>
-
-    TS:
-
-    load{{entity.Name}}TableDataObservableMethod = this.apiService.load{{entity.Name}}TableData;
-    export{{entity.Name}}TableDataToExcelObservableMethod = this.apiService.export{{entity.Name}}TableDataToExcel;
-    delete{{entity.Name}}ObservableMethod = this.apiService.delete{{entity.Name}};
-
-    constructor(
-        private apiService: ApiService,
-        private translocoService: TranslocoService,
-    ) { }
-
-    -----------------------------------------------------------
-""");
-
-                // Write to the file
+                //Helper.WriteToTheFile(string.Join("\n", helperForDelete), $@"C:\Users\user\Downloads\helper.txt");
             }
-
-            // TODO FT: Delete this is only helper
-            Helper.WriteToTheFile(string.Join("\n", helperForDelete), $@"C:\Users\user\Downloads\helper.txt");
         }
 
         private List<string> GetTableColumns(Type entity)
@@ -105,12 +73,8 @@ export class {{entity.Name}}TableComponent implements OnInit {
 
             foreach (PropertyInfo property in properties)
             {
-                //List<Attribute> propertyAttributes = property.GetCustomAttributes().ToList();
-
-                //if (propertyAttributes.Any(x => x is AutoCompleteAttribute))
-                //{
-
-                //}
+                // Many to one can be only filtered as: text or multiselect (text is like autocomplete)
+                //AutoCompleteAttribute autoCompleteAttribute = property.SafeGetAttribute<AutoCompleteAttribute>();
 
                 if (property.PropertyType.IsManyToOneType())
                 {
@@ -124,11 +88,24 @@ export class {{entity.Name}}TableComponent implements OnInit {
 {name: this.translocoService.translate('{{property.Name}}'), filterType: 'text', field: '{{property.Name.FirstCharToLower()}}'},
 """);
                 }
-                else if (property.PropertyType == typeof(long))
+                else if (property.PropertyType.IsWholeNumber())
                 {
-
+                    result.Add($$"""
+{name: this.translocoService.translate('{{property.Name}}'), filterType: 'numeric', field: '{{property.Name.FirstCharToLower()}}', showMatchModes: true},
+""");
+                }
+                else if (property.PropertyType.IsDateTime())
+                {
+                    result.Add($$"""
+{name: this.translocoService.translate('{{property.Name}}'), filterType: 'date', field: '{{property.Name.FirstCharToLower()}}', showMatchModes: true},
+""");
                 }
             }
+
+            //foreach (PropertyInfo property in propertyDTOList)
+            //{
+            //    ...
+            //}
 
             return result;
         }
