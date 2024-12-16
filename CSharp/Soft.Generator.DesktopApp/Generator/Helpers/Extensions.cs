@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Pluralize.NET;
+using Soft.Generator.DesktopApp.Attributes.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -63,6 +65,16 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             return type == typeof(DateTime) || type == typeof(DateTime?);
         }
 
+        public static bool IsAutocomplete(this PropertyInfo property)
+        {
+            return property.SafeGetAttribute<AutocompleteAttribute>() != null;
+        }
+
+        public static bool IsDropdown(this PropertyInfo property)
+        {
+            return property.SafeGetAttribute<DropdownAttribute>() != null;
+        }
+
         #endregion
 
         #region Case
@@ -80,7 +92,15 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             return kebabCaseString;
         }
 
+        public static string Pluralize(this string value)
+        {
+            IPluralize pluralizer = new Pluralizer();
+            return pluralizer.Pluralize(value);
+        }
+
         #endregion
+
+        #region Reflection
 
         public static List<T> SafeGetAttributes<T>(this Type type) where T : Attribute
         {
@@ -93,6 +113,20 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
                 //Console.WriteLine(ex.Message);
 
                 return new List<T>();
+            }
+        }
+
+        public static T SafeGetAttribute<T>(this Type type) where T : Attribute
+        {
+            try
+            {
+                return type.GetCustomAttribute<T>();
+            }
+            catch (Exception ex)
+            {
+                //Console.WriteLine(ex.Message);
+
+                return null;
             }
         }
 
@@ -128,5 +162,7 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
         //{
         //    return DTOEntity.GetProperties().Where(x => x.);
         //}
+
+        #endregion
     }
 }

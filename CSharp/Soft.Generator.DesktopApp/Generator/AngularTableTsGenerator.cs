@@ -61,7 +61,7 @@ export class {{entity.Name}}TableComponent implements OnInit {
 }
 """);
 
-                //Helper.WriteToTheFile(string.Join("\n", helperForDelete), $@"C:\Users\user\Downloads\helper.txt");
+                Helper.WriteToTheFile(sb, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}-table.ts");
             }
         }
 
@@ -74,7 +74,7 @@ export class {{entity.Name}}TableComponent implements OnInit {
             foreach (PropertyInfo property in properties)
             {
                 // Many to one can be only filtered as: text or multiselect (text is like autocomplete)
-                //AutoCompleteAttribute autoCompleteAttribute = property.SafeGetAttribute<AutoCompleteAttribute>();
+                //AutocompleteAttribute autoCompleteAttribute = property.SafeGetAttribute<AutocompleteAttribute>();
 
                 if (property.PropertyType.IsManyToOneType())
                 {

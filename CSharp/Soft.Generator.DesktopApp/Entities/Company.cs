@@ -1,4 +1,5 @@
 ﻿using Soft.Generator.DesktopApp.Attributes;
+using Soft.Generator.DesktopApp.Attributes.UI;
 using Soft.Generator.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace Soft.Generator.DesktopApp.Entities
 {
+    [MenuName("PartnerAdministration")]
     public class Company : ISoftEntity
     {
         [Identifier]

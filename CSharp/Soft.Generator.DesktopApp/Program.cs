@@ -9,7 +9,11 @@ using System.Windows.Forms.Design;
 
 namespace Soft.Generator.DesktopApp
 {
-    // TODO NEXT: 1. dodaj atribute za many to many primarne kljuceve
+    /// <summary>
+    /// TODO NEXT: 
+    /// - dodaj atribute za many to many primarne kljuceve
+    /// - Dodaj logiku za autocomplete i dropdown pri generisanju detalja.html, neces imati problem sa imenovanjem jer ces koristiti od roditelja, o tome kasnije tek treba da se razlimslja kad ubacis odrzavanja many to many i one to many
+    /// </summary>
     internal static class Program
     {
         public static IServiceProvider ServiceProvider { get; private set; }

@@ -29,6 +29,29 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             }
         }
 
+        public static string GetGenericIdTypeFromTheBaseType(Type entity)
+        {
+            if (entity == null)
+                return null;
+
+            Type baseType = entity.BaseType;
+
+            if (baseType == null) 
+                return null;
+
+            while (baseType != null)
+            {
+                if (baseType.Name == "BusinessObject" || baseType.Name == "ReadonlyObject")
+                {
+                    return baseType.GenericTypeArguments.Select(x => x.Name).FirstOrDefault();
+                }
+
+                baseType = baseType.BaseType;
+            }
+
+            return null;
+        }
+
         #region Assembly Load Helpers
 
         public static List<Type> GetTypesSafely(Assembly assembly)

@@ -14,5 +14,6 @@ namespace Soft.Generator.DesktopApp
         public static string DTONamespaceEnding = "DTO";
         public static string BaseProjectNamespace = "Playerty.Loyals";
         public static string BaseBusinessServiceName = "Loyals";
+        public static string DownloadPath = @"C:\Users\user\Downloads";
     }
 }

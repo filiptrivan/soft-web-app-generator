@@ -106,34 +106,50 @@ public async Task<{{entity.Name}}DTO> Get{{entity.Name}}(int id)
 
 [HttpPut]
 [AuthGuard]
-public async Task<StoreDTO> SaveStore(StoreDTO storeDTO)
+public async Task<{{entity.Name}}DTO> Save{{entity.Name}}({{entity.Name}}DTO {{entity.Name.FirstCharToLower()}}DTO)
 {
-    return await _loyalsBusinessService.SaveStoreAndReturnDTOAsync(storeDTO, false, false);
+    return await _loyalsBusinessService.Save{{entity.Name}}AndReturnDTOAsync({{entity.Name.FirstCharToLower()}}DTO, false, false);
 }
 
+{{string.Join("\n", GetEntityOneToManyControllerMethods(entity))}}
+
 """);
-
-            foreach (PropertyInfo manyToOneProperty in entity.GetProperties().Where(x => x.PropertyType.IsManyToOneType()))
-            {
-                // TODO FT: When you make these methods, check if the type is ManyToMany first, if it's not throw exception
-                //if (manyToOneProperty.IsAutocomplete())
-                //{
-                    
-                //}
-
-                //if (manyToOneProperty.IsDropdown())
-                //{
-
-                //}
-                //result.Add
-            }
 
             return result;
         }
 
         private List<string> GetEntityOneToManyControllerMethods(Type entity)
         {
-            throw new NotImplementedException();
+            List<string> result = new List<string>();
+
+            foreach (PropertyInfo manyToOneProperty in entity.GetProperties().Where(x => x.PropertyType.IsManyToOneType()))
+            {
+                if (manyToOneProperty.IsAutocomplete())
+                {
+                    result.Add($$"""
+[HttpGet]
+[AuthGuard]
+public async Task<List<NamebookDTO<{{Helper.GetGenericIdTypeFromTheBaseType(manyToOneProperty.PropertyType)}}>>> Load{{entity.Name}}ListForAutocomplete(int limit, string query)
+{
+    return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.Load{{entity.Name}}ListForAutocomplete(limit, query, _context.DbSet<{{entity.Name}}>());
+}
+""");
+                }
+
+                if (manyToOneProperty.IsDropdown())
+                {
+                    result.Add($$"""
+[HttpGet]
+[AuthGuard]
+public async Task<List<NamebookDTO<{{Helper.GetGenericIdTypeFromTheBaseType(manyToOneProperty.PropertyType)}}>>> Load{{manyToOneProperty.Name}}ListForDropdown()
+{
+    return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.Load{{manyToOneProperty.Name}}ListForDropdown(_context.DbSet<{{manyToOneProperty.Name}}>(), false);
+}
+""");
+                }
+            }
+
+            return result;
         }
     }
 }
