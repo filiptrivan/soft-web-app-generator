@@ -1,5 +1,6 @@
 ﻿using Pluralize.NET;
 using Soft.Generator.DesktopApp.Attributes.UI;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
 
         public static bool IsManyToOneType(this Type type)
         {
-            return type.IsClass || type.IsInterface;
+            return (type.IsClass || type.IsInterface) && type != typeof(string);
         }
 
         #region Is Type
@@ -60,6 +61,16 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             return type == typeof(byte) || type == typeof(byte?) || type == typeof(int) || type == typeof(int?) || type == typeof(long) || type == typeof(long?);
         }
 
+        public static bool IsDecimal(this Type type)
+        {
+            return type == typeof(decimal) || type == typeof(decimal?);
+        }
+
+        public static int GetDecimalScale(this PropertyInfo property)
+        {
+            return (int)property.SafeGetAttribute<PrecisionAttribute>().Scale;
+        }
+
         public static bool IsDateTime(this Type type)
         {
             return type == typeof(DateTime) || type == typeof(DateTime?);
@@ -73,6 +84,11 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
         public static bool IsDropdown(this PropertyInfo property)
         {
             return property.SafeGetAttribute<DropdownAttribute>() != null;
+        }
+
+        public static bool IsListType(this Type type)
+        {
+            return type.Name.Contains("List<");
         }
 
         #endregion

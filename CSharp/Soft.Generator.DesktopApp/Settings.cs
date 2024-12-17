@@ -15,5 +15,6 @@ namespace Soft.Generator.DesktopApp
         public static string BaseProjectNamespace = "Playerty.Loyals";
         public static string BaseBusinessServiceName = "Loyals";
         public static string DownloadPath = @"C:\Users\user\Downloads";
+        public static int LimitLengthForTextArea = 256;
     }
 }

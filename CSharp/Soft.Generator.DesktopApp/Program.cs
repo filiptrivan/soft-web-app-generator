@@ -13,6 +13,9 @@ namespace Soft.Generator.DesktopApp
     /// TODO NEXT: 
     /// - dodaj atribute za many to many primarne kljuceve
     /// - Dodaj logiku za autocomplete i dropdown pri generisanju detalja.html, neces imati problem sa imenovanjem jer ces koristiti od roditelja, o tome kasnije tek treba da se razlimslja kad ubacis odrzavanja many to many i one to many
+    /// 
+    /// UPUTSTVO:
+    /// - ef core verzije generatora i projekta moraju da se poklapaju
     /// </summary>
     internal static class Program
     {

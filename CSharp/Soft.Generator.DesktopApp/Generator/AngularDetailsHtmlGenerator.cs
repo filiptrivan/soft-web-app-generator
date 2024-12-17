@@ -3,6 +3,7 @@ using Soft.Generator.DesktopApp.Generator.Helpers;
 using Soft.Generator.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -29,34 +30,19 @@ namespace Soft.Generator.DesktopApp.Generator
 
             string result = $$"""
 <ng-container *transloco="let t">
-    @defer (when storeFormGroup != null) {
-        <soft-card [title]="t('Store')" icon="pi pi-file-edit">
+    @defer (when {{entity.Name.FirstCharToLower()}}FormGroup != null) {
+        <soft-card [title]="t('{{entity.Name}}')" icon="pi pi-file-edit">
             <soft-panel>
                 <panel-header></panel-header>
 
                 <panel-body>
                     <form [formGroup]="formGroup" class="grid">
-                        <div class="col-12 md:col-6">
-                            <soft-textbox [control]="control('name', storeFormGroup)"></soft-textbox>
-                        </div>
-                        <div class="col-12 md:col-6">
-                            <soft-textbox [control]="control('getTransactionsEndpoint', storeFormGroup)"></soft-textbox>
-                        </div>
-                        <div class="col-12 md:col-6">
-                            <soft-textbox [control]="control('createUserEndpoint', storeFormGroup)"></soft-textbox>
-                        </div>
-                        <div class="col-12 md:col-6">
-                            <soft-textbox [control]="control('updateUserGroupEndpoint', storeFormGroup)"></soft-textbox>
-                        </div>
-                        <div class="col-12 md:col-6">
-                            <soft-textbox [control]="control('getDiscountCategoriesEndpoint', storeFormGroup)"></soft-textbox>
-                        </div>
+{{string.Join("\n", GetControlBlocks(entity))}}
                     </form>
                 </panel-body>
 
                 <panel-footer>
                     <p-button (onClick)="onSave()" [label]="t('Save')" icon="pi pi-save"></p-button>
-                    <p-button (onClick)="onSyncDiscountCategories()" [label]="t('SyncDiscountCategories')" icon="pi pi-sync"></p-button>
                 </panel-footer>
 
             </soft-panel>
@@ -74,15 +60,18 @@ namespace Soft.Generator.DesktopApp.Generator
         {
             List<string> result = new List<string>();
 
-            foreach (PropertyInfo property in entity.GetProperties())
-            {
+            List<PropertyInfo> properties = entity.GetProperties()
+                .Where(x => x.Name != "Id" && x.Name != "Version" && x.Name != "CreatedAt" && x.Name != "ModifiedAt" && x.PropertyType.IsListType() == false)
+                .OrderBy(x => x.SafeGetAttribute<StringLengthAttribute>()?.MaximumLength > Settings.LimitLengthForTextArea ? 1 : 0)
+                .ToList();
 
-            }
+            foreach (PropertyInfo property in properties)
+                result.Add(GetControlBlock(property, entity));
 
             return result;
         }
 
-        private string GetControlBlock(PropertyInfo property)
+        private string GetControlBlock(PropertyInfo property, Type entity)
         {
             string result = null;
 
@@ -93,25 +82,79 @@ namespace Soft.Generator.DesktopApp.Generator
                 if (dropdownAttribute == null)
                 {
                     result = $$"""
-                        <soft-autocomplete [control]="selectedPartner" [options]="partnerOptions" (onTextInput)="searchPartners($event)"></soft-autocomplete>
+                        <div class="col-12 md:col-6">
+                            <soft-autocomplete [control]="{{GetControlArguments(property, entity)}}" [options]="{{property.Name.FirstCharToLower()}}Options" (onTextInput)="search{{property.Name}}($event)"></soft-autocomplete>
+                        </div>
 """;
                 }
-                else if (false)
+                else
                 {
-
+                    result = $$"""
+                        <div class="col-12 md:col-6">
+                            <soft-dropdown [control]="{{GetControlArguments(property, entity)}}", {{entity.Name.FirstCharToLower()}}FormGroup)" [options]="{{property.Name.FirstCharToLower()}}Options"></soft-dropdown>
+                        </div>
+""";
                 }
             }
             else if (property.PropertyType == typeof(string))
             {
+                int? maximumLength = property.SafeGetAttribute<StringLengthAttribute>()?.MaximumLength;
+
+                if (maximumLength != null && maximumLength > Settings.LimitLengthForTextArea)
+                {
+                    result = $$"""
+                        <div class="col-12">
+                            <soft-textarea [control]="{{GetControlArguments(property, entity)}}"></soft-textbox>
+                        </div>
+""";
+                }
+                else
+                {
+                    result = $$"""
+                        <div class="col-12 md:col-6">
+                            <soft-textbox [control]="{{GetControlArguments(property, entity)}}"></soft-textbox>
+                        </div>
+""";
+                }
+
             }
             else if (property.PropertyType.IsWholeNumber())
             {
+                result = $$"""
+                        <div class="col-12 md:col-6">
+                            <soft-number [control]="{{GetControlArguments(property, entity)}}"></soft-number>
+                        </div>
+""";
+            }
+            else if (property.PropertyType.IsDecimal())
+            {
+                int scale = property.GetDecimalScale();
+
+                result = $$"""
+                        <div class="col-12 md:col-6">
+                            <soft-number [control]="{{GetControlArguments(property, entity)}}" [decimal]="true" [maxFractionDigits]="{{scale}}"></soft-number>
+                        </div>
+""";
             }
             else if (property.PropertyType.IsDateTime())
             {
+                result = $$"""
+                        <div class="col-12 md:col-6">
+                            <soft-calendar [control]="{{GetControlArguments(property, entity)}}"></soft-calendar>
+                        </div>
+""";
             }
 
             return result;
         }
+
+        private string GetControlArguments(PropertyInfo property, Type entity)
+        {
+            if (property.PropertyType.IsManyToOneType())
+                return $"control('{property.Name.FirstCharToLower()}Id', {entity.Name.FirstCharToLower()}FormGroup)";
+            else
+                return $"control('{property.Name.FirstCharToLower()}', {entity.Name.FirstCharToLower()}FormGroup)";
+        }
+
     }
 }

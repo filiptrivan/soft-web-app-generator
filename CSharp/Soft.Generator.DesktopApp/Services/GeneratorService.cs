@@ -27,8 +27,8 @@ namespace Soft.Generator.DesktopApp.Services
 
             HashSet<Assembly> visitedAssemblies = new HashSet<Assembly>();
 
-            //foreach (Assembly assembly in _projectAssemblies)
-            //    LoadReferencedAssemblies(assembly, visitedAssemblies);
+            foreach (Assembly assembly in _projectAssemblies)
+                Helper.LoadReferencedAssemblies(assembly, visitedAssemblies);
 
             _entityTypes = Helper.GetEntityTypes(_projectAssemblies);
             _DTOTypes = Helper.GetDTOTypes(_projectAssemblies);
@@ -36,15 +36,15 @@ namespace Soft.Generator.DesktopApp.Services
 
         public void Generate()
         {
-            //new NetControllerMethodsGenerator().Generate(_entityTypes);
+            new NetControllerMethodsGenerator().Generate(_entityTypes);
 
-            //AngularModulesGenerator();
+            new AngularModulesGenerator().Generate(_entityTypes);
 
             new AngularTableTsGenerator().Generate(_entityTypes);
-            //AngularTableHtmlGenerator();
+            new AngularTableHtmlGenerator().Generate(_entityTypes);
 
-            //AngularDetailsTsGenerator();
-            //AngularDetailsHtmlGenerator();
+            new AngularDetailsTsGenerator().Generate(_entityTypes);
+            new AngularDetailsHtmlGenerator().Generate(_entityTypes);
         }
     }
 }
