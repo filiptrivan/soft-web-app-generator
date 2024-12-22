@@ -16,5 +16,6 @@ namespace Soft.Generator.DesktopApp
         public static string BaseBusinessServiceName = "Loyals";
         public static string DownloadPath = @"C:\Users\user\Downloads";
         public static int LimitLengthForTextArea = 256;
+        public static string ClientApplicationBasePath = @""; // Dodaj dodatno dugme, generisi UI strukturu
     }
 }

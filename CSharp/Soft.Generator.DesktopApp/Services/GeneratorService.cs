@@ -34,7 +34,12 @@ namespace Soft.Generator.DesktopApp.Services
             _DTOTypes = Helper.GetDTOTypes(_projectAssemblies);
         }
 
-        public void Generate()
+        public void GenerateNewWebAPIStructure()
+        {
+            new NetAPIStructureGenerator().Generate();
+        }
+
+        public void GenerateBusinessFiles()
         {
             new NetControllerMethodsGenerator().Generate(_entityTypes);
 
