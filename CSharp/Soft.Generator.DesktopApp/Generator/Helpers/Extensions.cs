@@ -13,6 +13,14 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
 {
     public static class Extensions
     {
+
+        public static bool IsManyToOneType(this Type type)
+        {
+            return (type.IsClass || type.IsInterface) && type != typeof(string);
+        }
+
+        #region Case
+
         public static string FirstCharToLower(this string input)
         {
             switch (input)
@@ -23,10 +31,25 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             }
         }
 
-        public static bool IsManyToOneType(this Type type)
+        public static string SpaceEveryUpperChar(this string input)
         {
-            return (type.IsClass || type.IsInterface) && type != typeof(string);
+            if (string.IsNullOrEmpty(input))
+                return input;
+
+            var result = new System.Text.StringBuilder();
+            foreach (char c in input)
+            {
+                if (char.IsUpper(c) && result.Length > 0)
+                {
+                    result.Append(' ');
+                }
+                result.Append(c);
+            }
+
+            return result.ToString();
         }
+
+        #endregion
 
         #region Is Type
 
