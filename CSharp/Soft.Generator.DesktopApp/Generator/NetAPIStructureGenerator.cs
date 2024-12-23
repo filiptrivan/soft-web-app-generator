@@ -13,11 +13,11 @@ namespace Soft.Generator.DesktopApp.Generator
 {
     public class NetAndAngularStructureGenerator
     {
-        public void Generate(string outputPath, string projectName)
+        public void Generate(string outputPath, string appName, string primaryColor)
         {
             SoftFolder projectStructure = new SoftFolder
             {
-                Name = projectName,
+                Name = appName,
                 ChildFolders = new List<SoftFolder>
                 {
                     new SoftFolder
@@ -40,7 +40,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                 Name = "business",
                                                 ChildFolders = new List<SoftFolder>
                                                 {
-                                                    new SoftFolder 
+                                                    new SoftFolder
                                                     {
                                                         Name = "components",
                                                     },
@@ -117,7 +117,116 @@ namespace Soft.Generator.DesktopApp.Generator
                                             },
                                             new SoftFolder
                                             {
-                                                Name = "layout", // FT: Copy
+                                                Name = "layout",
+                                                ChildFolders = new List<SoftFolder>
+                                                {
+                                                    new SoftFolder
+                                                    {
+                                                        Name = "components",
+                                                        ChildFolders =
+                                                        {
+                                                            new SoftFolder
+                                                            {
+                                                                Name = "auth",
+                                                                ChildFolders =
+                                                                {
+                                                                    new SoftFolder
+                                                                    {
+                                                                        Name = "forgot-password",
+                                                                        SoftFiles = new List<SoftFile>
+                                                                        {
+                                                                            new SoftFile { Name = "forgot-password.component.html", Data = GetForgotPasswordComponentHtmlData() },
+                                                                            new SoftFile { Name = "forgot-password.component.ts", Data = GetForgotPasswordComponentTsData() },
+                                                                        }
+                                                                    },
+                                                                    new SoftFolder
+                                                                    {
+                                                                        Name = "login",
+                                                                        SoftFiles = new List<SoftFile>
+                                                                        {
+                                                                            new SoftFile { Name = "login.component.html", Data = GetLoginComponentHtmlData() },
+                                                                            new SoftFile { Name = "login.component.ts", Data = GetLoginComponentTsData() },
+                                                                        }
+                                                                    },
+                                                                    new SoftFolder
+                                                                    {
+                                                                        Name = "partials",
+                                                                        SoftFiles = new List<SoftFile>
+                                                                        {
+                                                                            new SoftFile { Name = "auth.component.html", Data = GetAuthComponentHtmlData() },
+                                                                            new SoftFile { Name = "auth.component.ts", Data = GetAuthComponentTsData() },
+                                                                        }
+                                                                    },
+                                                                    new SoftFolder
+                                                                    {
+                                                                        Name = "registration",
+                                                                        SoftFiles = new List<SoftFile>
+                                                                        {
+                                                                            new SoftFile { Name = "registration.component.html", Data = GetRegistrationComponentHtmlData() },
+                                                                            new SoftFile { Name = "registration.component.ts", Data = GetRegistrationComponentTsData() },
+                                                                        }
+                                                                    },
+                                                                },
+                                                                SoftFiles = new List<SoftFile>
+                                                                {
+                                                                    new SoftFile { Name = "auth.module.ts", Data = GetAuthModuleTsData() }
+                                                                }
+                                                            },
+                                                            new SoftFolder
+                                                            {
+                                                                Name = "dashboard",
+                                                                SoftFiles = new List<SoftFile>
+                                                                {
+                                                                    new SoftFile { Name = "dashboard-routing.module.ts", Data = GetDashboardRoutingModuleTsData() },
+                                                                    new SoftFile { Name = "dashboard.component.html", Data = GetDashboardComponentHtmlData() },
+                                                                    new SoftFile { Name = "dashboard.component.ts", Data = GetDashboardComponentTsData() },
+                                                                    new SoftFile { Name = "dashboard.module.ts", Data = GetDashboardModuleTsData() },
+                                                                }
+                                                            },
+                                                            new SoftFolder
+                                                            {
+                                                                Name = "layout",
+                                                                SoftFiles = new List<SoftFile>
+                                                                {
+                                                                    new SoftFile { Name = "app.layout.component.html", Data = GetAppLayoutComponentHtmlData() },
+                                                                    new SoftFile { Name = "app.layout.component.ts", Data = GetAppLayoutComponentTsData() },
+                                                                    new SoftFile { Name = "app.layout.module.ts", Data = GetAppLayoutModuleTsData() },
+                                                                }
+                                                            },
+                                                            new SoftFolder
+                                                            {
+                                                                Name = "sidebar",
+                                                                SoftFiles = new List<SoftFile>
+                                                                {
+                                                                    new SoftFile { Name = "app.menu.component.html", Data = GetAppMenuComponentHtmlData() },
+                                                                    new SoftFile { Name = "app.menu.component.ts", Data = GetAppMenuComponentTsData() },
+                                                                    new SoftFile { Name = "app.menu.service.ts", Data = GetAppMenuServiceTsData() },
+                                                                    new SoftFile { Name = "app.menuitem.component.html", Data = GetAppMenuItemComponentHtmlData() },
+                                                                    new SoftFile { Name = "app.menuitem.component.ts", Data = GetAppMenuItemComponentTsData() },
+                                                                    new SoftFile { Name = "app.sidebar.component.html", Data = GetAppSidebarComponentHtmlData() },
+                                                                    new SoftFile { Name = "app.sidebar.component.ts", Data = GetAppSidebarComponentTsData() },
+                                                                }
+                                                            },
+                                                            new SoftFolder
+                                                            {
+                                                                Name = "topbar",
+                                                                SoftFiles = new List<SoftFile>
+                                                                {
+                                                                    new SoftFile { Name = "app.topbar.component.html", Data = GetAppTopbarComponentHtmlData() },
+                                                                    new SoftFile { Name = "app.topbar.component.ts", Data = GetAppTopbarComponentTsData() },
+                                                                }
+                                                            },
+                                                        },
+                                                    },
+                                                    new SoftFolder
+                                                    {
+                                                        Name = "services",
+                                                        SoftFiles = new List<SoftFile>
+                                                        {
+                                                            new SoftFile { Name = "app.layout.service.ts", Data = GetAppLayoutServiceTsData() }
+                                                        }
+                                                    }
+                                                },
                                             },
                                             new SoftFolder
                                             {
@@ -128,7 +237,6 @@ namespace Soft.Generator.DesktopApp.Generator
                                         {
                                             new SoftFile { Name = "app.component.html", Data = GetAppComponentHtmlData() },
                                             new SoftFile { Name = "app.component.ts", Data = GetAppComponentTsData() },
-                                            new SoftFile { Name = "app.config.ts", Data = GetAppConfigTsData() },
                                             new SoftFile { Name = "app.module.ts", Data = GetAppModuleTsData() },
                                             new SoftFile { Name = "app-routing.module.ts", Data = GetAppRoutingModuleTsData() },
                                             new SoftFile { Name = "transloco-root.module.ts", Data = GetTranslocoRootModuleTsData() },
@@ -139,7 +247,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                         Name = "assets",
                                         ChildFolders = new List<SoftFolder>
                                         {
-                                            new SoftFolder 
+                                            new SoftFolder
                                             {
                                                 Name = "i18n",
                                                 SoftFiles = new List<SoftFile>
@@ -172,13 +280,13 @@ namespace Soft.Generator.DesktopApp.Generator
                                         SoftFiles = new List<SoftFile>
                                         {
                                             new SoftFile { Name = "environment.prod.ts", Data = null },
-                                            new SoftFile { Name = "styles.scss", Data = GetEnvironmentTsCode() },
+                                            new SoftFile { Name = "styles.scss", Data = GetEnvironmentTsCode(appName, primaryColor) },
                                         }
                                     }
                                 },
                                 SoftFiles = new List<SoftFile>
                                 {
-                                    new SoftFile { Name = "index.html", Data = GetIndexHtmlData() },
+                                    new SoftFile { Name = "index.html", Data = GetIndexHtmlData(appName) },
                                     new SoftFile { Name = "main.ts", Data = GetMainTsData() },
                                 }
                             }
@@ -194,6 +302,84 @@ namespace Soft.Generator.DesktopApp.Generator
                             new SoftFile { Name = ".tsconfig.spec.json", Data = GetTsConfigSpecJsonData() },
                             new SoftFile { Name = "vercel.json", Data = GetVercelJsonData() },
                         }
+                    },
+                    new SoftFolder
+                    {
+                        Name = "API",
+                        ChildFolders = new List<SoftFolder>
+                        {
+                            new SoftFolder
+                            {
+                                Name = $"{appName}.Business",
+                                ChildFolders = new List<SoftFolder>
+                                {
+                                    new SoftFolder
+                                    {
+                                        Name = "DataMappers",
+                                        SoftFiles = new List<SoftFile>
+                                        {
+                                            new SoftFile { Name = "MapsterMapper.cs", Data= GetMapsterMapperCsData() },
+                                        }
+                                    },
+                                    new SoftFolder
+                                    {
+                                        Name = "DTO",
+                                        ChildFolders = new List<SoftFolder>
+                                        {
+                                            new SoftFolder 
+                                            { 
+                                                Name = "Partials" 
+                                            },
+                                            new SoftFolder
+                                            {
+                                                Name = "Helpers"
+                                            },
+                                        }
+                                    },
+                                    new SoftFolder
+                                    {
+                                        Name = "Entities",
+                                    },
+                                    new SoftFolder
+                                    {
+                                        Name = "Enums",
+                                    },
+                                    new SoftFolder
+                                    {
+                                        Name = "Services",
+                                        SoftFiles = new List<SoftFile>
+                                        {
+                                            new SoftFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
+                                            new SoftFile { Name = $"NotificationService.cs", Data = GetNotificationServiceCsData() },
+                                        }
+                                    },
+                                    new SoftFolder
+                                    {
+                                        Name = "ValidationRules",
+                                    },
+                                },
+                                SoftFiles = new List<SoftFile>
+                                {
+
+                                }
+                            },
+                            new SoftFolder
+                            {
+                                Name = $"{appName}.Infrastructure",
+                            },
+                            new SoftFolder
+                            {
+                                Name = $"{appName}.Shared",
+                            },
+                            new SoftFolder
+                            {
+                                Name = $"{appName}.WebAPI",
+                            },
+                        },
+                        SoftFiles = new List<SoftFile>
+                        {
+                            new SoftFile { Name = $"{appName}.sln", Data = GetNetSolutionData() }
+                        }
                     }
                 },
                 SoftFiles = new List<SoftFile>
@@ -203,10 +389,1382 @@ namespace Soft.Generator.DesktopApp.Generator
                 }
             };
 
-            string projectPath = Path.Combine(outputPath, projectName);
+            if (name == "core")
+            {
+
+            }
+
+            if (name == "styles")
+            {
+
+            }
+
+            string projectPath = Path.Combine(outputPath, appName);
         }
 
         #region Angular
+
+        private string GetAppLayoutServiceTsData()
+        {
+            return $$"""
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
+export interface AppConfig {
+    inputStyle: string;
+    colorScheme: string; 
+    theme: string;
+    ripple: boolean;
+    menuMode: string;
+    scale: number;
+    color: string;
+}
+
+interface LayoutState {
+    staticMenuDesktopInactive: boolean;
+    overlayMenuActive: boolean;
+    profileSidebarVisible: boolean;
+    profileDropdownSidebarVisible:boolean;
+    configSidebarVisible: boolean;
+    staticMenuMobileActive: boolean;
+    menuHoverActive: boolean;
+}
+
+@Injectable({
+    providedIn: 'root',
+})
+export class LayoutService {
+
+    config: AppConfig = {
+        ripple: false,
+        inputStyle: 'outlined',
+        menuMode: 'static',
+        colorScheme: 'light',
+        theme: 'lara-light-indigo',
+        scale: 14,
+        color: `var(--primary-color)`,
+    };
+
+    state: LayoutState = {
+        staticMenuDesktopInactive: false,
+        overlayMenuActive: false,
+        profileSidebarVisible: false,
+        profileDropdownSidebarVisible: false,
+        configSidebarVisible: false,
+        staticMenuMobileActive: false,
+        menuHoverActive: false
+    };
+
+    private configUpdate = new Subject<AppConfig>();
+
+    private overlayOpen = new Subject<any>();
+
+    configUpdate$ = this.configUpdate.asObservable();
+
+    overlayOpen$ = this.overlayOpen.asObservable();
+
+    constructor() {
+    }
+
+    onMenuToggle() {
+        if (this.isOverlay()) {
+            this.state.overlayMenuActive = !this.state.overlayMenuActive;
+            if (this.state.overlayMenuActive) {
+                this.overlayOpen.next(null);
+            }
+        }
+
+        if (this.isDesktop()) {
+            this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
+        }
+        else {
+            this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
+
+            if (this.state.staticMenuMobileActive) {
+                this.overlayOpen.next(null);
+            }
+        }
+    }
+
+    showProfileSidebar() {
+        this.state.profileSidebarVisible = !this.state.profileSidebarVisible;
+        if (this.state.profileSidebarVisible) {
+            this.overlayOpen.next(null);
+        }
+    }
+
+    showProfileDropdownSidebar() {
+        this.state.profileDropdownSidebarVisible = !this.state.profileDropdownSidebarVisible;
+        if (this.state.profileDropdownSidebarVisible) {
+            this.overlayOpen.next(null);
+        }
+    }
+
+    showConfigSidebar() {
+        this.state.configSidebarVisible = true;
+    }
+
+    isOverlay() {
+        return this.config.menuMode === 'overlay';
+    }
+
+    isDesktop() {
+        return window.innerWidth > 991;
+    }
+
+    isMobile() {
+        return !this.isDesktop();
+    }
+
+    onConfigUpdate() {
+        this.configUpdate.next(this.config);
+    }
+
+}
+""";
+        }
+
+        private string GetAppTopbarComponentTsData()
+        {
+            return $$"""
+import { TranslocoService } from '@jsverse/transloco';
+import { NavigationEnd, Router } from '@angular/router';
+import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { filter, Subscription, switchMap } from 'rxjs';
+import { ApiService } from '../../../business/services/api/api.service';
+import { LayoutService } from '../../services/app.layout.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UserExtended } from 'src/app/business/entities/business-entities.generated';
+
+interface SoftMenuItem {
+  label?: string;
+  icon?: string;
+  showSeparator?: boolean;
+  onClick?: () => void;
+  showNotificationBadge?: boolean;
+}
+
+@Component({
+    selector: 'app-topbar',
+    templateUrl: './app.topbar.component.html',
+    styles: [
+    ]
+})
+export class AppTopBarComponent implements OnDestroy {
+    private userSubscription: Subscription | null = null;
+
+    currentUser: UserExtended;
+    currentUserNotificationsCount: number;
+    menuItems: SoftMenuItem[] = [];
+    avatarLabel: string;
+    companyName: string;
+    showProfileIcon: boolean = false;
+
+    @ViewChild('menubutton') menuButton!: ElementRef;
+
+    @ViewChild('topbarmenu') menu!: ElementRef;
+
+    @ViewChild('topbarprofiledropdownmenubutton') topbarProfileDropdownMenuButton!: ElementRef;
+
+    constructor(
+      public layoutService: LayoutService, 
+      private authService: AuthService, 
+      private apiService: ApiService,
+      protected router: Router,
+      private translocoService: TranslocoService,
+    ) { 
+    }
+
+  async ngOnInit(){
+    this.menuItems = [
+      {
+        label: this.translocoService.translate('YourProfile'),
+        icon: 'pi-user',
+        showSeparator: true,
+        onClick: () => {
+          this.routeToUserPage();
+        }
+      },
+      {
+        label: this.translocoService.translate('NotificationList'),
+        icon: 'pi-bell',
+        showNotificationBadge: true,
+        onClick: () => {
+          this.router.navigateByUrl(`/notifications`);
+        },
+      },
+      // {
+      //   label: this.translocoService.translate('Settings'),
+      //   icon: 'pi-cog'
+      // },
+      {
+        label: this.translocoService.translate('Logout'),
+        icon: 'pi-sign-out',
+        showSeparator: true,
+        onClick: () => {
+          this.authService.logout();
+        }
+      }
+    ]
+
+    this.userSubscription = this.authService.user$.subscribe(currentUser => {
+        this.currentUser = currentUser;
+        this.avatarLabel = currentUser?.email.charAt(0).toLocaleUpperCase();
+    });
+
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        this.layoutService.state.profileDropdownSidebarVisible = false;
+      });
+  }
+
+  onDocumentClick(event: any) {
+    if (
+      !this.menu.nativeElement.contains(event.target) 
+    ) {
+      if (this.layoutService.state.profileDropdownSidebarVisible == true) {
+        this.layoutService.state.profileDropdownSidebarVisible = false;
+      }
+    }
+  }
+
+  routeToUserPage(){
+    this.router.navigateByUrl(`/administration/users/${this.currentUser.id}`);
+  }
+
+  ngOnDestroy(): void {
+    if (this.userSubscription) {
+      this.userSubscription.unsubscribe();
+    }
+  }
+
+}
+""";
+        }
+
+        private string GetAppTopbarComponentHtmlData()
+        {
+            return $$$"""
+<div class="layout-topbar">
+  <a class="layout-topbar-logo" routerLink="/">
+    <span>{{companyName?.toLocaleUpperCase()}}</span>
+  </a>
+
+  <button
+    #menubutton
+    class="p-link layout-menu-button layout-topbar-button"
+    (click)="layoutService.onMenuToggle()"
+  >
+    <i class="pi pi-bars"></i>
+  </button>
+
+  <div
+    #topbarmenu
+    class="profile-button"
+    >
+    <div
+      #topbarprofiledropdownmenubutton
+      (click)="layoutService.showProfileDropdownSidebar()"
+    >
+    <p-avatar
+        *ngIf="showProfileIcon"
+        [label]="avatarLabel"
+        [style]="{ 'background-color': 'var(--primary-color)', 'color': '#fff', 'cursor': 'pointer', 'width': '34px', 'height': '34px', 'font-size': '21px' }"
+        pBadge 
+        [badgeStyleClass]="'p-badge-danger'"
+        [badgeDisabled]="currentUserNotificationsCount == 0 || currentUserNotificationsCount == null"
+        [value]="currentUserNotificationsCount"
+        />
+    </div>
+    <div
+      #topbarprofiledropdownmenu
+      (document:click)="onDocumentClick($event)"
+    >
+    <div *ngIf="layoutService.state.profileDropdownSidebarVisible" style="width: 280px; position: absolute; right: 26px; top: 60px; padding: 15px;" class="card">
+      <div style="display: flex; flex-direction: column; justify-content: center; text-align: center; gap: 10px;">
+        <p-avatar
+          [label]="avatarLabel"
+          size="xlarge"
+          [style]="{ 'background-color': 'var(--primary-color)', 'color': '#fff', 'cursor': 'pointer' }"
+          (click)="routeToUserPage()"
+          />
+        <div>{{currentUser?.email}}</div>
+      </div>
+      <div style="margin-top: 15px;">
+        <div *ngFor="let item of menuItems" [style]="item.showSeparator ? 'margin-top: 5px;' : ''">
+          <div *ngIf="item.showSeparator" class="gray-separator"></div>
+          <div (click)="item.onClick()" class="hover-card" style="display: flex; align-items: center; gap: 5px; margin-top: 5px;">
+            <i 
+              class="pi pi-fw {{item.icon}} primary-color" 
+              style="font-size: 16px; position: relative;"
+              >
+              <span *ngIf="item.showNotificationBadge && currentUserNotificationsCount != 0" class="badge"></span>
+            </i>
+            <div> {{item.label}} </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+""";
+        }
+
+        private string GetAppSidebarComponentTsData()
+        {
+            return $$"""
+import { Component, ElementRef } from '@angular/core';
+import { LayoutService } from "../../services/app.layout.service";
+
+@Component({
+    selector: 'app-sidebar',
+    templateUrl: './app.sidebar.component.html'
+})
+export class AppSidebarComponent {
+    constructor(public layoutService: LayoutService, public el: ElementRef) { }
+}
+""";
+        }
+
+        private string GetAppSidebarComponentHtmlData()
+        {
+            return $$"""
+<app-menu></app-menu>
+""";
+        }
+
+        private string GetAppMenuItemComponentTsData()
+        {
+            return $$$"""
+import { ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { animate, state, style, transition, trigger } from '@angular/animations';
+import { firstValueFrom, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
+import { MenuService } from './app.menu.service';
+import { LayoutService } from '../../services/app.layout.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { SoftMenuItem } from './app.menu.component';
+import { ApiService } from '../../../business/services/api/api.service';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { SoftFormControl } from '../../../core/components/soft-form-control/soft-form-control';
+import { environment } from 'src/environments/environment';
+
+@Component({
+    // eslint-disable-next-line @angular-eslint/component-selector
+    selector: '[app-menuitem]',
+    templateUrl: './app.menuitem.component.html',
+    animations: [
+        trigger('children', [
+            state('collapsed', style({
+                height: '0'
+            })),
+            state('expanded', style({
+                height: '*'
+            })),
+            transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
+        ])
+    ]
+})
+export class AppMenuitemComponent implements OnInit, OnDestroy {
+
+    @Input() item: SoftMenuItem;
+
+    @Input() index!: number;
+
+    @Input() @HostBinding('class.layout-root-menuitem') root!: boolean;
+
+    @Input() parentKey!: string;
+
+    active = false;
+
+    private menuSourceSubscription: Subscription;
+
+    private menuResetSubscription: Subscription;
+
+    private permissionSubscription: Subscription | null = null;
+
+    key: string = "";
+
+    constructor(
+        public layoutService: LayoutService, 
+        private cd: ChangeDetectorRef, 
+        public router: Router, 
+        private menuService: MenuService, 
+        private authService: AuthService,
+        private apiService: ApiService,
+    ) {
+        this.menuSourceSubscription = this.menuService.menuSource$.subscribe(value => {
+            Promise.resolve(null).then(() => {
+                if (value.routeEvent) {
+                    this.active = (value.key === this.key || value.key.startsWith(this.key + '-')) ? true : false;
+                }
+                else {
+                    if (value.key !== this.key && !value.key.startsWith(this.key + '-')) {
+                        this.active = false;
+                    }
+                }
+            });
+        });
+
+        this.menuResetSubscription = this.menuService.resetSource$.subscribe(() => {
+            this.active = false;
+        });
+
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe(params => {
+                if (this.item.routerLink) {
+                    this.updateActiveStateFromRoute();
+                }
+            });
+    }
+
+    ngOnInit() {
+        this.permissionSubscription = this.authService.currentUserPermissions$.subscribe((currentUserPermissionCodes: string[]) => {
+            if (this.item && typeof this.item.hasPermission === 'function') {
+                this.item.visible = this.item.hasPermission(currentUserPermissionCodes);
+            }
+        });
+
+        this.key = this.parentKey ? this.parentKey + '-' + this.index : String(this.index);
+
+        if (this.item.routerLink) {
+            this.updateActiveStateFromRoute();
+        }
+    }
+
+    updateActiveStateFromRoute() {
+        let activeRoute = this.router.isActive(this.item.routerLink[0], { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' });
+
+        if (activeRoute) {
+            this.menuService.onMenuStateChange({ key: this.key, routeEvent: true });
+        }
+    }
+
+    itemClick(event: Event) {
+        // avoid processing disabled items
+        if (this.item.disabled || event === null) {
+            event.preventDefault();
+            return;
+        }
+
+        // execute command
+        if (this.item.command) {
+            this.item.command({ originalEvent: event, item: this.item });
+        }
+
+        // toggle active state
+        if (this.item.items) {
+            this.active = !this.active;
+        }
+
+        this.menuService.onMenuStateChange({ key: this.key });
+    }
+
+    get submenuAnimation() {
+        return this.root ? 'expanded' : (this.active ? 'expanded' : 'collapsed');
+    }
+
+    @HostBinding('class.active-menuitem') 
+    get activeClass() {
+        return this.active && !this.root;
+    }
+
+    ngOnDestroy() {
+        if (this.menuSourceSubscription) {
+            this.menuSourceSubscription.unsubscribe();
+        }
+
+        if (this.menuResetSubscription) {
+            this.menuResetSubscription.unsubscribe();
+        }
+
+        if (this.permissionSubscription) {
+            this.permissionSubscription.unsubscribe();
+        }
+    }
+}
+
+""";
+        }
+
+        private string GetAppMenuItemComponentHtmlData()
+        {
+            return $$$"""
+<ng-container *transloco="let t">
+    <div *ngIf="root && item.visible === true" class="layout-menuitem-root-text">{{item.label}}</div>
+    <a *ngIf="(!item.routerLink || item.items) && item.visible === true" [attr.href]="item.url" (click)="itemClick($event)"
+       [ngClass]="item.styleClass" [attr.target]="item.target" tabindex="0" pRipple>
+        <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+        <span class="layout-menuitem-text">{{item.label}}</span>
+        <i class="pi pi-fw pi-angle-down layout-submenu-toggler" *ngIf="item.items"></i>
+    </a>
+    <a *ngIf="(item.routerLink && !item.items) && item.visible === true" (click)="itemClick($event)" [ngClass]="item.styleClass"
+    [routerLink]="item.routerLink" routerLinkActive="active-route" [routerLinkActiveOptions]="item.routerLinkActiveOptions||{ paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
+    [fragment]="item.fragment" [queryParamsHandling]="item.queryParamsHandling" [preserveFragment]="item.preserveFragment"
+    [skipLocationChange]="item.skipLocationChange" [replaceUrl]="item.replaceUrl" [state]="item.state" [queryParams]="item.queryParams"
+    [attr.target]="item.target" tabindex="0" pRipple>
+        <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
+        <span class="layout-menuitem-text">{{item.label}}</span>
+        <i class="pi pi-fw pi-angle-down layout-submenu-toggler" *ngIf="item.items"></i>
+    </a>
+
+    <ul *ngIf="item.items && item.visible === true" [@children]="submenuAnimation">
+        <ng-template ngFor let-child let-i="index" [ngForOf]="item.items">
+            <li app-menuitem [item]="child" [index]="i" [parentKey]="key" [class]="child.badgeStyleClass"></li>
+        </ng-template>
+    </ul>
+</ng-container>
+""";
+        }
+
+        private string GetAppMenuServiceTsData()
+        {
+            return $$"""
+import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { MenuChangeEvent } from '../../../core/entities/menuchangeevent';
+
+@Injectable({
+    providedIn: 'root'
+})
+export class MenuService {
+
+    private menuSource = new Subject<MenuChangeEvent>();
+    private resetSource = new Subject();
+
+    menuSource$ = this.menuSource.asObservable();
+    resetSource$ = this.resetSource.asObservable();
+
+    onMenuStateChange(event: MenuChangeEvent) {
+        this.menuSource.next(event);
+    }
+
+    reset() {
+        this.resetSource.next(true);
+    }
+}
+""";
+        }
+
+        private string GetAppMenuComponentTsData()
+        {
+            return $$"""
+import { TranslocoService } from '@jsverse/transloco';
+import { Subscription } from 'rxjs';
+import { OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { LayoutService } from '../../services/app.layout.service';
+import { MenuItem } from 'primeng/api';
+import { environment } from 'src/environments/environment';
+
+export interface SoftMenuItem extends MenuItem{
+    hasPermission?: (permissionCodes: string[]) => boolean;
+}
+
+@Component({
+    selector: 'app-menu',
+    templateUrl: './app.menu.component.html'
+})
+export class AppMenuComponent implements OnInit {
+    model: SoftMenuItem[] = [];
+
+    constructor(
+        public layoutService: LayoutService, 
+        private translocoService: TranslocoService
+    ) {
+
+    }
+
+    ngOnInit() {
+        this.model = [
+            {
+                items: [
+                    {
+                        label: `${environment.companyName}`,
+                        icon: 'pi pi-fw pi-at', 
+                        visible: true,
+                    }
+                ],
+                visible: true,
+            },
+            {
+                separator: true,
+                visible: true,
+            },
+            {
+                items: [
+                    { 
+                        label: this.translocoService.translate('Home'), 
+                        icon: 'pi pi-fw pi-home', 
+                        routerLink: [''],
+                        visible: true,
+                    }, 
+                ]
+                visible: true,
+            },
+        ];
+    }
+
+
+    ngOnDestroy(): void {
+    }
+
+}
+
+""";
+        }
+
+        private string GetAppMenuComponentHtmlData()
+        {
+            return $$"""
+<ul class="layout-menu">
+    <ng-container *ngFor="let item of model; let i = index;">
+        <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
+        <li *ngIf="item.separator" class="gray-separator" style="margin-top: 11px;"></li>
+    </ng-container>
+</ul>
+
+""";
+        }
+
+        private string GetAppLayoutModuleTsData()
+        {
+            return $$"""
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterModule } from '@angular/router';
+import { AppLayoutComponent } from "./app.layout.component";
+import { PrimengModule } from '../../../core/modules/primeng.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { SoftAutocompleteComponent } from "../../../core/controls/soft-autocomplete/soft-autocomplete.component";
+import { TranslocoDirective } from '@jsverse/transloco';
+import { AppFooterComponent } from '../../../core/components/footer/app.footer.component';
+import { AppMenuComponent } from '../sidebar/app.menu.component';
+import { AppMenuitemComponent } from '../sidebar/app.menuitem.component';
+import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
+import { AppTopBarComponent } from '../topbar/app.topbar.component';
+
+@NgModule({
+    declarations: [
+        AppMenuitemComponent,
+        AppTopBarComponent,
+        AppFooterComponent,
+        AppMenuComponent,
+        AppSidebarComponent,
+        AppLayoutComponent,
+    ],
+    imports: [
+        FormsModule,
+        HttpClientModule,
+        BrowserAnimationsModule,
+        BrowserModule,
+        RouterModule,
+        PrimengModule,
+        TranslocoDirective,
+        SoftAutocompleteComponent,
+    ],
+    exports: [
+        FormsModule,
+        AppLayoutComponent,
+        PrimengModule,
+    ]
+})
+export class AppLayoutModule { }
+""";
+        }
+
+        private string GetAppLayoutComponentTsData()
+        {
+            return $$"""
+import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
+import { LayoutService } from "../../services/app.layout.service";
+import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
+import { AppTopBarComponent } from '../topbar/app.topbar.component';
+
+@Component({
+    selector: 'app-layout',
+    templateUrl: './app.layout.component.html'
+})
+export class AppLayoutComponent implements OnDestroy {
+
+    overlayMenuOpenSubscription: Subscription;
+
+    menuOutsideClickListener: any;
+
+    profileMenuOutsideClickListener: any;
+
+    @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
+
+    @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
+
+    constructor(
+        public layoutService: LayoutService, 
+        public renderer: Renderer2, 
+        public router: Router,
+    ) {
+        this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
+            if (!this.menuOutsideClickListener) {
+                this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
+                    const isOutsideClicked = !(
+                        this.appSidebar.el.nativeElement.isSameNode(event.target) || 
+                        this.appSidebar.el.nativeElement.contains(event.target) ||
+                        this.appTopbar.menuButton.nativeElement.isSameNode(event.target) || 
+                        this.appTopbar.menuButton.nativeElement.contains(event.target) ||
+                        (event.target.closest('.p-autocomplete-items')) ||
+                        (event.target.closest('.p-autocomplete-clear-icon'))
+                    );
+
+                    if (isOutsideClicked) {
+                        this.hideMenu();
+                    }
+                });
+            }
+
+            if (!this.profileMenuOutsideClickListener) {
+                this.profileMenuOutsideClickListener = this.renderer.listen('document', 'click', event => {
+                    const isOutsideClicked = !(this.appTopbar.menu.nativeElement.isSameNode(event.target) || this.appTopbar.menu.nativeElement.contains(event.target));
+
+                    if (isOutsideClicked) {
+                        this.hideProfileMenu();
+                    }
+                });
+            }
+
+            if (this.layoutService.state.staticMenuMobileActive) {
+                this.blockBodyScroll();
+            }
+        });
+
+        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
+            .subscribe(() => {
+                this.hideMenu();
+                this.hideProfileMenu();
+            });
+    }
+
+    hideMenu() {
+        this.layoutService.state.overlayMenuActive = false;
+        this.layoutService.state.staticMenuMobileActive = false;
+        this.layoutService.state.menuHoverActive = false;
+        if (this.menuOutsideClickListener) {
+            this.menuOutsideClickListener();
+            this.menuOutsideClickListener = null;
+        }
+        this.unblockBodyScroll();
+    }
+
+    hideProfileMenu() {
+        this.layoutService.state.profileSidebarVisible = false;
+        if (this.profileMenuOutsideClickListener) {
+            this.profileMenuOutsideClickListener();
+            this.profileMenuOutsideClickListener = null;
+        }
+    }
+
+    blockBodyScroll(): void {
+        if (document.body.classList) {
+            document.body.classList.add('blocked-scroll');
+        }
+        else {
+            document.body.className += ' blocked-scroll';
+        }
+    }
+
+    unblockBodyScroll(): void {
+        if (document.body.classList) {
+            document.body.classList.remove('blocked-scroll');
+        }
+        else {
+            document.body.className = document.body.className.replace(new RegExp('(^|\\b)' +
+                'blocked-scroll'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+        }
+    }
+
+    get containerClass() {
+        return {
+            'layout-theme-light': this.layoutService.config.colorScheme === 'light',
+            'layout-theme-dark': this.layoutService.config.colorScheme === 'dark',
+            'layout-overlay': this.layoutService.config.menuMode === 'overlay',
+            'layout-static': this.layoutService.config.menuMode === 'static',
+            'layout-static-inactive': this.layoutService.state.staticMenuDesktopInactive && this.layoutService.config.menuMode === 'static',
+            'layout-overlay-active': this.layoutService.state.overlayMenuActive,
+            'layout-mobile-active': this.layoutService.state.staticMenuMobileActive,
+            'p-input-filled': this.layoutService.config.inputStyle === 'filled',
+            'p-ripple-disabled': !this.layoutService.config.ripple
+        }
+    }
+
+    ngOnDestroy() {
+        if (this.overlayMenuOpenSubscription) {
+            this.overlayMenuOpenSubscription.unsubscribe();
+        }
+
+        if (this.menuOutsideClickListener) {
+            this.menuOutsideClickListener();
+        }
+    }
+}
+""";
+        }
+
+        private string GetAppLayoutComponentHtmlData()
+        {
+            return $$"""
+<div class="layout-wrapper" [ngClass]="containerClass">
+    <app-topbar></app-topbar>
+    <div class="layout-sidebar">
+        <app-sidebar></app-sidebar>
+    </div>
+    <div class="layout-main-container">
+        <div class="layout-main">
+            <router-outlet></router-outlet>
+        </div>
+        <app-footer></app-footer>
+    </div>
+    <div class="layout-mask"></div>
+</div>
+""";
+        }
+
+        private string GetDashboardModuleTsData()
+        {
+            return $$"""
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { DashboardComponent } from './dashboard.component';
+import { MenuModule } from 'primeng/menu';
+import { TableModule } from 'primeng/table';
+import { ButtonModule } from 'primeng/button';
+import { StyleClassModule } from 'primeng/styleclass';
+import { PanelMenuModule } from 'primeng/panelmenu';
+import { DashboardsRoutingModule } from './dashboard-routing.module';
+import { ApiService } from '../../../business/services/api/api.service';
+import { PrimengModule } from '../../../core/modules/primeng.module';
+import { SoftDataTableComponent } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
+import { CardSkeletonComponent } from 'src/app/core/components/card-skeleton/card-skeleton.component';
+import { QRCodeModule } from 'angularx-qrcode';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { InfoCardComponent } from "../../../core/components/info-card/info-card.component";
+
+@NgModule({
+    imports: [
+    CommonModule,
+    FormsModule,
+    MenuModule,
+    TableModule,
+    StyleClassModule,
+    PanelMenuModule,
+    ButtonModule,
+    DashboardsRoutingModule,
+    PrimengModule,
+    QRCodeModule,
+    SoftDataTableComponent,
+    SoftControlsModule,
+    CardSkeletonComponent,
+    TranslocoDirective,
+    InfoCardComponent,
+],
+    declarations: [DashboardComponent],
+    providers:[ApiService]
+})
+export class DashboardModule { }
+""";
+        }
+
+        private string GetDashboardComponentTsData()
+        {
+            return $$"""
+import { ApiService } from '../../../business/services/api/api.service';
+import { LayoutService } from '../../services/app.layout.service';
+import { Component, OnInit } from '@angular/core';
+import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { firstValueFrom, Subscription } from 'rxjs';
+
+@Component({
+  templateUrl: './dashboard.component.html',
+})
+export class DashboardComponent implements OnInit {
+  private permissionsSubscription: Subscription | null = null;
+
+  constructor(
+    public layoutService: LayoutService,
+    private apiService: ApiService,
+    private messageService: SoftMessageService,
+    private authService: AuthService,
+    private partnerService: PartnerService,
+  ) {}
+
+  ngOnInit() {
+    
+  }
+
+  ngOnDestroy(): void {
+    
+  }
+}
+
+""";
+        }
+
+        private string GetDashboardComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+  Dashboard
+</ng-container>
+""";
+        }
+
+        private string GetDashboardRoutingModuleTsData()
+        {
+            return $$"""
+import { NgModule } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { DashboardComponent } from './dashboard.component';
+
+@NgModule({
+    imports: [RouterModule.forChild([
+        { path: '', component: DashboardComponent }
+    ])],
+    exports: [RouterModule]
+})
+export class DashboardsRoutingModule { }
+
+""";
+        }
+
+        private string GetAuthModuleTsData()
+        {
+            return $$"""
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { RegistrationComponent } from './registration/registration.component';
+import { LoginComponent } from './login/login.component';
+import { PrimengModule } from '../../../core/modules/primeng.module';
+import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
+import { AuthComponent } from './partials/auth.component';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { LoginVerificationComponent } from 'src/app/core/components/email-verification/login-verification.component';
+import { ForgotPasswordVerificationComponent } from 'src/app/core/components/email-verification/forgot-password-verification.component';
+import { RegistrationVerificationComponent } from 'src/app/core/components/email-verification/registration-verification.component';
+
+const routes: Routes = [
+    { 
+        path: 'forgot-password', 
+        component: ForgotPasswordComponent
+    },
+    { 
+        path: 'registration', 
+        component: RegistrationComponent
+    },
+    { 
+        path: 'login', 
+        component: LoginComponent
+    },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forChild(routes),
+        AuthComponent,
+        PrimengModule,
+        SoftControlsModule,
+        LoginVerificationComponent,
+        ForgotPasswordVerificationComponent,
+        RegistrationVerificationComponent,
+        TranslocoDirective,
+    ],
+    declarations: [
+        ForgotPasswordComponent,
+        RegistrationComponent,
+        LoginComponent,
+    ]
+})
+export class AuthModule { }
+""";
+        }
+
+        private string GetRegistrationComponentTsData()
+        {
+            return $$"""
+import { ActivatedRoute, Router } from '@angular/router';
+import { SoftMessageService } from '../../../../core/services/soft-message.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { LayoutService } from '../../../services/app.layout.service';
+import { BaseForm } from '../../../../core/components/base-form/base-form';
+import { HttpClient } from '@angular/common/http';
+import { VerificationTypeCodes } from 'src/app/core/enums/verification-type-codes';
+import { Registration } from 'src/app/business/entities/security-entities.generated';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
+import { ValidatorService } from 'src/app/business/services/validation/validation-rules';
+
+@Component({
+    selector: 'app-registration',
+    templateUrl: './registration.component.html',
+})
+export class RegistrationComponent extends BaseForm<Registration> implements OnInit {
+    companyName: string;
+    showEmailSentDialog: boolean = false;
+    verificationType: VerificationTypeCodes = VerificationTypeCodes.Login;
+
+    constructor(
+      protected override differs: KeyValueDiffers,
+      protected override http: HttpClient,
+      protected override messageService: SoftMessageService, 
+      protected override changeDetectorRef: ChangeDetectorRef,
+      protected override router: Router,
+      protected override route: ActivatedRoute,
+      protected override translocoService: TranslocoService,
+      protected override translateClassNamesService: TranslateClassNamesService,
+      protected override validatorService: ValidatorService,
+      public layoutService: LayoutService, 
+      private authService: AuthService, 
+    ) { 
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
+    }
+
+    override ngOnInit(){
+        this.init(new Registration());
+    }
+
+    init(model: Registration){
+        this.initFormGroup(model);
+    }
+
+    companyNameChange(companyName: string){
+        this.companyName = companyName;
+    }
+
+    sendRegistrationVerificationEmail() {
+        let isFormGroupValid: boolean = this.checkFormGroupValidity();
+        if (isFormGroupValid == false) return;
+        // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+        this.authService.sendRegistrationVerificationEmail(this.model).subscribe(registrationVerificationResult => {
+            this.showEmailSentDialog = true;
+        });
+    }
+
+}
+""";
+        }
+
+        private string GetRegistrationComponentHtmlData()
+        {
+            return $$$"""
+<ng-container *transloco="let t">
+    @if (showEmailSentDialog == false) {
+        <auth>
+            <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
+                <div class="col-12" style="padding: 0;">
+                    <soft-textbox [control]="control('email')"></soft-textbox>
+                </div>
+                <div class="col-12" style="padding-left: 0; padding-right: 0;">
+                    <soft-password [control]="control('password')"></soft-password>
+                </div>
+
+                <div class="mb-4 gap-5">
+                    <div class="text-center" style="font-size: smaller;">
+                        {{t('AgreementsOnRegister')}} <b class="primary-color cursor-pointer">{{t('UserAgreement')}}</b>, <b class="primary-color cursor-pointer">{{t('PrivacyPolicy')}}</b>, {{t('and')}} <b class="primary-color cursor-pointer">{{t('CookiePolicy')}}</b>.
+                    </div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <p-button [label]="t('AgreeAndJoin')" (onClick)="sendRegistrationVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
+                    <p-button [label]="t('AlreadyHasAccount', {companyName: companyName})" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
+                </div>
+            </form>
+        </auth>
+    }
+    @else {
+        <registration-verification [email]="model.email" [password]="model.password"></registration-verification>
+    }
+</ng-container>
+""";
+        }
+
+        private string GetAuthComponentTsData()
+        {
+            return $$"""
+import { Component, EventEmitter, Input, Output } from "@angular/core";
+import { environment } from "src/environments/environment.prod";
+import { LayoutService } from "src/app/layout/services/app.layout.service";
+import { GoogleButtonComponent } from "../../../../core/components/google-button/google-button.component";
+import { CommonModule } from "@angular/common";
+import { getHtmlImgDisplayString64 } from "src/app/core/services/helper-functions";
+import { Subscription } from "rxjs";
+import { TranslocoDirective } from "@jsverse/transloco";
+
+@Component({
+  selector: 'auth',
+  templateUrl: './auth.component.html',
+  styles: [],
+  imports: [
+    CommonModule,
+    GoogleButtonComponent,
+    TranslocoDirective,
+  ],
+  standalone: true,
+})
+export class AuthComponent {
+    @Input() showGoogleAuth: boolean = true;
+
+    hasGoogleAuth: boolean = environment.googleAuth;
+    companyName: string;
+    image: string;
+
+    constructor(public layoutService: LayoutService) {}
+
+    ngOnInit(){
+        this.image = `assets/primeng/images/${this.layoutService.config.colorScheme === 'light' ? 'logo-dark' : 'logo-white'}.svg`
+        this.companyName = environment.companyName;
+    }
+
+    onGoogleSignIn(googleWrapper: any){
+      googleWrapper.click();
+    }
+
+    ngOnDestroy(): void {
+
+    }
+}
+""";
+        }
+
+        private string GetAuthComponentHtmlData()
+        {
+            return $$$"""
+<ng-container *transloco="let t">
+    <div class="flex min-h-screen overflow-hidden" style="padding: 20px;">
+        <div class="flex flex-column w-full">
+            <div class="w-full sm:w-30rem" style="margin: auto; border-radius:50px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
+                <div class="surface-card py-6 px-5 sm:px-6" style="border-radius:45px;">
+                    <div class="text-center mb-6">
+                        <img [src]="image" alt="{{companyName}} Logo" height="60">
+                    </div>
+
+                    <ng-content></ng-content>
+
+                    <div *ngIf="hasGoogleAuth && showGoogleAuth">
+                        <div style="display: flex; align-items: center; gap: 7px; justify-content: center; margin-bottom: 16px;">
+                            <div class="separator"></div>
+                            <div>{{t('or')}}</div>
+                            <div class="separator"></div>
+                        </div>
+                        <div>
+                            <!-- https://code-maze.com/how-to-sign-in-with-google-angular-aspnet-webapi/ -->
+                            <google-button (loginWithGoogle)="onGoogleSignIn($event)"></google-button> 
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-container>
+""";
+        }
+
+        private string GetLoginComponentTsData()
+        {
+            return $$"""
+import { ActivatedRoute, Router } from '@angular/router';
+import { SoftMessageService } from '../../../../core/services/soft-message.service';
+import { AuthService } from './../../../../core/services/auth.service';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { LayoutService } from '../../../services/app.layout.service';
+import { BaseForm } from '../../../../core/components/base-form/base-form';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
+import { VerificationTypeCodes } from 'src/app/core/enums/verification-type-codes';
+import { Login } from 'src/app/business/entities/security-entities.generated';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
+import { ValidatorService } from 'src/app/business/services/validation/validation-rules';
+
+@Component({
+    selector: 'app-login',
+    templateUrl: './login.component.html',
+})
+export class LoginComponent extends BaseForm<Login> implements OnInit {
+    companyName: string;
+    usersCanRegister: boolean = environment.usersCanRegister;
+    showEmailSentDialog: boolean = false;
+    verificationType: VerificationTypeCodes = VerificationTypeCodes.Login;
+
+    constructor(
+      protected override differs: KeyValueDiffers,
+      protected override http: HttpClient,
+      protected override messageService: SoftMessageService, 
+      protected override changeDetectorRef: ChangeDetectorRef,
+      protected override router: Router, 
+      protected override route: ActivatedRoute,
+      protected override translocoService: TranslocoService,
+      protected override translateClassNamesService: TranslateClassNamesService,
+      protected override validatorService: ValidatorService,
+      public layoutService: LayoutService, 
+      private authService: AuthService, 
+    ) { 
+      super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
+    }
+
+    override ngOnInit(){
+        this.init(new Login());
+    }
+
+    init(model: Login){
+        this.initFormGroup(model);
+    }
+
+    companyNameChange(companyName: string){
+      this.companyName = companyName;
+    }
+
+    sendLoginVerificationEmail() {
+        let isFormGroupValid: boolean = this.checkFormGroupValidity();
+        if (isFormGroupValid == false) return;
+        this.authService.sendLoginVerificationEmail(this.model).subscribe(()=>{
+            this.showEmailSentDialog = true;
+        });
+    }
+
+}
+""";
+        }
+
+        private string GetLoginComponentHtmlData()
+        {
+            return $$$"""
+<ng-container *transloco="let t">
+    @if (showEmailSentDialog == false) {
+        <auth>
+            <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
+                <div class="col-12" style="padding: 0;">
+                    <soft-textbox textbox [control]="control('email')"></soft-textbox>
+                </div>
+                <div class="col-12" style="padding-left: 0; padding-right: 0;">
+                    <soft-password [control]="control('password')"></soft-password>
+                </div>
+
+                <div class="flex align-items-center justify-content-between mb-4 gap-5" style="margin-bottom: 16px;">
+                    <a class="link no-underline" routerLink="/auth/forgot-password">{{t('ForgotPassword')}}</a>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <p-button [label]="t('Login')" (onClick)="sendLoginVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
+                    <p-button *ngIf="usersCanRegister" [label]="t('NewUserJoinNow', {companyName: companyName})" routerLink="/auth/registration" [style]="{width: '100%'}"></p-button>
+                </div>
+            </form>
+        </auth>
+    }
+    @else {
+        <login-verification [email]="model.email" [password]="model.password"></login-verification>
+    }
+</ng-container>
+""";
+        }
+
+        private string GetForgotPasswordComponentTsData()
+        {
+            return $$"""
+import { Router, ActivatedRoute } from '@angular/router';
+import { SoftMessageService } from '../../../../core/services/soft-message.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { LayoutService } from '../../../services/app.layout.service';
+import { BaseForm } from '../../../../core/components/base-form/base-form';
+import { HttpClient } from '@angular/common/http';
+import { ForgotPassword } from 'src/app/business/entities/security-entities.generated';
+import { TranslocoService } from '@jsverse/transloco';
+import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
+import { ValidatorService } from 'src/app/business/services/validation/validation-rules';
+
+@Component({
+    selector: 'forgot-password',
+    templateUrl: './forgot-password.component.html',
+})
+export class ForgotPasswordComponent extends BaseForm<ForgotPassword> implements OnInit {
+    showEmailSentDialog: boolean = false;
+
+    constructor(
+      protected override differs: KeyValueDiffers,
+      protected override http: HttpClient,
+      protected override messageService: SoftMessageService, 
+      protected override changeDetectorRef: ChangeDetectorRef,
+      protected override router: Router,
+      protected override route: ActivatedRoute,
+      protected override translocoService: TranslocoService,
+      protected override translateClassNamesService: TranslateClassNamesService,
+      protected override validatorService: ValidatorService,
+      public layoutService: LayoutService, 
+      private authService: AuthService, 
+    ) { 
+      super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
+    }
+
+    override ngOnInit(){
+        this.init(new ForgotPassword());
+    }
+
+    init(model: ForgotPassword){
+        this.initFormGroup(model);
+    }
+
+    sendForgotPassworVerificationEmail() {
+        let isFormGroupValid: boolean = this.checkFormGroupValidity();
+        if (isFormGroupValid == false) return;
+        // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
+        this.authService.sendForgotPasswordVerificationEmail(this.model).subscribe(()=>{
+            this.showEmailSentDialog = true;
+        });
+    }
+}
+""";
+        }
+
+        private string GetForgotPasswordComponentHtmlData()
+        {
+            return $$$"""
+<ng-container *transloco="let t">
+    @if (showEmailSentDialog == false) {
+        <auth [showGoogleAuth]="false">
+            <form [formGroup]="formGroup">
+                <div class="col-12" style="padding: 0;">
+                    <soft-textbox [control]="control('email')"></soft-textbox>
+                </div>
+                <div class="col-12" style="padding-left: 0; padding-right: 0;">
+                    <soft-password [control]="control('newPassword')"></soft-password>
+                </div>
+
+                <div class="flex align-items-center justify-content-between mb-4 gap-5" style="margin-bottom: 16px;">
+                    <div>{{t('RememberYourPassword')}} <a class="link" routerLink="/auth/login">{{t('Login')}}</a></div>
+                </div>
+
+                <div style="display: flex; flex-direction: column; gap: 16px;">
+                    <p-button [label]="t('ResetPassword')" (onClick)="sendForgotPassworVerificationEmail()" [style]="{width: '100%'}"></p-button>
+                </div>
+            </form>
+        </auth>
+    }
+    @else {
+        <forgot-password-verification [email]="model.email" [newPassword]="model.newPassword"></forgot-password-verification>
+    }
+</ng-container>
+""";
+        }
 
         private string GetVercelJsonData()
         {
@@ -1548,73 +3106,374 @@ export class AppModule {}
 """;
         }
 
-        private string GetAppConfigTsData()
-        {
-            return $$"""
-
-""";
-        }
-
         private string GetAppComponentTsData()
         {
             return $$"""
+import { TranslocoService } from '@jsverse/transloco';
+import { Component, OnInit } from '@angular/core';
+import { PrimeNGConfig } from 'primeng/api';
 
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html'
+})
+export class AppComponent implements OnInit {
+
+    constructor(private primengConfig: PrimeNGConfig, private translocoService: TranslocoService) { }
+
+    ngOnInit() {
+        this.primengConfig.ripple = true;
+
+        this.translocoService.selectTranslateObject('Primeng').subscribe((primengTranslations) => {
+            this.primengConfig.setTranslation(primengTranslations);
+          });
+    }
+}
 """;
         }
 
         private string GetAppComponentHtmlData()
         {
             return $$"""
+<!-- FT HACK: I don't know why, but translations on the layout component work only if wrap everything with transloco -->
+<ng-container *transloco="let t">
+    <router-outlet></router-outlet>
+</ng-container>
 
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-clip-rotate-multiple" [fullScreen]="true"></ngx-spinner>
+<p-toast [breakpoints]="{ '600px': { width: '100%', right: '0', left: '0' } }"></p-toast>
 """;
         }
 
         private string GetAppRoutingModuleTsData()
         {
             return $$"""
+import { PreloadAllModules, RouterModule } from '@angular/router';
+import { NgModule } from '@angular/core';
+import { NotfoundComponent } from './layout/components/notfound/notfound.component';
+import { AppLayoutComponent } from "./layout/components/layout/app.layout.component";
+import { AuthGuard } from './core/guards/auth.guard';
+import { NotAuthGuard } from './core/guards/not-auth.guard';
 
+@NgModule({
+    imports: [
+        RouterModule.forRoot([
+            {
+                path: '', 
+                component: AppLayoutComponent,
+                children: [
+                    {
+                        path: '',
+                        loadChildren: () => import('./layout/components/dashboard/dashboard.module').then(m => m.DashboardModule),
+                        canActivate: [AuthGuard]
+                    },
+                ],
+            },
+            {
+                path: '',
+                children: [
+                    { 
+                        path: 'auth',
+                        loadChildren: () => import('./layout/components/auth/auth.module').then(m => m.AuthModule),
+                        canActivate: [NotAuthGuard],
+                    },
+                ],
+            },
+            { path: 'not-found', component: NotfoundComponent },
+            { path: '**', redirectTo: 'not-found' },
+        ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload', preloadingStrategy: PreloadAllModules })
+    ],
+    exports: [RouterModule]
+})
+export class AppRoutingModule {
+}
 """;
         }
 
         private string GetBusinessModuleTsData()
         {
             return $$"""
+import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule, Optional, SkipSelf } from '@angular/core';
 
+@NgModule({
+  declarations: [],
+  imports: [CommonModule],
+  providers: [
+  ],
+})
+export class BusinessModule {
+  constructor(@Optional() @SkipSelf() Business: BusinessModule) {
+    if (Business) {
+      throw new Error('Business Module can only be imported to AppModule.');
+    }
+  }
+}
 """;
         }
 
         private string GetValidationRulesTsCode()
         {
             return $$"""
+import { ValidationErrors } from "@angular/forms";
+import { SoftFormArray, SoftFormControl, SoftValidatorFn } from "src/app/core/components/soft-form-control/soft-form-control";
+import { TranslocoService } from '@jsverse/transloco';
+import { Injectable } from '@angular/core';
+import { ValidatorServiceGenerated } from "./validation-rules.generated";
 
+@Injectable({
+    providedIn: 'root',
+})
+export class ValidatorService extends ValidatorServiceGenerated {
+
+    constructor(
+        protected override translocoService: TranslocoService,
+    ) {
+        super(translocoService)
+    }
+
+    isArrayEmpty(control: SoftFormControl): SoftValidatorFn {
+        const validator: SoftValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value.length !== 0;
+
+            const arrayValid = notEmptyRule;
+
+            return arrayValid ? null : { _ : this.translocoService.translate('NotEmpty')};
+        };
+        validator.hasNotEmptyRule = true;
+        return validator;
+    }
+
+    isFormArrayEmpty(control: SoftFormArray): SoftValidatorFn {
+        const validator: SoftValidatorFn = (): ValidationErrors | null => {
+            const value = control;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value.length !== 0;
+
+            const arrayValid = notEmptyRule;
+
+            return arrayValid ? null : { _ : this.translocoService.translate('NotEmpty')};
+        };
+        validator.hasNotEmptyRule = true;
+        return validator;
+    }
+
+    // confirmationPassword(confirmationPasswordControl: SoftFormControl, passwordControl: SoftFormControl): SoftValidatorFn {
+    //     const validator: SoftValidatorFn = (): ValidationErrors | null => {
+    //         const confirmationPassword = confirmationPasswordControl.value;
+    //         const password = passwordControl.value;
+
+    //         const notEmptyRule = typeof confirmationPassword !== 'undefined' && confirmationPassword !== null && confirmationPassword.length !== 0;
+
+    //         const areEqualRule = confirmationPassword === password;
+
+    //         const arrayValid = notEmptyRule && areEqualRule;
+
+    //         return arrayValid ? null : { _ : $localize`:@@NotEmptyIsTheSameAsPassword:The field is mandatory and must have the same value as password.` };
+    //     };
+    //     validator.hasNotEmptyRule = true;
+    //     return validator;
+    // }
+
+}
 """;
         }
 
         private string GetMergeLabelsCode()
         {
             return $$"""
+import { environment } from "src/environments/environment";
+import { Injectable } from "@angular/core";
+import { TranslateLabelsGeneratedService } from "./labels.generated";
 
+
+@Injectable({
+    providedIn: 'root',
+})
+export class TranslateLabelsService {
+
+    constructor(
+        private translateLabelsGeneratedService: TranslateLabelsGeneratedService,
+    ) {
+    }
+
+    translate(name: string){
+        let result = null;
+
+        result = this.translateLabelsGeneratedService.translate(name);
+        if (result != null)
+            return result;
+
+        return name;
+    }
+}
 """;
         }
 
         private string GetMergeClassNamesTsCode()
         {
             return $$"""
+import { environment } from "src/environments/environment";
+import { Injectable } from "@angular/core";
+import { TranslateClassNamesGeneratedService } from "./class-names.generated";
 
+@Injectable({
+    providedIn: 'root',
+})
+export class TranslateClassNamesService {
+
+    constructor(
+        private translateClassNamesGeneratedService: TranslateClassNamesGeneratedService,
+    ) {
+    }
+
+    translate(name: string){
+        let result = null;
+
+        result = this.translateClassNamesGeneratedService.translate(name);
+        if (result != null)
+            return result;
+
+        return name;
+    }
+}
 """;
         }
 
         private string GetAPIServiceTsCode()
         {
             return $$"""
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { ApiGeneratedService } from './api.service.generated';
+import { map, Observable } from 'rxjs';
+import * as FileSaver from 'file-saver';
+import { TableFilter } from '../../../core/entities/table-filter';
+import { PrimengOption } from 'src/app/core/entities/primeng-option';
+import { Namebook } from '../../../core/entities/namebook';
+import { getFileNameFromContentDisposition } from 'src/app/core/services/helper-functions';
 
+@Injectable()
+export class ApiService extends ApiGeneratedService {
+
+    constructor(protected override http: HttpClient) {
+        super(http);
+    }
+
+    exportListToExcel(exportTableDataToExcelObservableMethod: (tableFilter: TableFilter) => Observable<any>, tableFilter: TableFilter) {
+        exportTableDataToExcelObservableMethod(tableFilter).subscribe(res => {
+            let fileName = getFileNameFromContentDisposition(res, "ExcelExport.xlsx");
+            FileSaver.saveAs(res.body, decodeURIComponent(fileName));
+        });
+    }
+
+    loadPrimengListForDropdown(loadListForDropdownObservable: () => Observable<Namebook[]>): Observable<PrimengOption[]>{
+        return loadListForDropdownObservable().pipe(
+            map(res => {
+                return res.map(x => ({ label: x.displayName, value: x.id }));
+            })
+        );
+    }
+}
 """;
         }
 
         private string GetAPIServiceSecurityTsCode()
         {
             return $$"""
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
+import { Namebook } from '../../../core/entities/namebook';
+import { TableFilter } from '../../../core/entities/table-filter';
+import { TableResponse } from 'src/app/core/entities/table-response';
+import { Login, ForgotPassword, Registration, RegistrationVerificationResult, RefreshTokenRequest, AuthResult, Role } from '../../entities/security-entities.generated';
 
+@Injectable()
+export class ApiSecurityService {
+
+    constructor(protected http: HttpClient) {
+
+    }
+
+
+    sendLoginVerificationEmail = (loginDTO: Login): Observable<any> => { 
+        return this.http.post<any>(`${environment.apiUrl}/Auth/SendLoginVerificationEmail`, loginDTO, environment.httpOptions);
+    }
+
+    sendForgotPasswordVerificationEmail = (forgotPasswordDTO: ForgotPassword): Observable<any> => { 
+        return this.http.post<any>(`${environment.apiUrl}/Auth/SendForgotPasswordVerificationEmail`, forgotPasswordDTO, environment.httpOptions);
+    }
+
+    sendRegistrationVerificationEmail = (registrationDTO: Registration): Observable<RegistrationVerificationResult> => { 
+        return this.http.post<RegistrationVerificationResult>(`${environment.apiUrl}/Auth/SendRegistrationVerificationEmail`, registrationDTO, environment.httpOptions);
+    }
+
+    logout = (browserId: string): Observable<any> => { 
+        return this.http.get<any>(`${environment.apiUrl}/Auth/Logout?browserId=${browserId}`);
+    }
+
+    refreshToken = (request: RefreshTokenRequest): Observable<AuthResult> => { 
+        return this.http.post<AuthResult>(`${environment.apiUrl}/Auth/RefreshToken`, request, environment.httpOptions);
+    }
+
+    loadRoleListForAutocomplete(limit: number, query: string): Observable<Namebook[]> {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadRoleListForAutocomplete?limit=${limit}&query=${query}`, environment.httpSkipSpinnerOptions);
+    }
+
+    loadRoleListForDropdown(): Observable<Namebook[]> {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadRoleListForDropdown`, environment.httpSkipSpinnerOptions);
+    }
+
+    loadRoleTableData = (dto: TableFilter): Observable<TableResponse> => { 
+        return this.http.post<TableResponse>(`${environment.apiUrl}/Auth/LoadRoleTableData`, dto, environment.httpSkipSpinnerOptions);
+    }
+
+    exportRoleTableDataToExcel = (dto: TableFilter): Observable<any> => { 
+        return this.http.post<any>(`${environment.apiUrl}/Auth/ExportRoleTableDataToExcel`, dto, environment.httpOptions);
+    }
+
+    deleteRole = (id: number): Observable<any> => { 
+        return this.http.delete<any>(`${environment.apiUrl}/Auth/DeleteRole?id=${id}`);
+    }
+
+    getRole(id: number): Observable<Role> {
+        return this.http.get<Role>(`${environment.apiUrl}/Auth/GetRole?id=${id}`);
+    }
+
+    saveRole = (dto: Role): Observable<Role> => { 
+        return this.http.put<Role>(`${environment.apiUrl}/Auth/SaveRole`, dto, environment.httpOptions);
+    }
+
+    loadPermissionListForDropdown = (): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadPermissionListForDropdown`, environment.httpSkipSpinnerOptions);
+    }
+
+    loadPermissionListForRole = (roleId: number): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadPermissionListForRole?roleId=${roleId}`, environment.httpSkipSpinnerOptions);
+    }
+
+    loadUserListForRole = (roleId: number): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadUserListForRole?roleId=${roleId}`, environment.httpSkipSpinnerOptions);
+    }
+
+    loadRoleNamebookListForUserExtended = (userId: number): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadRoleNamebookListForUserExtended?userId=${userId}`, environment.httpSkipSpinnerOptions);
+    }
+
+    loadNotificationNamebookListForUserExtended = (userId: number): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadNotificationNamebookListForUserExtended?userId=${userId}`, environment.httpSkipSpinnerOptions);
+    }
+
+    getUnreadNotificationCountForTheCurrentUser = (): Observable<number> => {
+        return this.http.get<number>(`${environment.apiUrl}/Auth/GetUnreadNotificationCountForTheCurrentUser`, environment.httpSkipSpinnerOptions);
+    }
+
+}
 """;
         }
 
