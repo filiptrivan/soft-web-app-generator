@@ -29,6 +29,65 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             }
         }
 
+        public static string MakeFolder(string path, string name)
+        {
+            if (!Directory.Exists(path))
+                throw new DirectoryNotFoundException($"Directory not found: {path}");
+
+            string newFolderPath = Path.Combine(path, name);
+
+            FolderOverrideCheck(newFolderPath);
+
+            Directory.CreateDirectory(newFolderPath);
+
+            return newFolderPath;
+        }
+
+        public static void CopyFolder(string sourcePath, string destinationPath, string destinationFolderName)
+        {
+            if (destinationPath.StartsWith(sourcePath, StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("Destination path cannot be a subdirectory of the source path.");
+
+            if (!Directory.Exists(sourcePath))
+                throw new DirectoryNotFoundException($"Source directory not found: {sourcePath}");
+
+            string newFolderPath = MakeFolder(destinationPath, destinationFolderName);
+
+            foreach (string file in Directory.GetFiles(sourcePath))
+            {
+                string destFilePath = Path.Combine(newFolderPath, Path.GetFileName(file));
+
+                FileOverrideCheck(destFilePath);
+
+                File.Copy(file, destFilePath, true);
+            }
+
+            foreach (string directory in Directory.GetDirectories(sourcePath))
+                CopyFolder(directory, newFolderPath, Path.GetFileName(directory));
+        }
+
+        public static void FolderOverrideCheck(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                DialogResult dialogResult = MessageBox.Show($"Direktorijum na putanji {path}, već postoji, da li želite nastavite?", "Potvrda", MessageBoxButtons.YesNo);
+
+                if (dialogResult == DialogResult.No)
+                    throw new Exception("Prekinuli ste operaciju.");
+            }
+        }
+
+        public static void FileOverrideCheck(string path)
+        {
+            if (File.Exists(path))
+            {
+                DialogResult dialogResult = MessageBox.Show($"Datoteka na putanji {path}, već postoji, da li želite nastavite?", "Potvrda", MessageBoxButtons.YesNo);
+
+                if (dialogResult == DialogResult.No)
+                    throw new Exception("Prekinuli ste operaciju.");
+            }
+        }
+
         public static string GetGenericIdTypeFromTheBaseType(Type entity)
         {
             if (entity == null)

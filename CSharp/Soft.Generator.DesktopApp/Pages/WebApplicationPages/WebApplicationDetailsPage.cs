@@ -84,12 +84,24 @@ namespace Soft.Generator.DesktopApp.Pages
             cb_Setting.StartValidation();
         }
 
-        private void btn_GenerateWebApplication_Click(object sender, EventArgs e)
+        private void btn_GenerateNetAndAngularStructure_Click(object sender, EventArgs e)
+        {
+            ValidateWebApplicationGeneration();
+
+            _webApplicationController.GenerateNetAndAngularStructure(Entity.Id);
+        }
+
+        private void btn_GenerateBusinessFiles_Click(object sender, EventArgs e)
+        {
+            ValidateWebApplicationGeneration();
+
+            _webApplicationController.GenerateBusinessFiles(Entity.Id);
+        }
+
+        private void ValidateWebApplicationGeneration()
         {
             if (Entity.Id == 0)
                 throw new Exception("Da biste generisali web aplikaciju, prvo morate da sačuvate objekat.");
-
-            _webApplicationController.GenerateWebApplication(Entity.Id);
         }
     }
 }

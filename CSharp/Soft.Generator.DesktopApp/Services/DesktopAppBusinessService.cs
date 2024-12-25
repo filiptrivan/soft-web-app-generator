@@ -61,7 +61,7 @@ namespace Soft.Generator.DesktopApp.Services
             });
         }
 
-        public List<WebApplicationFile> GenerateWebApplication(long webApplicationId)
+        public void GenerateNetAndAngularStructure(long webApplicationId)
         {
             _connection.WithTransaction(() =>
             {
@@ -70,10 +70,21 @@ namespace Soft.Generator.DesktopApp.Services
 
                 GeneratorService generatorService = new GeneratorService(dllPaths);
 
-                generatorService.Generate();
+                generatorService.GenerateNetAndAngularStructure(Settings.ProjectsPath, webApplication.Name, Settings.PrimaryColor);
             });
+        }
 
-            return null;
+        public void GenerateBusinessFiles(long webApplicationId)
+        {
+            _connection.WithTransaction(() =>
+            {
+                WebApplication webApplication = GetWebApplication(webApplicationId);
+                List<DllPath> dllPaths = GetDllPathListForWebApplication(webApplicationId);
+
+                GeneratorService generatorService = new GeneratorService(dllPaths);
+
+                generatorService.GenerateBusinessFiles();
+            });
         }
 
         #endregion

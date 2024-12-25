@@ -33,8 +33,9 @@
             cb_Company = new Controls.SoftCombobox();
             btn_Save = new Button();
             btn_Return = new Button();
-            btn_GenerateWebApplication = new Button();
+            btn_GenerateBusinessFiles = new Button();
             clb_GeneratedFile = new Controls.SoftCheckListBox();
+            btn_GenerateNetAndAngularStructure = new Button();
             SuspendLayout();
             // 
             // tb_Name
@@ -89,15 +90,15 @@
             btn_Return.UseVisualStyleBackColor = true;
             btn_Return.Click += btn_Return_Click;
             // 
-            // btn_GenerateWebApplication
+            // btn_GenerateBusinessFiles
             // 
-            btn_GenerateWebApplication.Location = new Point(16, 347);
-            btn_GenerateWebApplication.Name = "btn_GenerateWebApplication";
-            btn_GenerateWebApplication.Size = new Size(135, 23);
-            btn_GenerateWebApplication.TabIndex = 6;
-            btn_GenerateWebApplication.Text = "Generiši aplikaciju";
-            btn_GenerateWebApplication.UseVisualStyleBackColor = true;
-            btn_GenerateWebApplication.Click += btn_GenerateWebApplication_Click;
+            btn_GenerateBusinessFiles.Location = new Point(257, 353);
+            btn_GenerateBusinessFiles.Name = "btn_GenerateBusinessFiles";
+            btn_GenerateBusinessFiles.Size = new Size(183, 23);
+            btn_GenerateBusinessFiles.TabIndex = 6;
+            btn_GenerateBusinessFiles.Text = "Generiši specifične datoteke";
+            btn_GenerateBusinessFiles.UseVisualStyleBackColor = true;
+            btn_GenerateBusinessFiles.Click += btn_GenerateBusinessFiles_Click;
             // 
             // clb_GeneratedFile
             // 
@@ -108,12 +109,23 @@
             clb_GeneratedFile.Size = new Size(481, 137);
             clb_GeneratedFile.TabIndex = 7;
             // 
+            // btn_GenerateNetAndAngularStructure
+            // 
+            btn_GenerateNetAndAngularStructure.Location = new Point(16, 353);
+            btn_GenerateNetAndAngularStructure.Name = "btn_GenerateNetAndAngularStructure";
+            btn_GenerateNetAndAngularStructure.Size = new Size(225, 23);
+            btn_GenerateNetAndAngularStructure.TabIndex = 8;
+            btn_GenerateNetAndAngularStructure.Text = "Generiši backend i frontend strukturu";
+            btn_GenerateNetAndAngularStructure.UseVisualStyleBackColor = true;
+            btn_GenerateNetAndAngularStructure.Click += btn_GenerateNetAndAngularStructure_Click;
+            // 
             // WebApplicationDetailsPage
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            Controls.Add(btn_GenerateNetAndAngularStructure);
             Controls.Add(clb_GeneratedFile);
-            Controls.Add(btn_GenerateWebApplication);
+            Controls.Add(btn_GenerateBusinessFiles);
             Controls.Add(btn_Return);
             Controls.Add(btn_Save);
             Controls.Add(cb_Company);
@@ -131,7 +143,8 @@
         private Controls.SoftCombobox cb_Company;
         private Button btn_Save;
         private Button btn_Return;
-        private Button btn_GenerateWebApplication;
+        private Button btn_GenerateBusinessFiles;
         private Controls.SoftCheckListBox clb_GeneratedFile;
+        private Button btn_GenerateNetAndAngularStructure;
     }
 }

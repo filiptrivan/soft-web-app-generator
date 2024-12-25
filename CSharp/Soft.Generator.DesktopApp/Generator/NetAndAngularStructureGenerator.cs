@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CaseExtensions;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using Soft.Generator.DesktopApp.Services;
 
 namespace Soft.Generator.DesktopApp.Generator
 {
@@ -15,7 +16,7 @@ namespace Soft.Generator.DesktopApp.Generator
     {
         public void Generate(string outputPath, string appName, string primaryColor)
         {
-            SoftFolder projectStructure = new SoftFolder
+            SoftFolder appStructure = new SoftFolder
             {
                 Name = appName,
                 ChildFolders = new List<SoftFolder>
@@ -279,7 +280,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                         Name = "environments",
                                         SoftFiles = new List<SoftFile>
                                         {
-                                            new SoftFile { Name = "environment.prod.ts", Data = null },
+                                            new SoftFile { Name = "environment.prod.ts", Data = "" },
                                             new SoftFile { Name = "styles.scss", Data = GetEnvironmentTsCode(appName, primaryColor) },
                                         }
                                     }
@@ -296,7 +297,7 @@ namespace Soft.Generator.DesktopApp.Generator
                             new SoftFile { Name = ".editorconfig", Data = GetEditOrConfigData() },
                             new SoftFile { Name = "angular.json", Data = GetAngularJsonData(appName) },
                             new SoftFile { Name = "package.json", Data = GetPackageData(appName) },
-                            new SoftFile { Name = "README.md", Data = null },
+                            new SoftFile { Name = "README.md", Data = "" },
                             new SoftFile { Name = "tsconfig.app.json", Data = GetTsConfigAppJsonData() },
                             new SoftFile { Name = ".tsconfig.json", Data = GetTsConfigJsonData() },
                             new SoftFile { Name = ".tsconfig.spec.json", Data = GetTsConfigSpecJsonData() },
@@ -318,7 +319,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                         Name = "DataMappers",
                                         SoftFiles = new List<SoftFile>
                                         {
-                                            new SoftFile { Name = "MapsterMapper.cs", Data= GetMapsterMapperCsData() },
+                                            new SoftFile { Name = "MapsterMapper.cs", Data= GetMapsterMapperCsData(appName) },
                                         }
                                     },
                                     new SoftFolder
@@ -326,9 +327,9 @@ namespace Soft.Generator.DesktopApp.Generator
                                         Name = "DTO",
                                         ChildFolders = new List<SoftFolder>
                                         {
-                                            new SoftFolder 
-                                            { 
-                                                Name = "Partials" 
+                                            new SoftFolder
+                                            {
+                                                Name = "Partials"
                                             },
                                             new SoftFolder
                                             {
@@ -339,6 +340,10 @@ namespace Soft.Generator.DesktopApp.Generator
                                     new SoftFolder
                                     {
                                         Name = "Entities",
+                                        SoftFiles = new List<SoftFile>
+                                        {
+                                            new SoftFile { Name = "UserExtended", Data = GetUserExtendedCsData() }
+                                        }
                                     },
                                     new SoftFolder
                                     {
@@ -350,7 +355,8 @@ namespace Soft.Generator.DesktopApp.Generator
                                         SoftFiles = new List<SoftFile>
                                         {
                                             new SoftFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
-                                            new SoftFile { Name = $"NotificationService.cs", Data = GetNotificationServiceCsData() },
+                                            new SoftFile { Name = $"NotificationService.cs", Data = GetNotificationServiceCsData(appName) },
+                                            new SoftFile { Name = $"{appName}AuthorizationService.cs", Data = GetAuthorizationServiceCsData(appName) },
                                         }
                                     },
                                     new SoftFolder
@@ -360,47 +366,1013 @@ namespace Soft.Generator.DesktopApp.Generator
                                 },
                                 SoftFiles = new List<SoftFile>
                                 {
-
+                                    new SoftFile { Name = "GeneratorSettings.cs", Data = GetBusinessGeneratorSettingsData(appName) },
+                                    new SoftFile { Name = $"{appName}.Business.csproj", Data = GetBusinessCsProjData() },
+                                    new SoftFile { Name = $"Settings.cs", Data = GetBusinessSettingsCsData(appName) },
                                 }
                             },
                             new SoftFolder
                             {
                                 Name = $"{appName}.Infrastructure",
+                                SoftFiles = new List<SoftFile>
+                                {
+                                    new SoftFile { Name = $"{appName}ApplicationDbContext.cs", Data = GetInfrastructureApplicationDbContextData(appName) },
+                                    new SoftFile { Name = "GeneratorSettings.cs", Data = GetInfrastructureGeneratorSettingsData(appName) },
+                                    new SoftFile { Name = $"{appName}.Infrastructure.csproj", Data = GetInfrastructureCsProjData(appName) },
+                                }
                             },
                             new SoftFolder
                             {
                                 Name = $"{appName}.Shared",
+                                ChildFolders = new List<SoftFolder>
+                                {
+                                    new SoftFolder
+                                    {
+                                        Name = "Terms",
+                                    }
+                                },
+                                SoftFiles = new List<SoftFile>
+                                {
+                                    new SoftFile { Name = $"{appName}.Shared.csproj", Data = GetSharedCsProjData() },
+                                }
                             },
                             new SoftFolder
                             {
                                 Name = $"{appName}.WebAPI",
+                                ChildFolders = new List<SoftFolder>
+                                {
+                                    new SoftFolder
+                                    {
+                                        Name = "Controllers",
+                                    },
+                                    new SoftFolder
+                                    {
+                                        Name = "DI",
+                                        SoftFiles = new List<SoftFile>
+                                        {
+                                            new SoftFile { Name = "CompositionRoot.cs", Data = GetCompositionRootCsData(appName) },
+                                        }
+                                    },
+                                    new SoftFolder
+                                    {
+                                        Name = "Helpers",
+                                    },
+                                    new SoftFolder
+                                    {
+                                        Name = "Properties",
+                                        SoftFiles = new List<SoftFile>
+                                        {
+                                            new SoftFile { Name = "launchSettings.json", Data = GetLaunchSettingsJsonData() },
+                                        }
+                                    },
+                                },
+                                SoftFiles = new List<SoftFile>
+                                {
+                                    new SoftFile { Name = "appsettings.json", Data = GetAppSettingsJsonData(appName, null, null, null, null, null, null) }, // TODO FT: Add this to the app
+                                    new SoftFile { Name = "GeneratorSettings.cs", Data = GetWebAPIGeneratorSettingsData(appName) },
+                                    new SoftFile { Name = $"{appName}.WebAPI.csproj", Data = GetWebAPICsProjData(appName) },
+                                    new SoftFile { Name = "program.cs", Data = GetProgramCsData(appName) },
+                                    new SoftFile { Name = "Settings.cs", Data = GetWebAPISettingsCsData(appName) },
+                                    new SoftFile { Name = "Startup.cs", Data = GetStartupCsData(appName) },
+                                }
                             },
                         },
                         SoftFiles = new List<SoftFile>
                         {
-                            new SoftFile { Name = $"{appName}.sln", Data = GetNetSolutionData() }
+                            new SoftFile { Name = $"{appName}.sln", Data = GetNetSolutionData(appName) }
                         }
+                    },
+                    new SoftFolder
+                    {
+                        Name = "Data",
+                        ChildFolders = new List<SoftFolder>
+                        {
+                            new SoftFolder
+                            {
+                                Name = "test-data"
+                            },
+                            new SoftFolder
+                            {
+                                Name = "update-scripts"
+                            },
+                        },
+                        SoftFiles = new List<SoftFile>
+                        {
+                            new SoftFile { Name = "initialize-data.xlsx", Data = "" },
+                            new SoftFile { Name = "initialize-script.sql", Data = "" }
+                        }
+                    },
+                    new SoftFolder
+                    {
+                        Name = "Documentation",
                     }
                 },
                 SoftFiles = new List<SoftFile>
                 {
-                    new SoftFile { Name = ".gitignore", Data = null },
-                    new SoftFile { Name = "License", Data = null },
+                    new SoftFile { Name = ".gitignore", Data = "" },
+                    new SoftFile { Name = "License", Data = "" },
                 }
             };
 
-            if (name == "core")
-            {
-
-            }
-
-            if (name == "styles")
-            {
-
-            }
-
-            string projectPath = Path.Combine(outputPath, appName);
+            GenerateProjectStructure(appStructure, outputPath);
         }
+
+        private void GenerateProjectStructure(SoftFolder appStructure, string path)
+        {
+            string newPath = GenerateFolder(appStructure, path);
+
+            foreach (SoftFile file in appStructure.SoftFiles)
+                GenerateFile(appStructure, file, newPath);
+
+            foreach (SoftFolder folder in appStructure.ChildFolders)
+                GenerateProjectStructure(folder, newPath);
+        }
+
+        private string GenerateFolder(SoftFolder appStructure, string path)
+        {
+            if (appStructure.Name == "core")
+            {
+                string sourcePath = Settings.GeneralCoreFrontendPath;
+                string destinationPath = path.Replace("core", "");
+
+                Helper.CopyFolder(sourcePath, destinationPath, "core");
+            }
+            else if (appStructure.Name == "styles")
+            {
+                string sourcePath = Settings.GeneralStylesFrontendPath;
+                string destinationPath = path.Replace("styles", "");
+
+                Helper.CopyFolder(sourcePath, destinationPath, "styles");
+            }
+            else
+            {
+                Helper.MakeFolder(path, appStructure.Name);
+            }
+
+            return Path.Combine(path, appStructure.Name);
+        }
+
+        private void GenerateFile(SoftFolder parentFolder, SoftFile file, string path) 
+        {
+            string filePath = Path.Combine(path, file.Name);
+
+            Helper.FileOverrideCheck(filePath);
+
+            Helper.WriteToTheFile(file.Data, filePath);
+        }
+
+        #region NET
+
+        private string GetInfrastructureApplicationDbContextData(string appName)
+        {
+            return $$"""
+using Microsoft.EntityFrameworkCore;
+using {{appName}}.Business.Entities;
+using Soft.Generator.Infrastructure;
+
+namespace {{appName}}.Infrastructure
+{
+    public partial class {{appName}}ApplicationDbContext : ApplicationDbContext<UserExtended> // https://stackoverflow.com/questions/41829229/how-do-i-implement-dbcontext-inheritance-for-multiple-databases-in-ef7-net-co
+    {
+        public {{appName}}ApplicationDbContext(DbContextOptions<{{appName}}ApplicationDbContext> options)
+        : base(options)
+        {
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
+
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+        {
+            // FT: Need to call these methods here, because of abstraction with security package
+            //await AddPartnerUserForEachNewPartner();
+            //await SaveUserCurrentPartnerAndSetDefaultTierForEachUser();
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
+    }
+}
+""";
+        }
+
+        private string GetNetSolutionData(string appName)
+        {
+            return $$"""
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{D485BCE8-A950-457D-A710-566D559BD585}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Security", "..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj", "{3B328631-AB3B-4B28-9FA5-4DA790670199}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Shared", "..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj", "{53565A13-28F1-424F-B5A0-34125EF303CD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Infrastructure", "..\..\Soft.Generator\Source\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj", "{587D08A6-A975-4673-90A4-77CF61B7B526}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.SourceGenerators", "..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj", "{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.WebAPI", "{{appName}}.WebAPI\{{appName}}.WebAPI.csproj", "{1063DCDA-9291-4FAA-87B2-555E12511EE2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.Infrastructure", "{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj", "{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{F2AA00F3-29C7-4A82-B4C0-5BD998C67912}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.Business", "{{appName}}.Business\{{appName}}.Business.csproj", "{50AD9ADA-4E90-4E69-97BB-92FA455115DE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.Shared", "{{appName}}.Shared\{{appName}}.Shared.csproj", "{2D65E133-33C4-4169-A175-D744800941D6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3B328631-AB3B-4B28-9FA5-4DA790670199}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B328631-AB3B-4B28-9FA5-4DA790670199}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B328631-AB3B-4B28-9FA5-4DA790670199}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B328631-AB3B-4B28-9FA5-4DA790670199}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53565A13-28F1-424F-B5A0-34125EF303CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53565A13-28F1-424F-B5A0-34125EF303CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53565A13-28F1-424F-B5A0-34125EF303CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53565A13-28F1-424F-B5A0-34125EF303CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{587D08A6-A975-4673-90A4-77CF61B7B526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{587D08A6-A975-4673-90A4-77CF61B7B526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{587D08A6-A975-4673-90A4-77CF61B7B526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{587D08A6-A975-4673-90A4-77CF61B7B526}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1063DCDA-9291-4FAA-87B2-555E12511EE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1063DCDA-9291-4FAA-87B2-555E12511EE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1063DCDA-9291-4FAA-87B2-555E12511EE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1063DCDA-9291-4FAA-87B2-555E12511EE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50AD9ADA-4E90-4E69-97BB-92FA455115DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50AD9ADA-4E90-4E69-97BB-92FA455115DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50AD9ADA-4E90-4E69-97BB-92FA455115DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50AD9ADA-4E90-4E69-97BB-92FA455115DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D65E133-33C4-4169-A175-D744800941D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D65E133-33C4-4169-A175-D744800941D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D65E133-33C4-4169-A175-D744800941D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D65E133-33C4-4169-A175-D744800941D6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3B328631-AB3B-4B28-9FA5-4DA790670199} = {D485BCE8-A950-457D-A710-566D559BD585}
+		{53565A13-28F1-424F-B5A0-34125EF303CD} = {D485BCE8-A950-457D-A710-566D559BD585}
+		{587D08A6-A975-4673-90A4-77CF61B7B526} = {D485BCE8-A950-457D-A710-566D559BD585}
+		{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1} = {D485BCE8-A950-457D-A710-566D559BD585}
+		{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C} = {F2AA00F3-29C7-4A82-B4C0-5BD998C67912}
+		{50AD9ADA-4E90-4E69-97BB-92FA455115DE} = {F2AA00F3-29C7-4A82-B4C0-5BD998C67912}
+		{2D65E133-33C4-4169-A175-D744800941D6} = {F2AA00F3-29C7-4A82-B4C0-5BD998C67912}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {173A0B43-6F68-4847-ABBF-97106E9B08E6}
+	EndGlobalSection
+EndGlobal
+""";
+        }
+
+        private string GetStartupCsData(string appName)
+        {
+            return $$"""
+using LightInject;
+using Soft.Generator.Shared.Helpers;
+using Soft.Generator.Shared.Extensions;
+using {{appName}}.WebAPI.DI;
+using {{appName}}.Infrastructure;
+using Quartz;
+
+public class Startup
+{
+    public static string _jsonConfigurationFile = "appsettings.json";
+    private readonly IHostEnvironment _hostEnvironment;
+
+    public Startup(IConfiguration configuration, IHostEnvironment hostEnvironment)
+    {
+        Configuration = configuration;
+        _hostEnvironment = hostEnvironment;
+
+        if (_hostEnvironment.IsStaging())
+            _jsonConfigurationFile = "appsettings.Staging.json";
+        else if (_hostEnvironment.IsProduction())
+            _jsonConfigurationFile = "appsettings.Production.json";
+
+        {{appName}}.WebAPI.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<{{appName}}.WebAPI.Settings>(_jsonConfigurationFile);
+        {{appName}}.Business.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<{{appName}}.Business.Settings>(_jsonConfigurationFile);
+        Soft.Generator.Infrastructure.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Soft.Generator.Infrastructure.Settings>(_jsonConfigurationFile);
+        Soft.Generator.Security.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Soft.Generator.Security.Settings>(_jsonConfigurationFile);
+        Soft.Generator.Shared.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Soft.Generator.Shared.Settings>(_jsonConfigurationFile);
+    }
+
+    public IConfiguration Configuration { get; }
+
+    public void ConfigureServices(IServiceCollection services)
+    {
+        services.SoftConfigureServices<{{appName}}ApplicationDbContext>();
+    }
+
+    public void ConfigureContainer(IServiceContainer container)
+    {
+        // Register container (AntiPattern)
+        container.RegisterInstance(typeof(IServiceContainer), container);
+
+        // Init WebAPI
+        container.RegisterFrom<CompositionRoot>();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        app.SoftConfigure(env);
+    }
+}
+""";
+        }
+
+        private string GetWebAPISettingsCsData(string appName)
+        {
+            return $$"""
+namespace {{appName}}.WebAPI
+{
+    public static class SettingsProvider
+    {
+        public static Settings Current { internal get; set; } = new Settings();
+    }
+
+    public class Settings
+    {
+
+    }
+}
+""";
+        }
+
+        private string GetProgramCsData(string appName)
+        {
+            return $$"""
+namespace {{appName}}.WebAPI
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseLightInject()
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
+}
+""";
+        }
+
+        private string GetWebAPICsProjData(string appName)
+        {
+            return $$"""
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Azure.Storage.Blobs" Version="12.22.2" />
+		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.1" />
+		<PackageReference Include="LightInject.Microsoft.Hosting" Version="1.6.1" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.6" />
+		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.3.1" />
+		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
+		<PackageReference Include="NucleusFramework.Core" Version="6.1.9" />
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj" />
+		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
+		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\{{appName}}.Business\{{appName}}.Business.csproj" />
+		<ProjectReference Include="..\{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj" />
+		<ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+		<PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+		<PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+		<PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
+		<PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
+		<PackageReference Include="System.Net.Primitives" Version="4.3.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Helpers\" />
+	</ItemGroup>
+
+</Project>
+""";
+        }
+
+        private string GetWebAPIGeneratorSettingsData(string appName)
+        {
+            return $$"""
+using Soft.Generator.Shared.Attributes;
+
+namespace {{appName}}.WebAPI.GeneratorSettings
+{
+    public class GeneratorSettings
+    {
+        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\services\api\api.service.generated.ts")]
+        public string NgControllersGenerator { get; set; }
+
+        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\services\translates")]
+        public string NgTranslatesGenerator { get; set; }
+
+        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\services\validators")]
+        public string NgValidatorsGenerator { get; set; }
+    }
+}
+""";
+        }
+
+        private string GetAppSettingsJsonData(string appName, string emailSender, string smtpUser, string smtpPass, string jwtKey, string blobStorageConnectionString, string blobStorageUrl)
+        {
+            return $$"""
+{
+  "AppSettings": {
+    "Logging": {
+      "LogLevel": {
+        "Default": "Information",
+        "Microsoft.AspNetCore": "Information"
+      }
+    },
+    "AllowedHosts": "*",
+    "{{appName}}.WebAPI": {
+    },
+    "{{appName}}.Business": {
+    },
+    "Soft.Generator.Infrastructure": {
+      "UseGoogleAsExternalProvider": true,
+      "AppHasLatinTranslation": false
+    },
+    "Soft.Generator.Shared": {
+      "EmailSender": "{{emailSender}}",
+      "SmtpHost": "smtp.gmail.com",
+      "SmtpPort": 587,
+      "SmtpUser": "{{smtpUser}}",
+      "SmtpPass": "{{smtpPass}}",
+      "JwtKey": "{{jwtKey}}",
+      "JwtIssuer": "https://localhost:7260;",
+      "JwtAudience": "https://localhost:7260;",
+      "ClockSkewMinutes": 1, // FT: Making it to 1 minute because of the SPA sends request exactly when it expires.
+      "FrontendUrl": "http://localhost:4200",
+
+      "BlobStorageConnectionString": "{{blobStorageConnectionString}}",
+      "BlobStorageUrl": "{{blobStorageUrl}}",
+      "BlobStorageContainerName": "files",
+
+      "ConnectionString": "Data source=(localhost)\\SQLEXPRESS;Initial Catalog={{appName}};Integrated Security=True;Encrypt=false;MultipleActiveResultSets=True;"
+    },
+    "Soft.Generator.Security": {
+      "JwtKey": "{{jwtKey}}",
+      "JwtIssuer": "https://localhost:7260;",
+      "JwtAudience": "https://localhost:7260;",
+      "ClockSkewMinutes": 1, // FT: Making it to 1 minute because of the SPA sends request exactly when it expires. 
+      "AccessTokenExpiration": 20,
+      "RefreshTokenExpiration": 1440, // 24 hours
+      "VerificationTokenExpiration": 5,
+      "NumberOfFailedLoginAttemptsInARowToDisableUser": 40, // FT: I think we don't need this check, maybe delete in the future
+      "AllowTheUseOfAppWithDifferentIpAddresses": true,
+      "AllowedBrowsersForTheSingleUser": 5,
+      "GoogleClientId": "24372003240-44eprq8dn4s0b5f30i18tqksep60uk5u.apps.googleusercontent.com",
+      "ExcelContentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    },
+  }
+}
+""";
+        }
+
+        private string GetLaunchSettingsJsonData()
+        {
+            return $$"""
+{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:9663",
+      "sslPort": 44388
+    }
+  },
+  "profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5173",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "https": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "https://localhost:7068;http://localhost:5173",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+""";
+        }
+
+        private string GetCompositionRootCsData(string appName)
+        {
+            return $$"""
+using LightInject;
+using Soft.Generator.Security.Interface;
+using Soft.Generator.Shared.Excel;
+using Soft.Generator.Security.Services;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.Mvc;
+using Soft.Generator.Shared.SoftFluentValidation;
+using Soft.Generator.Shared.Emailing;
+using {{appName}}.Services;
+using {{appName}}.Business.Services;
+using {{appName}}.Business.Entities;
+
+namespace {{appName}}.WebAPI.DI
+{
+    public class CompositionRoot : ICompositionRoot
+    {
+        public virtual void Compose(IServiceRegistry registry)
+        {
+            // Framework
+            registry.Register<AuthenticationService>();
+            registry.Register<AuthorizationService>();
+            registry.Register<SecurityBusinessService<UserExtended>>();
+            registry.Register<SecurityBusinessServiceGenerated<UserExtended>>();
+            registry.Register<{{appName}}.Business.Services.AuthorizationBusinessService>();
+            registry.Register<{{appName}}.Business.Services.AuthorizationBusinessServiceGenerated>();
+            registry.Register<Soft.Generator.Security.Services.AuthorizationBusinessService<UserExtended>>();
+            registry.Register<Soft.Generator.Security.Services.AuthorizationBusinessServiceGenerated>();
+            registry.Register<ExcelService>();
+            registry.Register<EmailingService>();
+            registry.RegisterSingleton<IConfigureOptions<MvcOptions>, TranslatePropertiesConfiguration>();
+            registry.RegisterSingleton<IJwtAuthManager, JwtAuthManagerService>();
+
+            // PL
+            registry.Register<BusinessService>();
+            registry.Register<BusinessServiceGenerated>();
+        }
+    }
+}
+""";
+        }
+
+        private string GetSharedCsProjData()
+        {
+            return $$"""
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+		<PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+		<PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+		<PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
+		<PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
+		<PackageReference Include="System.Net.Primitives" Version="4.3.0" />
+	</ItemGroup>
+
+</Project>
+
+""";
+        }
+
+        private string GetInfrastructureCsProjData(string appName)
+        {
+            return $$"""
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+	</PropertyGroup>
+
+	<ItemGroup>
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj" />
+		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
+		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\{{appName}}.Business\{{appName}}.Business.csproj" />
+		<ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+		<PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+		<PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+		<PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
+		<PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
+		<PackageReference Include="System.Net.Primitives" Version="4.3.0" />
+	</ItemGroup>
+
+</Project>
+""";
+        }
+
+        private string GetInfrastructureGeneratorSettingsData(string appName)
+        {
+            return $$"""
+using Soft.Generator.Shared.Attributes;
+
+namespace {{appName}}.Infrastructure.GeneratorSettings
+{
+    public class GeneratorSettings
+    {
+        [Output("true")]
+        public bool DbContextGenerator { get; set; }
+    }
+}
+""";
+        }
+
+        private string GetBusinessSettingsCsData(string appName)
+        {
+            return $$"""
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace {{appName}}.Business
+{
+    public static class SettingsProvider
+    {
+        public static Settings Current { internal get; set; } = new Settings();
+    }
+
+    public class Settings
+    {
+        public string PartnerHeadersKey { get; set; }
+    }
+}
+""";
+        }
+
+        private string GetBusinessCsProjData()
+        {
+            return $$"""
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj" />
+    <ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ValidationRules\" />
+  </ItemGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Quartz.Extensions.Hosting" Version="3.13.1" />
+		<PackageReference Include="System.IO.FileSystem.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.IO.FileSystem" Version="4.3.0" />
+		<PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+		<PackageReference Include="System.Diagnostics.Debug" Version="4.3.0" />
+		<PackageReference Include="System.Runtime.Extensions" Version="4.3.0" />
+		<PackageReference Include="Microsoft.Win32.Primitives" Version="4.3.0" />
+		<PackageReference Include="System.Diagnostics.Tracing" Version="4.3.0" />
+		<PackageReference Include="System.Net.Primitives" Version="4.3.0" />
+	</ItemGroup>
+
+</Project>
+""";
+        }
+
+        private string GetBusinessGeneratorSettingsData(string appName)
+        {
+            return $$"""
+using Soft.Generator.Shared.Attributes;
+
+namespace {{appName}}.GeneratorSettings
+{
+    public class GeneratorSettings
+    {
+        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\entities")]
+        public string NgEntitiesGenerator { get; set; }
+
+        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\enums")]
+        public string NgEnumsGenerator { get; set; }
+    }
+}
+""";
+        }
+
+        private string GetNotificationServiceCsData(string appName)
+        {
+            return $$"""
+using {{appName}}.Business.Entities;
+using Soft.Generator.Security.Interface;
+using Soft.Generator.Shared.Extensions;
+using Soft.Generator.Shared.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace {{appName}}.Business.Services
+{
+    public class NotificationService
+    {
+        private readonly IApplicationDbContext _context;
+
+        public NotificationService(IApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task SendNotification(UserExtended user, string notificationTitle, string notificationDescription)
+        {
+            await _context.WithTransactionAsync(async () =>
+            {
+                Notification notification = new Notification
+                {
+                    Title = notificationTitle,
+                    Description = notificationDescription,
+                };
+
+                user.Notifications.Add(notification);
+
+                await _context.SaveChangesAsync();
+            });
+        }
+
+    }
+}
+""";
+        }
+
+        private string GetAuthorizationServiceCsData(string appName)
+        {
+            return $$"""
+using Azure.Storage.Blobs;
+using Soft.Generator.Security.Services;
+using Soft.Generator.Shared.Interfaces;
+
+namespace {{appName}}.Business.Services
+{
+    public class AuthorizationBusinessService : AuthorizationBusinessServiceGenerated
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly AuthenticationService _authenticationService;
+
+        public AuthorizationBusinessService(IApplicationDbContext context, AuthenticationService authenticationService, BlobContainerClient blobContainerClient)
+            : base(context, authenticationService, blobContainerClient)
+        {
+            _context = context;
+            _authenticationService = authenticationService;
+        }
+
+    }
+}
+""";
+        }
+
+        private string GetBusinessServiceCsData(string appName)
+        {
+            return $$"""
+using {{appName}}.Business.Services;
+using {{appName}}.Business.Entities;
+using {{appName}}.Business.DTO;
+using {{appName}}.Business.Enums;
+using {{appName}}.Business.DataMappers;
+using {{appName}}.Business.ValidationRules;
+using Soft.Generator.Shared.DTO;
+using Soft.Generator.Shared.Excel;
+using Soft.Generator.Shared.Interfaces;
+using Soft.Generator.Shared.Extensions;
+using Soft.Generator.Security.Services;
+using Soft.Generator.Shared.SoftExceptions;
+using Soft.Generator.Security.DTO;
+using Soft.Generator.Shared.Emailing;
+using Microsoft.EntityFrameworkCore;
+using Mapster;
+using FluentValidation;
+using Azure.Storage.Blobs;
+using System.Collections.Generic;
+using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
+using System.Linq;
+using Soft.Generator.Shared.Helpers;
+using System.Diagnostics;
+
+namespace {{appName}}.Services
+{
+    public class {{appName}}BusinessService : {{appName}}BusinessServiceGenerated
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly {{appName}}.Business.Services.AuthorizationBusinessService _authorizationService;
+        private readonly AuthenticationService _authenticationService;
+        private readonly SecurityBusinessService<UserExtended> _securityBusinessService;
+        private readonly EmailingService _emailingService;
+
+        public LoyalsBusinessService(IApplicationDbContext context, ExcelService excelService, {{appName}}.Business.Services.AuthorizationBusinessService authorizationService, SecurityBusinessService<UserExtended> securityBusinessService, 
+            AuthenticationService authenticationService, EmailingService emailingService)
+            : base(context, excelService, authorizationService, blobContainerClient)
+        {
+            _context = context;
+            _authorizationService = authorizationService;
+            _securityBusinessService = securityBusinessService;
+            _authenticationService = authenticationService;
+            _emailingService = emailingService;
+        }
+
+        #region User
+
+        public async Task<UserExtendedDTO> SaveUserExtendedAndReturnDTOExtendedAsync(UserExtendedSaveBodyDTO userExtendedSaveBodyDTO)
+        {
+            return await _context.WithTransactionAsync(async () =>
+            {
+                if (userExtendedSaveBodyDTO.UserExtendedDTO.Password != null)
+                    throw new HackerException("You can't change password from here.");
+
+                if (userExtendedSaveBodyDTO.UserExtendedDTO.Id == 0)
+                    throw new HackerException("You can't add new user.");
+
+                UserExtended user = await LoadInstanceAsync<UserExtended, long>(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.UserExtendedDTO.Version);
+
+                if (userExtendedSaveBodyDTO.UserExtendedDTO.Email != user.Email)
+                    throw new HackerException("You can't change email from here.");
+
+                if (userExtendedSaveBodyDTO.SelectedRoleIds != null)
+                    await _securityBusinessService.UpdateRoleListForUser(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.SelectedRoleIds);
+
+                userExtendedSaveBodyDTO.UserExtendedDTO.Password = user.Password;
+                return await SaveUserExtendedAndReturnDTOAsync(userExtendedSaveBodyDTO.UserExtendedDTO, false, false); // FT: Here we can let Save after update many to many association because we are sure that we will never send 0 from the UI
+            });
+        }
+
+        public async Task<List<string>> GetCurrentUserPermissionCodes()
+        {
+            return await _context.WithTransactionAsync(async () =>
+            {
+                UserExtended currentUser = await _authenticationService.GetCurrentUser<UserExtended>();
+
+                if (currentUser == null)
+                    return new List<string>();
+
+                return currentUser.Roles
+                    .SelectMany(x => x.Permissions)
+                    .Select(x => x.Code)
+                    .Distinct()
+                    .ToList();
+            });
+        }
+
+        #endregion
+
+        #region Notification
+
+        public async Task<NotificationDTO> SaveNotificationAndReturnDTOExtendedAsync(NotificationSaveBodyDTO notificationSaveBodyDTO)
+        {
+            return await _context.WithTransactionAsync(async () =>
+            {
+                NotificationDTO savedNotificationDTO = await SaveNotificationAndReturnDTOAsync(notificationSaveBodyDTO.NotificationDTO, true, true);
+
+                PaginationResult<UserExtended> paginationResult = await LoadUserExtendedListForPagination(notificationSaveBodyDTO.TableFilter, _context.DbSet<UserExtended>());
+
+                await UpdateUserExtendedListForNotificationTableSelection(paginationResult.Query, savedNotificationDTO.Id, notificationSaveBodyDTO);
+
+                return savedNotificationDTO;
+            });
+        }
+
+        // FT: Add this to the generator
+        public async Task<TableResponseDTO<UserExtendedDTO>> LoadUserForNotificationTableData(TableFilterDTO tableFilterPayload)
+        {
+            TableResponseDTO<UserExtendedDTO> tableResponse = new TableResponseDTO<UserExtendedDTO>();
+
+            await _context.WithTransactionAsync(async () =>
+            {
+                IQueryable<UserExtended> query = _context.DbSet<UserExtended>()
+                    .OrderBy(x => x.Id) // FT: It's important that OrderBy is before skip and take
+                    .Skip(tableFilterPayload.First)
+                    .Take(tableFilterPayload.Rows)
+                    .Where(x => x.Notifications
+                        .Any(x => x.Id == tableFilterPayload.AdditionalFilterIdLong)); // notificationId
+
+                PaginationResult<UserExtended> paginationResult = await LoadUserExtendedListForPagination(tableFilterPayload, query);
+
+                tableResponse.Data = await paginationResult.Query
+                    .ProjectToType<UserExtendedDTO>(Mapper.UserExtendedProjectToConfig())
+                    .ToListAsync();
+
+                int count = await _context.DbSet<UserExtended>().Where(x => x.Notifications.Any(x => x.Id == tableFilterPayload.AdditionalFilterIdLong)).CountAsync();
+
+                tableResponse.TotalRecords = count;
+            });
+
+            return tableResponse;
+        }
+
+        public async Task SendNotificationEmail(long notificationId, int notificationVersion)
+        {
+            await _context.WithTransactionAsync(async () =>
+            {
+                await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
+
+                Notification notification = await LoadInstanceAsync<Notification, long>(notificationId, notificationVersion); // FT: Checking version because if the user didn't save and some other user changed the version, he will send emails to wrong users
+
+                List<string> recipients = notification.Users.Select(x => x.Email).ToList();
+
+                await _emailingService.SendEmailAsync(recipients, notification.Title, notification.EmailBody);
+            });
+        }
+
+        #endregion
+
+    }
+}
+""";
+        }
+
+        private string GetMapsterMapperCsData(string appName)
+        {
+            return $$"""
+
+""";
+        }
+
+        #endregion
 
         #region Angular
 

@@ -57,9 +57,14 @@ namespace Soft.Generator.DesktopApp.Controllers
             return _desktopAppBusinessService.GetDllPathListForWebApplication(webApplicationId);
         }
 
-        public List<WebApplicationFile> GenerateWebApplication(long webApplicationId)
+        public void GenerateNetAndAngularStructure(long webApplicationId)
         {
-            return _desktopAppBusinessService.GenerateWebApplication(webApplicationId);
+            _desktopAppBusinessService.GenerateNetAndAngularStructure(webApplicationId);
+        }
+
+        public void GenerateBusinessFiles(long webApplicationId)
+        {
+            _desktopAppBusinessService.GenerateBusinessFiles(webApplicationId);
         }
     }
 }

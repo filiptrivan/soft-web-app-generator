@@ -34,9 +34,9 @@ namespace Soft.Generator.DesktopApp.Services
             _DTOTypes = Helper.GetDTOTypes(_projectAssemblies);
         }
 
-        public void GenerateNewWebAPIStructure()
+        public void GenerateNetAndAngularStructure(string outputPath, string appName, string primaryColor)
         {
-            new NetAPIStructureGenerator().Generate();
+            new NetAndAngularStructureGenerator().Generate(outputPath, appName, primaryColor);
         }
 
         public void GenerateBusinessFiles()
