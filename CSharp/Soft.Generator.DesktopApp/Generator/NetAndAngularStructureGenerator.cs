@@ -133,15 +133,6 @@ namespace Soft.Generator.DesktopApp.Generator
                                                                 {
                                                                     new SoftFolder
                                                                     {
-                                                                        Name = "forgot-password",
-                                                                        SoftFiles = new List<SoftFile>
-                                                                        {
-                                                                            new SoftFile { Name = "forgot-password.component.html", Data = GetForgotPasswordComponentHtmlData() },
-                                                                            new SoftFile { Name = "forgot-password.component.ts", Data = GetForgotPasswordComponentTsData() },
-                                                                        }
-                                                                    },
-                                                                    new SoftFolder
-                                                                    {
                                                                         Name = "login",
                                                                         SoftFiles = new List<SoftFile>
                                                                         {
@@ -342,7 +333,9 @@ namespace Soft.Generator.DesktopApp.Generator
                                         Name = "Entities",
                                         SoftFiles = new List<SoftFile>
                                         {
-                                            new SoftFile { Name = "UserExtended", Data = GetUserExtendedCsData() }
+                                            new SoftFile { Name = "Notification", Data = GetNotificationCsData() },
+                                            new SoftFile { Name = "UserExtended", Data = GetUserExtendedCsData() },
+                                            new SoftFile { Name = "UserNotification", Data = GetUserNotificationCsData() },
                                         }
                                     },
                                     new SoftFolder
@@ -948,10 +941,8 @@ namespace {{appName}}.WebAPI.DI
             // Framework
             registry.Register<AuthenticationService>();
             registry.Register<AuthorizationService>();
-            registry.Register<SecurityBusinessService<UserExtended>>();
-            registry.Register<SecurityBusinessServiceGenerated<UserExtended>>();
-            registry.Register<{{appName}}.Business.Services.AuthorizationBusinessService>();
-            registry.Register<{{appName}}.Business.Services.AuthorizationBusinessServiceGenerated>();
+            registry.Register<Soft.Generator.Security.Services.BusinessService<UserExtended>>();
+            registry.Register<Soft.Generator.Security.Services.BusinessServiceGenerated<UserExtended>>();
             registry.Register<Soft.Generator.Security.Services.AuthorizationBusinessService<UserExtended>>();
             registry.Register<Soft.Generator.Security.Services.AuthorizationBusinessServiceGenerated>();
             registry.Register<ExcelService>();
@@ -959,9 +950,11 @@ namespace {{appName}}.WebAPI.DI
             registry.RegisterSingleton<IConfigureOptions<MvcOptions>, TranslatePropertiesConfiguration>();
             registry.RegisterSingleton<IJwtAuthManager, JwtAuthManagerService>();
 
-            // PL
-            registry.Register<BusinessService>();
-            registry.Register<BusinessServiceGenerated>();
+            // Business
+            registry.Register<{{appName}}.Business.Services.BusinessService>();
+            registry.Register<{{appName}}.Business.Services.BusinessServiceGenerated>();
+            registry.Register<{{appName}}.Business.Services.AuthorizationBusinessService>();
+            registry.Register<{{appName}}.Business.Services.AuthorizationBusinessServiceGenerated>();
         }
     }
 }
@@ -1123,7 +1116,7 @@ namespace {{appName}}.Business
             return $$"""
 using Soft.Generator.Shared.Attributes;
 
-namespace {{appName}}.GeneratorSettings
+namespace {{appName}}.Business.GeneratorSettings
 {
     public class GeneratorSettings
     {
@@ -1262,9 +1255,6 @@ namespace {{appName}}.Services
         {
             return await _context.WithTransactionAsync(async () =>
             {
-                if (userExtendedSaveBodyDTO.UserExtendedDTO.Password != null)
-                    throw new HackerException("You can't change password from here.");
-
                 if (userExtendedSaveBodyDTO.UserExtendedDTO.Id == 0)
                     throw new HackerException("You can't add new user.");
 
@@ -1276,7 +1266,6 @@ namespace {{appName}}.Services
                 if (userExtendedSaveBodyDTO.SelectedRoleIds != null)
                     await _securityBusinessService.UpdateRoleListForUser(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.SelectedRoleIds);
 
-                userExtendedSaveBodyDTO.UserExtendedDTO.Password = user.Password;
                 return await SaveUserExtendedAndReturnDTOAsync(userExtendedSaveBodyDTO.UserExtendedDTO, false, false); // FT: Here we can let Save after update many to many association because we are sure that we will never send 0 from the UI
             });
         }
@@ -2321,7 +2310,6 @@ export class DashboardsRoutingModule { }
             return $$"""
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { PrimengModule } from '../../../core/modules/primeng.module';
@@ -2329,14 +2317,9 @@ import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
 import { AuthComponent } from './partials/auth.component';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LoginVerificationComponent } from 'src/app/core/components/email-verification/login-verification.component';
-import { ForgotPasswordVerificationComponent } from 'src/app/core/components/email-verification/forgot-password-verification.component';
 import { RegistrationVerificationComponent } from 'src/app/core/components/email-verification/registration-verification.component';
 
 const routes: Routes = [
-    { 
-        path: 'forgot-password', 
-        component: ForgotPasswordComponent
-    },
     { 
         path: 'registration', 
         component: RegistrationComponent
@@ -2354,12 +2337,10 @@ const routes: Routes = [
         PrimengModule,
         SoftControlsModule,
         LoginVerificationComponent,
-        ForgotPasswordVerificationComponent,
         RegistrationVerificationComponent,
         TranslocoDirective,
     ],
     declarations: [
-        ForgotPasswordComponent,
         RegistrationComponent,
         LoginComponent,
     ]
@@ -2439,13 +2420,10 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
             return $$$"""
 <ng-container *transloco="let t">
     @if (showEmailSentDialog == false) {
-        <auth>
+        <auth (onCompanyNameChange)="companyNameChange($event)">
             <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
-                <div class="col-12" style="padding: 0;">
-                    <soft-textbox [control]="control('email')"></soft-textbox>
-                </div>
                 <div class="col-12" style="padding-left: 0; padding-right: 0;">
-                    <soft-password [control]="control('password')"></soft-password>
+                    <soft-textbox [control]="control('email')"></soft-textbox>
                 </div>
 
                 <div class="mb-4 gap-5">
@@ -2456,13 +2434,13 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
 
                 <div style="display: flex; flex-direction: column; gap: 16px;">
                     <p-button [label]="t('AgreeAndJoin')" (onClick)="sendRegistrationVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-                    <p-button [label]="t('AlreadyHasAccount', {companyName: companyName})" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
+                    <p-button [label]="t('AlreadyOnLoyalty', {companyName: companyName})" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
                 </div>
             </form>
         </auth>
     }
     @else {
-        <registration-verification [email]="model.email" [password]="model.password"></registration-verification>
+        <registration-verification [email]="model.email"></registration-verification>
     }
 </ng-container>
 """;
@@ -2622,117 +2600,21 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
             return $$$"""
 <ng-container *transloco="let t">
     @if (showEmailSentDialog == false) {
-        <auth>
+        <auth (onCompanyNameChange)="companyNameChange($event)">
             <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
-                <div class="col-12" style="padding: 0;">
+                <div class="col-12" style="padding-left: 0; padding-right: 0; margin-bottom: 32px;">
                     <soft-textbox textbox [control]="control('email')"></soft-textbox>
-                </div>
-                <div class="col-12" style="padding-left: 0; padding-right: 0;">
-                    <soft-password [control]="control('password')"></soft-password>
-                </div>
-
-                <div class="flex align-items-center justify-content-between mb-4 gap-5" style="margin-bottom: 16px;">
-                    <a class="link no-underline" routerLink="/auth/forgot-password">{{t('ForgotPassword')}}</a>
                 </div>
 
                 <div style="display: flex; flex-direction: column; gap: 16px;">
                     <p-button [label]="t('Login')" (onClick)="sendLoginVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-                    <p-button *ngIf="usersCanRegister" [label]="t('NewUserJoinNow', {companyName: companyName})" routerLink="/auth/registration" [style]="{width: '100%'}"></p-button>
+                    <p-button *ngIf="usersCanRegister" [label]="t('NewToLoyaltyJoinNow', {companyName: companyName})" routerLink="/auth/registration" [style]="{width: '100%'}"></p-button>
                 </div>
             </form>
         </auth>
     }
     @else {
-        <login-verification [email]="model.email" [password]="model.password"></login-verification>
-    }
-</ng-container>
-""";
-        }
-
-        private string GetForgotPasswordComponentTsData()
-        {
-            return $$"""
-import { Router, ActivatedRoute } from '@angular/router';
-import { SoftMessageService } from '../../../../core/services/soft-message.service';
-import { AuthService } from '../../../../core/services/auth.service';
-import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
-import { LayoutService } from '../../../services/app.layout.service';
-import { BaseForm } from '../../../../core/components/base-form/base-form';
-import { HttpClient } from '@angular/common/http';
-import { ForgotPassword } from 'src/app/business/entities/security-entities.generated';
-import { TranslocoService } from '@jsverse/transloco';
-import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
-import { ValidatorService } from 'src/app/business/services/validation/validation-rules';
-
-@Component({
-    selector: 'forgot-password',
-    templateUrl: './forgot-password.component.html',
-})
-export class ForgotPasswordComponent extends BaseForm<ForgotPassword> implements OnInit {
-    showEmailSentDialog: boolean = false;
-
-    constructor(
-      protected override differs: KeyValueDiffers,
-      protected override http: HttpClient,
-      protected override messageService: SoftMessageService, 
-      protected override changeDetectorRef: ChangeDetectorRef,
-      protected override router: Router,
-      protected override route: ActivatedRoute,
-      protected override translocoService: TranslocoService,
-      protected override translateClassNamesService: TranslateClassNamesService,
-      protected override validatorService: ValidatorService,
-      public layoutService: LayoutService, 
-      private authService: AuthService, 
-    ) { 
-      super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
-    }
-
-    override ngOnInit(){
-        this.init(new ForgotPassword());
-    }
-
-    init(model: ForgotPassword){
-        this.initFormGroup(model);
-    }
-
-    sendForgotPassworVerificationEmail() {
-        let isFormGroupValid: boolean = this.checkFormGroupValidity();
-        if (isFormGroupValid == false) return;
-        // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        this.authService.sendForgotPasswordVerificationEmail(this.model).subscribe(()=>{
-            this.showEmailSentDialog = true;
-        });
-    }
-}
-""";
-        }
-
-        private string GetForgotPasswordComponentHtmlData()
-        {
-            return $$$"""
-<ng-container *transloco="let t">
-    @if (showEmailSentDialog == false) {
-        <auth [showGoogleAuth]="false">
-            <form [formGroup]="formGroup">
-                <div class="col-12" style="padding: 0;">
-                    <soft-textbox [control]="control('email')"></soft-textbox>
-                </div>
-                <div class="col-12" style="padding-left: 0; padding-right: 0;">
-                    <soft-password [control]="control('newPassword')"></soft-password>
-                </div>
-
-                <div class="flex align-items-center justify-content-between mb-4 gap-5" style="margin-bottom: 16px;">
-                    <div>{{t('RememberYourPassword')}} <a class="link" routerLink="/auth/login">{{t('Login')}}</a></div>
-                </div>
-
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <p-button [label]="t('ResetPassword')" (onClick)="sendForgotPassworVerificationEmail()" [style]="{width: '100%'}"></p-button>
-                </div>
-            </form>
-        </auth>
-    }
-    @else {
-        <forgot-password-verification [email]="model.email" [newPassword]="model.newPassword"></forgot-password-verification>
+        <login-verification [email]="model.email"></login-verification>
     }
 </ng-container>
 """;
@@ -4000,7 +3882,7 @@ export class TranslocoRootModule {}
 import { ErrorHandler, NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NotfoundComponent } from './layout/components/notfound/notfound.component';
+import { NotfoundComponent } from './core/components/notfound/notfound.component';
 import { AppLayoutModule } from './layout/components/layout/app.layout.module';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
@@ -4122,7 +4004,7 @@ export class AppComponent implements OnInit {
             return $$"""
 import { PreloadAllModules, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './layout/components/notfound/notfound.component';
+import { NotfoundComponent } from './core/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/components/layout/app.layout.component";
 import { AuthGuard } from './core/guards/auth.guard';
 import { NotAuthGuard } from './core/guards/not-auth.guard';
@@ -4232,24 +4114,6 @@ export class ValidatorService extends ValidatorServiceGenerated {
         validator.hasNotEmptyRule = true;
         return validator;
     }
-
-    // confirmationPassword(confirmationPasswordControl: SoftFormControl, passwordControl: SoftFormControl): SoftValidatorFn {
-    //     const validator: SoftValidatorFn = (): ValidationErrors | null => {
-    //         const confirmationPassword = confirmationPasswordControl.value;
-    //         const password = passwordControl.value;
-
-    //         const notEmptyRule = typeof confirmationPassword !== 'undefined' && confirmationPassword !== null && confirmationPassword.length !== 0;
-
-    //         const areEqualRule = confirmationPassword === password;
-
-    //         const arrayValid = notEmptyRule && areEqualRule;
-
-    //         return arrayValid ? null : { _ : $localize`:@@NotEmptyIsTheSameAsPassword:The field is mandatory and must have the same value as password.` };
-    //     };
-    //     validator.hasNotEmptyRule = true;
-    //     return validator;
-    // }
-
 }
 """;
         }
@@ -4363,7 +4227,7 @@ import { environment } from 'src/environments/environment';
 import { Namebook } from '../../../core/entities/namebook';
 import { TableFilter } from '../../../core/entities/table-filter';
 import { TableResponse } from 'src/app/core/entities/table-response';
-import { Login, ForgotPassword, Registration, RegistrationVerificationResult, RefreshTokenRequest, AuthResult, Role } from '../../entities/security-entities.generated';
+import { Login, Registration, RegistrationVerificationResult, RefreshTokenRequest, AuthResult, Role } from '../../entities/security-entities.generated';
 
 @Injectable()
 export class ApiSecurityService {
@@ -4372,13 +4236,8 @@ export class ApiSecurityService {
 
     }
 
-
     sendLoginVerificationEmail = (loginDTO: Login): Observable<any> => { 
         return this.http.post<any>(`${environment.apiUrl}/Auth/SendLoginVerificationEmail`, loginDTO, environment.httpOptions);
-    }
-
-    sendForgotPasswordVerificationEmail = (forgotPasswordDTO: ForgotPassword): Observable<any> => { 
-        return this.http.post<any>(`${environment.apiUrl}/Auth/SendForgotPasswordVerificationEmail`, forgotPasswordDTO, environment.httpOptions);
     }
 
     sendRegistrationVerificationEmail = (registrationDTO: Registration): Observable<RegistrationVerificationResult> => { 
