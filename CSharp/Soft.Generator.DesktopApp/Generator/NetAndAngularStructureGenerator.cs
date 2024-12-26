@@ -48,18 +48,10 @@ namespace Soft.Generator.DesktopApp.Generator
                                                     new SoftFolder
                                                     {
                                                         Name = "entities",
-                                                        ChildFolders = new List<SoftFolder>
-                                                        {
-                                                            new SoftFolder { Name = "generated" }
-                                                        }
                                                     },
                                                     new SoftFolder
                                                     {
                                                         Name = "enums",
-                                                        ChildFolders = new List<SoftFolder>
-                                                        {
-                                                            new SoftFolder { Name = "generated" }
-                                                        }
                                                     },
                                                     new SoftFolder
                                                     {
@@ -310,7 +302,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                         Name = "DataMappers",
                                         SoftFiles = new List<SoftFile>
                                         {
-                                            new SoftFile { Name = "MapsterMapper.cs", Data= GetMapsterMapperCsData(appName) },
+                                            new SoftFile { Name = "MapsterMapper.cs", Data = GetMapsterMapperCsData(appName) },
                                         }
                                     },
                                     new SoftFolder
@@ -320,7 +312,13 @@ namespace Soft.Generator.DesktopApp.Generator
                                         {
                                             new SoftFolder
                                             {
-                                                Name = "Partials"
+                                                Name = "Partials",
+                                                SoftFiles = new List<SoftFile>
+                                                {
+                                                    new SoftFile { Name = "NotificationDTO.cs", Data = GetNotificationDTOCsData(appName) },
+                                                    new SoftFile { Name = "NotificationSaveBodyDTO.cs", Data = GetNotificationSaveBodyDTOCsData(appName) },
+                                                    new SoftFile { Name = "UserExtendedSaveBodyDTO.cs", Data = GetUserExtendedSaveBodyDTOCsData(appName) },
+                                                }
                                             },
                                             new SoftFolder
                                             {
@@ -333,9 +331,9 @@ namespace Soft.Generator.DesktopApp.Generator
                                         Name = "Entities",
                                         SoftFiles = new List<SoftFile>
                                         {
-                                            new SoftFile { Name = "Notification", Data = GetNotificationCsData() },
-                                            new SoftFile { Name = "UserExtended", Data = GetUserExtendedCsData() },
-                                            new SoftFile { Name = "UserNotification", Data = GetUserNotificationCsData() },
+                                            new SoftFile { Name = "Notification.cs", Data = GetNotificationCsData(appName) },
+                                            new SoftFile { Name = "UserExtended.cs", Data = GetUserExtendedCsData(appName) },
+                                            new SoftFile { Name = "UserNotification.cs", Data = GetUserNotificationCsData(appName) },
                                         }
                                     },
                                     new SoftFolder
@@ -349,7 +347,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                         {
                                             new SoftFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
                                             new SoftFile { Name = $"NotificationService.cs", Data = GetNotificationServiceCsData(appName) },
-                                            new SoftFile { Name = $"{appName}AuthorizationService.cs", Data = GetAuthorizationServiceCsData(appName) },
+                                            new SoftFile { Name = $"AuthorizationBusinessService.cs", Data = GetAuthorizationServiceCsData(appName) },
                                         }
                                     },
                                     new SoftFolder
@@ -424,7 +422,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                     new SoftFile { Name = "appsettings.json", Data = GetAppSettingsJsonData(appName, null, null, null, null, null, null) }, // TODO FT: Add this to the app
                                     new SoftFile { Name = "GeneratorSettings.cs", Data = GetWebAPIGeneratorSettingsData(appName) },
                                     new SoftFile { Name = $"{appName}.WebAPI.csproj", Data = GetWebAPICsProjData(appName) },
-                                    new SoftFile { Name = "program.cs", Data = GetProgramCsData(appName) },
+                                    new SoftFile { Name = "Program.cs", Data = GetProgramCsData(appName) },
                                     new SoftFile { Name = "Settings.cs", Data = GetWebAPISettingsCsData(appName) },
                                     new SoftFile { Name = "Startup.cs", Data = GetStartupCsData(appName) },
                                 }
@@ -505,7 +503,7 @@ namespace Soft.Generator.DesktopApp.Generator
             return Path.Combine(path, appStructure.Name);
         }
 
-        private void GenerateFile(SoftFolder parentFolder, SoftFile file, string path) 
+        private void GenerateFile(SoftFolder parentFolder, SoftFile file, string path)
         {
             string filePath = Path.Combine(path, file.Name);
 
@@ -515,6 +513,134 @@ namespace Soft.Generator.DesktopApp.Generator
         }
 
         #region NET
+
+        private string GetUserNotificationCsData(string appName)
+        {
+            return $$"""
+using Soft.Generator.Shared.Attributes.EF;
+
+namespace {{appName}}.Business.Entities
+{
+    public class UserNotification 
+    {
+        [M2MMaintanceEntity(nameof(Notification.Users))]
+        public virtual Notification Notification { get; set; }
+
+        [M2MExtendEntity(nameof(User.Notifications))]
+        public virtual UserExtended User { get; set; }
+
+        public bool IsMarkedAsRead { get; set; }
+    }
+}
+""";
+        }
+
+        private string GetUserExtendedCsData(string appName)
+        {
+            return $$"""
+using Microsoft.EntityFrameworkCore;
+using Soft.Generator.Security.Entities;
+using Soft.Generator.Security.Interface;
+using Soft.Generator.Shared.Attributes;
+using Soft.Generator.Shared.Attributes.EF;
+using Soft.Generator.Shared.BaseEntities;
+using System.ComponentModel.DataAnnotations;
+
+namespace {{appName}}.Business.Entities
+{
+    [Index(nameof(Email), IsUnique = true)]
+    public class UserExtended : BusinessObject<long>, IUser
+    {
+        [SoftDisplayName]
+        [CustomValidator("EmailAddress()")]
+        [StringLength(70, MinimumLength = 5)]
+        [Required]
+        public string Email { get; set; }
+
+        public bool? HasLoggedInWithExternalProvider { get; set; }
+
+        public bool? IsDisabled { get; set; }
+
+        public virtual List<Role> Roles { get; } = new();
+
+        public virtual List<Notification> Notifications { get; } = new();
+    }
+}
+""";
+        }
+
+        private string GetNotificationCsData(string appName)
+        {
+            return $$"""
+using Soft.Generator.Shared.Attributes.EF;
+using Soft.Generator.Shared.BaseEntities;
+using System.ComponentModel.DataAnnotations;
+
+namespace {{appName}}.Business.Entities
+{
+    public class Notification : BusinessObject<long>
+    {
+        [SoftDisplayName]
+        [StringLength(100, MinimumLength = 1)]
+        [Required]
+        public string Title { get; set; }
+
+        [StringLength(400, MinimumLength = 1)]
+        [Required]
+        public string Description { get; set; }
+
+        [StringLength(1000, MinimumLength = 1)]
+        public string EmailBody { get; set; }
+
+        public virtual List<UserExtended> Users { get; } = new();
+    }
+}
+""";
+        }
+
+        private string GetUserExtendedSaveBodyDTOCsData(string appName)
+        {
+            return $$"""
+namespace {{appName}}.Business.DTO
+{
+    public partial class UserExtendedSaveBodyDTO
+    {
+        public List<int> SelectedRoleIds { get; set; }
+    }
+}
+""";
+        }
+
+        private string GetNotificationSaveBodyDTOCsData(string appName)
+        {
+            return $$"""
+using Soft.Generator.Shared.DTO;
+
+namespace {{appName}}.Business.DTO
+{
+    public partial class NotificationSaveBodyDTO : LazyTableSelectionDTO<long>
+    {
+        public bool IsMarkedAsRead { get; set; }
+    }
+}
+""";
+        }
+
+        private string GetNotificationDTOCsData(string appName)
+        {
+            return $$"""
+namespace {{appName}}.Business.DTO
+{
+    public partial class NotificationDTO
+    {
+        /// <summary>
+        /// This property is only for currently logged in user
+        /// </summary>
+        public bool? IsMarkedAsRead { get; set; }
+    }
+}
+""";
+        }
 
         private string GetInfrastructureApplicationDbContextData(string appName)
         {
@@ -539,9 +665,6 @@ namespace {{appName}}.Infrastructure
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
-            // FT: Need to call these methods here, because of abstraction with security package
-            //await AddPartnerUserForEachNewPartner();
-            //await SaveUserCurrentPartnerAndSetDefaultTierForEachUser();
             return await base.SaveChangesAsync(cancellationToken);
         }
 
@@ -559,6 +682,8 @@ VisualStudioVersion = 17.8.34525.116
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{D485BCE8-A950-457D-A710-566D559BD585}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.WebAPI", "{{appName}}.WebAPI\{{appName}}.WebAPI.csproj", "{1063DCDA-9291-4FAA-87B2-555E12511EE2}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Security", "..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj", "{3B328631-AB3B-4B28-9FA5-4DA790670199}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Shared", "..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj", "{53565A13-28F1-424F-B5A0-34125EF303CD}"
@@ -566,8 +691,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Infrastructure", "..\..\Soft.Generator\Source\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj", "{587D08A6-A975-4673-90A4-77CF61B7B526}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.SourceGenerators", "..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj", "{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.WebAPI", "{{appName}}.WebAPI\{{appName}}.WebAPI.csproj", "{1063DCDA-9291-4FAA-87B2-555E12511EE2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.Infrastructure", "{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj", "{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}"
 EndProject
@@ -928,7 +1051,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using Soft.Generator.Shared.SoftFluentValidation;
 using Soft.Generator.Shared.Emailing;
-using {{appName}}.Services;
 using {{appName}}.Business.Services;
 using {{appName}}.Business.Entities;
 
@@ -941,7 +1063,7 @@ namespace {{appName}}.WebAPI.DI
             // Framework
             registry.Register<AuthenticationService>();
             registry.Register<AuthorizationService>();
-            registry.Register<Soft.Generator.Security.Services.BusinessService<UserExtended>>();
+            registry.Register<Soft.Generator.Security.Services.SecurityBusinessService<UserExtended>>();
             registry.Register<Soft.Generator.Security.Services.BusinessServiceGenerated<UserExtended>>();
             registry.Register<Soft.Generator.Security.Services.AuthorizationBusinessService<UserExtended>>();
             registry.Register<Soft.Generator.Security.Services.AuthorizationBusinessServiceGenerated>();
@@ -951,7 +1073,7 @@ namespace {{appName}}.WebAPI.DI
             registry.RegisterSingleton<IJwtAuthManager, JwtAuthManagerService>();
 
             // Business
-            registry.Register<{{appName}}.Business.Services.BusinessService>();
+            registry.Register<{{appName}}.Business.Services.{{appName}}BusinessService>();
             registry.Register<{{appName}}.Business.Services.BusinessServiceGenerated>();
             registry.Register<{{appName}}.Business.Services.AuthorizationBusinessService>();
             registry.Register<{{appName}}.Business.Services.AuthorizationBusinessServiceGenerated>();
@@ -1066,7 +1188,7 @@ namespace {{appName}}.Business
 
     public class Settings
     {
-        public string PartnerHeadersKey { get; set; }
+
     }
 }
 """;
@@ -1088,6 +1210,12 @@ namespace {{appName}}.Business
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="DataMappers\" />
+    <Folder Include="DTO\Helpers" />
+    <Folder Include="DTO\Partials" />
+    <Folder Include="Entities\" />
+    <Folder Include="Enums\" />
+    <Folder Include="Services\" />
     <Folder Include="ValidationRules\" />
   </ItemGroup>
 
@@ -1214,32 +1342,29 @@ using Soft.Generator.Shared.DTO;
 using Soft.Generator.Shared.Excel;
 using Soft.Generator.Shared.Interfaces;
 using Soft.Generator.Shared.Extensions;
+using Soft.Generator.Shared.Helpers;
+using Soft.Generator.Security.DTO;
 using Soft.Generator.Security.Services;
 using Soft.Generator.Shared.SoftExceptions;
-using Soft.Generator.Security.DTO;
-using Soft.Generator.Shared.Emailing;
 using Microsoft.EntityFrameworkCore;
 using Mapster;
 using FluentValidation;
+using Soft.Generator.Shared.Emailing;
 using Azure.Storage.Blobs;
-using System.Collections.Generic;
-using OfficeOpenXml.FormulaParsing.Excel.Functions.Database;
-using System.Linq;
-using Soft.Generator.Shared.Helpers;
-using System.Diagnostics;
 
-namespace {{appName}}.Services
+namespace {{appName}}.Business.Services
 {
-    public class {{appName}}BusinessService : {{appName}}BusinessServiceGenerated
+    public class {{appName}}BusinessService : {{appName}}.Business.Services.BusinessServiceGenerated
     {
         private readonly IApplicationDbContext _context;
         private readonly {{appName}}.Business.Services.AuthorizationBusinessService _authorizationService;
         private readonly AuthenticationService _authenticationService;
         private readonly SecurityBusinessService<UserExtended> _securityBusinessService;
         private readonly EmailingService _emailingService;
+        private readonly BlobContainerClient _blobContainerClient;
 
-        public LoyalsBusinessService(IApplicationDbContext context, ExcelService excelService, {{appName}}.Business.Services.AuthorizationBusinessService authorizationService, SecurityBusinessService<UserExtended> securityBusinessService, 
-            AuthenticationService authenticationService, EmailingService emailingService)
+        public {{appName}}BusinessService(IApplicationDbContext context, ExcelService excelService, {{appName}}.Business.Services.AuthorizationBusinessService authorizationService, SecurityBusinessService<UserExtended> securityBusinessService, 
+            AuthenticationService authenticationService, EmailingService emailingService, BlobContainerClient blobContainerClient)
             : base(context, excelService, authorizationService, blobContainerClient)
         {
             _context = context;
@@ -1247,6 +1372,7 @@ namespace {{appName}}.Services
             _securityBusinessService = securityBusinessService;
             _authenticationService = authenticationService;
             _emailingService = emailingService;
+            _blobContainerClient = blobContainerClient;
         }
 
         #region User
@@ -1299,38 +1425,10 @@ namespace {{appName}}.Services
 
                 PaginationResult<UserExtended> paginationResult = await LoadUserExtendedListForPagination(notificationSaveBodyDTO.TableFilter, _context.DbSet<UserExtended>());
 
-                await UpdateUserExtendedListForNotificationTableSelection(paginationResult.Query, savedNotificationDTO.Id, notificationSaveBodyDTO);
+                await UpdateUserExtendedListForNotificationWithLazyTableSelection(paginationResult.Query, savedNotificationDTO.Id, notificationSaveBodyDTO);
 
                 return savedNotificationDTO;
             });
-        }
-
-        // FT: Add this to the generator
-        public async Task<TableResponseDTO<UserExtendedDTO>> LoadUserForNotificationTableData(TableFilterDTO tableFilterPayload)
-        {
-            TableResponseDTO<UserExtendedDTO> tableResponse = new TableResponseDTO<UserExtendedDTO>();
-
-            await _context.WithTransactionAsync(async () =>
-            {
-                IQueryable<UserExtended> query = _context.DbSet<UserExtended>()
-                    .OrderBy(x => x.Id) // FT: It's important that OrderBy is before skip and take
-                    .Skip(tableFilterPayload.First)
-                    .Take(tableFilterPayload.Rows)
-                    .Where(x => x.Notifications
-                        .Any(x => x.Id == tableFilterPayload.AdditionalFilterIdLong)); // notificationId
-
-                PaginationResult<UserExtended> paginationResult = await LoadUserExtendedListForPagination(tableFilterPayload, query);
-
-                tableResponse.Data = await paginationResult.Query
-                    .ProjectToType<UserExtendedDTO>(Mapper.UserExtendedProjectToConfig())
-                    .ToListAsync();
-
-                int count = await _context.DbSet<UserExtended>().Where(x => x.Notifications.Any(x => x.Id == tableFilterPayload.AdditionalFilterIdLong)).CountAsync();
-
-                tableResponse.TotalRecords = count;
-            });
-
-            return tableResponse;
         }
 
         public async Task SendNotificationEmail(long notificationId, int notificationVersion)
