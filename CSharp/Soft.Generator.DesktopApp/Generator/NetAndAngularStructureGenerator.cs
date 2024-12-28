@@ -264,7 +264,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                         SoftFiles = new List<SoftFile>
                                         {
                                             new SoftFile { Name = "environment.prod.ts", Data = "" },
-                                            new SoftFile { Name = "styles.scss", Data = GetEnvironmentTsCode(appName, primaryColor) },
+                                            new SoftFile { Name = "environment.ts", Data = GetEnvironmentTsCode(appName, primaryColor) },
                                         }
                                     }
                                 },

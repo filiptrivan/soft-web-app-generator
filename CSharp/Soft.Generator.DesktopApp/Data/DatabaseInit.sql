@@ -30,13 +30,6 @@ CREATE TABLE Framework (
     Code NVARCHAR(500) NOT NULL
 );
 
-CREATE TABLE DllPath (
-    Id BIGINT PRIMARY KEY IDENTITY(1,1),
-    Path NVARCHAR(1000) NOT NULL,
-	WebApplicationId BIGINT NOT NULL,
-    FOREIGN KEY (WebApplicationId) REFERENCES WebApplication(Id),
-);
-
 CREATE TABLE Setting (
     Id BIGINT PRIMARY KEY IDENTITY(1,1),
 	Name NVARCHAR(500) not null,
@@ -45,6 +38,17 @@ CREATE TABLE Setting (
     HasLatinTranslate BIT NOT NULL,
     HasDarkMode BIT NOT NULL,
     HasNotifications BIT NOT NULL,
+	EmailSender NVARCHAR(500) not null,
+	SMTPUser NVARCHAR(500) not null,
+	SMTPPass NVARCHAR(500) not null,
+	JWTKey NVARCHAR(500) not null,
+	BloblStorageConnectionString NVARCHAR(500) null,
+	BloblStorageUrl NVARCHAR(500) null,
+	EntitiesNamespaceEnding NVARCHAR(100) NOT NULL DEFAULT 'Entities',
+	DTONamespaceEnding NVARCHAR(100) NOT NULL DEFAULT 'DTO',
+	BaseProjectNamespace NVARCHAR(200) NOT NULL DEFAULT 'Playerty.Loyals',
+	BaseBusinessServiceName NVARCHAR(100) NOT NULL DEFAULT 'Loyals',
+	LimitLengthForTextArea INT NOT NULL DEFAULT 256,
     FrameworkId BIGINT NOT NULL,
     FOREIGN KEY (FrameworkId) REFERENCES Framework(Id)
 );
@@ -56,6 +60,13 @@ CREATE TABLE WebApplication (
     SettingId BIGINT NOT NULL,
     FOREIGN KEY (CompanyId) REFERENCES Company(Id),
     FOREIGN KEY (SettingId) REFERENCES Setting(Id)
+);
+
+CREATE TABLE DllPath (
+    Id BIGINT PRIMARY KEY IDENTITY(1,1),
+    Path NVARCHAR(1000) NOT NULL,
+	WebApplicationId BIGINT NOT NULL,
+    FOREIGN KEY (WebApplicationId) REFERENCES WebApplication(Id),
 );
 
 CREATE TABLE WebApplicationFile (

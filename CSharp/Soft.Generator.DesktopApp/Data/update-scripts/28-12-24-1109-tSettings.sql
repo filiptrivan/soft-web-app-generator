@@ -1,0 +1,13 @@
+ALTER TABLE tSettings
+ADD 
+    EmailSender NVARCHAR(500) NOT NULL DEFAULT '',
+    SMTPUser NVARCHAR(500) NOT NULL DEFAULT '',
+    SMTPPass NVARCHAR(500) NOT NULL DEFAULT '',
+    JWTKey NVARCHAR(500) NOT NULL DEFAULT '',
+    BlobStorageConnectionString NVARCHAR(500) NULL,
+    BlobStorageUrl NVARCHAR(500) NULL,
+	EntitiesNamespaceEnding NVARCHAR(100) NOT NULL DEFAULT 'Entities',
+	DTONamespaceEnding NVARCHAR(100) NOT NULL DEFAULT 'DTO',
+	BaseProjectNamespace NVARCHAR(200) NOT NULL DEFAULT 'Playerty.Loyals',
+	BaseBusinessServiceName NVARCHAR(100) NOT NULL DEFAULT 'Loyals',
+	LimitLengthForTextArea INT NOT NULL DEFAULT 256;
