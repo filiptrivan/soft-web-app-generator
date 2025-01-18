@@ -55,10 +55,26 @@ namespace Soft.Generator.DesktopApp.Generator
                                                     new SoftFolder
                                                     {
                                                         Name = "entities",
+                                                        SoftFiles = new List<SoftFile>
+                                                        {
+                                                            new SoftFile 
+                                                            {
+                                                                Name = "security-entities.generated.ts",
+                                                                Data = GetSecurityEntitiesTsData(),
+                                                            }
+                                                        }
                                                     },
                                                     new SoftFolder
                                                     {
                                                         Name = "enums",
+                                                        SoftFiles = new List<SoftFile>
+                                                        {
+                                                            new SoftFile
+                                                            {
+                                                                Name = "security-enums.generated.ts",
+                                                                Data = GetSecurityEnumsTsData(),
+                                                            }
+                                                        }
                                                     },
                                                     new SoftFolder
                                                     {
@@ -84,6 +100,14 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             },
                                                             new SoftFolder
                                                             {
+                                                                Name = "auth",
+                                                                SoftFiles = new List<SoftFile>
+                                                                {
+                                                                    new SoftFile { Name = "auth.service.ts", Data = GetAuthServiceTsCode() },
+                                                                }
+                                                            },
+                                                            new SoftFolder
+                                                            {
                                                                 Name = "helpers",
                                                             },
                                                             new SoftFolder
@@ -97,7 +121,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             },
                                                             new SoftFolder
                                                             {
-                                                                Name = "validation",
+                                                                Name = "validators",
                                                                 SoftFiles = new List<SoftFile>
                                                                 {
                                                                     new SoftFile { Name = "validation-rules.ts", Data = GetValidationRulesTsCode() },
@@ -230,7 +254,6 @@ namespace Soft.Generator.DesktopApp.Generator
                                             new SoftFile { Name = "app.component.ts", Data = GetAppComponentTsData() },
                                             new SoftFile { Name = "app.module.ts", Data = GetAppModuleTsData() },
                                             new SoftFile { Name = "app-routing.module.ts", Data = GetAppRoutingModuleTsData() },
-                                            new SoftFile { Name = "transloco-root.module.ts", Data = GetTranslocoRootModuleTsData() },
                                         }
                                     },
                                     new SoftFolder
@@ -257,6 +280,14 @@ namespace Soft.Generator.DesktopApp.Generator
                                                     new SoftFolder
                                                     {
                                                         Name = "styles", // FT: Copy
+                                                    },
+                                                    new SoftFolder
+                                                    {
+                                                        Name = "images",
+                                                        SoftFiles = new List<SoftFile>
+                                                        {
+                                                            new SoftFile { Name = "logo-dark.svg", Data = GetLogoDarkSvgData() }
+                                                        }
                                                     }
                                                 }
                                             },
@@ -291,8 +322,8 @@ namespace Soft.Generator.DesktopApp.Generator
                             new SoftFile { Name = "package.json", Data = GetPackageData(appName) },
                             new SoftFile { Name = "README.md", Data = "" },
                             new SoftFile { Name = "tsconfig.app.json", Data = GetTsConfigAppJsonData() },
-                            new SoftFile { Name = ".tsconfig.json", Data = GetTsConfigJsonData() },
-                            new SoftFile { Name = ".tsconfig.spec.json", Data = GetTsConfigSpecJsonData() },
+                            new SoftFile { Name = "tsconfig.json", Data = GetTsConfigJsonData() },
+                            new SoftFile { Name = "tsconfig.spec.json", Data = GetTsConfigSpecJsonData() },
                             new SoftFile { Name = "vercel.json", Data = GetVercelJsonData() },
                         }
                     },
@@ -391,7 +422,9 @@ namespace Soft.Generator.DesktopApp.Generator
                                         Name = "Terms",
                                         SoftFiles = new List<SoftFile>
                                         {
-
+                                            new SoftFile { Name = "TermsGenerated.Designer.cs", Data = GetTermsGeneratedDesignerCsData(appName) },
+                                            new SoftFile { Name = "TermsGenerated.resx", Data = GetTermsGeneratedResxData() },
+                                            new SoftFile { Name = "TermsGenerated.sr-Latn-RS.cs", Data = GetTermsGeneratedSrLatnRSResxData() },
                                         }
                                     }
                                 },
@@ -408,6 +441,12 @@ namespace Soft.Generator.DesktopApp.Generator
                                     new SoftFolder
                                     {
                                         Name = "Controllers",
+                                        SoftFiles = new List<SoftFile>
+                                        {
+                                            new SoftFile { Name = "NotificationController.cs", Data = GetNotificationControllerCsData(appName) },
+                                            new SoftFile { Name = "SecurityController.cs", Data = GetSecurityControllerCsData(appName) },
+                                            new SoftFile { Name = "UserExtendedController.cs", Data = GetUserExtendedControllerCsData(appName) },
+                                        }
                                     },
                                     new SoftFolder
                                     {
@@ -481,6 +520,1004 @@ namespace Soft.Generator.DesktopApp.Generator
             GenerateProjectStructure(appStructure, outputPath);
         }
 
+        private string GetLogoDarkSvgData()
+        {
+            return $$"""
+<svg width="85" height="63" viewBox="0 0 85 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27.017 30.3135C27.0057 30.5602 27 30.8085 27 31.0581C27 39.9267 34.1894 47.1161 43.0581 47.1161C51.9267 47.1161 59.1161 39.9267 59.1161 31.0581C59.1161 30.8026 59.1102 30.5485 59.0984 30.2959C60.699 30.0511 62.2954 29.7696 63.8864 29.4515L64.0532 29.4181C64.0949 29.9593 64.1161 30.5062 64.1161 31.0581C64.1161 42.6881 54.6881 52.1161 43.0581 52.1161C31.428 52.1161 22 42.6881 22 31.0581C22 30.514 22.0206 29.9747 22.0612 29.441L22.1136 29.4515C23.7428 29.7773 25.3777 30.0646 27.017 30.3135ZM52.4613 18.0397C49.8183 16.1273 46.5698 15 43.0581 15C39.54 15 36.2862 16.1313 33.6406 18.05C31.4938 17.834 29.3526 17.5435 27.221 17.1786C31.0806 12.7781 36.7449 10 43.0581 10C49.3629 10 55.0207 12.7708 58.8799 17.1612C56.7487 17.5285 54.6078 17.8214 52.4613 18.0397ZM68.9854 28.4316C69.0719 29.2954 69.1161 30.1716 69.1161 31.0581C69.1161 45.4495 57.4495 57.1161 43.0581 57.1161C28.6666 57.1161 17 45.4495 17 31.0581C17 30.1793 17.0435 29.3108 17.1284 28.4544L12.2051 27.4697C12.0696 28.6471 12 29.8444 12 31.0581C12 48.211 25.9052 62.1161 43.0581 62.1161C60.211 62.1161 74.1161 48.211 74.1161 31.0581C74.1161 29.8366 74.0456 28.6317 73.9085 27.447L68.9854 28.4316ZM69.6705 15.0372L64.3929 16.0927C59.6785 9.38418 51.8803 5 43.0581 5C34.2269 5 26.4218 9.39306 21.7089 16.1131L16.4331 15.0579C21.867 6.03506 31.7578 0 43.0581 0C54.3497 0 64.234 6.02581 69.6705 15.0372Z" fill="black"/>
+<mask id="path-2-inside-1" fill="white">
+<path d="M42.5 28.9252C16.5458 30.2312 0 14 0 14C0 14 26 22.9738 42.5 22.9738C59 22.9738 85 14 85 14C85 14 68.4542 27.6193 42.5 28.9252Z"/>
+</mask>
+<path d="M0 14L5.87269 -3.01504L-12.6052 26.8495L0 14ZM42.5 28.9252L41.5954 10.948L42.5 28.9252ZM85 14L96.4394 27.8975L79.1273 -3.01504L85 14ZM0 14C-12.6052 26.8495 -12.5999 26.8546 -12.5946 26.8598C-12.5928 26.8617 -12.5874 26.8669 -12.5837 26.8706C-12.5762 26.8779 -12.5685 26.8854 -12.5605 26.8932C-12.5445 26.9088 -12.5274 26.9254 -12.5092 26.943C-12.4729 26.9782 -12.4321 27.0174 -12.387 27.0605C-12.2969 27.1467 -12.1892 27.2484 -12.0642 27.3646C-11.8144 27.5968 -11.4949 27.8874 -11.1073 28.2273C-10.3332 28.9063 -9.28165 29.7873 -7.96614 30.7967C-5.34553 32.8073 -1.61454 35.3754 3.11693 37.872C12.5592 42.8544 26.4009 47.7581 43.4046 46.9025L41.5954 10.948C32.6449 11.3983 25.2366 8.83942 19.9174 6.03267C17.2682 4.63475 15.2406 3.22667 13.9478 2.23478C13.3066 1.74283 12.8627 1.366 12.6306 1.16243C12.5151 1.06107 12.4538 1.00422 12.4485 0.999363C12.446 0.996981 12.4576 1.00773 12.4836 1.03256C12.4966 1.04498 12.5132 1.06094 12.5334 1.08055C12.5436 1.09035 12.5546 1.10108 12.5665 1.11273C12.5725 1.11855 12.5787 1.12461 12.5852 1.13091C12.5884 1.13405 12.5934 1.13895 12.595 1.14052C12.6 1.14548 12.6052 1.15049 0 14ZM43.4046 46.9025C59.3275 46.1013 72.3155 41.5302 81.3171 37.1785C85.8337 34.9951 89.4176 32.8333 91.9552 31.151C93.2269 30.3079 94.2446 29.5794 94.9945 29.0205C95.3698 28.7409 95.6788 28.503 95.92 28.3138C96.0406 28.2192 96.1443 28.1366 96.2309 28.067C96.2742 28.0321 96.3133 28.0005 96.348 27.9723C96.3654 27.9581 96.3817 27.9448 96.3969 27.9323C96.4045 27.9261 96.4119 27.9201 96.419 27.9143C96.4225 27.9114 96.4276 27.9072 96.4294 27.9057C96.4344 27.9016 96.4394 27.8975 85 14C73.5606 0.102497 73.5655 0.0985097 73.5703 0.0945756C73.5718 0.0933319 73.5765 0.0894438 73.5795 0.0869551C73.5856 0.0819751 73.5914 0.077195 73.597 0.0726136C73.6082 0.0634509 73.6185 0.055082 73.6278 0.0474955C73.6465 0.0323231 73.6614 0.0202757 73.6726 0.0112606C73.695 -0.00676378 73.7026 -0.0126931 73.6957 -0.00726687C73.6818 0.00363418 73.6101 0.0596753 73.4822 0.154983C73.2258 0.346025 72.7482 0.691717 72.0631 1.14588C70.6873 2.05798 68.5127 3.38259 65.6485 4.7672C59.8887 7.55166 51.6267 10.4432 41.5954 10.948L43.4046 46.9025ZM85 14C79.1273 -3.01504 79.1288 -3.01557 79.1303 -3.01606C79.1306 -3.01618 79.1319 -3.01664 79.1326 -3.01688C79.134 -3.01736 79.135 -3.0177 79.1356 -3.01791C79.1369 -3.01834 79.1366 -3.01823 79.1347 -3.01759C79.131 -3.01633 79.1212 -3.01297 79.1055 -3.00758C79.0739 -2.99681 79.0185 -2.97794 78.9404 -2.95151C78.7839 -2.89864 78.5366 -2.81564 78.207 -2.7068C77.5472 -2.48895 76.561 -2.16874 75.3165 -1.78027C72.8181 -1.00046 69.3266 0.039393 65.3753 1.07466C57.0052 3.26771 48.2826 4.97383 42.5 4.97383V40.9738C53.2174 40.9738 65.7448 38.193 74.4997 35.8992C79.1109 34.691 83.1506 33.4874 86.0429 32.5846C87.4937 32.1318 88.6676 31.7509 89.4942 31.478C89.9077 31.3414 90.2351 31.2317 90.4676 31.1531C90.5839 31.1138 90.6765 31.0823 90.7443 31.0591C90.7783 31.0475 90.806 31.038 90.8275 31.0306C90.8382 31.0269 90.8473 31.0238 90.8549 31.0212C90.8586 31.0199 90.862 31.0187 90.865 31.0177C90.8665 31.0172 90.8684 31.0165 90.8691 31.0163C90.871 31.0156 90.8727 31.015 85 14ZM42.5 4.97383C36.7174 4.97383 27.9948 3.26771 19.6247 1.07466C15.6734 0.039393 12.1819 -1.00046 9.68352 -1.78027C8.43897 -2.16874 7.4528 -2.48895 6.79299 -2.7068C6.46337 -2.81564 6.21607 -2.89864 6.05965 -2.95151C5.98146 -2.97794 5.92606 -2.99681 5.89453 -3.00758C5.87876 -3.01297 5.86897 -3.01633 5.86528 -3.01759C5.86344 -3.01823 5.86312 -3.01834 5.86435 -3.01791C5.86497 -3.0177 5.86597 -3.01736 5.86736 -3.01688C5.86805 -3.01664 5.86939 -3.01618 5.86973 -3.01606C5.87116 -3.01557 5.87269 -3.01504 0 14C-5.87269 31.015 -5.87096 31.0156 -5.86914 31.0163C-5.8684 31.0165 -5.86647 31.0172 -5.86498 31.0177C-5.86201 31.0187 -5.85864 31.0199 -5.85486 31.0212C-5.84732 31.0238 -5.83818 31.0269 -5.82747 31.0306C-5.80603 31.038 -5.77828 31.0475 -5.74435 31.0591C-5.67649 31.0823 -5.58388 31.1138 -5.46761 31.1531C-5.23512 31.2317 -4.9077 31.3414 -4.49416 31.478C-3.66764 31.7509 -2.49366 32.1318 -1.04289 32.5846C1.84938 33.4874 5.88908 34.691 10.5003 35.8992C19.2552 38.193 31.7826 40.9738 42.5 40.9738V4.97383Z" fill="black" mask="url(#path-2-inside-1)"/>
+</svg>
+""";
+        }
+
+        private string GetAuthServiceTsCode()
+        {
+            return $$"""
+import { Injectable, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, firstValueFrom, Observable, of, Subject, Subscription } from 'rxjs';
+import { map, tap, delay, finalize } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { SocialUser, SocialAuthService } from '@abacritt/angularx-social-login';
+import { ExternalProvider, Login, VerificationTokenRequest, AuthResult, Registration, RegistrationVerificationResult, RefreshTokenRequest } from 'src/app/business/entities/security-entities.generated';
+import { UserExtended } from 'src/app/business/entities/business-entities.generated';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService implements OnDestroy {
+  private readonly apiUrl = environment.apiUrl;
+  private timer?: Subscription;
+
+  private _user = new BehaviorSubject<UserExtended | null>(null);
+  user$ = this._user.asObservable();
+
+  private _currentUserPermissions = new BehaviorSubject<string[] | null>(null);
+  currentUserPermissions$ = this._currentUserPermissions.asObservable();
+
+  // Google auth
+  private authChangeSub = new Subject<boolean>();
+  private extAuthChangeSub = new Subject<SocialUser>();
+  public authChanged = this.authChangeSub.asObservable();
+  public extAuthChanged = this.extAuthChangeSub.asObservable();
+
+  constructor(
+    private router: Router,
+    private http: HttpClient,
+    private externalAuthService: SocialAuthService,
+    private apiService: ApiService,
+  ) {
+    window.addEventListener('storage', this.storageEventListener.bind(this));
+
+    // Google auth
+    this.externalAuthService.authState.subscribe((user) => {
+      const externalAuth: ExternalProvider = {
+        // provider: user.provider,
+        idToken: user.idToken
+      }
+      this.loginExternal(externalAuth).subscribe(() => {
+        this.navigateToDashboard();
+      });
+      this.extAuthChangeSub.next(user);
+    });
+  }
+
+  private storageEventListener(event: StorageEvent) {
+    if (event.storageArea === localStorage) {
+      if (event.key === 'logout-event') {
+        this.stopTokenTimer();
+        this._user.next(null);
+        this._currentUserPermissions.next(null);
+      }
+      if (event.key === 'login-event') {
+        this.stopTokenTimer();
+
+        this.apiService.getCurrentUser().subscribe(async (user: UserExtended) => {
+            this._user.next({
+              id: user.id,
+              email: user.email
+            });
+            await firstValueFrom(this.getCurrentUserPermissions()); // FT: Needs to be after setting local storage
+          });
+      }
+    }
+  }
+
+  sendLoginVerificationEmail(body: Login): Observable<any> {
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    return this.apiService.sendLoginVerificationEmail(body);
+  }
+
+  login(body: VerificationTokenRequest): Observable<Promise<AuthResult>> {
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    const loginResultObservable = this.http.post<AuthResult>(`${this.apiUrl}/Security/Login`, body);
+    return this.handleLoginResult(loginResultObservable);
+  }
+
+  loginExternal(body: ExternalProvider): Observable<Promise<AuthResult>> {
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    const loginResultObservable = this.http.post<AuthResult>(`${this.apiUrl}/Security/LoginExternal`, body);
+    return this.handleLoginResult(loginResultObservable);
+  }
+
+  sendRegistrationVerificationEmail(body: Registration): Observable<RegistrationVerificationResult> {
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    return this.apiService.sendRegistrationVerificationEmail(body);
+  }
+
+  register(body: VerificationTokenRequest): Observable<Promise<AuthResult>> {
+    const browserId = this.getBrowserId();
+    body.browserId = browserId;
+    const loginResultObservable = this.apiService.register(body);
+    return this.handleLoginResult(loginResultObservable);
+  }
+
+  handleLoginResult(loginResultObservable: Observable<AuthResult>){
+    return loginResultObservable.pipe(
+      map(async (loginResult: AuthResult) => {
+        this._user.next({
+          id: loginResult.userId,
+          email: loginResult.email,
+        });
+        this.setLocalStorage(loginResult);
+        this.startTokenTimer();
+        await firstValueFrom(this.getCurrentUserPermissions()); // FT: Needs to be after setting local storage
+        return loginResult;
+      })
+    );
+  }
+
+  logout() {
+    const browserId = this.getBrowserId();
+    this.http
+      .get(`${this.apiUrl}/Security/Logout?browserId=${browserId}`)
+      .pipe(
+        finalize(() => {
+          this.clearLocalStorage();
+          this._user.next(null);
+          this._currentUserPermissions.next(null);
+          this.stopTokenTimer();
+          this.router.navigate([environment.loginSlug]);
+        })
+      )
+      .subscribe();
+  }
+
+  refreshToken(): Observable<Promise<AuthResult> | null> {
+    let refreshToken = localStorage.getItem(environment.refreshTokenKey);
+
+    if (!refreshToken) {
+      this.clearLocalStorage();
+      return of(null);
+    }
+
+    const browserId = this.getBrowserId();
+    let body: RefreshTokenRequest = new RefreshTokenRequest();
+    body.browserId = browserId;
+    body.refreshToken = refreshToken;
+    return this.http
+    .post<AuthResult>(`${this.apiUrl}/Security/RefreshToken`, body, environment.httpSkipSpinnerOptions)
+    .pipe(
+      map(async (loginResult) => {
+        this._user.next({
+          id: loginResult.userId,
+          email: loginResult.email
+        });
+        this.setLocalStorage(loginResult);
+        this.startTokenTimer();
+        await firstValueFrom(this.getCurrentUserPermissions()); // FT: Needs to be after setting local storage
+        return loginResult;
+      })
+    );
+  }
+
+  setLocalStorage(loginResult: AuthResult) {
+    localStorage.setItem(environment.accessTokenKey, loginResult.accessToken);
+    localStorage.setItem(environment.refreshTokenKey, loginResult.refreshToken);
+    localStorage.setItem('login-event', 'login' + Math.random());
+  }
+
+  clearLocalStorage() {
+    localStorage.removeItem(environment.accessTokenKey);
+    localStorage.removeItem(environment.refreshTokenKey);
+    localStorage.setItem('logout-event', 'logout' + Math.random());
+  }
+
+  getBrowserId() {
+    let browserId = localStorage.getItem(environment.browserIdKey); // FT: We don't need to remove this from the local storage ever, only if the user manuely deletes it, we will handle it
+    if (!browserId) {
+      browserId = crypto.randomUUID();
+      localStorage.setItem(environment.browserIdKey, browserId);
+    }
+    return browserId;
+  }
+
+  isAccessTokenExpired(): Observable<boolean> {
+    const expired = this.getTokenRemainingTime() < 5000;
+    return of(expired);
+  }
+
+  getTokenRemainingTime() {
+    const accessToken = localStorage.getItem(environment.accessTokenKey);
+    if (!accessToken) {
+      return 0;
+    }
+    const jwtToken = JSON.parse(atob(accessToken.split('.')[1]));
+    const expires = new Date(jwtToken.exp * 1000);
+    return expires.getTime() - Date.now();
+  }
+
+  private startTokenTimer() {
+    const timeout = this.getTokenRemainingTime();
+    this.timer = of(true)
+      .pipe(
+        delay(timeout),
+        tap({
+          next: () => this.refreshToken().subscribe(),
+        })
+      )
+      .subscribe();
+  }
+
+  private stopTokenTimer() {
+    this.timer?.unsubscribe();
+  }
+
+  navigateToDashboard(){
+    this.router.navigate(['/']);
+  }
+
+  logoutGoogle = () => {
+    this.externalAuthService.signOut();
+  }
+
+  getCurrentUserPermissions(): Observable<string[]> {
+    return this.apiService.getCurrentUserPermissionCodes().pipe(
+      map(permissionCodes => {
+        this._currentUserPermissions.next(permissionCodes);
+        return permissionCodes;
+      }
+    ));
+  }
+
+  ngOnDestroy(): void {
+    window.removeEventListener('storage', this.storageEventListener.bind(this));
+  }
+}
+
+""";
+        }
+
+        private string GetSecurityEnumsTsData()
+        {
+            return $$"""
+export enum LoginVerificationResultStatusCodes
+{
+
+}
+
+export enum RegistrationVerificationResultStatusCodes
+{
+    UserDoesNotExistAndDoesNotHaveValidToken = 0,
+	UserWithoutPasswordExists = 1,
+	UserWithPasswordExists = 2,
+	UnexpectedError = 3,
+}
+""";
+        }
+
+        private string GetSecurityEntitiesTsData()
+        {
+            return $$"""
+import { BaseEntity } from "src/app/core/entities/base-entity";
+import { TableFilter } from "src/app/core/entities/table-filter";
+import { TableFilterContext } from "src/app/core/entities/table-filter-context";
+import { TableFilterSortMeta } from "src/app/core/entities/table-filter-sort-meta";
+import { MimeTypes } from "src/app/core/entities/mime-type";
+import { RegistrationVerificationResultStatusCodes } from "../enums/security-enums.generated";
+
+
+export class JwtAuthResult extends BaseEntity
+{
+    userId?: number;
+	userEmail?: string;
+	accessToken?: string;
+	token?: RefreshToken;
+
+    constructor(
+    {
+        userId,
+		userEmail,
+		accessToken,
+		token
+    }:{
+        userId?: number;
+		userEmail?: string;
+		accessToken?: string;
+		token?: RefreshToken;     
+    } = {}
+    ) {
+        super('JwtAuthResult'); 
+
+        this.userId = userId;
+		this.userEmail = userEmail;
+		this.accessToken = accessToken;
+		this.token = token;
+    }
+}
+
+
+export class RolePermission extends BaseEntity
+{
+    roleDisplayName?: string;
+	roleId?: number;
+	permissionDisplayName?: string;
+	permissionId?: number;
+
+    constructor(
+    {
+        roleDisplayName,
+		roleId,
+		permissionDisplayName,
+		permissionId
+    }:{
+        roleDisplayName?: string;
+		roleId?: number;
+		permissionDisplayName?: string;
+		permissionId?: number;     
+    } = {}
+    ) {
+        super('RolePermission'); 
+
+        this.roleDisplayName = roleDisplayName;
+		this.roleId = roleId;
+		this.permissionDisplayName = permissionDisplayName;
+		this.permissionId = permissionId;
+    }
+}
+
+
+export class RolePermissionSaveBody extends BaseEntity
+{
+    rolePermissionDTO?: RolePermission;
+
+    constructor(
+    {
+        rolePermissionDTO
+    }:{
+        rolePermissionDTO?: RolePermission;     
+    } = {}
+    ) {
+        super('RolePermissionSaveBody'); 
+
+        this.rolePermissionDTO = rolePermissionDTO;
+    }
+}
+
+
+export class AuthResult extends BaseEntity
+{
+    userId?: number;
+	email?: string;
+	accessToken?: string;
+	refreshToken?: string;
+
+    constructor(
+    {
+        userId,
+		email,
+		accessToken,
+		refreshToken
+    }:{
+        userId?: number;
+		email?: string;
+		accessToken?: string;
+		refreshToken?: string;     
+    } = {}
+    ) {
+        super('AuthResult'); 
+
+        this.userId = userId;
+		this.email = email;
+		this.accessToken = accessToken;
+		this.refreshToken = refreshToken;
+    }
+}
+
+
+export class VerificationTokenRequest extends BaseEntity
+{
+    verificationCode?: string;
+	browserId?: string;
+	email?: string;
+
+    constructor(
+    {
+        verificationCode,
+		browserId,
+		email
+    }:{
+        verificationCode?: string;
+		browserId?: string;
+		email?: string;     
+    } = {}
+    ) {
+        super('VerificationTokenRequest'); 
+
+        this.verificationCode = verificationCode;
+		this.browserId = browserId;
+		this.email = email;
+    }
+}
+
+
+export class RegistrationVerificationResult extends BaseEntity
+{
+    status?: RegistrationVerificationResultStatusCodes;
+	message?: string;
+
+    constructor(
+    {
+        status,
+		message
+    }:{
+        status?: RegistrationVerificationResultStatusCodes;
+		message?: string;     
+    } = {}
+    ) {
+        super('RegistrationVerificationResult'); 
+
+        this.status = status;
+		this.message = message;
+    }
+}
+
+
+export class RegistrationVerificationToken extends BaseEntity
+{
+    email?: string;
+	browserId?: string;
+	expireAt?: Date;
+
+    constructor(
+    {
+        email,
+		browserId,
+		expireAt
+    }:{
+        email?: string;
+		browserId?: string;
+		expireAt?: Date;     
+    } = {}
+    ) {
+        super('RegistrationVerificationToken'); 
+
+        this.email = email;
+		this.browserId = browserId;
+		this.expireAt = expireAt;
+    }
+}
+
+
+export class ExternalProvider extends BaseEntity
+{
+    idToken?: string;
+	browserId?: string;
+
+    constructor(
+    {
+        idToken,
+		browserId
+    }:{
+        idToken?: string;
+		browserId?: string;     
+    } = {}
+    ) {
+        super('ExternalProvider'); 
+
+        this.idToken = idToken;
+		this.browserId = browserId;
+    }
+}
+
+
+export class UserRole extends BaseEntity
+{
+    roleId?: number;
+	userId?: number;
+
+    constructor(
+    {
+        roleId,
+		userId
+    }:{
+        roleId?: number;
+		userId?: number;     
+    } = {}
+    ) {
+        super('UserRole'); 
+
+        this.roleId = roleId;
+		this.userId = userId;
+    }
+}
+
+
+export class UserRoleSaveBody extends BaseEntity
+{
+    userRoleDTO?: UserRole;
+
+    constructor(
+    {
+        userRoleDTO
+    }:{
+        userRoleDTO?: UserRole;     
+    } = {}
+    ) {
+        super('UserRoleSaveBody'); 
+
+        this.userRoleDTO = userRoleDTO;
+    }
+}
+
+
+export class LoginVerificationToken extends BaseEntity
+{
+    email?: string;
+	userId?: number;
+	browserId?: string;
+	expireAt?: Date;
+
+    constructor(
+    {
+        email,
+		userId,
+		browserId,
+		expireAt
+    }:{
+        email?: string;
+		userId?: number;
+		browserId?: string;
+		expireAt?: Date;     
+    } = {}
+    ) {
+        super('LoginVerificationToken'); 
+
+        this.email = email;
+		this.userId = userId;
+		this.browserId = browserId;
+		this.expireAt = expireAt;
+    }
+}
+
+
+export class Login extends BaseEntity
+{
+    email?: string;
+	browserId?: string;
+
+    constructor(
+    {
+        email,
+		browserId
+    }:{
+        email?: string;
+		browserId?: string;     
+    } = {}
+    ) {
+        super('Login'); 
+
+        this.email = email;
+		this.browserId = browserId;
+    }
+}
+
+
+export class RefreshTokenRequest extends BaseEntity
+{
+    refreshToken?: string;
+	browserId?: string;
+
+    constructor(
+    {
+        refreshToken,
+		browserId
+    }:{
+        refreshToken?: string;
+		browserId?: string;     
+    } = {}
+    ) {
+        super('RefreshTokenRequest'); 
+
+        this.refreshToken = refreshToken;
+		this.browserId = browserId;
+    }
+}
+
+
+export class Registration extends BaseEntity
+{
+    email?: string;
+	browserId?: string;
+
+    constructor(
+    {
+        email,
+		browserId
+    }:{
+        email?: string;
+		browserId?: string;     
+    } = {}
+    ) {
+        super('Registration'); 
+
+        this.email = email;
+		this.browserId = browserId;
+    }
+}
+
+
+export class Role extends BaseEntity
+{
+    name?: string;
+	description?: string;
+	version?: number;
+	id?: number;
+	createdAt?: Date;
+	modifiedAt?: Date;
+
+    constructor(
+    {
+        name,
+		description,
+		version,
+		id,
+		createdAt,
+		modifiedAt
+    }:{
+        name?: string;
+		description?: string;
+		version?: number;
+		id?: number;
+		createdAt?: Date;
+		modifiedAt?: Date;     
+    } = {}
+    ) {
+        super('Role'); 
+
+        this.name = name;
+		this.description = description;
+		this.version = version;
+		this.id = id;
+		this.createdAt = createdAt;
+		this.modifiedAt = modifiedAt;
+    }
+}
+
+
+export class RoleSaveBody extends BaseEntity
+{
+    roleDTO?: Role;
+	selectedPermissionIds?: number[];
+	selectedUserIds?: number[];
+
+    constructor(
+    {
+        roleDTO,
+		selectedPermissionIds,
+		selectedUserIds
+    }:{
+        roleDTO?: Role;
+		selectedPermissionIds?: number[];
+		selectedUserIds?: number[];     
+    } = {}
+    ) {
+        super('RoleSaveBody'); 
+
+        this.roleDTO = roleDTO;
+		this.selectedPermissionIds = selectedPermissionIds;
+		this.selectedUserIds = selectedUserIds;
+    }
+}
+
+
+export class RefreshToken extends BaseEntity
+{
+    email?: string;
+	ipAddress?: string;
+	browserId?: string;
+	tokenString?: string;
+	expireAt?: Date;
+
+    constructor(
+    {
+        email,
+		ipAddress,
+		browserId,
+		tokenString,
+		expireAt
+    }:{
+        email?: string;
+		ipAddress?: string;
+		browserId?: string;
+		tokenString?: string;
+		expireAt?: Date;     
+    } = {}
+    ) {
+        super('RefreshToken'); 
+
+        this.email = email;
+		this.ipAddress = ipAddress;
+		this.browserId = browserId;
+		this.tokenString = tokenString;
+		this.expireAt = expireAt;
+    }
+}
+
+
+export class Permission extends BaseEntity
+{
+    name?: string;
+	nameLatin?: string;
+	description?: string;
+	descriptionLatin?: string;
+	code?: string;
+	id?: number;
+
+    constructor(
+    {
+        name,
+		nameLatin,
+		description,
+		descriptionLatin,
+		code,
+		id
+    }:{
+        name?: string;
+		nameLatin?: string;
+		description?: string;
+		descriptionLatin?: string;
+		code?: string;
+		id?: number;     
+    } = {}
+    ) {
+        super('Permission'); 
+
+        this.name = name;
+		this.nameLatin = nameLatin;
+		this.description = description;
+		this.descriptionLatin = descriptionLatin;
+		this.code = code;
+		this.id = id;
+    }
+}
+
+
+export class PermissionSaveBody extends BaseEntity
+{
+    permissionDTO?: Permission;
+
+    constructor(
+    {
+        permissionDTO
+    }:{
+        permissionDTO?: Permission;     
+    } = {}
+    ) {
+        super('PermissionSaveBody'); 
+
+        this.permissionDTO = permissionDTO;
+    }
+}
+
+
+""";
+        }
+
+        private string GetNotificationControllerCsData(string appName)
+        {
+            return $$"""
+using Microsoft.AspNetCore.Mvc;
+using Soft.Generator.Shared.Attributes;
+using Soft.Generator.Shared.Interfaces;
+using Azure.Storage.Blobs;
+using {{appName}}.Business.Services;
+
+namespace {{appName}}.WebAPI.Controllers
+{
+    [ApiController]
+    [Route("/api/[controller]/[action]")]
+    public class NotificationController : NotificationBaseController
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly {{Settings.BaseBusinessServiceName}}BusinessService _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+
+        public NotificationController(IApplicationDbContext context, {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
+            : base(context, {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, blobContainerClient)
+        {
+            _context = context;
+            _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService = {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        public async Task SendNotificationEmail(long notificationId, int notificationVersion)
+        {
+            await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.SendNotificationEmail(notificationId, notificationVersion);
+        }
+
+        [HttpDelete]
+        [AuthGuard]
+        public async Task DeleteNotificationForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.DeleteNotificationForCurrentUser(notificationId, notificationVersion);
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        public async Task MarkNotificationAsReadForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.MarkNotificationAsReadForCurrentUser(notificationId, notificationVersion);
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        public async Task MarkNotificationAsUnreadForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.MarkNotificationAsUnreadForCurrentUser(notificationId, notificationVersion);
+        }
+
+        //[HttpPost]
+        //[AuthGuard]
+        //public async Task<TableResponseDTO<NotificationDTO>> GetNotificationListForCurrentUser(TableFilterDTO tableFilterDTO)
+        //{
+        //    return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.GetNotificationListForCurrentUser(tableFilterDTO);
+        //}
+
+        // TODO FT: This should exist in other systems
+        //[HttpGet]
+        //[AuthGuard]
+        //public async Task<int> GetUnreadNotificationCountForTheCurrentUser()
+        //{
+        //    return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.GetUnreGetUnreadNotificationCountForTheCurrentUser();
+        //}
+
+    }
+}
+
+""";
+        }
+
+        private string GetSecurityControllerCsData(string appName)
+        {
+            return $$"""
+using Microsoft.AspNetCore.Mvc;
+using Soft.Generator.Security.Interface;
+using Soft.Generator.Security.Services;
+using Soft.Generator.Security.SecurityControllers;
+using Soft.Generator.Shared.Interfaces;
+using Soft.Generator.Shared.Attributes;
+using Soft.Generator.Shared.DTO;
+using Microsoft.EntityFrameworkCore;
+using Soft.Generator.Shared.Terms;
+using Soft.Generator.Security.DTO;
+using Soft.Generator.Shared.Extensions;
+using {{appName}}.Business.Entities;
+using {{appName}}.Business.Services;
+using {{appName}}.Business.DTO;
+
+namespace {{appName}}.WebAPI.Controllers
+{
+    [ApiController]
+    [Route("/api/[controller]/[action]")]
+    public class SecurityController : SecurityBaseController<UserExtended>
+    {
+        private readonly ILogger<SecurityController> _logger;
+        private readonly SecurityBusinessService<UserExtended> _securityBusinessService;
+        private readonly IJwtAuthManager _jwtAuthManagerService;
+        private readonly IApplicationDbContext _context;
+        private readonly AuthenticationService _authenticationService;
+        private readonly {{Settings.BaseBusinessServiceName}}BusinessService _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+
+
+        public SecurityController(ILogger<SecurityController> logger, SecurityBusinessService<UserExtended> securityBusinessService, IJwtAuthManager jwtAuthManagerService, IApplicationDbContext context, AuthenticationService authenticationService,
+            {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService)
+            : base(securityBusinessService, jwtAuthManagerService, context, authenticationService)
+        {
+            _logger = logger;
+            _securityBusinessService = securityBusinessService;
+            _jwtAuthManagerService = jwtAuthManagerService;
+            _context = context;
+            _authenticationService = authenticationService;
+            _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService = {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+        }
+
+        /// <summary>
+        /// FT: Put the method here, if something needs to be done after the operation from the security service
+        /// </summary>
+        [HttpPost]
+        public async Task<AuthResultDTO> Register(VerificationTokenRequestDTO request)
+        {
+            return await _context.WithTransactionAsync(async () =>
+            {
+                AuthResultDTO authResultDTO = await _securityBusinessService.Register(request);
+                return authResultDTO;
+            });
+        }
+
+        /// <summary>
+        /// FT: Put the method here, if something needs to be done after the operation from the security service
+        /// </summary
+        [HttpPost]
+        public async Task<AuthResultDTO> Login(VerificationTokenRequestDTO request)
+        {
+            AuthResultDTO authResultDTO = _securityBusinessService.Login(request);
+            return authResultDTO;
+        }
+
+        /// <summary>
+        /// FT: Put the method here, if something needs to be done after the operation from the security service
+        /// </summary>
+        [HttpPost]
+        public async Task<AuthResultDTO> LoginExternal(ExternalProviderDTO externalProviderDTO) // TODO FT: Add enum for which external provider you should login user
+        {
+            return await _context.WithTransactionAsync(async () =>
+            {
+                AuthResultDTO authResultDTO = await _securityBusinessService.LoginExternal(externalProviderDTO, SettingsProvider.Current.GoogleClientId);
+                return authResultDTO;
+            });
+        }
+
+    }
+}
+
+""";
+        }
+
+        private string GetUserExtendedControllerCsData(string appName)
+        {
+            return $$"""
+using Microsoft.AspNetCore.Mvc;
+using Soft.Generator.Shared.Attributes;
+using Soft.Generator.Shared.Interfaces;
+using Azure.Storage.Blobs;
+using Soft.Generator.Shared.DTO;
+using Soft.Generator.Shared.Terms;
+using Soft.Generator.Security.Services;
+using {{appName}}.Business.Services;
+using {{appName}}.Business.DTO;
+using {{appName}}.Business.Entities;
+
+namespace {{appName}}.WebAPI.Controllers
+{
+    [ApiController]
+    [Route("/api/[controller]/[action]")]
+    public class UserExtendedController : UserExtendedBaseController
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly {{Settings.BaseBusinessServiceName}}BusinessService _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+        private readonly AuthenticationService _authenticationService;
+
+        public UserExtendedController(IApplicationDbContext context, {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient, AuthenticationService authenticationService)
+            : base(context, {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, blobContainerClient)
+        {
+            _context = context;
+            _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService = {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+            _authenticationService = authenticationService;
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        [SkipSpinner]
+        public async Task<UserExtendedDTO> GetCurrentUser()
+        {
+            long userId = _authenticationService.GetCurrentUserId();
+            return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.GetUserExtendedDTOAsync(userId);
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        [SkipSpinner]
+        public async Task<List<string>> GetCurrentUserPermissionCodes()
+        {
+            return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.GetCurrentUserPermissionCodes(); // FT: Not authorizing because we are reading this from the jwt token
+        }
+
+    }
+}
+
+""";
+        }
+
         private void GenerateProjectStructure(SoftFolder appStructure, string path)
         {
             string newPath = GenerateFolder(appStructure, path);
@@ -526,6 +1563,212 @@ namespace Soft.Generator.DesktopApp.Generator
         }
 
         #region NET
+
+        private string GetTermsGeneratedDesignerCsData(string appName)
+        {
+            return $$"""
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//     Runtime Version:4.0.30319.42000
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+namespace {{appName}}.Shared.Terms {
+    using System;
+
+
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    public class TermsGenerated {
+
+        private static global::System.Resources.ResourceManager resourceMan;
+
+        private static global::System.Globalization.CultureInfo resourceCulture;
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal TermsGenerated() {
+        }
+
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("{{appName}}.Shared.Terms.TermsGenerated", typeof(TermsGenerated).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+
+    }
+}
+""";
+        }
+
+        private string GetTermsGeneratedResxData()
+        {
+            return $$"""
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+</root>
+""";
+        }
+
+        private string GetTermsGeneratedSrLatnRSResxData()
+        {
+            return $$"""
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+
+</root>
+""";
+        }
 
         private string GetUserNotificationCsData(string appName)
         {
@@ -861,7 +2104,9 @@ namespace {{appName}}.WebAPI
 
     public class Settings
     {
+        public string GoogleClientId { get; set; }
 
+        public string ExcelContentType { get; set; }
     }
 }
 """;
@@ -981,6 +2226,8 @@ namespace {{appName}}.WebAPI.GeneratorSettings
     },
     "AllowedHosts": "*",
     "{{appName}}.WebAPI": {
+      "GoogleClientId": "24372003240-44eprq8dn4s0b5f30i18tqksep60uk5u.apps.googleusercontent.com",
+      "ExcelContentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     },
     "{{appName}}.Business": {
     },
@@ -1658,8 +2905,7 @@ export class LayoutService {
 import { TranslocoService } from '@jsverse/transloco';
 import { NavigationEnd, Router } from '@angular/router';
 import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { environment } from 'src/environments/environment';
-import { filter, Subscription, switchMap } from 'rxjs';
+import { filter, Subscription } from 'rxjs';
 import { ApiService } from '../../../business/services/api/api.service';
 import { LayoutService } from '../../services/app.layout.service';
 import { AuthService } from 'src/app/core/services/auth.service';
@@ -2131,7 +3377,7 @@ export class AppMenuComponent implements OnInit {
                         routerLink: [''],
                         visible: true,
                     }, 
-                ]
+                ],
                 visible: true,
             },
         ];
@@ -2430,7 +3676,6 @@ export class DashboardComponent implements OnInit {
     private apiService: ApiService,
     private messageService: SoftMessageService,
     private authService: AuthService,
-    private partnerService: PartnerService,
   ) {}
 
   ngOnInit() {
@@ -2530,7 +3775,7 @@ import { VerificationTypeCodes } from 'src/app/core/enums/verification-type-code
 import { Registration } from 'src/app/business/entities/security-entities.generated';
 import { TranslocoService } from '@jsverse/transloco';
 import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
-import { ValidatorService } from 'src/app/business/services/validation/validation-rules';
+import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
 
 @Component({
     selector: 'app-registration',
@@ -2601,7 +3846,7 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
 
                 <div style="display: flex; flex-direction: column; gap: 16px;">
                     <p-button [label]="t('AgreeAndJoin')" (onClick)="sendRegistrationVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-                    <p-button [label]="t('AlreadyOnLoyalty', {companyName: companyName})" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
+                    <p-button [label]="t('AlreadyHasProfile', {companyName: companyName})" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
                 </div>
             </form>
         </auth>
@@ -2617,7 +3862,7 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
         {
             return $$"""
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { environment } from "src/environments/environment.prod";
+import { environment } from "src/environments/environment";
 import { LayoutService } from "src/app/layout/services/app.layout.service";
 import { GoogleButtonComponent } from "../../../../core/components/google-button/google-button.component";
 import { CommonModule } from "@angular/common";
@@ -2637,6 +3882,7 @@ import { TranslocoDirective } from "@jsverse/transloco";
   standalone: true,
 })
 export class AuthComponent {
+    @Output() onCompanyNameChange: EventEmitter<string> = new EventEmitter();
     @Input() showGoogleAuth: boolean = true;
 
     hasGoogleAuth: boolean = environment.googleAuth;
@@ -2646,8 +3892,9 @@ export class AuthComponent {
     constructor(public layoutService: LayoutService) {}
 
     ngOnInit(){
-        this.image = `assets/primeng/images/${this.layoutService.config.colorScheme === 'light' ? 'logo-dark' : 'logo-white'}.svg`
+        this.image = `assets/primeng/images/logo-dark.svg`
         this.companyName = environment.companyName;
+        this.onCompanyNameChange.next(this.companyName);
     }
 
     onGoogleSignIn(googleWrapper: any){
@@ -2669,7 +3916,7 @@ export class AuthComponent {
         <div class="flex flex-column w-full">
             <div class="w-full sm:w-30rem" style="margin: auto; border-radius:50px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
                 <div class="surface-card py-6 px-5 sm:px-6" style="border-radius:45px;">
-                    <div class="text-center mb-6">
+                    <div class="text-center" style="margin-bottom: 38px;">
                         <img [src]="image" alt="{{companyName}} Logo" height="60">
                     </div>
 
@@ -2710,7 +3957,7 @@ import { VerificationTypeCodes } from 'src/app/core/enums/verification-type-code
 import { Login } from 'src/app/business/entities/security-entities.generated';
 import { TranslocoService } from '@jsverse/transloco';
 import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
-import { ValidatorService } from 'src/app/business/services/validation/validation-rules';
+import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
 
 @Component({
     selector: 'app-login',
@@ -2775,7 +4022,7 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
 
                 <div style="display: flex; flex-direction: column; gap: 16px;">
                     <p-button [label]="t('Login')" (onClick)="sendLoginVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-                    <p-button *ngIf="usersCanRegister" [label]="t('NewToLoyaltyJoinNow', {companyName: companyName})" routerLink="/auth/registration" [style]="{width: '100%'}"></p-button>
+                    <p-button *ngIf="usersCanRegister" [label]="t('NewJoinNow', {companyName: companyName})" routerLink="/auth/registration" [style]="{width: '100%'}"></p-button>
                 </div>
             </form>
         </auth>
@@ -2894,7 +4141,7 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
         {
             return $$"""
 {
-  "name": "{{projectName}}.spa",
+  "name": "{{projectName.ToLower()}}.spa",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -2907,18 +4154,18 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
   },
   "private": true,
   "dependencies": {
-    "@abacritt/angularx-social-login": "^2.2.0",
-    "@angular/animations": "^17.0.0",
-    "@angular/cdk": "^17.2.0",
-    "@angular/common": "^17.0.0",
-    "@angular/compiler": "^17.0.0",
-    "@angular/core": "^17.0.0",
-    "@angular/forms": "^17.0.0",
-    "@angular/platform-browser": "^17.0.0",
-    "@angular/platform-browser-dynamic": "^17.0.0",
-    "@angular/router": "^17.0.0",
-    "@jsverse/transloco": "^7.5.0",
-    "angularx-qrcode": "^17.0.1",
+    "@abacritt/angularx-social-login": "2.2.0",
+    "@angular/animations": "17.0.0",
+    "@angular/cdk": "17.2.0",
+    "@angular/common": "17.0.0",
+    "@angular/compiler": "17.0.0",
+    "@angular/core": "17.0.0",
+    "@angular/forms": "17.0.0",
+    "@angular/platform-browser": "17.0.0",
+    "@angular/platform-browser-dynamic": "17.0.0",
+    "@angular/router": "17.0.0",
+    "@jsverse/transloco": "7.5.0",
+    "angularx-qrcode": "17.0.1",
     "file-saver": "^2.0.5",
     "json-parser": "^3.1.2",
     "json.date-extensions": "^1.2.2",
@@ -2933,10 +4180,10 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
     "zone.js": "^0.14.10"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^17.0.7",
-    "@angular/cli": "^17.0.7",
-    "@angular/compiler-cli": "^17.0.0",
-    "@angular/localize": "^17.2.1",
+    "@angular-devkit/build-angular": "17.0.7",
+    "@angular/cli": "17.0.7",
+    "@angular/compiler-cli": "17.0.0",
+    "@angular/localize": "17.0.0",
     "@jsverse/transloco-keys-manager": "^5.1.0",
     "@types/jasmine": "~5.1.0",
     "jasmine-core": "~5.1.0",
@@ -2980,7 +4227,7 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/{{appName}}.spa",
+            "outputPath": "dist/{{appName}}.SPA",
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -3023,10 +4270,10 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
             },
             "development": {
               "optimization": false,
-							"extractLicenses": false,
+			  "extractLicenses": false,
               "sourceMap": true,
-							"outputHashing": "all",
-							"namedChunks": true,
+			  "outputHashing": "all",
+			  "namedChunks": true,
               "aot": true
             }
           },
@@ -3157,6 +4404,18 @@ export const environment = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
       params: new HttpParams().set('X-Skip-Spinner', 'true')
     },
+
+    /* URLs */
+    loginSlug: 'auth/login',
+    administrationSlug: 'administration',
+
+    /* Local storage */
+    accessTokenKey: 'access_token',
+    refreshTokenKey: 'refresh_token',
+    browserIdKey: 'browser_id',
+
+    /* Query params */
+
   };
 """;
         }
@@ -3748,16 +5007,6 @@ $gutter: 1rem; //for primeflex grid system
         {
             return $$$"""
 {
-    "ContinueWithGoogle": "Nastavite sa Google nalogom",
-    "Email": "Email",
-    "Password": "Lozinka",
-    "Login": "Prijavi se",
-    "Name": "Missing value for 'Name'",
-    "NameLatin": "Missing value for 'NameLatin'",
-    "Code": "Missing value for 'Code'",
-    "Checked": "Missing value for 'Checked'",
-    "NotificationDTO": "Missing value for 'NotificationDTO'",
-    "SelectedIds": "Missing value for 'SelectedIds'",
     "Submit": "Potvrdite",
     "UserList": "Korisnici",
     "SuperRoles": "Super uloge",
@@ -3773,7 +5022,8 @@ $gutter: 1rem; //for primeflex grid system
     "and": "i",
     "CookiePolicy": "politiku upotrebe kolčića",
     "AgreeAndJoin": "Slažem se i pridružujem",
-    "AlreadyOnLoyalty": "Već imate profil? Prijavite se",
+    "AlreadyHasProfile": "Već imate profil? Prijavite se",
+    "NewJoinNow": "Novi ste? Napravite profil",
     "ContinueWithGoogle": "Nastavite sa Google nalogom",
     "or": "ili",
     "All": "Sve",
@@ -4000,7 +5250,7 @@ $gutter: 1rem; //for primeflex grid system
     "ClearFilters": "Uklonite sve filtere",
     "YouDoNotHaveAnyNotifications": "Nemate nijednu notifikaciju.",
     "More than": "Više od",
-    "BadRequestDetails": "Sistem ne može da obradi zahtev. Molimo vas da proverite zahtev i pokušate ponovo.",
+    "BadRequestDetails": "Sistem ne može da obradi zahtev. Molimo vas da proverite zahtev i pokušate ponovo."
 }
 """;
         }
@@ -4011,35 +5261,6 @@ $gutter: 1rem; //for primeflex grid system
 {
 
 }
-""";
-        }
-
-        private string GetTranslocoRootModuleTsData()
-        {
-            return $$"""
-import { provideTransloco, TranslocoModule } from '@jsverse/transloco';
-import { NgModule } from '@angular/core';
-
-import { TranslocoHttpLoader } from './core/services/transloco-loader';
-import { environment } from 'src/environments/environment';
-
-@NgModule({
-  exports: [TranslocoModule],
-  providers: [
-    provideTransloco({
-      config: {
-        availableLangs: ['sr-Latn-RS', 'en'],
-        defaultLang: 'sr-Latn-RS',
-
-        // Remove this option if your application doesn't support changing language in runtime.
-        // reRenderOnLangChange: true,
-        prodMode: environment.production,
-      },
-      loader: TranslocoHttpLoader,
-    }),
-  ],
-})
-export class TranslocoRootModule {}
 """;
         }
 
@@ -4065,8 +5286,8 @@ import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
 import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 import { environment } from 'src/environments/environment';
-import { TranslocoRootModule } from './transloco-root.module';
 import { BusinessModule } from './business/business.module';
+import { SoftTranslocoModule } from './core/modules/soft-transloco.module';
 
 @NgModule({
   declarations: [
@@ -4083,7 +5304,7 @@ import { BusinessModule } from './business/business.module';
     MessagesModule,
     ToastModule,
     SocialLoginModule,
-    TranslocoRootModule,
+    SoftTranslocoModule.forRoot(),
     NgxSpinnerModule.forRoot({ type: 'ball-clip-rotate-multiple' }),
     BusinessModule,
     CoreModule,
@@ -4143,7 +5364,7 @@ export class AppComponent implements OnInit {
     constructor(private primengConfig: PrimeNGConfig, private translocoService: TranslocoService) { }
 
     ngOnInit() {
-        this.primengConfig.ripple = true;
+        this.primengConfig.ripple = true; // FT: We are using ripple because of the android mobile devices
 
         this.translocoService.selectTranslateObject('Primeng').subscribe((primengTranslations) => {
             this.primengConfig.setTranslation(primengTranslations);
@@ -4156,7 +5377,7 @@ export class AppComponent implements OnInit {
         private string GetAppComponentHtmlData()
         {
             return $$"""
-<!-- FT HACK: I don't know why, but translations on the layout component work only if wrap everything with transloco -->
+<!-- FT HACK: I don't know why, but translations on the layout component work only if wrap we everything with transloco -->
 <ng-container *transloco="let t">
     <router-outlet></router-outlet>
 </ng-container>
@@ -4215,7 +5436,6 @@ export class AppRoutingModule {
         {
             return $$"""
 import { CommonModule } from '@angular/common';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule, Optional, SkipSelf } from '@angular/core';
 
 @NgModule({
@@ -4265,7 +5485,24 @@ export class ValidatorService extends ValidatorServiceGenerated {
             return arrayValid ? null : { _ : this.translocoService.translate('NotEmpty')};
         };
         validator.hasNotEmptyRule = true;
+        control.required = true;
         return validator;
+    }
+
+    notEmpty(control: SoftFormControl): void {
+        const validator: SoftValidatorFn = (): ValidationErrors | null => {
+            const value = control.value;
+
+            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+
+            const arrayValid = notEmptyRule;
+
+            return arrayValid ? null : { _ : this.translocoService.translate('NotEmpty')};
+        };
+        validator.hasNotEmptyRule = true;
+        control.required = true;
+        control.validator = validator;
+        control.updateValueAndValidity();
     }
 
     isFormArrayEmpty(control: SoftFormArray): SoftValidatorFn {
@@ -4279,6 +5516,7 @@ export class ValidatorService extends ValidatorServiceGenerated {
             return arrayValid ? null : { _ : this.translocoService.translate('NotEmpty')};
         };
         validator.hasNotEmptyRule = true;
+        control.required = true;
         return validator;
     }
 }
@@ -4358,6 +5596,7 @@ import { TableFilter } from '../../../core/entities/table-filter';
 import { PrimengOption } from 'src/app/core/entities/primeng-option';
 import { Namebook } from '../../../core/entities/namebook';
 import { getFileNameFromContentDisposition } from 'src/app/core/services/helper-functions';
+import { Codebook } from 'src/app/core/entities/codebook';
 
 @Injectable()
 export class ApiService extends ApiGeneratedService {
@@ -4373,10 +5612,34 @@ export class ApiService extends ApiGeneratedService {
         });
     }
 
-    loadPrimengListForDropdown(loadListForDropdownObservable: () => Observable<Namebook[]>): Observable<PrimengOption[]>{
-        return loadListForDropdownObservable().pipe(
+    getPrimengNamebookListForDropdown(getListForDropdownObservable: () => Observable<Namebook[]>): Observable<PrimengOption[]>{
+        return getListForDropdownObservable().pipe(
             map(res => {
                 return res.map(x => ({ label: x.displayName, value: x.id }));
+            })
+        );
+    }
+
+    getPrimengCodebookListForDropdown(getListForDropdownObservable: () => Observable<Codebook[]>): Observable<PrimengOption[]>{
+        return getListForDropdownObservable().pipe(
+            map(res => {
+                return res.map(x => ({ label: x.displayName, value: x.code }));
+            })
+        );
+    }
+
+    getPrimengNamebookListForAutocomplete(getListForAutocompleteObservable: (limit: number, query: string) => Observable<Namebook[]>, limit: number, query: string): Observable<PrimengOption[]>{
+        return getListForAutocompleteObservable(limit, query).pipe(
+            map(res => {
+                return res.map(x => ({ label: x.displayName, value: x.id }));
+            })
+        );
+    }
+
+    getPrimengCodebookListForAutocomplete(getListForAutocompleteObservable: (limit: number, query: string) => Observable<Codebook[]>, limit: number, query: string): Observable<PrimengOption[]>{
+        return getListForAutocompleteObservable(limit, query).pipe(
+            map(res => {
+                return res.map(x => ({ label: x.displayName, value: x.code }));
             })
         );
     }
@@ -4403,75 +5666,77 @@ export class ApiSecurityService {
 
     }
 
+    //#region Authentication
+
     sendLoginVerificationEmail = (loginDTO: Login): Observable<any> => { 
-        return this.http.post<any>(`${environment.apiUrl}/Auth/SendLoginVerificationEmail`, loginDTO, environment.httpOptions);
+        return this.http.post<any>(`${environment.apiUrl}/Security/SendLoginVerificationEmail`, loginDTO, environment.httpOptions);
     }
 
     sendRegistrationVerificationEmail = (registrationDTO: Registration): Observable<RegistrationVerificationResult> => { 
-        return this.http.post<RegistrationVerificationResult>(`${environment.apiUrl}/Auth/SendRegistrationVerificationEmail`, registrationDTO, environment.httpOptions);
+        return this.http.post<RegistrationVerificationResult>(`${environment.apiUrl}/Security/SendRegistrationVerificationEmail`, registrationDTO, environment.httpOptions);
     }
 
     logout = (browserId: string): Observable<any> => { 
-        return this.http.get<any>(`${environment.apiUrl}/Auth/Logout?browserId=${browserId}`);
+        return this.http.get<any>(`${environment.apiUrl}/Security/Logout?browserId=${browserId}`);
     }
 
     refreshToken = (request: RefreshTokenRequest): Observable<AuthResult> => { 
-        return this.http.post<AuthResult>(`${environment.apiUrl}/Auth/RefreshToken`, request, environment.httpOptions);
+        return this.http.post<AuthResult>(`${environment.apiUrl}/Security/RefreshToken`, request, environment.httpOptions);
     }
 
-    loadRoleListForAutocomplete(limit: number, query: string): Observable<Namebook[]> {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadRoleListForAutocomplete?limit=${limit}&query=${query}`, environment.httpSkipSpinnerOptions);
-    }
+    //#endregion
 
-    loadRoleListForDropdown(): Observable<Namebook[]> {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadRoleListForDropdown`, environment.httpSkipSpinnerOptions);
-    }
+    //#region Role
 
-    loadRoleTableData = (dto: TableFilter): Observable<TableResponse> => { 
-        return this.http.post<TableResponse>(`${environment.apiUrl}/Auth/LoadRoleTableData`, dto, environment.httpSkipSpinnerOptions);
+    getRoleTableData = (dto: TableFilter): Observable<TableResponse> => { 
+        return this.http.post<TableResponse>(`${environment.apiUrl}/Security/GetRoleTableData`, dto, environment.httpSkipSpinnerOptions);
     }
 
     exportRoleTableDataToExcel = (dto: TableFilter): Observable<any> => { 
-        return this.http.post<any>(`${environment.apiUrl}/Auth/ExportRoleTableDataToExcel`, dto, environment.httpOptions);
+        return this.http.post<any>(`${environment.apiUrl}/Security/ExportRoleTableDataToExcel`, dto, environment.httpOptions);
     }
 
     deleteRole = (id: number): Observable<any> => { 
-        return this.http.delete<any>(`${environment.apiUrl}/Auth/DeleteRole?id=${id}`);
+        return this.http.delete<any>(`${environment.apiUrl}/Security/DeleteRole?id=${id}`);
     }
 
-    getRole(id: number): Observable<Role> {
-        return this.http.get<Role>(`${environment.apiUrl}/Auth/GetRole?id=${id}`);
+    getRole = (id: number): Observable<Role> => {
+        return this.http.get<Role>(`${environment.apiUrl}/Security/GetRole?id=${id}`);
     }
 
     saveRole = (dto: Role): Observable<Role> => { 
-        return this.http.put<Role>(`${environment.apiUrl}/Auth/SaveRole`, dto, environment.httpOptions);
+        return this.http.put<Role>(`${environment.apiUrl}/Security/SaveRole`, dto, environment.httpOptions);
     }
 
-    loadPermissionListForDropdown = (): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadPermissionListForDropdown`, environment.httpSkipSpinnerOptions);
+    getUsersNamebookListForRole = (roleId: number): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetUsersNamebookListForRole?roleId=${roleId}`, environment.httpSkipSpinnerOptions);
     }
 
-    loadPermissionListForRole = (roleId: number): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadPermissionListForRole?roleId=${roleId}`, environment.httpSkipSpinnerOptions);
+    getRoleListForAutocomplete = (limit: number, query: string): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetRoleListForAutocomplete?limit=${limit}&query=${query}`, environment.httpSkipSpinnerOptions);
     }
 
-    loadUserListForRole = (roleId: number): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadUserListForRole?roleId=${roleId}`, environment.httpSkipSpinnerOptions);
+    getRoleListForDropdown = (): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetRoleListForDropdown`, environment.httpSkipSpinnerOptions);
     }
 
-    loadRoleNamebookListForUserExtended = (userId: number): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadRoleNamebookListForUserExtended?userId=${userId}`, environment.httpSkipSpinnerOptions);
+    //#endregion
+
+    //#region Permission
+
+    getPermissionListForDropdown = (): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetPermissionListForDropdown`, environment.httpSkipSpinnerOptions);
     }
 
-    loadNotificationNamebookListForUserExtended = (userId: number): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Auth/LoadNotificationNamebookListForUserExtended?userId=${userId}`, environment.httpSkipSpinnerOptions);
+    getPermissionsNamebookListForRole = (roleId: number): Observable<Namebook[]> => {
+        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetPermissionsNamebookListForRole?roleId=${roleId}`, environment.httpSkipSpinnerOptions);
     }
 
-    getUnreadNotificationCountForTheCurrentUser = (): Observable<number> => {
-        return this.http.get<number>(`${environment.apiUrl}/Auth/GetUnreadNotificationCountForTheCurrentUser`, environment.httpSkipSpinnerOptions);
-    }
+    //#endregion
 
 }
+
+
 """;
         }
 
