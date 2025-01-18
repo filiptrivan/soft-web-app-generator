@@ -27,21 +27,17 @@ namespace Soft.Generator.DesktopApp.Generator
                 return null;
 
             string result = $$"""
-import { SoftFormControl, SoftFormGroup } from '../../../../core/components/soft-form-control/soft-form-control';
+import { SoftFormGroup } from './../../../../core/components/soft-form-control/soft-form-control';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslocoService } from '@jsverse/transloco';
-import { forkJoin, Observable } from 'rxjs';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { TranslateClassNamesService } from 'src/app/business/services/translates/translated-class-names.generated';
-import { ValidatorService } from 'src/app/business/services/validation/validation-rules';
+import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
+import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
 import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
-import { nameof } from 'src/app/core/services/helper-functions';
+import { BaseFormService } from 'src/app/core/services/base-form.service';
 import { SoftMessageService } from 'src/app/core/services/soft-message.service';
-import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
-import { SoftTab } from 'src/app/core/components/soft-panels/panel-header/panel-header.component';
-import { PrimeIcons } from 'primeng/api';
 import { {{entity.Name}} } from 'src/app/business/entities/generated/business-entities.generated';
 
 @Component({
@@ -50,10 +46,7 @@ import { {{entity.Name}} } from 'src/app/business/entities/generated/business-en
     styles: [],
 })
 export class {{entity.Name}}DetailsComponent extends BaseFormCopy implements OnInit {
-    override saveObservableMethod = this.apiService.save{{entity.Name}};
-
-    {{entity.Name.FirstCharToLower()}}FormGroup: SoftFormGroup<{{entity.Name}}>;
-    {{entity.Name.FirstCharToLower()}}SaveBodyName: string = nameof<{{entity.Name}}SaveBody>('{{entity.Name.FirstCharToLower()}}DTO');
+    {{entity.Name.FirstCharToLower()}}FormGroup = new SoftFormGroup<{{entity.Name}}>({});
 
     constructor(
         protected override differs: KeyValueDiffers,
@@ -65,34 +58,18 @@ export class {{entity.Name}}DetailsComponent extends BaseFormCopy implements OnI
         protected override translocoService: TranslocoService,
         protected override translateClassNamesService: TranslateClassNamesService,
         protected override validatorService: ValidatorService,
+        protected override baseFormService: BaseFormService,
         private apiService: ApiService,
     ) {
-        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService, baseFormService);
     }
 
     override ngOnInit() {
-        this.route.params.subscribe((params) => {
-            this.modelId = params['id'];
-
-            if (this.modelId > 0) {
-                forkJoin({
-                    {{entity.Name.FirstCharToLower()}}: this.apiService.get{{entity.Name}}(this.modelId),
-                })
-                .subscribe(({ {{entity.Name.FirstCharToLower()}} }) => {
-                    this.{{entity.Name.FirstCharToLower()}}FormGroup = this.initFormGroup(new {{entity.Name}}({{entity.Name.FirstCharToLower()}}), this.{{entity.Name.FirstCharToLower()}}SaveBodyName);
-                });
-            }else{
-                this.{{entity.Name.FirstCharToLower()}}FormGroup = this.initFormGroup(new {{entity.Name}}({id: 0}), this.{{entity.Name.FirstCharToLower()}}SaveBodyName);
-            }
-        });
+        
     }
 
     override onBeforeSave(): void {
-        let saveBody: {{entity.Name}}SaveBody = new {{entity.Name}}SaveBody();
-
-        saveBody.{{entity.Name.FirstCharToLower()}}DTO = this.{{entity.Name.FirstCharToLower()}}FormGroup.getRawValue();
-
-        this.saveBody = saveBody;
+        
     }
 
 }

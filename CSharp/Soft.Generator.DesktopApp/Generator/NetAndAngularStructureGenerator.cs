@@ -44,6 +44,13 @@ namespace Soft.Generator.DesktopApp.Generator
                                                     new SoftFolder
                                                     {
                                                         Name = "components",
+                                                        ChildFolders = new List<SoftFolder>
+                                                        {
+                                                            new SoftFolder
+                                                            {
+                                                                Name = "base-details",
+                                                            },
+                                                        }
                                                     },
                                                     new SoftFolder
                                                     {
@@ -238,6 +245,8 @@ namespace Soft.Generator.DesktopApp.Generator
                                                 {
                                                     new SoftFile { Name = "en.json", Data = GetTranslocoEnJsonCode() },
                                                     new SoftFile { Name = "sr-Latn-RS.json", Data = GetTranslocoSrLatnRSJsonCode() },
+                                                    new SoftFile { Name = "en.generated.json", Data = "" },
+                                                    new SoftFile { Name = "sr-Latn-RS.generated.json", Data = "" },
                                                 }
                                             },
                                             new SoftFolder
@@ -380,6 +389,10 @@ namespace Soft.Generator.DesktopApp.Generator
                                     new SoftFolder
                                     {
                                         Name = "Terms",
+                                        SoftFiles = new List<SoftFile>
+                                        {
+
+                                        }
                                     }
                                 },
                                 SoftFiles = new List<SoftFile>
@@ -523,7 +536,7 @@ namespace {{appName}}.Business.Entities
 {
     public class UserNotification 
     {
-        [M2MMaintanceEntity(nameof(Notification.Users))]
+        [M2MMaintanceEntity(nameof(Notification.Recipients))]
         public virtual Notification Notification { get; set; }
 
         [M2MExtendEntity(nameof(User.Notifications))]
@@ -543,14 +556,19 @@ using Soft.Generator.Security.Entities;
 using Soft.Generator.Security.Interface;
 using Soft.Generator.Shared.Attributes;
 using Soft.Generator.Shared.Attributes.EF;
+using Soft.Generator.Shared.Attributes.EF.Translation;
+using Soft.Generator.Shared.Attributes.EF.UI;
 using Soft.Generator.Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations;
 
 namespace {{appName}}.Business.Entities
 {
+    [UIDoNotGenerate]
+    [TranslateSingularSrLatnRS("Korisnik")]
     [Index(nameof(Email), IsUnique = true)]
     public class UserExtended : BusinessObject<long>, IUser
     {
+        [TranslateSingularSrLatnRS("Email")]
         [SoftDisplayName]
         [CustomValidator("EmailAddress()")]
         [StringLength(70, MinimumLength = 5)]
@@ -561,9 +579,9 @@ namespace {{appName}}.Business.Entities
 
         public bool? IsDisabled { get; set; }
 
-        public virtual List<Role> Roles { get; } = new();
+        public virtual List<Role> Roles { get; } = new(); // M2M
 
-        public virtual List<Notification> Notifications { get; } = new();
+        public virtual List<Notification> Notifications { get; } = new(); // M2M
     }
 }
 """;
@@ -573,26 +591,51 @@ namespace {{appName}}.Business.Entities
         {
             return $$"""
 using Soft.Generator.Shared.Attributes.EF;
+using Soft.Generator.Shared.Attributes.EF.UI;
 using Soft.Generator.Shared.BaseEntities;
+using Soft.Generator.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
+using Soft.Generator.Shared.Interfaces;
+using {{appName}}.Business.DTO;
 
 namespace {{appName}}.Business.Entities
 {
-    public class Notification : BusinessObject<long>
+    public class Notification : BusinessObject<long>, INotification<UserExtended>
     {
+        [UIColWidth("col-12")]
         [SoftDisplayName]
         [StringLength(100, MinimumLength = 1)]
         [Required]
         public string Title { get; set; }
 
+        [UIControlType(nameof(UIControlTypeCodes.TextArea))]
         [StringLength(400, MinimumLength = 1)]
         [Required]
         public string Description { get; set; }
 
+        [UIControlType(nameof(UIControlTypeCodes.Editor))]
         [StringLength(1000, MinimumLength = 1)]
         public string EmailBody { get; set; }
 
-        public virtual List<UserExtended> Users { get; } = new();
+        #region UIColumn
+        [UIColumn(nameof(UserExtendedDTO.Email))]
+        [UIColumn(nameof(UserExtendedDTO.CreatedAt))]
+        #endregion
+        [SimpleManyToManyTableLazyLoad]
+        public virtual List<UserExtended> Recipients { get; } = new(); // M2M
+    }
+}
+""";
+        }
+
+        private string GetNotificationSaveBodyDTOCsData(string appName)
+        {
+            return $$"""
+namespace {{appName}}.Business.DTO
+{
+    public partial class NotificationSaveBodyDTO
+    {
+        public bool IsMarkedAsRead { get; set; }
     }
 }
 """;
@@ -603,24 +646,13 @@ namespace {{appName}}.Business.Entities
             return $$"""
 namespace {{appName}}.Business.DTO
 {
+    
     public partial class UserExtendedSaveBodyDTO
     {
-        public List<int> SelectedRoleIds { get; set; }
-    }
-}
-""";
-        }
-
-        private string GetNotificationSaveBodyDTOCsData(string appName)
-        {
-            return $$"""
-using Soft.Generator.Shared.DTO;
-
-namespace {{appName}}.Business.DTO
-{
-    public partial class NotificationSaveBodyDTO : LazyTableSelectionDTO<long>
-    {
-        public bool IsMarkedAsRead { get; set; }
+        /// <summary>
+        /// Needs to have it here, because in generated business service, we don't have reference to the security service
+        /// </summary>
+        public List<int> SelectedRolesIds { get; set; }
     }
 }
 """;
@@ -629,6 +661,8 @@ namespace {{appName}}.Business.DTO
         private string GetNotificationDTOCsData(string appName)
         {
             return $$"""
+using Soft.Generator.Shared.Attributes.EF.UI;
+
 namespace {{appName}}.Business.DTO
 {
     public partial class NotificationDTO
@@ -636,6 +670,7 @@ namespace {{appName}}.Business.DTO
         /// <summary>
         /// This property is only for currently logged in user
         /// </summary>
+        [UIDoNotGenerate]
         public bool? IsMarkedAsRead { get; set; }
     }
 }
@@ -684,13 +719,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{D485BCE8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.WebAPI", "{{appName}}.WebAPI\{{appName}}.WebAPI.csproj", "{1063DCDA-9291-4FAA-87B2-555E12511EE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Security", "..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj", "{3B328631-AB3B-4B28-9FA5-4DA790670199}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Security", "..\..\SoftGenerator\soft-generator\Soft.Generator.Security\Soft.Generator.Security.csproj", "{3B328631-AB3B-4B28-9FA5-4DA790670199}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Shared", "..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj", "{53565A13-28F1-424F-B5A0-34125EF303CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Shared", "..\..\SoftGenerator\soft-generator\Soft.Generator.Shared\Soft.Generator.Shared.csproj", "{53565A13-28F1-424F-B5A0-34125EF303CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Infrastructure", "..\..\Soft.Generator\Source\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj", "{587D08A6-A975-4673-90A4-77CF61B7B526}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Infrastructure", "..\..\SoftGenerator\soft-generator\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj", "{587D08A6-A975-4673-90A4-77CF61B7B526}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.SourceGenerators", "..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj", "{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.SourceGenerators", "..\..\SoftGenerator\soft-generator\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj", "{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.Infrastructure", "{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj", "{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}"
 EndProject
@@ -886,10 +921,10 @@ namespace {{appName}}.WebAPI
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj" />
-		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
-		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Security\Soft.Generator.Security.csproj" />
+		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
+		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\{{appName}}.Business\{{appName}}.Business.csproj" />
 		<ProjectReference Include="..\{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj" />
 		<ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
@@ -923,14 +958,11 @@ namespace {{appName}}.WebAPI.GeneratorSettings
 {
     public class GeneratorSettings
     {
-        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\services\api\api.service.generated.ts")]
-        public string NgControllersGenerator { get; set; }
+        [Output("true")]
+        public string ControllerGenerator { get; set; }
 
-        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\services\translates")]
-        public string NgTranslatesGenerator { get; set; }
-
-        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\services\validators")]
-        public string NgValidatorsGenerator { get; set; }
+        [Output("true")]
+        public string TranslationsGenerator { get; set; }
     }
 }
 """;
@@ -1095,7 +1127,7 @@ namespace {{appName}}.WebAPI.DI
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
+    <ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1131,10 +1163,10 @@ namespace {{appName}}.WebAPI.DI
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj" />
-		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
-		<ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Security\Soft.Generator.Security.csproj" />
+		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
+		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\{{appName}}.Business\{{appName}}.Business.csproj" />
 		<ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
 	</ItemGroup>
@@ -1205,8 +1237,8 @@ namespace {{appName}}.Business
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.Generator.Security\Soft.Generator.Security.csproj" />
-    <ProjectReference Include="..\..\..\Soft.Generator\Source\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Security\Soft.Generator.Security.csproj" />
+    <ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1248,11 +1280,7 @@ namespace {{appName}}.Business.GeneratorSettings
 {
     public class GeneratorSettings
     {
-        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\entities")]
-        public string NgEntitiesGenerator { get; set; }
-
-        [Output(@"E:\Projects\{{appName}}\Angular\src\app\business\enums")]
-        public string NgEnumsGenerator { get; set; }
+        
     }
 }
 """;
@@ -1377,22 +1405,19 @@ namespace {{appName}}.Business.Services
 
         #region User
 
-        public async Task<UserExtendedDTO> SaveUserExtendedAndReturnDTOExtendedAsync(UserExtendedSaveBodyDTO userExtendedSaveBodyDTO)
+        protected override async Task OnBeforeSaveUserExtendedAndReturnSaveBodyDTO(UserExtendedSaveBodyDTO userExtendedSaveBodyDTO)
         {
-            return await _context.WithTransactionAsync(async () =>
+            await _context.WithTransactionAsync(async () =>
             {
                 if (userExtendedSaveBodyDTO.UserExtendedDTO.Id == 0)
                     throw new HackerException("You can't add new user.");
 
-                UserExtended user = await LoadInstanceAsync<UserExtended, long>(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.UserExtendedDTO.Version);
+                UserExtended user = await GetInstanceAsync<UserExtended, long>(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.UserExtendedDTO.Version);
 
                 if (userExtendedSaveBodyDTO.UserExtendedDTO.Email != user.Email)
                     throw new HackerException("You can't change email from here.");
 
-                if (userExtendedSaveBodyDTO.SelectedRoleIds != null)
-                    await _securityBusinessService.UpdateRoleListForUser(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.SelectedRoleIds);
-
-                return await SaveUserExtendedAndReturnDTOAsync(userExtendedSaveBodyDTO.UserExtendedDTO, false, false); // FT: Here we can let Save after update many to many association because we are sure that we will never send 0 from the UI
+                await _securityBusinessService.UpdateRoleListForUser(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.SelectedRolesIds);
             });
         }
 
@@ -1417,31 +1442,66 @@ namespace {{appName}}.Business.Services
 
         #region Notification
 
-        public async Task<NotificationDTO> SaveNotificationAndReturnDTOExtendedAsync(NotificationSaveBodyDTO notificationSaveBodyDTO)
-        {
-            return await _context.WithTransactionAsync(async () =>
-            {
-                NotificationDTO savedNotificationDTO = await SaveNotificationAndReturnDTOAsync(notificationSaveBodyDTO.NotificationDTO, true, true);
-
-                PaginationResult<UserExtended> paginationResult = await LoadUserExtendedListForPagination(notificationSaveBodyDTO.TableFilter, _context.DbSet<UserExtended>());
-
-                await UpdateUserExtendedListForNotificationWithLazyTableSelection(paginationResult.Query, savedNotificationDTO.Id, notificationSaveBodyDTO);
-
-                return savedNotificationDTO;
-            });
-        }
-
         public async Task SendNotificationEmail(long notificationId, int notificationVersion)
         {
             await _context.WithTransactionAsync(async () =>
             {
                 await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
 
-                Notification notification = await LoadInstanceAsync<Notification, long>(notificationId, notificationVersion); // FT: Checking version because if the user didn't save and some other user changed the version, he will send emails to wrong users
+                // FT: Checking version because if the user didn't save and some other user changed the version, he will send emails to wrong users
+                Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
 
-                List<string> recipients = notification.Users.Select(x => x.Email).ToList();
+                List<string> recipients = notification.Recipients.Select(x => x.Email).ToList();
 
                 await _emailingService.SendEmailAsync(recipients, notification.Title, notification.EmailBody);
+            });
+        }
+
+        public async Task DeleteNotificationForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _context.WithTransactionAsync(async () =>
+            {
+                long currentUserId = _authenticationService.GetCurrentUserId();
+
+                //await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
+
+                Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
+
+                await _context.DbSet<UserNotification>()
+                    .Where(x => x.User.Id == currentUserId && x.Notification.Id == notification.Id)
+                    .ExecuteDeleteAsync();
+            });
+        }
+
+        public async Task MarkNotificationAsReadForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _context.WithTransactionAsync(async () =>
+            {
+                long currentUserId = _authenticationService.GetCurrentUserId();
+
+                //await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
+
+                Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
+
+                await _context.DbSet<UserNotification>()
+                    .Where(x => x.User.Id == currentUserId && x.Notification.Id == notification.Id)
+                    .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.IsMarkedAsRead, true));
+            });
+        }
+
+        public async Task MarkNotificationAsUnreadForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _context.WithTransactionAsync(async () =>
+            {
+                long currentUserId = _authenticationService.GetCurrentUserId();
+
+                //await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
+
+                Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
+
+                await _context.DbSet<UserNotification>()
+                    .Where(x => x.User.Id == currentUserId && x.Notification.Id == notification.Id)
+                    .ExecuteUpdateAsync(setters => setters.SetProperty(x => x.IsMarkedAsRead, false));
             });
         }
 
@@ -1455,7 +1515,16 @@ namespace {{appName}}.Business.Services
         private string GetMapsterMapperCsData(string appName)
         {
             return $$"""
+using Soft.Generator.Shared.Attributes;
 
+namespace {{appName}}.Business.DataMappers
+{
+    [CustomMapper]
+    public static partial class Mapper
+    {
+
+    }
+}
 """;
         }
 

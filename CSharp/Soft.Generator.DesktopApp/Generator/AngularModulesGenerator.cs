@@ -56,8 +56,7 @@ const routes: Routes = [
         SoftControlsModule,
         CardSkeletonComponent,
         IndexCardComponent,
-        SegmentationSelectComponent,
-        UserProgressbarComponent,
+{{string.Join("\n", GetBaseDetailsComponentImports(entityGroup.ToList()))}}
     ],
     declarations: [
 {{string.Join("\n", GetComponentDeclarations(entityGroup.ToList()))}}
@@ -71,6 +70,20 @@ export class {{entityGroup.Key}}Module { }
             return result;
         }
 
+        private List<string> GetBaseDetailsComponentImports(List<Type> types)
+        {
+            List<string> result = new List<string>();
+
+            foreach (Type type in types)
+            {
+                result.Add($$"""
+        {{type.Name}}BaseDetailsComponent,
+""");
+            }
+
+            return result;
+        }
+
         private static List<string> GetDynamicImports(List<Type> types)
         {
             List<string> result = new List<string>();
@@ -80,6 +93,7 @@ export class {{entityGroup.Key}}Module { }
                 result.Add($$"""
 import { {{type.Name}}TableComponent } from './pages/{{type.Name.FromPascalToKebabCase()}}/{{type.Name.FromPascalToKebabCase()}}-table.component';
 import { {{type.Name}}DetailsComponent } from './pages/{{type.Name.FromPascalToKebabCase()}}/{{type.Name.FromPascalToKebabCase()}}-details.component';
+import { {{type.Name}}BaseComponent } from 'src/app/business/components/base-details/business-base-details.generated';
 """);
             }
 

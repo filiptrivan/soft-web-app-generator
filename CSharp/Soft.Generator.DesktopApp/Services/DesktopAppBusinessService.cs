@@ -66,9 +66,8 @@ namespace Soft.Generator.DesktopApp.Services
             _connection.WithTransaction(() =>
             {
                 WebApplication webApplication = GetWebApplication(webApplicationId);
-                List<DllPath> dllPaths = GetDllPathListForWebApplication(webApplicationId);
 
-                GeneratorService generatorService = new GeneratorService(dllPaths);
+                GeneratorService generatorService = new GeneratorService(null);
 
                 generatorService.GenerateNetAndAngularStructure(Settings.ProjectsPath, webApplication.Name, Settings.PrimaryColor);
             });

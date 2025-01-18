@@ -19,6 +19,9 @@ namespace Soft.Generator.DesktopApp.Services
 
         public GeneratorService(List<DllPath> dllPaths)
         {
+            if (dllPaths == null)
+                return;
+
             foreach (DllPath dllPath in dllPaths)
             {
                 Assembly assembly = Assembly.LoadFrom(dllPath.Path);

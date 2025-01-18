@@ -15,11 +15,10 @@ namespace Soft.Generator.DesktopApp
         public static string BaseProjectNamespace = "Playerty.Loyals";
         public static string BaseBusinessServiceName = "Loyals";
         public static string DownloadPath = @"C:\Users\user\Downloads";
-        public static int LimitLengthForTextArea = 256;
         public static string ClientApplicationBasePath = @""; // Dodaj dodatno dugme, generisi UI strukturu
-        public static string GeneralStylesFrontendPath = @"E:\Projects\Playerty.Loyals\Angular\src\assets\primeng\styles";
-        public static string GeneralCoreFrontendPath = @"E:\Projects\Playerty.Loyals\Angular\src\app\core";
+        public static string GeneralStylesFrontendPath = @"C:\Users\user\Documents\Projects\PlayertyLoyals\playerty-loyals\Angular\src\assets\primeng\styles";
+        public static string GeneralCoreFrontendPath = @"C:\Users\user\Documents\Projects\PlayertyLoyals\playerty-loyals\Angular\src\app\core";
         public static string PrimaryColor = @"#cccccc";
-        public static string ProjectsPath = @"E:\Projects"; // Add this into Company table.
+        public static string ProjectsPath = @"C:\Users\user\Documents\Projects"; // Add this into Company table.
     }
 }
