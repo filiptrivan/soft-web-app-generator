@@ -17,7 +17,7 @@ namespace Soft.Generator.DesktopApp.Generator
             {
                 string generatedCode = GenerateCode(entity);
 
-                Helper.WriteToTheFile(generatedCode, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}-details.component.ts");
+                Helper.WriteToFileAndMakeFolders(generatedCode, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\{entity.Name.FromPascalToKebabCase()}-details.component.ts");
             }
         }
 
@@ -38,7 +38,7 @@ import { ValidatorService } from 'src/app/business/services/validators/validatio
 import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
 import { BaseFormService } from 'src/app/core/services/base-form.service';
 import { SoftMessageService } from 'src/app/core/services/soft-message.service';
-import { {{entity.Name}} } from 'src/app/business/entities/generated/business-entities.generated';
+import { {{entity.Name}} } from 'src/app/business/entities/business-entities.generated';
 
 @Component({
     selector: '{{entity.Name.FromPascalToKebabCase()}}-details',
@@ -68,7 +68,7 @@ export class {{entity.Name}}DetailsComponent extends BaseFormCopy implements OnI
         
     }
 
-    override onBeforeSave(): void {
+    override onBeforeSave = (): void => {
         
     }
 

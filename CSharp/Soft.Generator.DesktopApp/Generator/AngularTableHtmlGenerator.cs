@@ -21,15 +21,14 @@ namespace Soft.Generator.DesktopApp.Generator
     <soft-data-table 
     [tableTitle]="t('{{entity.Name}}List')" 
     [cols]="cols" 
-    [loadTableDataObservableMethod]="load{{entity.Name}}TableDataObservableMethod" 
+    [getTableDataObservableMethod]="get{{entity.Name}}TableDataObservableMethod" 
     [exportTableDataToExcelObservableMethod]="export{{entity.Name}}TableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="delete{{entity.Name}}ObservableMethod"
-    >
-    </soft-data-table>
+    ></soft-data-table>
 </ng-container>
 """);
 
-                Helper.WriteToTheFile(sb, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}-table.html");
+                Helper.WriteToFileAndMakeFolders(sb, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\{entity.Name.FromPascalToKebabCase()}-table.component.html");
             }
         }
     }

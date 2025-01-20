@@ -17,7 +17,7 @@ namespace Soft.Generator.DesktopApp.Generator
             {
                 string generatedCode = GenerateControllerCode(entity);
 
-                Helper.WriteToTheFile(generatedCode, @$"{Settings.DownloadPath}\{entity.Name}.cs");
+                Helper.WriteToFile(generatedCode, @$"{Settings.DownloadPath}\{entity.Name}.cs");
             }
         }
 
@@ -25,32 +25,32 @@ namespace Soft.Generator.DesktopApp.Generator
         {
             return $$"""
 using Microsoft.AspNetCore.Mvc;
+using Azure.Storage.Blobs;
+using Soft.Generator.Shared.Attributes;
+using Soft.Generator.Shared.DTO;
+using Soft.Generator.Shared.Helpers;
+using Soft.Generator.Shared.Interfaces;
 using {{Settings.BaseProjectNamespace}}.Business.DTO;
 using {{Settings.BaseProjectNamespace}}.Business.Entities;
 using {{Settings.BaseProjectNamespace}}.Business.Services;
 using {{Settings.BaseProjectNamespace}}.Services;
 using {{Settings.BaseProjectNamespace}}.Shared.Terms;
-using Soft.Generator.Shared.Attributes;
-using Soft.Generator.Shared.DTO;
-using Soft.Generator.Shared.Helpers;
-using Soft.Generator.Shared.Interfaces;
 
 namespace {{Settings.BaseProjectNamespace}}.WebAPI.Controllers
 {
     [ApiController]
     [Route("/api/[controller]/[action]")]
-    public class {{entity.Name}}Controller : SoftControllerBase
+    public class {{entity.Name}}Controller : {{entity.Name}}BaseController
     {
         private readonly IApplicationDbContext _context;
         private readonly {{Settings.BaseBusinessServiceName}}BusinessService _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
 
-        public StoreController(IApplicationDbContext context, {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService)
+        public {{entity.Name}}Controller(IApplicationDbContext context, {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
+            : base(context, plenumRMTBusinessService, blobContainerClient)
         {
             _context = context;
             _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService = {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
         }
-
-{{string.Join("\n", GetEntityControllerMethods(entity))}}
 
     }
 }

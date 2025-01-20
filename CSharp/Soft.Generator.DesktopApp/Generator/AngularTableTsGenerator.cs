@@ -28,7 +28,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { ApiService } from 'src/app/business/services/api/api.service';
 import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
-import { {{entity.Name}} } from 'src/app/business/entities/generated/business-entities.generated';
+import { {{entity.Name}} } from 'src/app/business/entities/business-entities.generated';
 import { firstValueFrom } from 'rxjs';
 
 @Component({
@@ -39,7 +39,7 @@ import { firstValueFrom } from 'rxjs';
 export class {{entity.Name}}TableComponent implements OnInit {
     cols: Column<{{entity.Name}}>[];
 
-    load{{entity.Name}}TableDataObservableMethod = this.apiService.load{{entity.Name}}TableData;
+    get{{entity.Name}}TableDataObservableMethod = this.apiService.get{{entity.Name}}TableData;
     export{{entity.Name}}TableDataToExcelObservableMethod = this.apiService.export{{entity.Name}}TableDataToExcel;
     delete{{entity.Name}}ObservableMethod = this.apiService.delete{{entity.Name}};
 
@@ -48,20 +48,20 @@ export class {{entity.Name}}TableComponent implements OnInit {
         private translocoService: TranslocoService,
     ) { }
 
-    ngOnInit(){
+    async ngOnInit(){
         this.cols = [
             {name: this.translocoService.translate('Actions'), actions:[
                 {name: this.translocoService.translate('Details'), field: 'Details'},
                 {name: this.translocoService.translate('Delete'), field: 'Delete'},
             ]},
-            {{string.Join("\n", GetTableColumns(entity))}}
+{{string.Join("\n", GetTableColumns(entity))}}
         ]
     }
 
 }
 """);
 
-                Helper.WriteToTheFile(sb, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}-table.ts");
+                Helper.WriteToFileAndMakeFolders(sb, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\{entity.Name.FromPascalToKebabCase()}-table.component.ts");
             }
         }
 
@@ -74,30 +74,31 @@ export class {{entity.Name}}TableComponent implements OnInit {
             foreach (PropertyInfo property in properties)
             {
                 // Many to one can be only filtered as: text or multiselect (text is like autocomplete)
-                //AutocompleteAttribute autoCompleteAttribute = property.SafeGetAttribute<AutocompleteAttribute>();
+                // AutocompleteAttribute autoCompleteAttribute = property.SafeGetAttribute<AutocompleteAttribute>();
 
                 if (property.PropertyType.IsManyToOneType())
                 {
                     result.Add($$"""
-{name: this.translocoService.translate('{{property.Name}}'), filterType: 'multiselect', field: '{{property.Name.FirstCharToLower()}}DisplayName', filterField: '{{property.Name.FirstCharToLower()}}Id', dropdownOrMultiselectValues: await firstValueFrom(this.apiService.load{{property.Name}}ListForDropdown()) },
+            {name: this.translocoService.translate('{{property.Name}}'), filterType: 'text', field: '{{property.Name.FirstCharToLower()}}DisplayName'},
+            {name: this.translocoService.translate('{{property.Name}}'), filterType: 'multiselect', field: '{{property.Name.FirstCharToLower()}}DisplayName', filterField: '{{property.Name.FirstCharToLower()}}Id', dropdownOrMultiselectValues: await firstValueFrom(this.apiService.getPrimengNamebookListForDropdown(this.apiService.get{{property.Name}}ListForDropdown)) },
 """);
                 }
                 else if (property.PropertyType == typeof(string))
                 {
                     result.Add($$"""
-{name: this.translocoService.translate('{{property.Name}}'), filterType: 'text', field: '{{property.Name.FirstCharToLower()}}'},
+            {name: this.translocoService.translate('{{property.Name}}'), filterType: 'text', field: '{{property.Name.FirstCharToLower()}}'},
 """);
                 }
                 else if (property.PropertyType.IsWholeNumber())
                 {
                     result.Add($$"""
-{name: this.translocoService.translate('{{property.Name}}'), filterType: 'numeric', field: '{{property.Name.FirstCharToLower()}}', showMatchModes: true},
+            {name: this.translocoService.translate('{{property.Name}}'), filterType: 'numeric', field: '{{property.Name.FirstCharToLower()}}', showMatchModes: true},
 """);
                 }
                 else if (property.PropertyType.IsDateTime())
                 {
                     result.Add($$"""
-{name: this.translocoService.translate('{{property.Name}}'), filterType: 'date', field: '{{property.Name.FirstCharToLower()}}', showMatchModes: true},
+            {name: this.translocoService.translate('{{property.Name}}'), filterType: 'date', field: '{{property.Name.FirstCharToLower()}}', showMatchModes: true},
 """);
                 }
             }

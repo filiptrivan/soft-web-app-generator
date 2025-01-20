@@ -21,7 +21,7 @@ namespace Soft.Generator.DesktopApp.Generator
 
                 string generatedCode = GenerateCode(entityGroup);
 
-                Helper.WriteToTheFile(generatedCode, $@"{Settings.DownloadPath}\{entityGroup.Key.FromPascalToKebabCase()}.module.ts");
+                Helper.WriteToFileAndMakeFolders(generatedCode, $@"{Settings.DownloadPath}\{entityGroup.Key.FromPascalToKebabCase()}\{entityGroup.Key.FromPascalToKebabCase()}.module.ts");
             }
         }
 

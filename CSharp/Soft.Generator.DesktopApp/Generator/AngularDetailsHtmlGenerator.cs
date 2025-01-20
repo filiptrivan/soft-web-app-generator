@@ -19,7 +19,7 @@ namespace Soft.Generator.DesktopApp.Generator
             {
                 string generatedCode = GenerateCode(entity);
 
-                Helper.WriteToTheFile(generatedCode, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}-details.component.html");
+                Helper.WriteToFileAndMakeFolders(generatedCode, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\{entity.Name.FromPascalToKebabCase()}-details.component.html");
             }
         }
 

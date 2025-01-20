@@ -512,12 +512,101 @@ namespace Soft.Generator.DesktopApp.Generator
                 },
                 SoftFiles = new List<SoftFile>
                 {
-                    new SoftFile { Name = ".gitignore", Data = "" },
-                    new SoftFile { Name = "License", Data = "" },
+                    new SoftFile { Name = ".gitignore", Data = GetGitIgnoreData() },
+                    new SoftFile { Name = "License", Data = GetMitLicenseData() },
                 }
             };
 
             GenerateProjectStructure(appStructure, outputPath);
+        }
+
+        private string GetGitIgnoreData()
+        {
+            return $$"""
+# C#
+**/.vs/
+**/*.exe
+**/*.dll
+**/*.log
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+**/*.pdb
+
+# Angular
+**/dist/
+**/tmp/
+**/out-tsc/
+**/bazel-out/
+**/.angular/cache/
+
+# Node
+**/node_modules/
+**/npm-debug.log
+**/yarn-error.log
+**/*.env
+**/*.env.local
+
+# IDEs and editors
+**/.idea/
+**/.project
+**/.classpath
+**/.c9/
+**/*.launch
+**/.settings/
+**/*.sublime-workspace
+
+# Visual Studio Code
+**/.vscode/*
+**/!.vscode/settings.json
+**/!.vscode/tasks.json
+**/!.vscode/launch.json
+**/!.vscode/extensions.json
+**/.history/*
+
+# Miscellaneous
+**/.sass-cache/
+**/connect.lock
+**/coverage
+**/libpeerconnection.log
+**/testem.log
+**/typings
+**/*.pid
+**/*.bak
+**/*.tmp
+
+# System files
+**/.DS_Store
+**/Thumbs.db
+""";
+        }
+
+        private string GetMitLicenseData()
+        {
+            return $$"""
+MIT License
+
+Copyright (c) 2024 Filip Trivan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+""";
         }
 
         private string GetLogoDarkSvgData()
@@ -1559,7 +1648,7 @@ namespace {{appName}}.WebAPI.Controllers
 
             Helper.FileOverrideCheck(filePath);
 
-            Helper.WriteToTheFile(file.Data, filePath);
+            Helper.WriteToFile(file.Data, filePath);
         }
 
         #region NET

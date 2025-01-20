@@ -9,7 +9,41 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
 {
     public class Helper
     {
-        public static void WriteToTheFile(string data, string path)
+        public static void WriteToFileAndMakeFolders(string data, string path)
+        {
+            if (data != null)
+            {
+                string directoryPath = Path.GetDirectoryName(path);
+                if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                using (StreamWriter sw = new StreamWriter(path, false))
+                {
+                    sw.WriteLine(data);
+                }
+            }
+        }
+
+        public static void WriteToFileAndMakeFolders(StringBuilder data, string path)
+        {
+            if (data != null)
+            {
+                string directoryPath = Path.GetDirectoryName(path);
+                if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
+
+                using (StreamWriter sw = new StreamWriter(path, false))
+                {
+                    sw.WriteLine(data);
+                }
+            }
+        }
+
+        public static void WriteToFile(string data, string path)
         {
             if (data != null)
             {
@@ -19,7 +53,7 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             }
         }
 
-        public static void WriteToTheFile(StringBuilder data, string path)
+        public static void WriteToFile(StringBuilder data, string path)
         {
             if (data != null)
             {
