@@ -1,4 +1,5 @@
 ﻿using Soft.Generator.DesktopApp.Attributes.UI;
+using Soft.Generator.DesktopApp.Entities;
 using Soft.Generator.DesktopApp.Generator.Helpers;
 using Soft.Generator.DesktopApp.Interfaces;
 using System;
@@ -11,13 +12,16 @@ namespace Soft.Generator.DesktopApp.Generator
 {
     public class AngularDetailsTsGenerator : IFileGenerator
     {
-        public void Generate(List<Type> entities)
+        public void Generate(List<Type> entities, WebApplication webApplication)
         {
             foreach (Type entity in entities)
             {
+                if (entity.IsManyToManyType())
+                    continue;
+
                 string generatedCode = GenerateCode(entity);
 
-                Helper.WriteToFileAndMakeFolders(generatedCode, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\{entity.Name.FromPascalToKebabCase()}-details.component.ts");
+                Helper.WriteToFileAndMakeFolders(generatedCode, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\pages\{entity.Name.FromPascalToKebabCase()}-details.component.ts");
             }
         }
 
@@ -27,7 +31,7 @@ namespace Soft.Generator.DesktopApp.Generator
                 return null;
 
             string result = $$"""
-import { SoftFormGroup } from './../../../../core/components/soft-form-control/soft-form-control';
+import { SoftFormGroup } from 'src/app/core/components/soft-form-control/soft-form-control';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';

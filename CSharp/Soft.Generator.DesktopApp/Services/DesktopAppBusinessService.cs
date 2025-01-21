@@ -82,7 +82,7 @@ namespace Soft.Generator.DesktopApp.Services
 
                 GeneratorService generatorService = new GeneratorService(dllPaths);
 
-                generatorService.GenerateBusinessFiles();
+                generatorService.GenerateBusinessFiles(webApplication);
             });
         }
 

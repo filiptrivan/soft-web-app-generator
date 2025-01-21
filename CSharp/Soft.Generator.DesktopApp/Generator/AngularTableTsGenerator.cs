@@ -1,4 +1,5 @@
-﻿using Soft.Generator.DesktopApp.Generator.Helpers;
+﻿using Soft.Generator.DesktopApp.Entities;
+using Soft.Generator.DesktopApp.Generator.Helpers;
 using Soft.Generator.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace Soft.Generator.DesktopApp.Generator
 {
     public class AngularTableTsGenerator : IFileGenerator
     {
-        public void Generate(List<Type> entities)
+        public void Generate(List<Type> entities, WebApplication webApplication)
         {
             GenerateTableCode(entities);
         }
@@ -21,6 +22,9 @@ namespace Soft.Generator.DesktopApp.Generator
 
             foreach (Type entity in entities)
             {
+                if (entity.IsManyToManyType())
+                    continue;
+
                 StringBuilder sb = new StringBuilder();
 
                 sb.AppendLine($$"""
@@ -61,7 +65,7 @@ export class {{entity.Name}}TableComponent implements OnInit {
 }
 """);
 
-                Helper.WriteToFileAndMakeFolders(sb, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\{entity.Name.FromPascalToKebabCase()}-table.component.ts");
+                Helper.WriteToFileAndMakeFolders(sb, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\pages\{entity.Name.FromPascalToKebabCase()}-table.component.ts");
             }
         }
 

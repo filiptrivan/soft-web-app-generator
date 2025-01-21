@@ -8,18 +8,29 @@ using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Collections;
+using CaseConverter;
 
 namespace Soft.Generator.DesktopApp.Generator.Helpers
 {
     public static class Extensions
     {
 
-        public static bool IsManyToOneType(this Type type)
+        #region Case
+
+        public static string FromPascalToKebabCase(this string pascalCaseString)
         {
-            return (type.IsClass || type.IsInterface) && type != typeof(string);
+            if (string.IsNullOrEmpty(pascalCaseString))
+                return null;
+
+            return pascalCaseString.ToKebabCase();
         }
 
-        #region Case
+        public static string Pluralize(this string value)
+        {
+            IPluralize pluralizer = new Pluralizer();
+            return pluralizer.Pluralize(value);
+        }
 
         public static string FirstCharToLower(this string input)
         {
@@ -33,6 +44,7 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
 
         public static string SpaceEveryUpperChar(this string input)
         {
+
             if (string.IsNullOrEmpty(input))
                 return input;
 
@@ -52,6 +64,16 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
         #endregion
 
         #region Is Type
+
+        public static bool IsManyToOneType(this Type type)
+        {
+            return (type.IsClass || type.IsInterface) && type != typeof(string) && type.IsEnumerableType() == false;
+        }
+
+        public static bool IsManyToManyType(this Type type)
+        {
+            return type.IsClass && type.BaseType == null;
+        }
 
         public static bool IsDTOType(this Type type)
         {
@@ -109,32 +131,12 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             return property.SafeGetAttribute<DropdownAttribute>() != null;
         }
 
-        public static bool IsListType(this Type type)
+        public static bool IsEnumerableType(this Type type)
         {
-            return type.Name.Contains("List<");
-        }
+            if (typeof(IEnumerable).IsAssignableFrom(type) && type != typeof(string))
+                return true;
 
-        #endregion
-
-        #region Case
-
-        public static string FromPascalToKebabCase(this string pascalCaseString)
-        {
-            if (string.IsNullOrEmpty(pascalCaseString))
-            {
-                return string.Empty;
-            }
-
-            string kebabCaseString = Regex.Replace(pascalCaseString, "([a-z])([A-Z])", "$1-$2");
-            kebabCaseString = kebabCaseString.ToLower();
-
-            return kebabCaseString;
-        }
-
-        public static string Pluralize(this string value)
-        {
-            IPluralize pluralizer = new Pluralizer();
-            return pluralizer.Pluralize(value);
+            return false;
         }
 
         #endregion

@@ -1,4 +1,5 @@
-﻿using Soft.Generator.DesktopApp.Generator.Helpers;
+﻿using Soft.Generator.DesktopApp.Entities;
+using Soft.Generator.DesktopApp.Generator.Helpers;
 using Soft.Generator.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -11,17 +12,17 @@ namespace Soft.Generator.DesktopApp.Generator
 {
     public class NetControllerMethodsGenerator : IFileGenerator
     {
-        public void Generate(List<Type> entities)
+        public void Generate(List<Type> entities, WebApplication webApplication)
         {
             foreach (Type entity in entities)
             {
-                string generatedCode = GenerateControllerCode(entity);
+                string generatedCode = GenerateControllerCode(entity, webApplication.Name);
 
-                Helper.WriteToFile(generatedCode, @$"{Settings.DownloadPath}\{entity.Name}.cs");
+                Helper.WriteToFile(generatedCode, @$"{Settings.DownloadPath}\{entity.Name}Controller.cs");
             }
         }
 
-        private string GenerateControllerCode(Type entity)
+        private string GenerateControllerCode(Type entity, string appName)
         {
             return $$"""
 using Microsoft.AspNetCore.Mvc;
@@ -30,26 +31,25 @@ using Soft.Generator.Shared.Attributes;
 using Soft.Generator.Shared.DTO;
 using Soft.Generator.Shared.Helpers;
 using Soft.Generator.Shared.Interfaces;
-using {{Settings.BaseProjectNamespace}}.Business.DTO;
-using {{Settings.BaseProjectNamespace}}.Business.Entities;
-using {{Settings.BaseProjectNamespace}}.Business.Services;
-using {{Settings.BaseProjectNamespace}}.Services;
-using {{Settings.BaseProjectNamespace}}.Shared.Terms;
+using {{appName}}.Business.DTO;
+using {{appName}}.Business.Entities;
+using {{appName}}.Business.Services;
+using {{appName}}.Shared.Terms;
 
-namespace {{Settings.BaseProjectNamespace}}.WebAPI.Controllers
+namespace {{appName}}.WebAPI.Controllers
 {
     [ApiController]
     [Route("/api/[controller]/[action]")]
     public class {{entity.Name}}Controller : {{entity.Name}}BaseController
     {
         private readonly IApplicationDbContext _context;
-        private readonly {{Settings.BaseBusinessServiceName}}BusinessService _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
 
-        public {{entity.Name}}Controller(IApplicationDbContext context, {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
-            : base(context, plenumRMTBusinessService, blobContainerClient)
+        public {{entity.Name}}Controller(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
+            : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
         {
             _context = context;
-            _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService = {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
         }
 
     }
@@ -57,86 +57,5 @@ namespace {{Settings.BaseProjectNamespace}}.WebAPI.Controllers
 """;
         }
 
-        private List<string> GetEntityControllerMethods(Type entity)
-        {
-            List<string> result = new List<string>();
-
-            result.Add($$"""
-        [HttpPost]
-        [AuthGuard]
-        public async Task<TableResponseDTO<{{entity.Name}}DTO>> Load{{entity.Name}}TableData(TableFilterDTO tableFilterDTO)
-        {
-            return await _loyalsBusinessService.Load{{entity.Name}}TableData(tableFilterDTO, _context.DbSet<{{entity.Name}}>(), false);
-        }
-
-        [HttpPost]
-        [AuthGuard]
-        public async Task<IActionResult> Export{{entity.Name}}TableDataToExcel(TableFilterDTO tableFilterDTO)
-        {
-            byte[] fileContent = await _loyalsBusinessService.Export{{entity.Name}}TableDataToExcel(tableFilterDTO, _context.DbSet<{{entity.Name}}>(), false);
-            return File(fileContent, SettingsProvider.Current.ExcelContentType, Uri.EscapeDataString($"{Terms.{{entity.Name}}ExcelExportName}.xlsx"));
-        }
-
-        [HttpDelete]
-        [AuthGuard]
-        public async Task Delete{{entity.Name}}(int id)
-        {
-            await _loyalsBusinessService.Delete{{entity.Name}}Async(id, false);
-        }
-
-        [HttpGet]
-        [AuthGuard]
-        public async Task<{{entity.Name}}DTO> Get{{entity.Name}}(int id)
-        {
-            return await _loyalsBusinessService.Get{{entity.Name}}DTOAsync(id, false);
-        }
-
-        [HttpPut]
-        [AuthGuard]
-        public async Task<{{entity.Name}}DTO> Save{{entity.Name}}({{entity.Name}}DTO {{entity.Name.FirstCharToLower()}}DTO)
-        {
-            return await _loyalsBusinessService.Save{{entity.Name}}AndReturnDTOAsync({{entity.Name.FirstCharToLower()}}DTO, false, false);
-        }
-
-{{string.Join("\n", GetEntityOneToManyControllerMethods(entity))}}
-
-""");
-
-            return result;
-        }
-
-        private List<string> GetEntityOneToManyControllerMethods(Type entity)
-        {
-            List<string> result = new List<string>();
-
-            foreach (PropertyInfo manyToOneProperty in entity.GetProperties().Where(x => x.PropertyType.IsManyToOneType()))
-            {
-                if (manyToOneProperty.IsAutocomplete())
-                {
-                    result.Add($$"""
-        [HttpGet]
-        [AuthGuard]
-        public async Task<List<NamebookDTO<{{Helper.GetGenericIdTypeFromTheBaseType(manyToOneProperty.PropertyType)}}>>> Load{{entity.Name}}ListForAutocomplete(int limit, string query)
-        {
-            return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.Load{{entity.Name}}ListForAutocomplete(limit, query, _context.DbSet<{{entity.Name}}>());
-        }
-""");
-                }
-
-                if (manyToOneProperty.IsDropdown())
-                {
-                    result.Add($$"""
-        [HttpGet]
-        [AuthGuard]
-        public async Task<List<NamebookDTO<{{Helper.GetGenericIdTypeFromTheBaseType(manyToOneProperty.PropertyType)}}>>> Load{{manyToOneProperty.Name}}ListForDropdown()
-        {
-            return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.Load{{manyToOneProperty.Name}}ListForDropdown(_context.DbSet<{{manyToOneProperty.Name}}>(), false);
-        }
-""");
-                }
-            }
-
-            return result;
-        }
     }
 }

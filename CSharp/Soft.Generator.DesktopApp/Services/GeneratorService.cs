@@ -42,17 +42,17 @@ namespace Soft.Generator.DesktopApp.Services
             new NetAndAngularStructureGenerator().Generate(outputPath, appName, primaryColor);
         }
 
-        public void GenerateBusinessFiles()
+        public void GenerateBusinessFiles(WebApplication webApplication)
         {
-            new NetControllerMethodsGenerator().Generate(_entityTypes);
+            new NetControllerMethodsGenerator().Generate(_entityTypes, webApplication);
 
-            new AngularModulesGenerator().Generate(_entityTypes);
+            new AngularModulesGenerator().Generate(_entityTypes, webApplication);
 
-            new AngularTableTsGenerator().Generate(_entityTypes);
-            new AngularTableHtmlGenerator().Generate(_entityTypes);
+            new AngularTableTsGenerator().Generate(_entityTypes, webApplication);
+            new AngularTableHtmlGenerator().Generate(_entityTypes, webApplication);
 
-            new AngularDetailsTsGenerator().Generate(_entityTypes);
-            new AngularDetailsHtmlGenerator().Generate(_entityTypes);
+            new AngularDetailsTsGenerator().Generate(_entityTypes, webApplication);
+            new AngularDetailsHtmlGenerator().Generate(_entityTypes, webApplication);
         }
     }
 }

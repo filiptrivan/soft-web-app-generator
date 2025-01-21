@@ -1,12 +1,12 @@
 ﻿using Soft.Generator.DesktopApp.Generator.Helpers;
 using Soft.Generator.DesktopApp.Generator.Models;
+using CaseConverter;
 using Soft.Generator.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CaseExtensions;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 using Soft.Generator.DesktopApp.Services;
 
@@ -19,32 +19,32 @@ namespace Soft.Generator.DesktopApp.Generator
             SoftFolder appStructure = new SoftFolder
             {
                 Name = appName,
-                ChildFolders = new List<SoftFolder>
+                ChildFolders =
                 {
                     new SoftFolder
                     {
                         Name = "Angular",
-                        ChildFolders = new List<SoftFolder>
+                        ChildFolders =
                         {
                             new SoftFolder
                             {
                                 Name = "src",
-                                ChildFolders = new List<SoftFolder>
+                                ChildFolders =
                                 {
                                     new SoftFolder
                                     {
                                         Name = "app",
-                                        ChildFolders = new List<SoftFolder>
+                                        ChildFolders =
                                         {
                                             new SoftFolder
                                             {
                                                 Name = "business",
-                                                ChildFolders = new List<SoftFolder>
+                                                ChildFolders =
                                                 {
                                                     new SoftFolder
                                                     {
                                                         Name = "components",
-                                                        ChildFolders = new List<SoftFolder>
+                                                        ChildFolders =
                                                         {
                                                             new SoftFolder
                                                             {
@@ -67,7 +67,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                     new SoftFolder
                                                     {
                                                         Name = "enums",
-                                                        SoftFiles = new List<SoftFile>
+                                                        SoftFiles =
                                                         {
                                                             new SoftFile
                                                             {
@@ -92,7 +92,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             new SoftFolder
                                                             {
                                                                 Name = "api",
-                                                                SoftFiles = new List<SoftFile>
+                                                                SoftFiles =
                                                                 {
                                                                     new SoftFile { Name = "api.service.security.ts", Data = GetAPIServiceSecurityTsCode() },
                                                                     new SoftFile { Name = "api.service.ts", Data = GetAPIServiceTsCode() },
@@ -101,7 +101,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             new SoftFolder
                                                             {
                                                                 Name = "auth",
-                                                                SoftFiles = new List<SoftFile>
+                                                                SoftFiles =
                                                                 {
                                                                     new SoftFile { Name = "auth.service.ts", Data = GetAuthServiceTsCode() },
                                                                 }
@@ -113,7 +113,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             new SoftFolder
                                                             {
                                                                 Name = "translates",
-                                                                SoftFiles = new List<SoftFile>
+                                                                SoftFiles =
                                                                 {
                                                                     new SoftFile { Name = "merge-class-names.ts", Data = GetMergeClassNamesTsCode() },
                                                                     new SoftFile { Name = "merge-labels.ts", Data = GetMergeLabelsCode() },
@@ -122,7 +122,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             new SoftFolder
                                                             {
                                                                 Name = "validators",
-                                                                SoftFiles = new List<SoftFile>
+                                                                SoftFiles =
                                                                 {
                                                                     new SoftFile { Name = "validation-rules.ts", Data = GetValidationRulesTsCode() },
                                                                 }
@@ -130,7 +130,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                         },
                                                     },
                                                 },
-                                                SoftFiles = new List<SoftFile>
+                                                SoftFiles =
                                                 {
                                                     new SoftFile { Name = "business.module.ts", Data = GetBusinessModuleTsData() }
                                                 }
@@ -157,7 +157,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                                     new SoftFolder
                                                                     {
                                                                         Name = "login",
-                                                                        SoftFiles = new List<SoftFile>
+                                                                        SoftFiles =
                                                                         {
                                                                             new SoftFile { Name = "login.component.html", Data = GetLoginComponentHtmlData() },
                                                                             new SoftFile { Name = "login.component.ts", Data = GetLoginComponentTsData() },
@@ -166,7 +166,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                                     new SoftFolder
                                                                     {
                                                                         Name = "partials",
-                                                                        SoftFiles = new List<SoftFile>
+                                                                        SoftFiles =
                                                                         {
                                                                             new SoftFile { Name = "auth.component.html", Data = GetAuthComponentHtmlData() },
                                                                             new SoftFile { Name = "auth.component.ts", Data = GetAuthComponentTsData() },
@@ -175,7 +175,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                                     new SoftFolder
                                                                     {
                                                                         Name = "registration",
-                                                                        SoftFiles = new List<SoftFile>
+                                                                        SoftFiles =
                                                                         {
                                                                             new SoftFile { Name = "registration.component.html", Data = GetRegistrationComponentHtmlData() },
                                                                             new SoftFile { Name = "registration.component.ts", Data = GetRegistrationComponentTsData() },
@@ -190,9 +190,8 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             new SoftFolder
                                                             {
                                                                 Name = "dashboard",
-                                                                SoftFiles = new List<SoftFile>
+                                                                SoftFiles =
                                                                 {
-                                                                    new SoftFile { Name = "dashboard-routing.module.ts", Data = GetDashboardRoutingModuleTsData() },
                                                                     new SoftFile { Name = "dashboard.component.html", Data = GetDashboardComponentHtmlData() },
                                                                     new SoftFile { Name = "dashboard.component.ts", Data = GetDashboardComponentTsData() },
                                                                     new SoftFile { Name = "dashboard.module.ts", Data = GetDashboardModuleTsData() },
@@ -201,7 +200,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             new SoftFolder
                                                             {
                                                                 Name = "layout",
-                                                                SoftFiles = new List<SoftFile>
+                                                                SoftFiles =
                                                                 {
                                                                     new SoftFile { Name = "app.layout.component.html", Data = GetAppLayoutComponentHtmlData() },
                                                                     new SoftFile { Name = "app.layout.component.ts", Data = GetAppLayoutComponentTsData() },
@@ -211,7 +210,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             new SoftFolder
                                                             {
                                                                 Name = "sidebar",
-                                                                SoftFiles = new List<SoftFile>
+                                                                SoftFiles =
                                                                 {
                                                                     new SoftFile { Name = "app.menu.component.html", Data = GetAppMenuComponentHtmlData() },
                                                                     new SoftFile { Name = "app.menu.component.ts", Data = GetAppMenuComponentTsData() },
@@ -225,7 +224,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                                             new SoftFolder
                                                             {
                                                                 Name = "topbar",
-                                                                SoftFiles = new List<SoftFile>
+                                                                SoftFiles =
                                                                 {
                                                                     new SoftFile { Name = "app.topbar.component.html", Data = GetAppTopbarComponentHtmlData() },
                                                                     new SoftFile { Name = "app.topbar.component.ts", Data = GetAppTopbarComponentTsData() },
@@ -246,6 +245,80 @@ namespace Soft.Generator.DesktopApp.Generator
                                             new SoftFolder
                                             {
                                                 Name = "modules",
+                                                ChildFolders =
+                                                {
+                                                    new SoftFolder
+                                                    {
+                                                        Name = "administration",
+                                                        ChildFolders =
+                                                        {
+                                                            new SoftFolder
+                                                            {
+                                                                Name = "pages",
+                                                                ChildFolders =
+                                                                {
+                                                                    new SoftFolder 
+                                                                    { 
+                                                                        Name = "notification",
+                                                                        SoftFiles =
+                                                                        {
+                                                                            new SoftFile { Name = "notification-details.component.html", Data = GetNotificationDetailsComponentHtmlData() },
+                                                                            new SoftFile { Name = "notification-details.component.ts", Data = GetNotificationDetailsComponentTsData() },
+                                                                            new SoftFile { Name = "notification-table.component.html", Data = GetNotificationTableComponentHtmlData() },
+                                                                            new SoftFile { Name = "notification-table.component.ts", Data = GetNotificationTableComponentTsData() },
+                                                                        }
+                                                                    },
+                                                                    new SoftFolder
+                                                                    {
+                                                                        Name = "user",
+                                                                        SoftFiles =
+                                                                        {
+                                                                            new SoftFile { Name = "user-details.component.html", Data = GetUserDetailsComponentHtmlData() },
+                                                                            new SoftFile { Name = "user-details.component.ts", Data = GetUserDetailsComponentTsData() },
+                                                                            new SoftFile { Name = "user-table.component.html", Data = GetUserTableComponentHtmlData() },
+                                                                            new SoftFile { Name = "user-table.component.ts", Data = GetUserTableComponentTsData() },
+                                                                        }
+                                                                    },
+                                                                    new SoftFolder
+                                                                    {
+                                                                        Name = "role",
+                                                                        SoftFiles =
+                                                                        {
+                                                                            new SoftFile { Name = "role-details.component.html", Data = GetRoleDetailsComponentHtmlData() },
+                                                                            new SoftFile { Name = "role-details.component.ts", Data = GetRoleDetailsComponentTsData() },
+                                                                            new SoftFile { Name = "role-table.component.html", Data = GetRoleTableComponentHtmlData() },
+                                                                            new SoftFile { Name = "role-table.component.ts", Data = GetRoleTableComponentTsData() },
+                                                                        }
+                                                                    },
+                                                                },
+                                                            },
+                                                        },
+                                                        SoftFiles =
+                                                        {
+                                                            new SoftFile { Name = "administration.module.ts", Data = GetAdministrationModuleTsData() }
+                                                        }
+                                                    },
+                                                    new SoftFolder
+                                                    {
+                                                        Name = "notification",
+                                                        ChildFolders =
+                                                        {
+                                                            new SoftFolder
+                                                            {
+                                                                Name = "pages",
+                                                                SoftFiles =
+                                                                {
+                                                                    new SoftFile { Name = "notification.component.html", Data = GetClientNotificationComponentHtmlData() },
+                                                                    new SoftFile { Name = "notification.component.ts", Data = GetClientNotificationComponentTsData() },
+                                                                },
+                                                            },
+                                                        },
+                                                        SoftFiles =
+                                                        {
+                                                            new SoftFile { Name = "notification.module.ts", Data = GetClientNotificationModuleTsData() },
+                                                        }
+                                                    },
+                                                }
                                             },
                                         },
                                         SoftFiles = new List<SoftFile>
@@ -259,7 +332,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                     new SoftFolder
                                     {
                                         Name = "assets",
-                                        ChildFolders = new List<SoftFolder>
+                                        ChildFolders =
                                         {
                                             new SoftFolder
                                             {
@@ -275,7 +348,7 @@ namespace Soft.Generator.DesktopApp.Generator
                                             new SoftFolder
                                             {
                                                 Name = "primeng",
-                                                ChildFolders = new List<SoftFolder>
+                                                ChildFolders =
                                                 {
                                                     new SoftFolder
                                                     {
@@ -518,6 +591,736 @@ namespace Soft.Generator.DesktopApp.Generator
             };
 
             GenerateProjectStructure(appStructure, outputPath);
+        }
+
+        private string GetClientNotificationComponentHtmlData()
+        {
+            return $$$"""
+<ng-container *transloco="let t">
+  <div class="card dashboard-card-wrapper">
+    <div class="big-header" style="margin-bottom: 10px;">
+      {{t('NotificationList')}}
+      <div class="bold-header-separator"></div>
+    </div>
+    <div style="display: flex; flex-direction: column; position: relative; z-index: 2;">
+      <div style="display: flex; justify-content: space-between;">
+      </div>
+      @for (notification of currentUserNotifications?.data; track $index) {
+        <div [class]="(notification.isMarkedAsRead ? 'primary-lighter-color-background' : '') + ' notification-border'" style="padding: 18px; margin: 0px;">
+          <div class="text-wrapper">
+            <div class="header" style="margin-bottom: 10px; display: flex; justify-content: space-between; position: relative;">
+              <div>
+                <div [class]="notification.isMarkedAsRead ? '' : 'bold'">{{notification.title}}</div>
+                <div class="header-separator"></div>
+              </div>
+              <div>
+                <i class="pi pi-ellipsis-h icon-hover" (click)="menuToggle($event, notification)"></i>
+                  <p-menu #menu [model]="crudMenu" [popup]="true" appendTo="body"></p-menu>
+              </div>
+            </div>
+            <div>
+              {{notification.description}}
+            </div>
+          </div>
+        </div>
+      }
+      @if (currentUserNotifications?.totalRecords == 0) {
+        {{t('YouDoNotHaveAnyNotifications')}}
+      }
+    </div>
+    <p-paginator
+      (onPageChange)="onLazyLoad($event)"
+      [first]="tableFilter.first"
+      [rows]="tableFilter.rows" 
+      [totalRecords]="currentUserNotifications?.totalRecords">
+    </p-paginator>
+    <div class="card-overflow-icon">
+      <i class="pi pi-bell"></i>
+    </div>
+  </div>
+</ng-container>
+""";
+        }
+
+        private string GetClientNotificationComponentTsData()
+        {
+            return $$"""
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
+import { MenuItem } from 'primeng/api';
+import { PaginatorState } from 'primeng/paginator';
+import { TableFilterContext } from 'src/app/core/entities/table-filter-context';
+import { TableResponse } from 'src/app/core/entities/table-response';
+import { TranslocoService } from '@jsverse/transloco';
+import { Notification } from 'src/app/business/entities/business-entities.generated';
+import { TableFilter } from 'src/app/core/entities/table-filter';
+import { Menu } from 'primeng/menu';
+import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+
+@Component({
+  templateUrl: './notification.component.html',
+})
+export class NotificationComponent implements OnInit {
+  currentUserNotifications: TableResponse<Notification>;
+
+  crudMenu: MenuItem[] = [];
+  @ViewChild('menu') menu: Menu;
+  lastMenuToggledNotification: Notification;
+
+  tableFilter: TableFilter = new TableFilter({
+    first: 0,
+    rows: 10,
+    filters: new Map<string, TableFilterContext[]>()
+  });
+
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService,
+    private translocoService: TranslocoService,
+    private messageService: SoftMessageService,
+  ) {}
+
+  ngOnInit() {
+    this.crudMenu = [
+      {label: this.translocoService.translate('Delete'), command: this.deleteNotificationForCurrentUser, icon: 'pi pi-trash'},
+      {label: this.translocoService.translate('MarkAsRead'), command: this.markNotificationAsReadForCurrentUser, icon: 'pi pi-eye'},
+      {label: this.translocoService.translate('MarkAsUnread'), command: this.markNotificationAsUnreadForCurrentUser, icon: 'pi pi-eye-slash'},
+    ]
+
+    this.getNotificationsForCurrentUser();
+  }
+
+  onLazyLoad(event: PaginatorState){
+    this.tableFilter.first = event.first;
+    this.tableFilter.rows = event.rows;
+    this.getNotificationsForCurrentUser();
+  }
+
+  getNotificationsForCurrentUser(){
+    this.apiService.getNotificationsForCurrentUser(this.tableFilter).subscribe((res) => {
+      this.currentUserNotifications = res;
+    });
+  }
+
+  menuToggle($event: MouseEvent, notification: Notification) {
+    this.menu.toggle($event);
+    this.lastMenuToggledNotification = notification;
+  }
+
+  deleteNotificationForCurrentUser = () => {
+    this.apiService.deleteNotificationForCurrentUser(this.lastMenuToggledNotification.id, this.lastMenuToggledNotification.version).subscribe(() => {
+      this.messageService.successMessage(this.translocoService.translate('SuccessfulAction'));
+      this.getNotificationsForCurrentUser();
+    });
+  }
+
+  markNotificationAsReadForCurrentUser = () => {
+    this.apiService.markNotificationAsReadForCurrentUser(this.lastMenuToggledNotification.id, this.lastMenuToggledNotification.version).subscribe(() => {
+      this.messageService.successMessage(this.translocoService.translate('SuccessfulAction'));
+      this.getNotificationsForCurrentUser();
+    });
+  }
+
+  markNotificationAsUnreadForCurrentUser = () => {
+    this.apiService.markNotificationAsUnreadForCurrentUser(this.lastMenuToggledNotification.id, this.lastMenuToggledNotification.version).subscribe(() => {
+      this.messageService.successMessage(this.translocoService.translate('SuccessfulAction'));
+      this.getNotificationsForCurrentUser();
+    });
+  }
+
+}
+
+""";
+        }
+
+        private string GetClientNotificationModuleTsData()
+        {
+            return $$"""
+import { RouterModule, Routes } from "@angular/router";
+import { NotificationComponent } from "./pages/notification.component";
+import { NgModule } from "@angular/core";
+import { PrimengModule } from "src/app/core/modules/primeng.module";
+import { SoftDataTableComponent } from "src/app/core/components/soft-data-table/soft-data-table.component";
+import { SoftControlsModule } from "src/app/core/controls/soft-controls.module";
+import { CardSkeletonComponent } from "src/app/core/components/card-skeleton/card-skeleton.component";
+import { TranslocoDirective } from "@jsverse/transloco";
+
+const routes: Routes = [
+    {
+        path: 'notifications',
+        component: NotificationComponent,
+    },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forChild(routes),
+        PrimengModule,
+        SoftDataTableComponent,
+        SoftControlsModule,
+        CardSkeletonComponent,
+        TranslocoDirective,
+    ],
+    declarations: [
+        NotificationComponent,
+    ],
+    providers:[]
+})
+export class NotificationModule { }
+
+""";
+        }
+
+        private string GetNotificationDetailsComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <soft-card [title]="t('PartnerNotification')" icon="pi pi-bell">
+        <soft-panel [isFirstMultiplePanel]="true" [showPanelHeader]="false">
+            <panel-body>
+                <div class="grid">
+                    <div class="col-12">
+                        <soft-checkbox [control]="isMarkedAsRead" [label]="t('NotifyUsers')" [initializeToFalse]="false" [fakeLabel]="false"></soft-checkbox>
+                    </div>
+                </div>
+            </panel-body>
+        </soft-panel>
+
+        <notification-base-details
+        [formGroup]="formGroup" 
+        [notificationFormGroup]="notificationFormGroup" 
+        (onSave)="onSave()"
+        [isLastMultiplePanel]="true"
+        [additionalButtons]="additionalButtons"
+        />
+
+    </soft-card>
+</ng-container>
+""";
+        }
+
+        private string GetNotificationDetailsComponentTsData()
+        {
+            return $$"""
+import { BaseFormService } from './../../../../core/services/base-form.service';
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { Notification } from 'src/app/business/entities/business-entities.generated';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
+import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
+import { SoftFormControl, SoftFormGroup } from 'src/app/core/components/soft-form-control/soft-form-control';
+import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
+import { SoftButton } from 'src/app/core/entities/soft-button';
+
+@Component({
+    selector: 'notification-details',
+    templateUrl: './notification-details.component.html',
+    styles: [],
+})
+export class NotificationDetailsComponent extends BaseFormCopy implements OnInit {
+    notificationFormGroup = new SoftFormGroup<Notification>({});
+
+    isMarkedAsRead = new SoftFormControl<boolean>(true, {updateOn: 'change'})
+
+    additionalButtons: SoftButton[];
+
+    constructor(
+        protected override differs: KeyValueDiffers,
+        protected override http: HttpClient,
+        protected override messageService: SoftMessageService, 
+        protected override changeDetectorRef: ChangeDetectorRef,
+        protected override router: Router, 
+        protected override route: ActivatedRoute,
+        protected override translocoService: TranslocoService,
+        protected override translateClassNamesService: TranslateClassNamesService,
+        protected override validatorService: ValidatorService,
+        protected override baseFormService: BaseFormService,
+        private apiService: ApiService,
+    ) {
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService, baseFormService);
+    }
+
+    override ngOnInit() {
+        this.additionalButtons = [
+            {label: this.translocoService.translate('SendEmailNotification'), onClick: this.sendEmailNotification, icon: 'pi pi-send'}
+        ];
+    }
+
+    // FT: We must to do it like arrow function
+    sendEmailNotification = () => {
+        this.apiService.sendNotificationEmail(this.notificationFormGroup.controls.id.value, this.notificationFormGroup.controls.version.value).subscribe(() => {
+            this.messageService.successMessage(this.translocoService.translate('SuccessfulAttempt'));
+        });
+    }
+
+    override onBeforeSave = (): void => {
+        this.saveBody.isMarkedAsRead = this.isMarkedAsRead.value;
+    }
+}
+
+""";
+        }
+
+        private string GetNotificationTableComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <soft-data-table 
+    [tableTitle]="t('NotificationList')" 
+    [cols]="cols" 
+    [getTableDataObservableMethod]="getNotificationTableDataObservableMethod" 
+    [exportTableDataToExcelObservableMethod]="exportNotificationTableDataToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteNotificationObservableMethod"
+    >
+    </soft-data-table>
+</ng-container>
+""";
+        }
+
+        private string GetNotificationTableComponentTsData()
+        {
+            return $$"""
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+
+@Component({
+    selector: 'notification-table',
+    templateUrl: './notification-table.component.html',
+    styles: []
+})
+export class NotificationTableComponent implements OnInit {
+    cols: Column[];
+
+    getNotificationTableDataObservableMethod = this.apiService.getNotificationTableData;
+    exportNotificationTableDataToExcelObservableMethod = this.apiService.exportNotificationTableDataToExcel;
+    deleteNotificationObservableMethod = this.apiService.deleteNotification;
+
+    constructor(
+        private apiService: ApiService,
+        private translocoService: TranslocoService,
+    ) { }
+
+    ngOnInit(){
+        this.cols = [
+            {name: this.translocoService.translate('Actions'), actions:[
+                {name: this.translocoService.translate('Details'), field: 'Details'},
+                {name: this.translocoService.translate('Delete'), field: 'Delete'},
+            ]},
+            {name: this.translocoService.translate('Title'), filterType: 'text', field: 'title'},
+            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
+        ]
+    }
+
+}
+
+""";
+        }
+
+        private string GetRoleDetailsComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    @defer (when model != null) {
+        <soft-card [title]="detailsTitle" icon="pi pi-id-card">
+            <soft-panel>
+                <panel-header></panel-header>
+
+                <panel-body>
+                    <form [formGroup]="formGroup" class="grid">
+                        <div class="col-12">
+                            <soft-textbox [control]="control('name')"></soft-textbox>
+                        </div>
+                        <div class="col-12">
+                            <soft-textarea [control]="control('description')"></soft-textarea>
+                        </div>
+                        <div class="col-12">
+                            <soft-multiautocomplete 
+                                [control]="selectedUsers"
+                                (onTextInput)="searchUsers($event)" 
+                                [label]="t('UserList')"
+                                [options]="userOptions"
+                                ></soft-multiautocomplete>
+                        </div>
+                        <div class="col-12">
+                            <soft-multiselect
+                                [control]="selectedPermissions"
+                                [label]="t('PermissionList')"
+                                [options]="permissionOptions"></soft-multiselect>
+                        </div>
+                    </form>
+                </panel-body>
+
+            <panel-footer>
+                <p-button (onClick)="onSave()" [label]="t('Save')" icon="pi pi-save"></p-button>
+                <soft-return-button></soft-return-button>
+            </panel-footer>
+
+            </soft-panel>
+        </soft-card>
+    } @placeholder {
+        <card-skeleton [height]="502"></card-skeleton>
+    }
+</ng-container>
+""";
+        }
+
+        private string GetRoleDetailsComponentTsData()
+        {
+            return $$$"""
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { forkJoin } from 'rxjs';
+import { Role, RoleSaveBody } from 'src/app/business/entities/security-entities.generated';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
+import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
+import { BaseForm } from 'src/app/core/components/base-form/base-form';
+import { SoftFormControl } from 'src/app/core/components/soft-form-control/soft-form-control';
+import { PrimengOption } from 'src/app/core/entities/primeng-option';
+import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+
+@Component({
+    selector: 'role-details',
+    templateUrl: './role-details.component.html',
+    styles: [],
+})
+export class RoleDetailsComponent extends BaseForm<Role> implements OnInit {
+    userOptions: PrimengOption[];
+    selectedUsers = new SoftFormControl<PrimengOption[]>(null, {updateOn: 'change'})
+
+    permissionOptions: PrimengOption[];
+    selectedPermissions = new SoftFormControl<number[]>(null, {updateOn: 'change'})
+
+    constructor(
+        protected override differs: KeyValueDiffers,
+        protected override http: HttpClient,
+        protected override messageService: SoftMessageService, 
+        protected override changeDetectorRef: ChangeDetectorRef,
+        protected override router: Router, 
+        protected override route: ActivatedRoute, 
+        protected override translocoService: TranslocoService,
+        protected override translateClassNamesService: TranslateClassNamesService,
+        protected override validatorService: ValidatorService,
+        private apiService: ApiService
+    ) {
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
+    }
+
+    override ngOnInit() {
+        this.controllerName = 'Security';
+
+        this.route.params.subscribe((params) => {
+            this.modelId = params['id'];
+            this.apiService.getPermissionListForDropdown().subscribe(nl => {
+                this.permissionOptions = nl.map(n => { return { label: n.displayName, value: n.id } });
+            });
+            if(this.modelId > 0){
+                forkJoin({
+                    role: this.apiService.getRole(this.modelId),
+                    users: this.apiService.getUsersNamebookListForRole(this.modelId),
+                    permissions: this.apiService.getPermissionsNamebookListForRole(this.modelId),
+                  }).subscribe(({ role, users, permissions }) => {
+                    this.init(new Role(role));
+                    this.selectedUsers.setValue(
+                        users.map(user => ({ label: user.displayName, value: user.id }))
+                    );
+                    this.selectedPermissions.setValue(
+                        permissions.map(permission => { return permission.id })
+                    );
+                  });
+            }
+            else{
+                this.init(new Role({id:0}));
+            }
+        });
+    }
+
+    init(model: Role){
+        this.initFormGroup(model);
+    }
+
+    searchUsers(event: AutoCompleteCompleteEvent){ 
+        this.apiService.getUserExtendedListForAutocomplete(50, event?.query).subscribe(nl => {
+            this.userOptions = nl.map(n => { return { label: n.displayName, value: n.id }});
+        })
+    }
+
+    override onBeforeSave = (): void => {
+        this.saveBody = new RoleSaveBody();
+        this.saveBody.selectedUserIds = this.selectedUsers.value?.map(x => x.value);
+        this.saveBody.selectedPermissionIds = this.selectedPermissions.value;
+        this.saveBody.roleDTO = this.model;
+    }
+}
+
+""";
+        }
+
+        private string GetRoleTableComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <soft-data-table 
+    [tableTitle]="t('RoleList')" 
+    [cols]="cols" 
+    [getTableDataObservableMethod]="getRoleTableDataObservableMethod" 
+    [exportTableDataToExcelObservableMethod]="exportRoleTableDataToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteRoleObservableMethod"
+    ></soft-data-table>
+</ng-container>
+""";
+        }
+
+        private string GetRoleTableComponentTsData()
+        {
+            return $$"""
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+
+@Component({
+    selector: 'role-table',
+    templateUrl: './role-table.component.html',
+    styles: []
+})
+export class RoleTableComponent implements OnInit {
+    cols: Column[];
+
+    getRoleTableDataObservableMethod = this.apiService.getRoleTableData;
+    exportRoleTableDataToExcelObservableMethod = this.apiService.exportRoleTableDataToExcel;
+    deleteRoleObservableMethod = this.apiService.deleteRole;
+
+    constructor(
+        private apiService: ApiService,
+        private translocoService: TranslocoService,
+    ) { }
+
+    ngOnInit(){
+        this.cols = [
+            {name: this.translocoService.translate('Actions'), actions:[
+                {name: this.translocoService.translate('Details'), field: 'Details'},
+                {name: this.translocoService.translate('Delete'), field: 'Delete'},
+            ]},
+            {name: this.translocoService.translate('Name'), filterType: 'text', field: 'name'},
+            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
+        ]
+    }
+
+}
+
+""";
+        }
+
+        private string GetUserDetailsComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <soft-card [title]="t('User')" icon="pi pi-user">
+
+        <user-extended-base-details
+        [formGroup]="formGroup" 
+        [userExtendedFormGroup]="userExtendedFormGroup" 
+        (onSave)="onSave()" 
+        (onUserExtendedFormGroupInitFinish)="userExtendedFormGroupInitFinish()"
+        ></user-extended-base-details>
+
+    </soft-card>
+</ng-container>
+""";
+        }
+
+        private string GetUserDetailsComponentTsData()
+        {
+            return $$"""
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { UserExtended } from 'src/app/business/entities/business-entities.generated';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
+import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
+import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
+import { SoftFormGroup } from 'src/app/core/components/soft-form-control/soft-form-control';
+import { BaseFormService } from 'src/app/core/services/base-form.service';
+import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+
+@Component({
+    selector: 'user-details',
+    templateUrl: './user-details.component.html',
+    styles: [],
+})
+export class UserDetailsComponent extends BaseFormCopy implements OnInit {
+    userExtendedFormGroup = new SoftFormGroup<UserExtended>({});
+
+    constructor(
+        protected override differs: KeyValueDiffers,
+        protected override http: HttpClient,
+        protected override messageService: SoftMessageService, 
+        protected override changeDetectorRef: ChangeDetectorRef,
+        protected override router: Router, 
+        protected override route: ActivatedRoute, 
+        protected override translocoService: TranslocoService,
+        protected override translateClassNamesService: TranslateClassNamesService,
+        protected override validatorService: ValidatorService,
+        protected override baseFormService: BaseFormService,
+        private apiService: ApiService,
+    ) {
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService, baseFormService);
+    }
+
+    override ngOnInit() {
+
+    }
+
+    userExtendedFormGroupInitFinish(){
+        this.userExtendedFormGroup.controls.email.disable();
+    }
+
+    override onBeforeSave = (): void => {
+
+    }
+}
+
+""";
+        }
+
+        private string GetUserTableComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <soft-data-table 
+    [tableTitle]="t('UserList')" 
+    [cols]="cols" 
+    [getTableDataObservableMethod]="getUserTableDataObservableMethod" 
+    [exportTableDataToExcelObservableMethod]="exportUserTableDataToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteUserObservableMethod"
+    [showAddButton]="false"
+    ></soft-data-table>
+</ng-container>
+""";
+        }
+
+        private string GetUserTableComponentTsData()
+        {
+            return $$"""
+import { ApiService } from './../../../../business/services/api/api.service';
+import { TranslocoService } from '@jsverse/transloco';
+import { Component, OnInit } from '@angular/core';
+import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+
+@Component({
+    selector: 'user-table',
+    templateUrl: './user-table.component.html',
+    styles: []
+})
+export class UserTableComponent implements OnInit {
+    cols: Column[];
+
+    getUserTableDataObservableMethod = this.apiService.getUserExtendedTableData;
+    exportUserTableDataToExcelObservableMethod = this.apiService.exportUserExtendedTableDataToExcel;
+    deleteUserObservableMethod = this.apiService.deleteUserExtended;
+
+    constructor(
+        private apiService: ApiService,
+        private translocoService: TranslocoService,
+    ) { }
+
+    ngOnInit(){
+        this.cols = [
+            {name: this.translocoService.translate('Actions'), actions:[
+                {name: this.translocoService.translate('Details'), field: 'Details'},
+                {name:  this.translocoService.translate('Delete'), field: 'Delete'},
+            ]},
+            {name: this.translocoService.translate('Email'), filterType: 'text', field: 'email'},
+            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
+        ]
+    }
+}
+
+""";
+        }
+
+        private string GetAdministrationModuleTsData()
+        {
+            return $$"""
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { UserTableComponent } from './pages/user/user-table.component';
+import { PrimengModule } from 'src/app/core/modules/primeng.module';
+import { UserDetailsComponent } from './pages/user/user-details.component';
+import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
+import { CardSkeletonComponent } from "../../core/components/card-skeleton/card-skeleton.component";
+import { SoftDataTableComponent } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { RoleTableComponent } from './pages/role/role-table.component';
+import { RoleDetailsComponent } from './pages/role/role-details.component';
+import { NotificationDetailsComponent } from './pages/notification/notification-details.component';
+import { NotificationTableComponent } from './pages/notification/notification-table.component';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { NotificationBaseDetailsComponent, UserExtendedBaseDetailsComponent } from 'src/app/business/components/base-details/business-base-details.generated';
+
+const routes: Routes = [
+    {
+        path: 'users',
+        component: UserTableComponent,
+    },
+    {
+        path: 'users/:id',
+        component: UserDetailsComponent,
+    },
+    {
+        path: 'roles',
+        component: RoleTableComponent,
+    },
+    {
+        path: 'roles/:id',
+        component: RoleDetailsComponent,
+    },
+    {
+        path: 'notifications',
+        component: NotificationTableComponent,
+    },
+    {
+        path: 'notifications/:id',
+        component: NotificationDetailsComponent,
+    },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forChild(routes),
+        PrimengModule,
+        SoftDataTableComponent,
+        SoftControlsModule,
+        CardSkeletonComponent,
+        TranslocoDirective,
+        NotificationBaseDetailsComponent,
+        UserExtendedBaseDetailsComponent
+    ],
+    declarations: [
+        UserTableComponent,
+        UserDetailsComponent, 
+        RoleTableComponent,
+        RoleDetailsComponent,
+        NotificationTableComponent,
+        NotificationDetailsComponent,
+    ],
+    providers:[]
+})
+export class AdministrationModule { }
+
+""";
         }
 
         private string GetGitIgnoreData()
@@ -1396,9 +2199,11 @@ export class PermissionSaveBody extends BaseEntity
         {
             return $$"""
 using Microsoft.AspNetCore.Mvc;
+using Azure.Storage.Blobs;
 using Soft.Generator.Shared.Attributes;
 using Soft.Generator.Shared.Interfaces;
-using Azure.Storage.Blobs;
+using Soft.Generator.Shared.DTO;
+using {{appName}}.Business.DTO;
 using {{appName}}.Business.Services;
 
 namespace {{appName}}.WebAPI.Controllers
@@ -1408,56 +2213,56 @@ namespace {{appName}}.WebAPI.Controllers
     public class NotificationController : NotificationBaseController
     {
         private readonly IApplicationDbContext _context;
-        private readonly {{Settings.BaseBusinessServiceName}}BusinessService _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
 
-        public NotificationController(IApplicationDbContext context, {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
-            : base(context, {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, blobContainerClient)
+        public NotificationController(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
+            : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
         {
             _context = context;
-            _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService = {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
         }
 
         [HttpGet]
         [AuthGuard]
         public async Task SendNotificationEmail(long notificationId, int notificationVersion)
         {
-            await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.SendNotificationEmail(notificationId, notificationVersion);
+            await _{{appName.FirstCharToLower()}}BusinessService.SendNotificationEmail(notificationId, notificationVersion);
         }
 
         [HttpDelete]
         [AuthGuard]
         public async Task DeleteNotificationForCurrentUser(long notificationId, int notificationVersion)
         {
-            await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.DeleteNotificationForCurrentUser(notificationId, notificationVersion);
+            await _{{appName.FirstCharToLower()}}BusinessService.DeleteNotificationForCurrentUser(notificationId, notificationVersion);
         }
 
         [HttpGet]
         [AuthGuard]
         public async Task MarkNotificationAsReadForCurrentUser(long notificationId, int notificationVersion)
         {
-            await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.MarkNotificationAsReadForCurrentUser(notificationId, notificationVersion);
+            await _{{appName.FirstCharToLower()}}BusinessService.MarkNotificationAsReadForCurrentUser(notificationId, notificationVersion);
         }
 
         [HttpGet]
         [AuthGuard]
         public async Task MarkNotificationAsUnreadForCurrentUser(long notificationId, int notificationVersion)
         {
-            await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.MarkNotificationAsUnreadForCurrentUser(notificationId, notificationVersion);
+            await _{{appName.FirstCharToLower()}}BusinessService.MarkNotificationAsUnreadForCurrentUser(notificationId, notificationVersion);
         }
 
-        //[HttpPost]
-        //[AuthGuard]
-        //public async Task<TableResponseDTO<NotificationDTO>> GetNotificationListForCurrentUser(TableFilterDTO tableFilterDTO)
-        //{
-        //    return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.GetNotificationListForCurrentUser(tableFilterDTO);
-        //}
+        [HttpPost]
+        [AuthGuard]
+        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        {
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetNotificationsForCurrentUser(tableFilterDTO);
+        }
 
         // TODO FT: This should exist in other systems
         //[HttpGet]
         //[AuthGuard]
-        //public async Task<int> GetUnreadNotificationCountForTheCurrentUser()
+        //public async Task<int> GetUnreadNotificationCountForCurrentUser()
         //{
-        //    return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.GetUnreGetUnreadNotificationCountForTheCurrentUser();
+        //    return await _{{appName.FirstCharToLower()}}BusinessService.GetUnreGetUnreadNotificationCountForCurrentUser();
         //}
 
     }
@@ -1495,11 +2300,11 @@ namespace {{appName}}.WebAPI.Controllers
         private readonly IJwtAuthManager _jwtAuthManagerService;
         private readonly IApplicationDbContext _context;
         private readonly AuthenticationService _authenticationService;
-        private readonly {{Settings.BaseBusinessServiceName}}BusinessService _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
 
 
         public SecurityController(ILogger<SecurityController> logger, SecurityBusinessService<UserExtended> securityBusinessService, IJwtAuthManager jwtAuthManagerService, IApplicationDbContext context, AuthenticationService authenticationService,
-            {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService)
+            {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService)
             : base(securityBusinessService, jwtAuthManagerService, context, authenticationService)
         {
             _logger = logger;
@@ -1507,7 +2312,7 @@ namespace {{appName}}.WebAPI.Controllers
             _jwtAuthManagerService = jwtAuthManagerService;
             _context = context;
             _authenticationService = authenticationService;
-            _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService = {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
         }
 
         /// <summary>
@@ -1573,14 +2378,14 @@ namespace {{appName}}.WebAPI.Controllers
     public class UserExtendedController : UserExtendedBaseController
     {
         private readonly IApplicationDbContext _context;
-        private readonly {{Settings.BaseBusinessServiceName}}BusinessService _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
         private readonly AuthenticationService _authenticationService;
 
-        public UserExtendedController(IApplicationDbContext context, {{Settings.BaseBusinessServiceName}}BusinessService {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient, AuthenticationService authenticationService)
-            : base(context, {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService, blobContainerClient)
+        public UserExtendedController(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient, AuthenticationService authenticationService)
+            : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
         {
             _context = context;
-            _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService = {{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService;
+            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
             _authenticationService = authenticationService;
         }
 
@@ -1590,7 +2395,7 @@ namespace {{appName}}.WebAPI.Controllers
         public async Task<UserExtendedDTO> GetCurrentUser()
         {
             long userId = _authenticationService.GetCurrentUserId();
-            return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.GetUserExtendedDTOAsync(userId);
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetUserExtendedDTOAsync(userId);
         }
 
         [HttpGet]
@@ -1598,7 +2403,7 @@ namespace {{appName}}.WebAPI.Controllers
         [SkipSpinner]
         public async Task<List<string>> GetCurrentUserPermissionCodes()
         {
-            return await _{{Settings.BaseBusinessServiceName.FirstCharToLower()}}BusinessService.GetCurrentUserPermissionCodes(); // FT: Not authorizing because we are reading this from the jwt token
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetCurrentUserPermissionCodes(); // FT: Not authorizing because we are reading this from the jwt token
         }
 
     }
@@ -2841,6 +3646,40 @@ namespace {{appName}}.Business.Services
             });
         }
 
+        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        {
+            TableResponseDTO<NotificationDTO> result = new TableResponseDTO<NotificationDTO>();
+            long currentUserId = _authenticationService.GetCurrentUserId(); // FT: Not doing user.Notifications, because he could have a lot of them.
+
+            await _context.WithTransactionAsync(async () =>
+            {
+                IQueryable<UserNotification> userNotificationsQuery = _context.DbSet<UserNotification>()
+                    .Where(x => x.User.Id == currentUserId);
+
+                int count = await userNotificationsQuery.CountAsync();
+
+                List<NotificationDTO> notificationDTOList = await userNotificationsQuery
+                    .Skip(tableFilterDTO.First)
+                    .Take(tableFilterDTO.Rows)
+                    .Select(x => new NotificationDTO
+                    {
+                        Id = x.Notification.Id,
+                        Version = x.Notification.Version,
+                        Title = x.Notification.Title,
+                        Description = x.Notification.Description,
+                        CreatedAt = x.Notification.CreatedAt,
+                        IsMarkedAsRead = x.IsMarkedAsRead,
+                    })
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync();
+
+                result.Data = notificationDTOList;
+                result.TotalRecords = count;
+            });
+
+            return result;
+        }
+
         #endregion
 
     }
@@ -3021,7 +3860,7 @@ export class AppTopBarComponent implements OnDestroy {
     currentUserNotificationsCount: number;
     menuItems: SoftMenuItem[] = [];
     avatarLabel: string;
-    companyName: string;
+    companyName: string = environment.companyName;
     showProfileIcon: boolean = false;
 
     @ViewChild('menubutton') menuButton!: ElementRef;
@@ -3074,6 +3913,7 @@ export class AppTopBarComponent implements OnDestroy {
     this.userSubscription = this.authService.user$.subscribe(currentUser => {
         this.currentUser = currentUser;
         this.avatarLabel = currentUser?.email.charAt(0).toLocaleUpperCase();
+        this.showProfileIcon = true;
     });
 
     this.router.events
@@ -3709,7 +4549,6 @@ import { TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { StyleClassModule } from 'primeng/styleclass';
 import { PanelMenuModule } from 'primeng/panelmenu';
-import { DashboardsRoutingModule } from './dashboard-routing.module';
 import { ApiService } from '../../../business/services/api/api.service';
 import { PrimengModule } from '../../../core/modules/primeng.module';
 import { SoftDataTableComponent } from 'src/app/core/components/soft-data-table/soft-data-table.component';
@@ -3718,25 +4557,33 @@ import { CardSkeletonComponent } from 'src/app/core/components/card-skeleton/car
 import { QRCodeModule } from 'angularx-qrcode';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { InfoCardComponent } from "../../../core/components/info-card/info-card.component";
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+    {
+        path: '', 
+        component: DashboardComponent
+    }
+];
 
 @NgModule({
     imports: [
-    CommonModule,
-    FormsModule,
-    MenuModule,
-    TableModule,
-    StyleClassModule,
-    PanelMenuModule,
-    ButtonModule,
-    DashboardsRoutingModule,
-    PrimengModule,
-    QRCodeModule,
-    SoftDataTableComponent,
-    SoftControlsModule,
-    CardSkeletonComponent,
-    TranslocoDirective,
-    InfoCardComponent,
-],
+        RouterModule.forChild(routes),
+        CommonModule,
+        FormsModule,
+        MenuModule,
+        TableModule,
+        StyleClassModule,
+        PanelMenuModule,
+        ButtonModule,
+        PrimengModule,
+        QRCodeModule,
+        SoftDataTableComponent,
+        SoftControlsModule,
+        CardSkeletonComponent,
+        TranslocoDirective,
+        InfoCardComponent,
+    ],
     declarations: [DashboardComponent],
     providers:[ApiService]
 })
@@ -3750,9 +4597,7 @@ export class DashboardModule { }
 import { ApiService } from '../../../business/services/api/api.service';
 import { LayoutService } from '../../services/app.layout.service';
 import { Component, OnInit } from '@angular/core';
-import { SoftMessageService } from 'src/app/core/services/soft-message.service';
-import { AuthService } from 'src/app/core/services/auth.service';
-import { firstValueFrom, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -3763,8 +4608,6 @@ export class DashboardComponent implements OnInit {
   constructor(
     public layoutService: LayoutService,
     private apiService: ApiService,
-    private messageService: SoftMessageService,
-    private authService: AuthService,
   ) {}
 
   ngOnInit() {
@@ -3785,24 +4628,6 @@ export class DashboardComponent implements OnInit {
 <ng-container *transloco="let t">
   Dashboard
 </ng-container>
-""";
-        }
-
-        private string GetDashboardRoutingModuleTsData()
-        {
-            return $$"""
-import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-import { DashboardComponent } from './dashboard.component';
-
-@NgModule({
-    imports: [RouterModule.forChild([
-        { path: '', component: DashboardComponent }
-    ])],
-    exports: [RouterModule]
-})
-export class DashboardsRoutingModule { }
-
 """;
         }
 
@@ -4458,9 +5283,9 @@ platformBrowserDynamic().bootstrapModule(AppModule)
 <html lang="sr-Latn-RS">
 <head>
   <meta charset="utf-8">
-  <title>{{appName.SpaceEveryUpperChar()}}</title>
-  <meta name="description" content="{{appName.SpaceEveryUpperChar()}}">
-  <meta name="author" content="{{appName.SpaceEveryUpperChar()}}">
+  <title>{{appName.ToTitleCase()}}</title>
+  <meta name="description" content="{{appName.ToTitleCase()}}">
+  <meta name="author" content="{{appName.ToTitleCase()}}">
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="./assets/demo/images/logo/favicon.ico">
@@ -4483,7 +5308,7 @@ export const environment = {
     frontendUrl: 'http://localhost:4200',
     googleAuth: true,
     googleClientId: '24372003240-44eprq8dn4s0b5f30i18tqksep60uk5u.apps.googleusercontent.com',
-    companyName: '{{appName.SpaceEveryUpperChar()}}',
+    companyName: '{{appName.ToTitleCase()}}',
     primaryColor: '{{primaryColor}}',
     usersCanRegister: true,
     httpOptions: {
@@ -5496,6 +6321,16 @@ import { NotAuthGuard } from './core/guards/not-auth.guard';
                     {
                         path: '',
                         loadChildren: () => import('./layout/components/dashboard/dashboard.module').then(m => m.DashboardModule),
+                        canActivate: [AuthGuard]
+                    },
+                    { 
+                        path: 'administration',
+                        loadChildren: () => import('./modules/administration/administration.module').then(m => m.AdministrationModule),
+                        canActivate: [AuthGuard]
+                    },
+                    { 
+                        path: '',
+                        loadChildren: () => import('./modules/notification/notification.module').then(m => m.NotificationModule),
                         canActivate: [AuthGuard]
                     },
                 ],

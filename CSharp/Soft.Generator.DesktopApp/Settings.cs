@@ -12,8 +12,6 @@ namespace Soft.Generator.DesktopApp
 
         public static string EntitiesNamespaceEnding = "Entities";
         public static string DTONamespaceEnding = "DTO";
-        public static string BaseProjectNamespace = "Playerty.Loyals";
-        public static string BaseBusinessServiceName = "Loyals";
         public static string DownloadPath = @"C:\Users\user\Downloads";
         public static string ClientApplicationBasePath = @""; // Dodaj dodatno dugme, generisi UI strukturu
         public static string GeneralStylesFrontendPath = @"C:\Users\user\Documents\Projects\PlayertyLoyals\playerty-loyals\Angular\src\assets\primeng\styles";

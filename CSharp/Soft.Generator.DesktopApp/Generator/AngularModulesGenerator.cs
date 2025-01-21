@@ -7,14 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Soft.Generator.DesktopApp.Entities;
 
 namespace Soft.Generator.DesktopApp.Generator
 {
     public class AngularModulesGenerator : IFileGenerator
     {
-        public void Generate(List<Type> entities)
+        public void Generate(List<Type> entities, WebApplication webApplication)
         {
-            foreach (var entityGroup in entities.GroupBy(x => x.SafeGetAttribute<MenuNameAttribute>()?.Name))
+            foreach (var entityGroup in entities.Where(x => x.IsManyToManyType() == false).GroupBy(x => x.SafeGetAttribute<MenuNameAttribute>()?.Name ?? x.Name))
             {
                 if (entityGroup.Key == null)
                     continue;
@@ -30,9 +31,7 @@ namespace Soft.Generator.DesktopApp.Generator
             string result = $$"""
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PartnerUserListComponent } from './pages/users/partner-user-list.component';
-import { PrimengModule } from 'src/app/layout/modules/primeng.module';
-import { PartnerUserDetailsComponent } from './pages/users/partner-user-details.component';
+import { PrimengModule } from 'src/app/core/modules/primeng.module';
 import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
 import { CardSkeletonComponent } from "../../core/components/card-skeleton/card-skeleton.component";
 import { SoftDataTableComponent } from 'src/app/core/components/soft-data-table/soft-data-table.component';
@@ -40,7 +39,7 @@ import { CommonModule } from '@angular/common';
 import { IndexCardComponent } from 'src/app/core/components/index-card/index-card.component';
 import { TranslocoDirective } from '@jsverse/transloco';
 
-{{string.Join("\n", GetDynamicImports(entityGroup.ToList()))}}
+{{string.Join("\n", GetDynamicImports(entityGroup))}}
 
 const routes: Routes = [
 {{string.Join("\n", GetRoutes(entityGroup.ToList()))}}
@@ -84,20 +83,28 @@ export class {{entityGroup.Key}}Module { }
             return result;
         }
 
-        private static List<string> GetDynamicImports(List<Type> types)
+        private static List<string> GetDynamicImports(IGrouping<string, Type> entityGroup)
         {
             List<string> result = new List<string>();
 
-            foreach (Type type in types)
+            foreach (Type type in entityGroup.ToList())
             {
                 result.Add($$"""
-import { {{type.Name}}TableComponent } from './pages/{{type.Name.FromPascalToKebabCase()}}/{{type.Name.FromPascalToKebabCase()}}-table.component';
-import { {{type.Name}}DetailsComponent } from './pages/{{type.Name.FromPascalToKebabCase()}}/{{type.Name.FromPascalToKebabCase()}}-details.component';
-import { {{type.Name}}BaseComponent } from 'src/app/business/components/base-details/business-base-details.generated';
+import { {{type.Name}}TableComponent } from './pages{{GetPagesSubfolder(entityGroup, type)}}/{{type.Name.FromPascalToKebabCase()}}-table.component';
+import { {{type.Name}}DetailsComponent } from './pages{{GetPagesSubfolder(entityGroup, type)}}/{{type.Name.FromPascalToKebabCase()}}-details.component';
+import { {{type.Name}}BaseDetailsComponent } from 'src/app/business/components/base-details/business-base-details.generated';
 """);
             }
 
             return result;
+        }
+
+        private static string GetPagesSubfolder(IGrouping<string, Type> entityGroup, Type type)
+        {
+            if (type.Name == entityGroup.Key)
+                return null;
+
+            return $"/{type.Name.FromPascalToKebabCase()}";
         }
 
         private static List<string> GetRoutes(List<Type> types)

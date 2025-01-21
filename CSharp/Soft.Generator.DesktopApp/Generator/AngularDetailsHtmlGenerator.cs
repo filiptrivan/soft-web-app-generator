@@ -1,4 +1,5 @@
 ﻿using Soft.Generator.DesktopApp.Attributes.UI;
+using Soft.Generator.DesktopApp.Entities;
 using Soft.Generator.DesktopApp.Generator.Helpers;
 using Soft.Generator.DesktopApp.Interfaces;
 using System;
@@ -13,13 +14,16 @@ namespace Soft.Generator.DesktopApp.Generator
 {
     public class AngularDetailsHtmlGenerator : IFileGenerator
     {
-        public void Generate(List<Type> entities)
+        public void Generate(List<Type> entities, WebApplication webApplication)
         {
             foreach (Type entity in entities)
             {
+                if (entity.IsManyToManyType())
+                    continue;
+
                 string generatedCode = GenerateCode(entity);
 
-                Helper.WriteToFileAndMakeFolders(generatedCode, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\{entity.Name.FromPascalToKebabCase()}-details.component.html");
+                Helper.WriteToFileAndMakeFolders(generatedCode, $@"{Settings.DownloadPath}\{entity.Name.FromPascalToKebabCase()}\pages\{entity.Name.FromPascalToKebabCase()}-details.component.html");
             }
         }
 
