@@ -22,7 +22,8 @@ namespace Soft.Generator.DesktopApp.Generator
 
             foreach (Type entity in entities)
             {
-                if (entity.IsManyToManyType())
+                if (entity.IsManyToManyType() ||
+                    entity.IsCoreEntity())
                     continue;
 
                 StringBuilder sb = new StringBuilder();

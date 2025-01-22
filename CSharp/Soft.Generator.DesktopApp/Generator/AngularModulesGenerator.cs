@@ -15,11 +15,10 @@ namespace Soft.Generator.DesktopApp.Generator
     {
         public void Generate(List<Type> entities, WebApplication webApplication)
         {
-            foreach (var entityGroup in entities.Where(x => x.IsManyToManyType() == false).GroupBy(x => x.SafeGetAttribute<MenuNameAttribute>()?.Name ?? x.Name))
+            foreach (var entityGroup in entities
+                .Where(x => x.IsManyToManyType() == false && x.IsCoreEntity() == false)
+                .GroupBy(x => x.SafeGetAttribute<MenuNameAttribute>()?.Name ?? x.Name))
             {
-                if (entityGroup.Key == null)
-                    continue;
-
                 string generatedCode = GenerateCode(entityGroup);
 
                 Helper.WriteToFileAndMakeFolders(generatedCode, $@"{Settings.DownloadPath}\{entityGroup.Key.FromPascalToKebabCase()}\{entityGroup.Key.FromPascalToKebabCase()}.module.ts");
@@ -90,21 +89,13 @@ export class {{entityGroup.Key}}Module { }
             foreach (Type type in entityGroup.ToList())
             {
                 result.Add($$"""
-import { {{type.Name}}TableComponent } from './pages{{GetPagesSubfolder(entityGroup, type)}}/{{type.Name.FromPascalToKebabCase()}}-table.component';
-import { {{type.Name}}DetailsComponent } from './pages{{GetPagesSubfolder(entityGroup, type)}}/{{type.Name.FromPascalToKebabCase()}}-details.component';
+import { {{type.Name}}TableComponent } from './pages{{Helper.GetPagesSubfolder(entityGroup, type)}}/{{type.Name.FromPascalToKebabCase()}}-table.component';
+import { {{type.Name}}DetailsComponent } from './pages{{Helper.GetPagesSubfolder(entityGroup, type)}}/{{type.Name.FromPascalToKebabCase()}}-details.component';
 import { {{type.Name}}BaseDetailsComponent } from 'src/app/business/components/base-details/business-base-details.generated';
 """);
             }
 
             return result;
-        }
-
-        private static string GetPagesSubfolder(IGrouping<string, Type> entityGroup, Type type)
-        {
-            if (type.Name == entityGroup.Key)
-                return null;
-
-            return $"/{type.Name.FromPascalToKebabCase()}";
         }
 
         private static List<string> GetRoutes(List<Type> types)
@@ -115,11 +106,11 @@ import { {{type.Name}}BaseDetailsComponent } from 'src/app/business/components/b
             {
                 result.Add($$"""
     {
-        path: '{{type.Name.Pluralize()}}',
+        path: '{{type.Name.Pluralize().FromPascalToKebabCase()}}',
         component: {{type.Name}}TableComponent,
     },
     {
-        path: '{{type.Name.Pluralize()}}/:id',
+        path: '{{type.Name.Pluralize().FromPascalToKebabCase()}}/:id',
         component: {{type.Name}}DetailsComponent,
     },
 """);

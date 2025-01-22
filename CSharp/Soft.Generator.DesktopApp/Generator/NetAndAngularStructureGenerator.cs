@@ -3145,7 +3145,7 @@ namespace {{appName}}.WebAPI.GeneratorSettings
       "BlobStorageUrl": "{{blobStorageUrl}}",
       "BlobStorageContainerName": "files",
 
-      "ConnectionString": "Data source=(localhost)\\SQLEXPRESS;Initial Catalog={{appName}};Integrated Security=True;Encrypt=false;MultipleActiveResultSets=True;"
+      "ConnectionString": "Data source=localhost\\SQLEXPRESS;Initial Catalog={{appName}};Integrated Security=True;Encrypt=false;MultipleActiveResultSets=True;"
     },
     "Soft.Generator.Security": {
       "JwtKey": "{{jwtKey}}",
@@ -4273,7 +4273,7 @@ export interface SoftMenuItem extends MenuItem{
     templateUrl: './app.menu.component.html'
 })
 export class AppMenuComponent implements OnInit {
-    model: SoftMenuItem[] = [];
+    menu: SoftMenuItem[] = [];
 
     constructor(
         public layoutService: LayoutService, 
@@ -4283,22 +4283,9 @@ export class AppMenuComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.model = [
+        this.menu = [
             {
-                items: [
-                    {
-                        label: `${environment.companyName}`,
-                        icon: 'pi pi-fw pi-at', 
-                        visible: true,
-                    }
-                ],
                 visible: true,
-            },
-            {
-                separator: true,
-                visible: true,
-            },
-            {
                 items: [
                     { 
                         label: this.translocoService.translate('Home'), 
@@ -4306,8 +4293,7 @@ export class AppMenuComponent implements OnInit {
                         routerLink: [''],
                         visible: true,
                     }, 
-                ],
-                visible: true,
+                ]
             },
         ];
     }

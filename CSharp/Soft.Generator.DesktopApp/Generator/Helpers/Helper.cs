@@ -145,6 +145,14 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
             return null;
         }
 
+        public static string GetPagesSubfolder(IGrouping<string, Type> entityGroup, Type type)
+        {
+            if (type.Name == entityGroup.Key)
+                return null;
+
+            return $"/{type.Name.FromPascalToKebabCase()}";
+        }
+
         #region Assembly Load Helpers
 
         public static List<Type> GetTypesSafely(Assembly assembly)

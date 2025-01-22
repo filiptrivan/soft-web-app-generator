@@ -53,6 +53,8 @@ namespace Soft.Generator.DesktopApp.Services
 
             new AngularDetailsTsGenerator().Generate(_entityTypes, webApplication);
             new AngularDetailsHtmlGenerator().Generate(_entityTypes, webApplication);
+
+            new AngularMenuGenerator().Generate(_entityTypes, webApplication);
         }
     }
 }

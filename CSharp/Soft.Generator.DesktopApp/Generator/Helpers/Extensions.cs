@@ -15,6 +15,11 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
 {
     public static class Extensions
     {
+        public static List<string> CoreEntities = [
+            "UserExtended",
+            "Role",
+            "Notification"
+        ];
 
         #region Case
 
@@ -72,7 +77,12 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
 
         public static bool IsManyToManyType(this Type type)
         {
-            return type.IsClass && type.BaseType == null;
+            return type.IsClass && (type.BaseType == null || type.BaseType == typeof(object));
+        }
+
+        public static bool IsCoreEntity(this Type type)
+        {
+            return CoreEntities.Contains(type.Name);
         }
 
         public static bool IsDTOType(this Type type)
