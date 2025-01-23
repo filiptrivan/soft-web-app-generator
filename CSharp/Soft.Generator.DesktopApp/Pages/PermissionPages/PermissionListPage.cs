@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
-using Soft.Generator.DesktopApp.Controllers;
-using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Interfaces;
-using Soft.Generator.DesktopApp.Services;
+using Spider.DesktopApp.Controllers;
+using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Interfaces;
+using Spider.DesktopApp.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Soft.Generator.DesktopApp.Pages
+namespace Spider.DesktopApp.Pages
 {
     public partial class PermissionListPage : UserControl
     {

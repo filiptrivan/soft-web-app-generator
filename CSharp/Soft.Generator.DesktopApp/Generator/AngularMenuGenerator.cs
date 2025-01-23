@@ -1,14 +1,14 @@
-﻿using Soft.Generator.DesktopApp.Attributes.UI;
-using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Generator.Helpers;
-using Soft.Generator.DesktopApp.Interfaces;
+﻿using Spider.DesktopApp.Attributes.UI;
+using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Generator.Helpers;
+using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Generator
+namespace Spider.DesktopApp.Generator
 {
     public class AngularMenuGenerator : IFileGenerator
     {

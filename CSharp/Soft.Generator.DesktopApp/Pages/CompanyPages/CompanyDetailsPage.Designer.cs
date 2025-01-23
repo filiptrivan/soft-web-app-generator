@@ -1,4 +1,4 @@
-﻿namespace Soft.Generator.DesktopApp.Pages.CompanyPages
+﻿namespace Spider.DesktopApp.Pages.CompanyPages
 {
     partial class CompanyDetailsPage
     {

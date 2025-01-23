@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Soft.Generator.DesktopApp.Pages
+namespace Spider.DesktopApp.Pages
 {
     public partial class HomePage : UserControl
     {

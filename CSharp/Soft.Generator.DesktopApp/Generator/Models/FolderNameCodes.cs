@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Generator.Models
+namespace Spider.DesktopApp.Generator.Models
 {
     public enum FolderNameCodes
     {

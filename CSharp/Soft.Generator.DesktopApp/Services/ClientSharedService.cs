@@ -1,7 +1,7 @@
-﻿using Soft.Generator.DesktopApp.Controllers;
-using Soft.Generator.DesktopApp.Controls;
-using Soft.Generator.DesktopApp.Interfaces;
-using Soft.Generator.DesktopApp.Pages.CompanyPages;
+﻿using Spider.DesktopApp.Controllers;
+using Spider.DesktopApp.Controls;
+using Spider.DesktopApp.Interfaces;
+using Spider.DesktopApp.Pages.CompanyPages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Services
+namespace Spider.DesktopApp.Services
 {
     public class ClientSharedService
     {

@@ -1,4 +1,4 @@
-﻿namespace Soft.Generator.DesktopApp.Pages
+﻿namespace Spider.DesktopApp.Pages
 {
     partial class HomePage
     {

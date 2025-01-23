@@ -1,6 +1,6 @@
-﻿using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Generator;
-using Soft.Generator.DesktopApp.Generator.Helpers;
+﻿using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Generator;
+using Spider.DesktopApp.Generator.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Services
+namespace Spider.DesktopApp.Services
 {
     public class GeneratorService
     {

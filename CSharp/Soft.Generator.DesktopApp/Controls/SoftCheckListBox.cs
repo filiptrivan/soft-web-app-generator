@@ -1,5 +1,5 @@
-﻿using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Interfaces;
+﻿using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Soft.Generator.DesktopApp.Controls
+namespace Spider.DesktopApp.Controls
 {
     public partial class SoftCheckListBox : UserControl
     {

@@ -1,4 +1,4 @@
-﻿namespace Soft.Generator.DesktopApp.Controls
+﻿namespace Spider.DesktopApp.Controls
 {
     partial class SoftSaveButton
     {

@@ -1,12 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
-using Soft.Generator.DesktopApp.Extensions;
+using Spider.DesktopApp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Services
+namespace Spider.DesktopApp.Services
 {
     /// <summary>
     /// TODO FT: Put this into library

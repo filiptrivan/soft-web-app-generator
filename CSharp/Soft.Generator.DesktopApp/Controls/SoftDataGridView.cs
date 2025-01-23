@@ -1,6 +1,6 @@
-﻿using Soft.Generator.DesktopApp.Controllers;
-using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Extensions;
+﻿using Spider.DesktopApp.Controllers;
+using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Soft.Generator.DesktopApp.Controls
+namespace Spider.DesktopApp.Controls
 {
     public partial class SoftDataGridView : UserControl
     {

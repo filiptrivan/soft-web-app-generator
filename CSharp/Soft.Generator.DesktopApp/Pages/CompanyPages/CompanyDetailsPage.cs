@@ -1,7 +1,7 @@
-﻿using Soft.Generator.DesktopApp.Controllers;
-using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Interfaces;
-using Soft.Generator.DesktopApp.Services;
+﻿using Spider.DesktopApp.Controllers;
+using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Interfaces;
+using Spider.DesktopApp.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Runtime.CompilerServices.RuntimeHelpers;
 
-namespace Soft.Generator.DesktopApp.Pages.CompanyPages
+namespace Spider.DesktopApp.Pages.CompanyPages
 {
     public partial class CompanyDetailsPage : UserControl, ISoftDetailsPage
     {

@@ -1,4 +1,4 @@
-﻿namespace Soft.Generator.DesktopApp
+﻿namespace Spider.DesktopApp
 {
     partial class SoftTextbox
     {

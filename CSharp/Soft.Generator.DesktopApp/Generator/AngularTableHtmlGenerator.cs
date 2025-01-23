@@ -1,13 +1,13 @@
-﻿using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Generator.Helpers;
-using Soft.Generator.DesktopApp.Interfaces;
+﻿using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Generator.Helpers;
+using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Generator
+namespace Spider.DesktopApp.Generator
 {
     public class AngularTableHtmlGenerator : IFileGenerator
     {
@@ -23,13 +23,13 @@ namespace Soft.Generator.DesktopApp.Generator
 
                 sb.AppendLine($$"""
 <ng-container *transloco="let t">
-    <soft-data-table 
+    <spider-data-table 
     [tableTitle]="t('{{entity.Name}}List')" 
     [cols]="cols" 
     [getTableDataObservableMethod]="get{{entity.Name}}TableDataObservableMethod" 
     [exportTableDataToExcelObservableMethod]="export{{entity.Name}}TableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="delete{{entity.Name}}ObservableMethod"
-    ></soft-data-table>
+    ></spider-data-table>
 </ng-container>
 """);
 

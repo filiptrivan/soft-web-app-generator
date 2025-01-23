@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Attributes
+namespace Spider.DesktopApp.Attributes
 {
     public class IdentifierAttribute : Attribute
     {

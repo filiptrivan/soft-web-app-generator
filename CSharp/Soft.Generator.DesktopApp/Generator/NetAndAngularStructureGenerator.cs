@@ -1,592 +1,591 @@
-﻿using Soft.Generator.DesktopApp.Generator.Helpers;
-using Soft.Generator.DesktopApp.Generator.Models;
+﻿using Spider.DesktopApp.Generator.Helpers;
+using Spider.DesktopApp.Generator.Models;
 using CaseConverter;
-using Soft.Generator.DesktopApp.Interfaces;
+using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
-using Soft.Generator.DesktopApp.Services;
+using Spider.DesktopApp.Services;
 
-namespace Soft.Generator.DesktopApp.Generator
+namespace Spider.DesktopApp.Generator
 {
     public class NetAndAngularStructureGenerator
     {
         public void Generate(string outputPath, string appName, string primaryColor)
         {
-            SoftFolder appStructure = new SoftFolder
+            SpiderFolder appStructure = new SpiderFolder
             {
                 Name = appName,
                 ChildFolders =
                 {
-                    new SoftFolder
+                    new SpiderFolder
                     {
                         Name = "Angular",
                         ChildFolders =
                         {
-                            new SoftFolder
+                            new SpiderFolder
                             {
                                 Name = "src",
                                 ChildFolders =
                                 {
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "app",
                                         ChildFolders =
                                         {
-                                            new SoftFolder
+                                            new SpiderFolder
                                             {
                                                 Name = "business",
                                                 ChildFolders =
                                                 {
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "components",
                                                         ChildFolders =
                                                         {
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "base-details",
                                                             },
                                                         }
                                                     },
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "entities",
-                                                        SoftFiles = new List<SoftFile>
+                                                        Files =
                                                         {
-                                                            new SoftFile 
+                                                            new SpiderFile 
                                                             {
                                                                 Name = "security-entities.generated.ts",
                                                                 Data = GetSecurityEntitiesTsData(),
                                                             }
                                                         }
                                                     },
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "enums",
-                                                        SoftFiles =
+                                                        Files =
                                                         {
-                                                            new SoftFile
+                                                            new SpiderFile
                                                             {
                                                                 Name = "security-enums.generated.ts",
                                                                 Data = GetSecurityEnumsTsData(),
                                                             }
                                                         }
                                                     },
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "guards",
                                                     },
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "interceptors",
                                                     },
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "services",
-                                                        ChildFolders = new List<SoftFolder>
+                                                        ChildFolders =
                                                         {
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "api",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "api.service.security.ts", Data = GetAPIServiceSecurityTsCode() },
-                                                                    new SoftFile { Name = "api.service.ts", Data = GetAPIServiceTsCode() },
+                                                                    new SpiderFile { Name = "api.service.security.ts", Data = GetAPIServiceSecurityTsCode() },
+                                                                    new SpiderFile { Name = "api.service.ts", Data = GetAPIServiceTsCode() },
                                                                 }
                                                             },
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "auth",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "auth.service.ts", Data = GetAuthServiceTsCode() },
+                                                                    new SpiderFile { Name = "auth.service.ts", Data = GetAuthServiceTsCode() },
                                                                 }
                                                             },
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "helpers",
                                                             },
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "translates",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "merge-class-names.ts", Data = GetMergeClassNamesTsCode() },
-                                                                    new SoftFile { Name = "merge-labels.ts", Data = GetMergeLabelsCode() },
+                                                                    new SpiderFile { Name = "merge-class-names.ts", Data = GetMergeClassNamesTsCode() },
+                                                                    new SpiderFile { Name = "merge-labels.ts", Data = GetMergeLabelsCode() },
                                                                 }
                                                             },
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "validators",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "validation-rules.ts", Data = GetValidationRulesTsCode() },
+                                                                    new SpiderFile { Name = "validation-rules.ts", Data = GetValidationRulesTsCode() },
                                                                 }
                                                             },
                                                         },
                                                     },
                                                 },
-                                                SoftFiles =
+                                                Files =
                                                 {
-                                                    new SoftFile { Name = "business.module.ts", Data = GetBusinessModuleTsData() }
+                                                    new SpiderFile { Name = "business.module.ts", Data = GetBusinessModuleTsData() }
                                                 }
                                             },
-                                            new SoftFolder
+                                            new SpiderFolder
                                             {
                                                 Name = "core", // FT: Copy
                                             },
-                                            new SoftFolder
+                                            new SpiderFolder
                                             {
                                                 Name = "layout",
-                                                ChildFolders = new List<SoftFolder>
+                                                ChildFolders =
                                                 {
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "components",
                                                         ChildFolders =
                                                         {
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "auth",
                                                                 ChildFolders =
                                                                 {
-                                                                    new SoftFolder
+                                                                    new SpiderFolder
                                                                     {
                                                                         Name = "login",
-                                                                        SoftFiles =
+                                                                        Files =
                                                                         {
-                                                                            new SoftFile { Name = "login.component.html", Data = GetLoginComponentHtmlData() },
-                                                                            new SoftFile { Name = "login.component.ts", Data = GetLoginComponentTsData() },
+                                                                            new SpiderFile { Name = "login.component.html", Data = GetLoginComponentHtmlData() },
+                                                                            new SpiderFile { Name = "login.component.ts", Data = GetLoginComponentTsData() },
                                                                         }
                                                                     },
-                                                                    new SoftFolder
+                                                                    new SpiderFolder
                                                                     {
                                                                         Name = "partials",
-                                                                        SoftFiles =
+                                                                        Files =
                                                                         {
-                                                                            new SoftFile { Name = "auth.component.html", Data = GetAuthComponentHtmlData() },
-                                                                            new SoftFile { Name = "auth.component.ts", Data = GetAuthComponentTsData() },
+                                                                            new SpiderFile { Name = "auth.component.html", Data = GetAuthComponentHtmlData() },
+                                                                            new SpiderFile { Name = "auth.component.ts", Data = GetAuthComponentTsData() },
                                                                         }
                                                                     },
-                                                                    new SoftFolder
+                                                                    new SpiderFolder
                                                                     {
                                                                         Name = "registration",
-                                                                        SoftFiles =
+                                                                        Files =
                                                                         {
-                                                                            new SoftFile { Name = "registration.component.html", Data = GetRegistrationComponentHtmlData() },
-                                                                            new SoftFile { Name = "registration.component.ts", Data = GetRegistrationComponentTsData() },
+                                                                            new SpiderFile { Name = "registration.component.html", Data = GetRegistrationComponentHtmlData() },
+                                                                            new SpiderFile { Name = "registration.component.ts", Data = GetRegistrationComponentTsData() },
                                                                         }
                                                                     },
                                                                 },
-                                                                SoftFiles = new List<SoftFile>
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "auth.module.ts", Data = GetAuthModuleTsData() }
+                                                                    new SpiderFile { Name = "auth.module.ts", Data = GetAuthModuleTsData() }
                                                                 }
                                                             },
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "dashboard",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "dashboard.component.html", Data = GetDashboardComponentHtmlData() },
-                                                                    new SoftFile { Name = "dashboard.component.ts", Data = GetDashboardComponentTsData() },
-                                                                    new SoftFile { Name = "dashboard.module.ts", Data = GetDashboardModuleTsData() },
+                                                                    new SpiderFile { Name = "dashboard.component.html", Data = GetDashboardComponentHtmlData() },
+                                                                    new SpiderFile { Name = "dashboard.component.ts", Data = GetDashboardComponentTsData() },
+                                                                    new SpiderFile { Name = "dashboard.module.ts", Data = GetDashboardModuleTsData() },
                                                                 }
                                                             },
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "layout",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "app.layout.component.html", Data = GetAppLayoutComponentHtmlData() },
-                                                                    new SoftFile { Name = "app.layout.component.ts", Data = GetAppLayoutComponentTsData() },
-                                                                    new SoftFile { Name = "app.layout.module.ts", Data = GetAppLayoutModuleTsData() },
+                                                                    new SpiderFile { Name = "app.layout.component.html", Data = GetAppLayoutComponentHtmlData() },
+                                                                    new SpiderFile { Name = "app.layout.component.ts", Data = GetAppLayoutComponentTsData() },
+                                                                    new SpiderFile { Name = "app.layout.module.ts", Data = GetAppLayoutModuleTsData() },
                                                                 }
                                                             },
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "sidebar",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "app.menu.component.html", Data = GetAppMenuComponentHtmlData() },
-                                                                    new SoftFile { Name = "app.menu.component.ts", Data = GetAppMenuComponentTsData() },
-                                                                    new SoftFile { Name = "app.menu.service.ts", Data = GetAppMenuServiceTsData() },
-                                                                    new SoftFile { Name = "app.menuitem.component.html", Data = GetAppMenuItemComponentHtmlData() },
-                                                                    new SoftFile { Name = "app.menuitem.component.ts", Data = GetAppMenuItemComponentTsData() },
-                                                                    new SoftFile { Name = "app.sidebar.component.html", Data = GetAppSidebarComponentHtmlData() },
-                                                                    new SoftFile { Name = "app.sidebar.component.ts", Data = GetAppSidebarComponentTsData() },
+                                                                    new SpiderFile { Name = "app.menu.component.html", Data = GetAppMenuComponentHtmlData() },
+                                                                    new SpiderFile { Name = "app.menu.component.ts", Data = GetAppMenuComponentTsData() },
+                                                                    new SpiderFile { Name = "app.menu.service.ts", Data = GetAppMenuServiceTsData() },
+                                                                    new SpiderFile { Name = "app.menuitem.component.html", Data = GetAppMenuItemComponentHtmlData() },
+                                                                    new SpiderFile { Name = "app.menuitem.component.ts", Data = GetAppMenuItemComponentTsData() },
+                                                                    new SpiderFile { Name = "app.sidebar.component.html", Data = GetAppSidebarComponentHtmlData() },
+                                                                    new SpiderFile { Name = "app.sidebar.component.ts", Data = GetAppSidebarComponentTsData() },
                                                                 }
                                                             },
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "topbar",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "app.topbar.component.html", Data = GetAppTopbarComponentHtmlData() },
-                                                                    new SoftFile { Name = "app.topbar.component.ts", Data = GetAppTopbarComponentTsData() },
+                                                                    new SpiderFile { Name = "app.topbar.component.html", Data = GetAppTopbarComponentHtmlData() },
+                                                                    new SpiderFile { Name = "app.topbar.component.ts", Data = GetAppTopbarComponentTsData() },
                                                                 }
                                                             },
                                                         },
                                                     },
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "services",
-                                                        SoftFiles = new List<SoftFile>
+                                                        Files =
                                                         {
-                                                            new SoftFile { Name = "app.layout.service.ts", Data = GetAppLayoutServiceTsData() }
+                                                            new SpiderFile { Name = "app.layout.service.ts", Data = GetAppLayoutServiceTsData() }
                                                         }
                                                     }
                                                 },
                                             },
-                                            new SoftFolder
+                                            new SpiderFolder
                                             {
                                                 Name = "modules",
                                                 ChildFolders =
                                                 {
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "administration",
                                                         ChildFolders =
                                                         {
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "pages",
                                                                 ChildFolders =
                                                                 {
-                                                                    new SoftFolder 
+                                                                    new SpiderFolder 
                                                                     { 
                                                                         Name = "notification",
-                                                                        SoftFiles =
+                                                                        Files =
                                                                         {
-                                                                            new SoftFile { Name = "notification-details.component.html", Data = GetNotificationDetailsComponentHtmlData() },
-                                                                            new SoftFile { Name = "notification-details.component.ts", Data = GetNotificationDetailsComponentTsData() },
-                                                                            new SoftFile { Name = "notification-table.component.html", Data = GetNotificationTableComponentHtmlData() },
-                                                                            new SoftFile { Name = "notification-table.component.ts", Data = GetNotificationTableComponentTsData() },
+                                                                            new SpiderFile { Name = "notification-details.component.html", Data = GetNotificationDetailsComponentHtmlData() },
+                                                                            new SpiderFile { Name = "notification-details.component.ts", Data = GetNotificationDetailsComponentTsData() },
+                                                                            new SpiderFile { Name = "notification-table.component.html", Data = GetNotificationTableComponentHtmlData() },
+                                                                            new SpiderFile { Name = "notification-table.component.ts", Data = GetNotificationTableComponentTsData() },
                                                                         }
                                                                     },
-                                                                    new SoftFolder
+                                                                    new SpiderFolder
                                                                     {
                                                                         Name = "user",
-                                                                        SoftFiles =
+                                                                        Files =
                                                                         {
-                                                                            new SoftFile { Name = "user-details.component.html", Data = GetUserDetailsComponentHtmlData() },
-                                                                            new SoftFile { Name = "user-details.component.ts", Data = GetUserDetailsComponentTsData() },
-                                                                            new SoftFile { Name = "user-table.component.html", Data = GetUserTableComponentHtmlData() },
-                                                                            new SoftFile { Name = "user-table.component.ts", Data = GetUserTableComponentTsData() },
+                                                                            new SpiderFile { Name = "user-details.component.html", Data = GetUserDetailsComponentHtmlData() },
+                                                                            new SpiderFile { Name = "user-details.component.ts", Data = GetUserDetailsComponentTsData() },
+                                                                            new SpiderFile { Name = "user-table.component.html", Data = GetUserTableComponentHtmlData() },
+                                                                            new SpiderFile { Name = "user-table.component.ts", Data = GetUserTableComponentTsData() },
                                                                         }
                                                                     },
-                                                                    new SoftFolder
+                                                                    new SpiderFolder
                                                                     {
                                                                         Name = "role",
-                                                                        SoftFiles =
+                                                                        Files =
                                                                         {
-                                                                            new SoftFile { Name = "role-details.component.html", Data = GetRoleDetailsComponentHtmlData() },
-                                                                            new SoftFile { Name = "role-details.component.ts", Data = GetRoleDetailsComponentTsData() },
-                                                                            new SoftFile { Name = "role-table.component.html", Data = GetRoleTableComponentHtmlData() },
-                                                                            new SoftFile { Name = "role-table.component.ts", Data = GetRoleTableComponentTsData() },
+                                                                            new SpiderFile { Name = "role-details.component.html", Data = GetRoleDetailsComponentHtmlData() },
+                                                                            new SpiderFile { Name = "role-details.component.ts", Data = GetRoleDetailsComponentTsData() },
+                                                                            new SpiderFile { Name = "role-table.component.html", Data = GetRoleTableComponentHtmlData() },
+                                                                            new SpiderFile { Name = "role-table.component.ts", Data = GetRoleTableComponentTsData() },
                                                                         }
                                                                     },
                                                                 },
                                                             },
                                                         },
-                                                        SoftFiles =
+                                                        Files =
                                                         {
-                                                            new SoftFile { Name = "administration.module.ts", Data = GetAdministrationModuleTsData() }
+                                                            new SpiderFile { Name = "administration.module.ts", Data = GetAdministrationModuleTsData() }
                                                         }
                                                     },
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "notification",
                                                         ChildFolders =
                                                         {
-                                                            new SoftFolder
+                                                            new SpiderFolder
                                                             {
                                                                 Name = "pages",
-                                                                SoftFiles =
+                                                                Files =
                                                                 {
-                                                                    new SoftFile { Name = "notification.component.html", Data = GetClientNotificationComponentHtmlData() },
-                                                                    new SoftFile { Name = "notification.component.ts", Data = GetClientNotificationComponentTsData() },
+                                                                    new SpiderFile { Name = "notification.component.html", Data = GetClientNotificationComponentHtmlData() },
+                                                                    new SpiderFile { Name = "notification.component.ts", Data = GetClientNotificationComponentTsData() },
                                                                 },
                                                             },
                                                         },
-                                                        SoftFiles =
+                                                        Files =
                                                         {
-                                                            new SoftFile { Name = "notification.module.ts", Data = GetClientNotificationModuleTsData() },
+                                                            new SpiderFile { Name = "notification.module.ts", Data = GetClientNotificationModuleTsData() },
                                                         }
                                                     },
                                                 }
                                             },
                                         },
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = "app.component.html", Data = GetAppComponentHtmlData() },
-                                            new SoftFile { Name = "app.component.ts", Data = GetAppComponentTsData() },
-                                            new SoftFile { Name = "app.module.ts", Data = GetAppModuleTsData() },
-                                            new SoftFile { Name = "app-routing.module.ts", Data = GetAppRoutingModuleTsData() },
+                                            new SpiderFile { Name = "app.component.html", Data = GetAppComponentHtmlData() },
+                                            new SpiderFile { Name = "app.component.ts", Data = GetAppComponentTsData() },
+                                            new SpiderFile { Name = "app.module.ts", Data = GetAppModuleTsData() },
+                                            new SpiderFile { Name = "app-routing.module.ts", Data = GetAppRoutingModuleTsData() },
                                         }
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "assets",
                                         ChildFolders =
                                         {
-                                            new SoftFolder
+                                            new SpiderFolder
                                             {
                                                 Name = "i18n",
-                                                SoftFiles = new List<SoftFile>
+                                                Files =
                                                 {
-                                                    new SoftFile { Name = "en.json", Data = GetTranslocoEnJsonCode() },
-                                                    new SoftFile { Name = "sr-Latn-RS.json", Data = GetTranslocoSrLatnRSJsonCode() },
-                                                    new SoftFile { Name = "en.generated.json", Data = "" },
-                                                    new SoftFile { Name = "sr-Latn-RS.generated.json", Data = "" },
+                                                    new SpiderFile { Name = "en.json", Data = GetTranslocoEnJsonCode() },
+                                                    new SpiderFile { Name = "sr-Latn-RS.json", Data = GetTranslocoSrLatnRSJsonCode() },
+                                                    new SpiderFile { Name = "en.generated.json", Data = "" },
+                                                    new SpiderFile { Name = "sr-Latn-RS.generated.json", Data = "" },
                                                 }
                                             },
-                                            new SoftFolder
+                                            new SpiderFolder
                                             {
                                                 Name = "primeng",
                                                 ChildFolders =
                                                 {
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "styles", // FT: Copy
                                                     },
-                                                    new SoftFolder
+                                                    new SpiderFolder
                                                     {
                                                         Name = "images",
-                                                        SoftFiles = new List<SoftFile>
+                                                        Files =
                                                         {
-                                                            new SoftFile { Name = "logo-dark.svg", Data = GetLogoDarkSvgData() }
+                                                            new SpiderFile { Name = "logo-dark.svg", Data = GetLogoDarkSvgData() }
                                                         }
                                                     }
                                                 }
                                             },
                                         },
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = "shared.scss", Data = GetSharedScssCode() },
-                                            new SoftFile { Name = "styles.scss", Data = GetStylesScssCode() },
+                                            new SpiderFile { Name = "shared.scss", Data = GetSharedScssCode() },
+                                            new SpiderFile { Name = "styles.scss", Data = GetStylesScssCode() },
                                         }
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "environments",
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = "environment.prod.ts", Data = "" },
-                                            new SoftFile { Name = "environment.ts", Data = GetEnvironmentTsCode(appName, primaryColor) },
+                                            new SpiderFile { Name = "environment.prod.ts", Data = "" },
+                                            new SpiderFile { Name = "environment.ts", Data = GetEnvironmentTsCode(appName, primaryColor) },
                                         }
                                     }
                                 },
-                                SoftFiles = new List<SoftFile>
+                                Files =
                                 {
-                                    new SoftFile { Name = "index.html", Data = GetIndexHtmlData(appName) },
-                                    new SoftFile { Name = "main.ts", Data = GetMainTsData() },
+                                    new SpiderFile { Name = "index.html", Data = GetIndexHtmlData(appName) },
+                                    new SpiderFile { Name = "main.ts", Data = GetMainTsData() },
                                 }
                             }
                         },
-                        SoftFiles = new List<SoftFile>
+                        Files =
                         {
-                            new SoftFile { Name = ".editorconfig", Data = GetEditOrConfigData() },
-                            new SoftFile { Name = "angular.json", Data = GetAngularJsonData(appName) },
-                            new SoftFile { Name = "package.json", Data = GetPackageData(appName) },
-                            new SoftFile { Name = "README.md", Data = "" },
-                            new SoftFile { Name = "tsconfig.app.json", Data = GetTsConfigAppJsonData() },
-                            new SoftFile { Name = "tsconfig.json", Data = GetTsConfigJsonData() },
-                            new SoftFile { Name = "tsconfig.spec.json", Data = GetTsConfigSpecJsonData() },
-                            new SoftFile { Name = "vercel.json", Data = GetVercelJsonData() },
+                            new SpiderFile { Name = ".editorconfig", Data = GetEditOrConfigData() },
+                            new SpiderFile { Name = "angular.json", Data = GetAngularJsonData(appName) },
+                            new SpiderFile { Name = "package.json", Data = GetPackageData(appName) },
+                            new SpiderFile { Name = "README.md", Data = "" },
+                            new SpiderFile { Name = "tsconfig.app.json", Data = GetTsConfigAppJsonData() },
+                            new SpiderFile { Name = "tsconfig.json", Data = GetTsConfigJsonData() },
+                            new SpiderFile { Name = "tsconfig.spec.json", Data = GetTsConfigSpecJsonData() },
+                            new SpiderFile { Name = "vercel.json", Data = GetVercelJsonData() },
                         }
                     },
-                    new SoftFolder
+                    new SpiderFolder
                     {
                         Name = "API",
-                        ChildFolders = new List<SoftFolder>
+                        ChildFolders =
                         {
-                            new SoftFolder
+                            new SpiderFolder
                             {
                                 Name = $"{appName}.Business",
-                                ChildFolders = new List<SoftFolder>
+                                ChildFolders =
                                 {
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "DataMappers",
-                                        SoftFiles = new List<SoftFile>
+                                        Files = new List<SpiderFile>
                                         {
-                                            new SoftFile { Name = "MapsterMapper.cs", Data = GetMapsterMapperCsData(appName) },
+                                            new SpiderFile { Name = "MapsterMapper.cs", Data = GetMapsterMapperCsData(appName) },
                                         }
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "DTO",
-                                        ChildFolders = new List<SoftFolder>
+                                        ChildFolders =
                                         {
-                                            new SoftFolder
+                                            new SpiderFolder
                                             {
                                                 Name = "Partials",
-                                                SoftFiles = new List<SoftFile>
+                                                Files = new List<SpiderFile>
                                                 {
-                                                    new SoftFile { Name = "NotificationDTO.cs", Data = GetNotificationDTOCsData(appName) },
-                                                    new SoftFile { Name = "NotificationSaveBodyDTO.cs", Data = GetNotificationSaveBodyDTOCsData(appName) },
-                                                    new SoftFile { Name = "UserExtendedSaveBodyDTO.cs", Data = GetUserExtendedSaveBodyDTOCsData(appName) },
+                                                    new SpiderFile { Name = "NotificationDTO.cs", Data = GetNotificationDTOCsData(appName) },
+                                                    new SpiderFile { Name = "NotificationSaveBodyDTO.cs", Data = GetNotificationSaveBodyDTOCsData(appName) },
+                                                    new SpiderFile { Name = "UserExtendedSaveBodyDTO.cs", Data = GetUserExtendedSaveBodyDTOCsData(appName) },
                                                 }
                                             },
-                                            new SoftFolder
+                                            new SpiderFolder
                                             {
                                                 Name = "Helpers"
                                             },
                                         }
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "Entities",
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = "Notification.cs", Data = GetNotificationCsData(appName) },
-                                            new SoftFile { Name = "UserExtended.cs", Data = GetUserExtendedCsData(appName) },
-                                            new SoftFile { Name = "UserNotification.cs", Data = GetUserNotificationCsData(appName) },
+                                            new SpiderFile { Name = "Notification.cs", Data = GetNotificationCsData(appName) },
+                                            new SpiderFile { Name = "UserExtended.cs", Data = GetUserExtendedCsData(appName) },
+                                            new SpiderFile { Name = "UserNotification.cs", Data = GetUserNotificationCsData(appName) },
                                         }
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "Enums",
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "Services",
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
-                                            new SoftFile { Name = $"NotificationService.cs", Data = GetNotificationServiceCsData(appName) },
-                                            new SoftFile { Name = $"AuthorizationBusinessService.cs", Data = GetAuthorizationServiceCsData(appName) },
+                                            new SpiderFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
+                                            new SpiderFile { Name = $"NotificationService.cs", Data = GetNotificationServiceCsData(appName) },
+                                            new SpiderFile { Name = $"AuthorizationBusinessService.cs", Data = GetAuthorizationServiceCsData(appName) },
                                         }
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "ValidationRules",
                                     },
                                 },
-                                SoftFiles = new List<SoftFile>
+                                Files =
                                 {
-                                    new SoftFile { Name = "GeneratorSettings.cs", Data = GetBusinessGeneratorSettingsData(appName) },
-                                    new SoftFile { Name = $"{appName}.Business.csproj", Data = GetBusinessCsProjData() },
-                                    new SoftFile { Name = $"Settings.cs", Data = GetBusinessSettingsCsData(appName) },
+                                    new SpiderFile { Name = "GeneratorSettings.cs", Data = GetBusinessGeneratorSettingsData(appName) },
+                                    new SpiderFile { Name = $"{appName}.Business.csproj", Data = GetBusinessCsProjData() },
+                                    new SpiderFile { Name = $"Settings.cs", Data = GetBusinessSettingsCsData(appName) },
                                 }
                             },
-                            new SoftFolder
+                            new SpiderFolder
                             {
                                 Name = $"{appName}.Infrastructure",
-                                SoftFiles = new List<SoftFile>
+                                Files =
                                 {
-                                    new SoftFile { Name = $"{appName}ApplicationDbContext.cs", Data = GetInfrastructureApplicationDbContextData(appName) },
-                                    new SoftFile { Name = "GeneratorSettings.cs", Data = GetInfrastructureGeneratorSettingsData(appName) },
-                                    new SoftFile { Name = $"{appName}.Infrastructure.csproj", Data = GetInfrastructureCsProjData(appName) },
+                                    new SpiderFile { Name = $"{appName}ApplicationDbContext.cs", Data = GetInfrastructureApplicationDbContextData(appName) },
+                                    new SpiderFile { Name = "GeneratorSettings.cs", Data = GetInfrastructureGeneratorSettingsData(appName) },
+                                    new SpiderFile { Name = $"{appName}.Infrastructure.csproj", Data = GetInfrastructureCsProjData(appName) },
                                 }
                             },
-                            new SoftFolder
+                            new SpiderFolder
                             {
                                 Name = $"{appName}.Shared",
-                                ChildFolders = new List<SoftFolder>
+                                ChildFolders =
                                 {
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "Terms",
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = "TermsGenerated.Designer.cs", Data = GetTermsGeneratedDesignerCsData(appName) },
-                                            new SoftFile { Name = "TermsGenerated.resx", Data = GetTermsGeneratedResxData() },
-                                            new SoftFile { Name = "TermsGenerated.sr-Latn-RS.cs", Data = GetTermsGeneratedSrLatnRSResxData() },
+                                            new SpiderFile { Name = "TermsGenerated.Designer.cs", Data = GetTermsGeneratedDesignerCsData(appName) },
+                                            new SpiderFile { Name = "TermsGenerated.resx", Data = GetTermsGeneratedResxData() },
+                                            new SpiderFile { Name = "TermsGenerated.sr-Latn-RS.cs", Data = GetTermsGeneratedSrLatnRSResxData() },
                                         }
                                     }
                                 },
-                                SoftFiles = new List<SoftFile>
+                                Files =
                                 {
-                                    new SoftFile { Name = $"{appName}.Shared.csproj", Data = GetSharedCsProjData() },
+                                    new SpiderFile { Name = $"{appName}.Shared.csproj", Data = GetSharedCsProjData() },
                                 }
                             },
-                            new SoftFolder
+                            new SpiderFolder
                             {
                                 Name = $"{appName}.WebAPI",
-                                ChildFolders = new List<SoftFolder>
+                                ChildFolders =
                                 {
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "Controllers",
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = "NotificationController.cs", Data = GetNotificationControllerCsData(appName) },
-                                            new SoftFile { Name = "SecurityController.cs", Data = GetSecurityControllerCsData(appName) },
-                                            new SoftFile { Name = "UserExtendedController.cs", Data = GetUserExtendedControllerCsData(appName) },
+                                            new SpiderFile { Name = "NotificationController.cs", Data = GetNotificationControllerCsData(appName) },
+                                            new SpiderFile { Name = "SecurityController.cs", Data = GetSecurityControllerCsData(appName) },
+                                            new SpiderFile { Name = "UserExtendedController.cs", Data = GetUserExtendedControllerCsData(appName) },
                                         }
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "DI",
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = "CompositionRoot.cs", Data = GetCompositionRootCsData(appName) },
+                                            new SpiderFile { Name = "CompositionRoot.cs", Data = GetCompositionRootCsData(appName) },
                                         }
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "Helpers",
                                     },
-                                    new SoftFolder
+                                    new SpiderFolder
                                     {
                                         Name = "Properties",
-                                        SoftFiles = new List<SoftFile>
+                                        Files =
                                         {
-                                            new SoftFile { Name = "launchSettings.json", Data = GetLaunchSettingsJsonData() },
+                                            new SpiderFile { Name = "launchSettings.json", Data = GetLaunchSettingsJsonData() },
                                         }
                                     },
                                 },
-                                SoftFiles = new List<SoftFile>
+                                Files =
                                 {
-                                    new SoftFile { Name = "appsettings.json", Data = GetAppSettingsJsonData(appName, null, null, null, null, null, null) }, // TODO FT: Add this to the app
-                                    new SoftFile { Name = "GeneratorSettings.cs", Data = GetWebAPIGeneratorSettingsData(appName) },
-                                    new SoftFile { Name = $"{appName}.WebAPI.csproj", Data = GetWebAPICsProjData(appName) },
-                                    new SoftFile { Name = "Program.cs", Data = GetProgramCsData(appName) },
-                                    new SoftFile { Name = "Settings.cs", Data = GetWebAPISettingsCsData(appName) },
-                                    new SoftFile { Name = "Startup.cs", Data = GetStartupCsData(appName) },
+                                    new SpiderFile { Name = "appsettings.json", Data = GetAppSettingsJsonData(appName, null, null, null, null, null, null) }, // TODO FT: Add this to the app
+                                    new SpiderFile { Name = "GeneratorSettings.cs", Data = GetWebAPIGeneratorSettingsData(appName) },
+                                    new SpiderFile { Name = $"{appName}.WebAPI.csproj", Data = GetWebAPICsProjData(appName) },
+                                    new SpiderFile { Name = "Program.cs", Data = GetProgramCsData(appName) },
+                                    new SpiderFile { Name = "Settings.cs", Data = GetWebAPISettingsCsData(appName) },
+                                    new SpiderFile { Name = "Startup.cs", Data = GetStartupCsData(appName) },
                                 }
                             },
                         },
-                        SoftFiles = new List<SoftFile>
+                        Files =
                         {
-                            new SoftFile { Name = $"{appName}.sln", Data = GetNetSolutionData(appName) }
+                            new SpiderFile { Name = $"{appName}.sln", Data = GetNetSolutionData(appName) }
                         }
                     },
-                    new SoftFolder
+                    new SpiderFolder
                     {
                         Name = "Data",
-                        ChildFolders = new List<SoftFolder>
+                        ChildFolders =
                         {
-                            new SoftFolder
+                            new SpiderFolder
                             {
                                 Name = "test-data"
                             },
-                            new SoftFolder
+                            new SpiderFolder
                             {
                                 Name = "update-scripts"
                             },
                         },
-                        SoftFiles = new List<SoftFile>
+                        Files =
                         {
-                            new SoftFile { Name = "initialize-data.xlsx", Data = "" },
-                            new SoftFile { Name = "initialize-script.sql", Data = "" }
+                            new SpiderFile { Name = "initialize-data.xlsx", Data = "" },
+                            new SpiderFile { Name = "initialize-script.sql", Data = "" }
                         }
                     },
-                    new SoftFolder
+                    new SpiderFolder
                     {
                         Name = "Documentation",
                     }
                 },
-                SoftFiles = new List<SoftFile>
+                Files =
                 {
-                    new SoftFile { Name = ".gitignore", Data = GetGitIgnoreData() },
-                    new SoftFile { Name = "License", Data = GetMitLicenseData() },
+                    new SpiderFile { Name = ".gitignore", Data = GetGitIgnoreData() },
+                    new SpiderFile { Name = "License", Data = GetMitLicenseData() },
                 }
             };
 
@@ -656,7 +655,7 @@ import { TranslocoService } from '@jsverse/transloco';
 import { Notification } from 'src/app/business/entities/business-entities.generated';
 import { TableFilter } from 'src/app/core/entities/table-filter';
 import { Menu } from 'primeng/menu';
-import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
 
 @Component({
   templateUrl: './notification.component.html',
@@ -678,7 +677,7 @@ export class NotificationComponent implements OnInit {
     private apiService: ApiService,
     private authService: AuthService,
     private translocoService: TranslocoService,
-    private messageService: SoftMessageService,
+    private messageService: SpiderMessageService,
   ) {}
 
   ngOnInit() {
@@ -741,8 +740,8 @@ import { RouterModule, Routes } from "@angular/router";
 import { NotificationComponent } from "./pages/notification.component";
 import { NgModule } from "@angular/core";
 import { PrimengModule } from "src/app/core/modules/primeng.module";
-import { SoftDataTableComponent } from "src/app/core/components/soft-data-table/soft-data-table.component";
-import { SoftControlsModule } from "src/app/core/controls/soft-controls.module";
+import { SpiderDataTableComponent } from "src/app/core/components/spider-data-table/spider-data-table.component";
+import { SpiderControlsModule } from "src/app/core/controls/spider-controls.module";
 import { CardSkeletonComponent } from "src/app/core/components/card-skeleton/card-skeleton.component";
 import { TranslocoDirective } from "@jsverse/transloco";
 
@@ -757,8 +756,8 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
         PrimengModule,
-        SoftDataTableComponent,
-        SoftControlsModule,
+        SpiderDataTableComponent,
+        SpiderControlsModule,
         CardSkeletonComponent,
         TranslocoDirective,
     ],
@@ -776,16 +775,16 @@ export class NotificationModule { }
         {
             return $$"""
 <ng-container *transloco="let t">
-    <soft-card [title]="t('PartnerNotification')" icon="pi pi-bell">
-        <soft-panel [isFirstMultiplePanel]="true" [showPanelHeader]="false">
+    <spider-card [title]="t('PartnerNotification')" icon="pi pi-bell">
+        <spider-panel [isFirstMultiplePanel]="true" [showPanelHeader]="false">
             <panel-body>
                 <div class="grid">
                     <div class="col-12">
-                        <soft-checkbox [control]="isMarkedAsRead" [label]="t('NotifyUsers')" [initializeToFalse]="false" [fakeLabel]="false"></soft-checkbox>
+                        <spider-checkbox [control]="isMarkedAsRead" [label]="t('NotifyUsers')" [initializeToFalse]="false" [fakeLabel]="false"></spider-checkbox>
                     </div>
                 </div>
             </panel-body>
-        </soft-panel>
+        </spider-panel>
 
         <notification-base-details
         [formGroup]="formGroup" 
@@ -795,7 +794,7 @@ export class NotificationModule { }
         [additionalButtons]="additionalButtons"
         />
 
-    </soft-card>
+    </spider-card>
 </ng-container>
 """;
         }
@@ -812,10 +811,10 @@ import { Notification } from 'src/app/business/entities/business-entities.genera
 import { ApiService } from 'src/app/business/services/api/api.service';
 import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
 import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
-import { SoftFormControl, SoftFormGroup } from 'src/app/core/components/soft-form-control/soft-form-control';
-import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+import { SpiderFormControl, SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
+import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
 import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
-import { SoftButton } from 'src/app/core/entities/soft-button';
+import { SpiderButton } from 'src/app/core/entities/spider-button';
 
 @Component({
     selector: 'notification-details',
@@ -823,16 +822,16 @@ import { SoftButton } from 'src/app/core/entities/soft-button';
     styles: [],
 })
 export class NotificationDetailsComponent extends BaseFormCopy implements OnInit {
-    notificationFormGroup = new SoftFormGroup<Notification>({});
+    notificationFormGroup = new SpiderFormGroup<Notification>({});
 
-    isMarkedAsRead = new SoftFormControl<boolean>(true, {updateOn: 'change'})
+    isMarkedAsRead = new SpiderFormControl<boolean>(true, {updateOn: 'change'})
 
-    additionalButtons: SoftButton[];
+    additionalButtons: SpiderButton[];
 
     constructor(
         protected override differs: KeyValueDiffers,
         protected override http: HttpClient,
-        protected override messageService: SoftMessageService, 
+        protected override messageService: SpiderMessageService, 
         protected override changeDetectorRef: ChangeDetectorRef,
         protected override router: Router, 
         protected override route: ActivatedRoute,
@@ -870,14 +869,14 @@ export class NotificationDetailsComponent extends BaseFormCopy implements OnInit
         {
             return $$"""
 <ng-container *transloco="let t">
-    <soft-data-table 
+    <spider-data-table 
     [tableTitle]="t('NotificationList')" 
     [cols]="cols" 
     [getTableDataObservableMethod]="getNotificationTableDataObservableMethod" 
     [exportTableDataToExcelObservableMethod]="exportNotificationTableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="deleteNotificationObservableMethod"
     >
-    </soft-data-table>
+    </spider-data-table>
 </ng-container>
 """;
         }
@@ -888,7 +887,7 @@ export class NotificationDetailsComponent extends BaseFormCopy implements OnInit
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
 
 @Component({
     selector: 'notification-table',
@@ -928,42 +927,42 @@ export class NotificationTableComponent implements OnInit {
             return $$"""
 <ng-container *transloco="let t">
     @defer (when model != null) {
-        <soft-card [title]="detailsTitle" icon="pi pi-id-card">
-            <soft-panel>
+        <spider-card [title]="detailsTitle" icon="pi pi-id-card">
+            <spider-panel>
                 <panel-header></panel-header>
 
                 <panel-body>
                     <form [formGroup]="formGroup" class="grid">
                         <div class="col-12">
-                            <soft-textbox [control]="control('name')"></soft-textbox>
+                            <spider-textbox [control]="control('name')"></spider-textbox>
                         </div>
                         <div class="col-12">
-                            <soft-textarea [control]="control('description')"></soft-textarea>
+                            <spider-textarea [control]="control('description')"></spider-textarea>
                         </div>
                         <div class="col-12">
-                            <soft-multiautocomplete 
+                            <spider-multiautocomplete 
                                 [control]="selectedUsers"
                                 (onTextInput)="searchUsers($event)" 
                                 [label]="t('UserList')"
                                 [options]="userOptions"
-                                ></soft-multiautocomplete>
+                                ></spider-multiautocomplete>
                         </div>
                         <div class="col-12">
-                            <soft-multiselect
+                            <spider-multiselect
                                 [control]="selectedPermissions"
                                 [label]="t('PermissionList')"
-                                [options]="permissionOptions"></soft-multiselect>
+                                [options]="permissionOptions"></spider-multiselect>
                         </div>
                     </form>
                 </panel-body>
 
             <panel-footer>
                 <p-button (onClick)="onSave()" [label]="t('Save')" icon="pi pi-save"></p-button>
-                <soft-return-button></soft-return-button>
+                <spider-return-button></spider-return-button>
             </panel-footer>
 
-            </soft-panel>
-        </soft-card>
+            </spider-panel>
+        </spider-card>
     } @placeholder {
         <card-skeleton [height]="502"></card-skeleton>
     }
@@ -985,9 +984,9 @@ import { ApiService } from 'src/app/business/services/api/api.service';
 import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
 import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
 import { BaseForm } from 'src/app/core/components/base-form/base-form';
-import { SoftFormControl } from 'src/app/core/components/soft-form-control/soft-form-control';
+import { SpiderFormControl } from 'src/app/core/components/spider-form-control/spider-form-control';
 import { PrimengOption } from 'src/app/core/entities/primeng-option';
-import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
 
 @Component({
     selector: 'role-details',
@@ -996,15 +995,15 @@ import { SoftMessageService } from 'src/app/core/services/soft-message.service';
 })
 export class RoleDetailsComponent extends BaseForm<Role> implements OnInit {
     userOptions: PrimengOption[];
-    selectedUsers = new SoftFormControl<PrimengOption[]>(null, {updateOn: 'change'})
+    selectedUsers = new SpiderFormControl<PrimengOption[]>(null, {updateOn: 'change'})
 
     permissionOptions: PrimengOption[];
-    selectedPermissions = new SoftFormControl<number[]>(null, {updateOn: 'change'})
+    selectedPermissions = new SpiderFormControl<number[]>(null, {updateOn: 'change'})
 
     constructor(
         protected override differs: KeyValueDiffers,
         protected override http: HttpClient,
-        protected override messageService: SoftMessageService, 
+        protected override messageService: SpiderMessageService, 
         protected override changeDetectorRef: ChangeDetectorRef,
         protected override router: Router, 
         protected override route: ActivatedRoute, 
@@ -1070,13 +1069,13 @@ export class RoleDetailsComponent extends BaseForm<Role> implements OnInit {
         {
             return $$"""
 <ng-container *transloco="let t">
-    <soft-data-table 
+    <spider-data-table 
     [tableTitle]="t('RoleList')" 
     [cols]="cols" 
     [getTableDataObservableMethod]="getRoleTableDataObservableMethod" 
     [exportTableDataToExcelObservableMethod]="exportRoleTableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="deleteRoleObservableMethod"
-    ></soft-data-table>
+    ></spider-data-table>
 </ng-container>
 """;
         }
@@ -1087,7 +1086,7 @@ export class RoleDetailsComponent extends BaseForm<Role> implements OnInit {
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
 
 @Component({
     selector: 'role-table',
@@ -1126,7 +1125,7 @@ export class RoleTableComponent implements OnInit {
         {
             return $$"""
 <ng-container *transloco="let t">
-    <soft-card [title]="t('User')" icon="pi pi-user">
+    <spider-card [title]="t('User')" icon="pi pi-user">
 
         <user-extended-base-details
         [formGroup]="formGroup" 
@@ -1135,7 +1134,7 @@ export class RoleTableComponent implements OnInit {
         (onUserExtendedFormGroupInitFinish)="userExtendedFormGroupInitFinish()"
         ></user-extended-base-details>
 
-    </soft-card>
+    </spider-card>
 </ng-container>
 """;
         }
@@ -1152,9 +1151,9 @@ import { ApiService } from 'src/app/business/services/api/api.service';
 import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
 import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
 import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
-import { SoftFormGroup } from 'src/app/core/components/soft-form-control/soft-form-control';
+import { SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
 import { BaseFormService } from 'src/app/core/services/base-form.service';
-import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
 
 @Component({
     selector: 'user-details',
@@ -1162,12 +1161,12 @@ import { SoftMessageService } from 'src/app/core/services/soft-message.service';
     styles: [],
 })
 export class UserDetailsComponent extends BaseFormCopy implements OnInit {
-    userExtendedFormGroup = new SoftFormGroup<UserExtended>({});
+    userExtendedFormGroup = new SpiderFormGroup<UserExtended>({});
 
     constructor(
         protected override differs: KeyValueDiffers,
         protected override http: HttpClient,
-        protected override messageService: SoftMessageService, 
+        protected override messageService: SpiderMessageService, 
         protected override changeDetectorRef: ChangeDetectorRef,
         protected override router: Router, 
         protected override route: ActivatedRoute, 
@@ -1200,14 +1199,14 @@ export class UserDetailsComponent extends BaseFormCopy implements OnInit {
         {
             return $$"""
 <ng-container *transloco="let t">
-    <soft-data-table 
+    <spider-data-table 
     [tableTitle]="t('UserList')" 
     [cols]="cols" 
     [getTableDataObservableMethod]="getUserTableDataObservableMethod" 
     [exportTableDataToExcelObservableMethod]="exportUserTableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="deleteUserObservableMethod"
     [showAddButton]="false"
-    ></soft-data-table>
+    ></spider-data-table>
 </ng-container>
 """;
         }
@@ -1218,7 +1217,7 @@ export class UserDetailsComponent extends BaseFormCopy implements OnInit {
 import { ApiService } from './../../../../business/services/api/api.service';
 import { TranslocoService } from '@jsverse/transloco';
 import { Component, OnInit } from '@angular/core';
-import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
 
 @Component({
     selector: 'user-table',
@@ -1260,9 +1259,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserTableComponent } from './pages/user/user-table.component';
 import { PrimengModule } from 'src/app/core/modules/primeng.module';
 import { UserDetailsComponent } from './pages/user/user-details.component';
-import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
+import { SpiderControlsModule } from 'src/app/core/controls/spider-controls.module';
 import { CardSkeletonComponent } from "../../core/components/card-skeleton/card-skeleton.component";
-import { SoftDataTableComponent } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { SpiderDataTableComponent } from 'src/app/core/components/spider-data-table/spider-data-table.component';
 import { RoleTableComponent } from './pages/role/role-table.component';
 import { RoleDetailsComponent } from './pages/role/role-details.component';
 import { NotificationDetailsComponent } from './pages/notification/notification-details.component';
@@ -1301,8 +1300,8 @@ const routes: Routes = [
     imports: [
         RouterModule.forChild(routes),
         PrimengModule,
-        SoftDataTableComponent,
-        SoftControlsModule,
+        SpiderDataTableComponent,
+        SpiderControlsModule,
         CardSkeletonComponent,
         TranslocoDirective,
         NotificationBaseDetailsComponent,
@@ -2200,9 +2199,9 @@ export class PermissionSaveBody extends BaseEntity
             return $$"""
 using Microsoft.AspNetCore.Mvc;
 using Azure.Storage.Blobs;
-using Soft.Generator.Shared.Attributes;
-using Soft.Generator.Shared.Interfaces;
-using Soft.Generator.Shared.DTO;
+using Spider.Shared.Attributes;
+using Spider.Shared.Interfaces;
+using Spider.Shared.DTO;
 using {{appName}}.Business.DTO;
 using {{appName}}.Business.Services;
 
@@ -2275,16 +2274,16 @@ namespace {{appName}}.WebAPI.Controllers
         {
             return $$"""
 using Microsoft.AspNetCore.Mvc;
-using Soft.Generator.Security.Interface;
-using Soft.Generator.Security.Services;
-using Soft.Generator.Security.SecurityControllers;
-using Soft.Generator.Shared.Interfaces;
-using Soft.Generator.Shared.Attributes;
-using Soft.Generator.Shared.DTO;
+using Spider.Security.Interface;
+using Spider.Security.Services;
+using Spider.Security.SecurityControllers;
+using Spider.Shared.Interfaces;
+using Spider.Shared.Attributes;
+using Spider.Shared.DTO;
 using Microsoft.EntityFrameworkCore;
-using Soft.Generator.Shared.Terms;
-using Soft.Generator.Security.DTO;
-using Soft.Generator.Shared.Extensions;
+using Spider.Shared.Terms;
+using Spider.Security.DTO;
+using Spider.Shared.Extensions;
 using {{appName}}.Business.Entities;
 using {{appName}}.Business.Services;
 using {{appName}}.Business.DTO;
@@ -2361,12 +2360,12 @@ namespace {{appName}}.WebAPI.Controllers
         {
             return $$"""
 using Microsoft.AspNetCore.Mvc;
-using Soft.Generator.Shared.Attributes;
-using Soft.Generator.Shared.Interfaces;
+using Spider.Shared.Attributes;
+using Spider.Shared.Interfaces;
 using Azure.Storage.Blobs;
-using Soft.Generator.Shared.DTO;
-using Soft.Generator.Shared.Terms;
-using Soft.Generator.Security.Services;
+using Spider.Shared.DTO;
+using Spider.Shared.Terms;
+using Spider.Security.Services;
 using {{appName}}.Business.Services;
 using {{appName}}.Business.DTO;
 using {{appName}}.Business.Entities;
@@ -2412,18 +2411,18 @@ namespace {{appName}}.WebAPI.Controllers
 """;
         }
 
-        private void GenerateProjectStructure(SoftFolder appStructure, string path)
+        private void GenerateProjectStructure(SpiderFolder appStructure, string path)
         {
             string newPath = GenerateFolder(appStructure, path);
 
-            foreach (SoftFile file in appStructure.SoftFiles)
+            foreach (SpiderFile file in appStructure.Files)
                 GenerateFile(appStructure, file, newPath);
 
-            foreach (SoftFolder folder in appStructure.ChildFolders)
+            foreach (SpiderFolder folder in appStructure.ChildFolders)
                 GenerateProjectStructure(folder, newPath);
         }
 
-        private string GenerateFolder(SoftFolder appStructure, string path)
+        private string GenerateFolder(SpiderFolder appStructure, string path)
         {
             if (appStructure.Name == "core")
             {
@@ -2447,7 +2446,7 @@ namespace {{appName}}.WebAPI.Controllers
             return Path.Combine(path, appStructure.Name);
         }
 
-        private void GenerateFile(SoftFolder parentFolder, SoftFile file, string path)
+        private void GenerateFile(SpiderFolder parentFolder, SpiderFile file, string path)
         {
             string filePath = Path.Combine(path, file.Name);
 
@@ -2533,7 +2532,7 @@ namespace {{appName}}.Shared.Terms {
             return $$"""
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microspider-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -2580,7 +2579,7 @@ namespace {{appName}}.Shared.Terms {
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+    <value>text/microspider-resx</value>
   </resheader>
   <resheader name="version">
     <value>2.0</value>
@@ -2601,7 +2600,7 @@ namespace {{appName}}.Shared.Terms {
             return $$"""
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microspider-com:xml-msdata">
     <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
@@ -2648,7 +2647,7 @@ namespace {{appName}}.Shared.Terms {
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microsoft-resx</value>
+    <value>text/microspider-resx</value>
   </resheader>
   <resheader name="version">
     <value>2.0</value>
@@ -2667,7 +2666,7 @@ namespace {{appName}}.Shared.Terms {
         private string GetUserNotificationCsData(string appName)
         {
             return $$"""
-using Soft.Generator.Shared.Attributes.EF;
+using Spider.Shared.Attributes.EF;
 
 namespace {{appName}}.Business.Entities
 {
@@ -2689,13 +2688,13 @@ namespace {{appName}}.Business.Entities
         {
             return $$"""
 using Microsoft.EntityFrameworkCore;
-using Soft.Generator.Security.Entities;
-using Soft.Generator.Security.Interface;
-using Soft.Generator.Shared.Attributes;
-using Soft.Generator.Shared.Attributes.EF;
-using Soft.Generator.Shared.Attributes.EF.Translation;
-using Soft.Generator.Shared.Attributes.EF.UI;
-using Soft.Generator.Shared.BaseEntities;
+using Spider.Security.Entities;
+using Spider.Security.Interface;
+using Spider.Shared.Attributes;
+using Spider.Shared.Attributes.EF;
+using Spider.Shared.Attributes.EF.Translation;
+using Spider.Shared.Attributes.EF.UI;
+using Spider.Shared.BaseEntities;
 using System.ComponentModel.DataAnnotations;
 
 namespace {{appName}}.Business.Entities
@@ -2706,7 +2705,7 @@ namespace {{appName}}.Business.Entities
     public class UserExtended : BusinessObject<long>, IUser
     {
         [TranslateSingularSrLatnRS("Email")]
-        [SoftDisplayName]
+        [DisplayName]
         [CustomValidator("EmailAddress()")]
         [StringLength(70, MinimumLength = 5)]
         [Required]
@@ -2727,12 +2726,12 @@ namespace {{appName}}.Business.Entities
         private string GetNotificationCsData(string appName)
         {
             return $$"""
-using Soft.Generator.Shared.Attributes.EF;
-using Soft.Generator.Shared.Attributes.EF.UI;
-using Soft.Generator.Shared.BaseEntities;
-using Soft.Generator.Shared.Enums;
+using Spider.Shared.Attributes.EF;
+using Spider.Shared.Attributes.EF.UI;
+using Spider.Shared.BaseEntities;
+using Spider.Shared.Enums;
 using System.ComponentModel.DataAnnotations;
-using Soft.Generator.Shared.Interfaces;
+using Spider.Shared.Interfaces;
 using {{appName}}.Business.DTO;
 
 namespace {{appName}}.Business.Entities
@@ -2740,7 +2739,7 @@ namespace {{appName}}.Business.Entities
     public class Notification : BusinessObject<long>, INotification<UserExtended>
     {
         [UIColWidth("col-12")]
-        [SoftDisplayName]
+        [DisplayName]
         [StringLength(100, MinimumLength = 1)]
         [Required]
         public string Title { get; set; }
@@ -2798,7 +2797,7 @@ namespace {{appName}}.Business.DTO
         private string GetNotificationDTOCsData(string appName)
         {
             return $$"""
-using Soft.Generator.Shared.Attributes.EF.UI;
+using Spider.Shared.Attributes.EF.UI;
 
 namespace {{appName}}.Business.DTO
 {
@@ -2819,7 +2818,7 @@ namespace {{appName}}.Business.DTO
             return $$"""
 using Microsoft.EntityFrameworkCore;
 using {{appName}}.Business.Entities;
-using Soft.Generator.Infrastructure;
+using Spider.Infrastructure;
 
 namespace {{appName}}.Infrastructure
 {
@@ -2856,13 +2855,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{D485BCE8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.WebAPI", "{{appName}}.WebAPI\{{appName}}.WebAPI.csproj", "{1063DCDA-9291-4FAA-87B2-555E12511EE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Security", "..\..\SoftGenerator\soft-generator\Soft.Generator.Security\Soft.Generator.Security.csproj", "{3B328631-AB3B-4B28-9FA5-4DA790670199}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Security", "..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj", "{3B328631-AB3B-4B28-9FA5-4DA790670199}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Shared", "..\..\SoftGenerator\soft-generator\Soft.Generator.Shared\Soft.Generator.Shared.csproj", "{53565A13-28F1-424F-B5A0-34125EF303CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Shared", "..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj", "{53565A13-28F1-424F-B5A0-34125EF303CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.Generator.Infrastructure", "..\..\SoftGenerator\soft-generator\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj", "{587D08A6-A975-4673-90A4-77CF61B7B526}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Infrastructure", "..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj", "{587D08A6-A975-4673-90A4-77CF61B7B526}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Soft.SourceGenerators", "..\..\SoftGenerator\soft-generator\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj", "{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.SourceGenerators", "..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj", "{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.Infrastructure", "{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj", "{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}"
 EndProject
@@ -2934,8 +2933,8 @@ EndGlobal
         {
             return $$"""
 using LightInject;
-using Soft.Generator.Shared.Helpers;
-using Soft.Generator.Shared.Extensions;
+using Spider.Shared.Helpers;
+using Spider.Shared.Extensions;
 using {{appName}}.WebAPI.DI;
 using {{appName}}.Infrastructure;
 using Quartz;
@@ -2957,16 +2956,16 @@ public class Startup
 
         {{appName}}.WebAPI.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<{{appName}}.WebAPI.Settings>(_jsonConfigurationFile);
         {{appName}}.Business.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<{{appName}}.Business.Settings>(_jsonConfigurationFile);
-        Soft.Generator.Infrastructure.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Soft.Generator.Infrastructure.Settings>(_jsonConfigurationFile);
-        Soft.Generator.Security.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Soft.Generator.Security.Settings>(_jsonConfigurationFile);
-        Soft.Generator.Shared.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Soft.Generator.Shared.Settings>(_jsonConfigurationFile);
+        Spider.Infrastructure.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Spider.Infrastructure.Settings>(_jsonConfigurationFile);
+        Spider.Security.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Spider.Security.Settings>(_jsonConfigurationFile);
+        Spider.Shared.SettingsProvider.Current = Helper.ReadAssemblyConfiguration<Spider.Shared.Settings>(_jsonConfigurationFile);
     }
 
     public IConfiguration Configuration { get; }
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.SoftConfigureServices<{{appName}}ApplicationDbContext>();
+        services.SpiderConfigureServices<{{appName}}ApplicationDbContext>();
     }
 
     public void ConfigureContainer(IServiceContainer container)
@@ -2980,7 +2979,7 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-        app.SoftConfigure(env);
+        app.SpiderConfigure(env);
     }
 }
 """;
@@ -3060,10 +3059,10 @@ namespace {{appName}}.WebAPI
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Security\Soft.Generator.Security.csproj" />
-		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
-		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
+		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
+		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\{{appName}}.Business\{{appName}}.Business.csproj" />
 		<ProjectReference Include="..\{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj" />
 		<ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
@@ -3091,7 +3090,7 @@ namespace {{appName}}.WebAPI
         private string GetWebAPIGeneratorSettingsData(string appName)
         {
             return $$"""
-using Soft.Generator.Shared.Attributes;
+using Spider.Shared.Attributes;
 
 namespace {{appName}}.WebAPI.GeneratorSettings
 {
@@ -3125,11 +3124,11 @@ namespace {{appName}}.WebAPI.GeneratorSettings
     },
     "{{appName}}.Business": {
     },
-    "Soft.Generator.Infrastructure": {
+    "Spider.Infrastructure": {
       "UseGoogleAsExternalProvider": true,
       "AppHasLatinTranslation": false
     },
-    "Soft.Generator.Shared": {
+    "Spider.Shared": {
       "EmailSender": "{{emailSender}}",
       "SmtpHost": "smtp.gmail.com",
       "SmtpPort": 587,
@@ -3147,7 +3146,7 @@ namespace {{appName}}.WebAPI.GeneratorSettings
 
       "ConnectionString": "Data source=localhost\\SQLEXPRESS;Initial Catalog={{appName}};Integrated Security=True;Encrypt=false;MultipleActiveResultSets=True;"
     },
-    "Soft.Generator.Security": {
+    "Spider.Security": {
       "JwtKey": "{{jwtKey}}",
       "JwtIssuer": "https://localhost:7260;",
       "JwtAudience": "https://localhost:7260;",
@@ -3217,13 +3216,13 @@ namespace {{appName}}.WebAPI.GeneratorSettings
         {
             return $$"""
 using LightInject;
-using Soft.Generator.Security.Interface;
-using Soft.Generator.Shared.Excel;
-using Soft.Generator.Security.Services;
+using Spider.Security.Interface;
+using Spider.Shared.Excel;
+using Spider.Security.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
-using Soft.Generator.Shared.SoftFluentValidation;
-using Soft.Generator.Shared.Emailing;
+using Spider.Shared.FluentValidation;
+using Spider.Shared.Emailing;
 using {{appName}}.Business.Services;
 using {{appName}}.Business.Entities;
 
@@ -3236,10 +3235,10 @@ namespace {{appName}}.WebAPI.DI
             // Framework
             registry.Register<AuthenticationService>();
             registry.Register<AuthorizationService>();
-            registry.Register<Soft.Generator.Security.Services.SecurityBusinessService<UserExtended>>();
-            registry.Register<Soft.Generator.Security.Services.BusinessServiceGenerated<UserExtended>>();
-            registry.Register<Soft.Generator.Security.Services.AuthorizationBusinessService<UserExtended>>();
-            registry.Register<Soft.Generator.Security.Services.AuthorizationBusinessServiceGenerated>();
+            registry.Register<Spider.Security.Services.SecurityBusinessService<UserExtended>>();
+            registry.Register<Spider.Security.Services.BusinessServiceGenerated<UserExtended>>();
+            registry.Register<Spider.Security.Services.AuthorizationBusinessService<UserExtended>>();
+            registry.Register<Spider.Security.Services.AuthorizationBusinessServiceGenerated>();
             registry.Register<ExcelService>();
             registry.Register<EmailingService>();
             registry.RegisterSingleton<IConfigureOptions<MvcOptions>, TranslatePropertiesConfiguration>();
@@ -3268,7 +3267,7 @@ namespace {{appName}}.WebAPI.DI
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
+    <ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -3304,10 +3303,10 @@ namespace {{appName}}.WebAPI.DI
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Infrastructure\Soft.Generator.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Security\Soft.Generator.Security.csproj" />
-		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
-		<ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
+		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
+		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\{{appName}}.Business\{{appName}}.Business.csproj" />
 		<ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
 	</ItemGroup>
@@ -3330,7 +3329,7 @@ namespace {{appName}}.WebAPI.DI
         private string GetInfrastructureGeneratorSettingsData(string appName)
         {
             return $$"""
-using Soft.Generator.Shared.Attributes;
+using Spider.Shared.Attributes;
 
 namespace {{appName}}.Infrastructure.GeneratorSettings
 {
@@ -3378,8 +3377,8 @@ namespace {{appName}}.Business
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.Generator.Security\Soft.Generator.Security.csproj" />
-    <ProjectReference Include="..\..\..\SoftGenerator\soft-generator\Soft.SourceGenerator.NgTable\Soft.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
+    <ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
@@ -3415,7 +3414,7 @@ namespace {{appName}}.Business
         private string GetBusinessGeneratorSettingsData(string appName)
         {
             return $$"""
-using Soft.Generator.Shared.Attributes;
+using Spider.Shared.Attributes;
 
 namespace {{appName}}.Business.GeneratorSettings
 {
@@ -3431,9 +3430,9 @@ namespace {{appName}}.Business.GeneratorSettings
         {
             return $$"""
 using {{appName}}.Business.Entities;
-using Soft.Generator.Security.Interface;
-using Soft.Generator.Shared.Extensions;
-using Soft.Generator.Shared.Interfaces;
+using Spider.Security.Interface;
+using Spider.Shared.Extensions;
+using Spider.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -3476,8 +3475,8 @@ namespace {{appName}}.Business.Services
         {
             return $$"""
 using Azure.Storage.Blobs;
-using Soft.Generator.Security.Services;
-using Soft.Generator.Shared.Interfaces;
+using Spider.Security.Services;
+using Spider.Shared.Interfaces;
 
 namespace {{appName}}.Business.Services
 {
@@ -3507,18 +3506,18 @@ using {{appName}}.Business.DTO;
 using {{appName}}.Business.Enums;
 using {{appName}}.Business.DataMappers;
 using {{appName}}.Business.ValidationRules;
-using Soft.Generator.Shared.DTO;
-using Soft.Generator.Shared.Excel;
-using Soft.Generator.Shared.Interfaces;
-using Soft.Generator.Shared.Extensions;
-using Soft.Generator.Shared.Helpers;
-using Soft.Generator.Security.DTO;
-using Soft.Generator.Security.Services;
-using Soft.Generator.Shared.SoftExceptions;
+using Spider.Shared.DTO;
+using Spider.Shared.Excel;
+using Spider.Shared.Interfaces;
+using Spider.Shared.Extensions;
+using Spider.Shared.Helpers;
+using Spider.Security.DTO;
+using Spider.Security.Services;
+using Spider.Shared.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Mapster;
 using FluentValidation;
-using Soft.Generator.Shared.Emailing;
+using Spider.Shared.Emailing;
 using Azure.Storage.Blobs;
 
 namespace {{appName}}.Business.Services
@@ -3690,7 +3689,7 @@ namespace {{appName}}.Business.Services
         private string GetMapsterMapperCsData(string appName)
         {
             return $$"""
-using Soft.Generator.Shared.Attributes;
+using Spider.Shared.Attributes;
 
 namespace {{appName}}.Business.DataMappers
 {
@@ -3839,7 +3838,7 @@ import { LayoutService } from '../../services/app.layout.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserExtended } from 'src/app/business/entities/business-entities.generated';
 
-interface SoftMenuItem {
+interface SpiderMenuItem {
   label?: string;
   icon?: string;
   showSeparator?: boolean;
@@ -3858,7 +3857,7 @@ export class AppTopBarComponent implements OnDestroy {
 
     currentUser: UserExtended;
     currentUserNotificationsCount: number;
-    menuItems: SoftMenuItem[] = [];
+    menuItems: SpiderMenuItem[] = [];
     avatarLabel: string;
     companyName: string = environment.companyName;
     showProfileIcon: boolean = false;
@@ -4050,10 +4049,10 @@ import { filter } from 'rxjs/operators';
 import { MenuService } from './app.menu.service';
 import { LayoutService } from '../../services/app.layout.service';
 import { AuthService } from '../../../core/services/auth.service';
-import { SoftMenuItem } from './app.menu.component';
+import { SpiderMenuItem } from './app.menu.component';
 import { ApiService } from '../../../business/services/api/api.service';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { SoftFormControl } from '../../../core/components/soft-form-control/soft-form-control';
+import { SpiderFormControl } from '../../../core/components/spider-form-control/spider-form-control';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -4074,7 +4073,7 @@ import { environment } from 'src/environments/environment';
 })
 export class AppMenuitemComponent implements OnInit, OnDestroy {
 
-    @Input() item: SoftMenuItem;
+    @Input() item: SpiderMenuItem;
 
     @Input() index!: number;
 
@@ -4264,7 +4263,7 @@ import { LayoutService } from '../../services/app.layout.service';
 import { MenuItem } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 
-export interface SoftMenuItem extends MenuItem{
+export interface SpiderMenuItem extends MenuItem{
     hasPermission?: (permissionCodes: string[]) => boolean;
 }
 
@@ -4273,7 +4272,7 @@ export interface SoftMenuItem extends MenuItem{
     templateUrl: './app.menu.component.html'
 })
 export class AppMenuComponent implements OnInit {
-    menu: SoftMenuItem[] = [];
+    menu: SpiderMenuItem[] = [];
 
     constructor(
         public layoutService: LayoutService, 
@@ -4331,7 +4330,7 @@ import { RouterModule } from '@angular/router';
 import { AppLayoutComponent } from "./app.layout.component";
 import { PrimengModule } from '../../../core/modules/primeng.module';
 import { BrowserModule } from '@angular/platform-browser';
-import { SoftAutocompleteComponent } from "../../../core/controls/soft-autocomplete/soft-autocomplete.component";
+import { SpiderAutocompleteComponent } from "../../../core/controls/spider-autocomplete/spider-autocomplete.component";
 import { TranslocoDirective } from '@jsverse/transloco';
 import { AppFooterComponent } from '../../../core/components/footer/app.footer.component';
 import { AppMenuComponent } from '../sidebar/app.menu.component';
@@ -4356,7 +4355,7 @@ import { AppTopBarComponent } from '../topbar/app.topbar.component';
         RouterModule,
         PrimengModule,
         TranslocoDirective,
-        SoftAutocompleteComponent,
+        SpiderAutocompleteComponent,
     ],
     exports: [
         FormsModule,
@@ -4537,8 +4536,8 @@ import { StyleClassModule } from 'primeng/styleclass';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { ApiService } from '../../../business/services/api/api.service';
 import { PrimengModule } from '../../../core/modules/primeng.module';
-import { SoftDataTableComponent } from 'src/app/core/components/soft-data-table/soft-data-table.component';
-import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
+import { SpiderDataTableComponent } from 'src/app/core/components/spider-data-table/spider-data-table.component';
+import { SpiderControlsModule } from 'src/app/core/controls/spider-controls.module';
 import { CardSkeletonComponent } from 'src/app/core/components/card-skeleton/card-skeleton.component';
 import { QRCodeModule } from 'angularx-qrcode';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -4564,8 +4563,8 @@ const routes: Routes = [
         ButtonModule,
         PrimengModule,
         QRCodeModule,
-        SoftDataTableComponent,
-        SoftControlsModule,
+        SpiderDataTableComponent,
+        SpiderControlsModule,
         CardSkeletonComponent,
         TranslocoDirective,
         InfoCardComponent,
@@ -4625,7 +4624,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { PrimengModule } from '../../../core/modules/primeng.module';
-import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
+import { SpiderControlsModule } from 'src/app/core/controls/spider-controls.module';
 import { AuthComponent } from './partials/auth.component';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { LoginVerificationComponent } from 'src/app/core/components/email-verification/login-verification.component';
@@ -4647,7 +4646,7 @@ const routes: Routes = [
         RouterModule.forChild(routes),
         AuthComponent,
         PrimengModule,
-        SoftControlsModule,
+        SpiderControlsModule,
         LoginVerificationComponent,
         RegistrationVerificationComponent,
         TranslocoDirective,
@@ -4665,49 +4664,55 @@ export class AuthModule { }
         {
             return $$"""
 import { ActivatedRoute, Router } from '@angular/router';
-import { SoftMessageService } from '../../../../core/services/soft-message.service';
-import { AuthService } from '../../../../core/services/auth.service';
+import { SpiderMessageService } from '../../../../core/services/spider-message.service';
+import { AuthService } from '../../../../business/services/auth/auth.service';
 import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
 import { LayoutService } from '../../../services/app.layout.service';
-import { BaseForm } from '../../../../core/components/base-form/base-form';
 import { HttpClient } from '@angular/common/http';
-import { VerificationTypeCodes } from 'src/app/core/enums/verification-type-codes';
 import { Registration } from 'src/app/business/entities/security-entities.generated';
 import { TranslocoService } from '@jsverse/transloco';
-import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
 import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
+import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
+import { SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
+import { TranslateLabelsService } from 'src/app/business/services/translates/merge-labels';
+import { BaseFormService } from 'src/app/core/services/base-form.service';
 
 @Component({
     selector: 'app-registration',
     templateUrl: './registration.component.html',
 })
-export class RegistrationComponent extends BaseForm<Registration> implements OnInit {
+export class RegistrationComponent extends BaseFormCopy implements OnInit {
+    registrationFormGroup = new SpiderFormGroup<Registration>({});
+
     companyName: string;
     showEmailSentDialog: boolean = false;
-    verificationType: VerificationTypeCodes = VerificationTypeCodes.Login;
 
     constructor(
       protected override differs: KeyValueDiffers,
       protected override http: HttpClient,
-      protected override messageService: SoftMessageService, 
+      protected override messageService: SpiderMessageService, 
       protected override changeDetectorRef: ChangeDetectorRef,
-      protected override router: Router,
+      protected override router: Router, 
       protected override route: ActivatedRoute,
       protected override translocoService: TranslocoService,
-      protected override translateClassNamesService: TranslateClassNamesService,
-      protected override validatorService: ValidatorService,
+      protected override baseFormService: BaseFormService,
+      private translateLabelsService: TranslateLabelsService,
+      private validatorService: ValidatorService,
       public layoutService: LayoutService, 
       private authService: AuthService, 
     ) { 
-        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
+      super(differs, http, messageService, changeDetectorRef, router, route, translocoService, baseFormService);
     }
 
     override ngOnInit(){
-        this.init(new Registration());
+        this.formGroup.setValidatorMethod = this.validatorService.setValidator;
+        this.formGroup.translateLabelMethod = this.translateLabelsService.translate;
+
+        this.initRegistrationFormGroup(new Registration({}));
     }
 
-    init(model: Registration){
-        this.initFormGroup(model);
+    initRegistrationFormGroup(model: Registration){
+        this.initFormGroup(this.registrationFormGroup, this.formGroup, model, model.typeName, []);
     }
 
     companyNameChange(companyName: string){
@@ -4718,12 +4723,13 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
         let isFormGroupValid: boolean = this.checkFormGroupValidity();
         if (isFormGroupValid == false) return;
         // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        this.authService.sendRegistrationVerificationEmail(this.model).subscribe(registrationVerificationResult => {
+        this.authService.sendRegistrationVerificationEmail(this.registrationFormGroup.getRawValue()).subscribe(() => {
             this.showEmailSentDialog = true;
         });
     }
 
 }
+
 """;
         }
 
@@ -4731,28 +4737,33 @@ export class RegistrationComponent extends BaseForm<Registration> implements OnI
         {
             return $$$"""
 <ng-container *transloco="let t">
-    @if (showEmailSentDialog == false) {
-        <auth (onCompanyNameChange)="companyNameChange($event)">
-            <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
-                <div class="col-12" style="padding-left: 0; padding-right: 0;">
-                    <soft-textbox [control]="control('email')"></soft-textbox>
-                </div>
-
-                <div class="mb-4 gap-5">
-                    <div class="text-center" style="font-size: smaller;">
-                        {{t('AgreementsOnRegister')}} <b class="primary-color cursor-pointer">{{t('UserAgreement')}}</b>, <b class="primary-color cursor-pointer">{{t('PrivacyPolicy')}}</b>, {{t('and')}} <b class="primary-color cursor-pointer">{{t('CookiePolicy')}}</b>.
+    @if (registrationFormGroup != null) {
+        @if (showEmailSentDialog == false) {
+            <auth (onCompanyNameChange)="companyNameChange($event)">
+                <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
+                    <div class="col-12" style="padding-left: 0; padding-right: 0;">
+                        <spider-textbox [control]="control('email', registrationFormGroup)"></spider-textbox>
                     </div>
-                </div>
 
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <p-button [label]="t('AgreeAndJoin')" (onClick)="sendRegistrationVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-                    <p-button [label]="t('AlreadyHasProfile', {companyName: companyName})" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
-                </div>
-            </form>
-        </auth>
+                    <div class="mb-4 gap-5">
+                        <div class="text-center" style="font-size: smaller;">
+                            {{t('AgreementsOnRegister')}} <b class="primary-color cursor-pointer">{{t('UserAgreement')}}</b>, <b class="primary-color cursor-pointer">{{t('PrivacyPolicy')}}</b>, {{t('and')}} <b class="primary-color cursor-pointer">{{t('CookiePolicy')}}</b>.
+                        </div>
+                    </div>
+
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <p-button [label]="t('AgreeAndJoin')" (onClick)="sendRegistrationVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
+                        <p-button [label]="t('AlreadyOnLoyalty', {companyName: companyName})" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
+                    </div>
+                </form>
+            </auth>
+        }
+        @else {
+            <registration-verification [email]="registrationFormGroup.controls.email.getRawValue()"></registration-verification>
+        }
     }
     @else {
-        <registration-verification [email]="model.email"></registration-verification>
+        <!-- TODO FT: Add skeleton -->
     }
 </ng-container>
 """;
@@ -4845,52 +4856,58 @@ export class AuthComponent {
         private string GetLoginComponentTsData()
         {
             return $$"""
+import { BaseFormService } from 'src/app/core/services/base-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SoftMessageService } from '../../../../core/services/soft-message.service';
-import { AuthService } from './../../../../core/services/auth.service';
+import { SpiderMessageService } from '../../../../core/services/spider-message.service';
+import { AuthService } from '../../../../business/services/auth/auth.service';
 import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
 import { LayoutService } from '../../../services/app.layout.service';
-import { BaseForm } from '../../../../core/components/base-form/base-form';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { VerificationTypeCodes } from 'src/app/core/enums/verification-type-codes';
 import { Login } from 'src/app/business/entities/security-entities.generated';
 import { TranslocoService } from '@jsverse/transloco';
-import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
+import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
+import { SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
 import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
+import { TranslateLabelsService } from 'src/app/business/services/translates/merge-labels';
 
 @Component({
     selector: 'app-login',
     templateUrl: './login.component.html',
 })
-export class LoginComponent extends BaseForm<Login> implements OnInit {
+export class LoginComponent extends BaseFormCopy implements OnInit {
+    loginFormGroup = new SpiderFormGroup<Login>({});
+
     companyName: string;
-    usersCanRegister: boolean = environment.usersCanRegister;
     showEmailSentDialog: boolean = false;
-    verificationType: VerificationTypeCodes = VerificationTypeCodes.Login;
+    usersCanRegister: boolean = environment.usersCanRegister;
 
     constructor(
       protected override differs: KeyValueDiffers,
       protected override http: HttpClient,
-      protected override messageService: SoftMessageService, 
+      protected override messageService: SpiderMessageService, 
       protected override changeDetectorRef: ChangeDetectorRef,
       protected override router: Router, 
       protected override route: ActivatedRoute,
       protected override translocoService: TranslocoService,
-      protected override translateClassNamesService: TranslateClassNamesService,
-      protected override validatorService: ValidatorService,
+      protected override baseFormService: BaseFormService,
+      private translateLabelsService: TranslateLabelsService,
+      private validatorService: ValidatorService,
       public layoutService: LayoutService, 
       private authService: AuthService, 
     ) { 
-      super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
+      super(differs, http, messageService, changeDetectorRef, router, route, translocoService, baseFormService);
     }
 
     override ngOnInit(){
-        this.init(new Login());
+        this.formGroup.setValidatorMethod = this.validatorService.setValidator;
+        this.formGroup.translateLabelMethod = this.translateLabelsService.translate;
+
+        this.initLoginFormGroup(new Login({}));
     }
 
-    init(model: Login){
-        this.initFormGroup(model);
+    initLoginFormGroup(model: Login){
+      this.initFormGroup(this.loginFormGroup, this.formGroup, model, model.typeName, []);
     }
 
     companyNameChange(companyName: string){
@@ -4900,12 +4917,13 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
     sendLoginVerificationEmail() {
         let isFormGroupValid: boolean = this.checkFormGroupValidity();
         if (isFormGroupValid == false) return;
-        this.authService.sendLoginVerificationEmail(this.model).subscribe(()=>{
+        this.authService.sendLoginVerificationEmail(this.loginFormGroup.getRawValue()).subscribe(()=>{
             this.showEmailSentDialog = true;
         });
     }
 
 }
+
 """;
         }
 
@@ -4913,22 +4931,27 @@ export class LoginComponent extends BaseForm<Login> implements OnInit {
         {
             return $$$"""
 <ng-container *transloco="let t">
-    @if (showEmailSentDialog == false) {
-        <auth (onCompanyNameChange)="companyNameChange($event)">
-            <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
-                <div class="col-12" style="padding-left: 0; padding-right: 0; margin-bottom: 32px;">
-                    <soft-textbox textbox [control]="control('email')"></soft-textbox>
-                </div>
+    @if (loginFormGroup != null) {
+        @if (showEmailSentDialog == false) {
+            <auth (onCompanyNameChange)="companyNameChange($event)">
+                <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
+                    <div class="col-12" style="padding-left: 0; padding-right: 0; margin-bottom: 32px;">
+                        <spider-textbox [control]="control('email', loginFormGroup)"></spider-textbox>
+                    </div>
 
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <p-button [label]="t('Login')" (onClick)="sendLoginVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-                    <p-button *ngIf="usersCanRegister" [label]="t('NewJoinNow', {companyName: companyName})" routerLink="/auth/registration" [style]="{width: '100%'}"></p-button>
-                </div>
-            </form>
-        </auth>
+                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                        <p-button [label]="t('Login')" (onClick)="sendLoginVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
+                        <p-button *ngIf="usersCanRegister" [label]="t('NewToLoyaltyJoinNow', {companyName: companyName})" routerLink="/auth/registration" [style]="{width: '100%'}"></p-button>
+                    </div>
+                </form>
+            </auth>
+        }
+        @else {
+            <login-verification [email]="loginFormGroup.controls.email.getRawValue()"></login-verification>
+        }
     }
     @else {
-        <login-verification [email]="model.email"></login-verification>
+        <!-- TODO FT: Add skeleton -->
     }
 </ng-container>
 """;
@@ -5466,7 +5489,7 @@ $gutter: 1rem; //for primeflex grid system
 	background-color: $errorColorLight;
 }
 
-.soft-table {
+.spider-table {
 	.p-paginator {
 		padding: 1rem;
 	}
@@ -5486,12 +5509,12 @@ $gutter: 1rem; //for primeflex grid system
 	}
 }
 
-.soft-panel{
+.spider-panel{
 	.p-panel-content{
 		padding: 0;
 	}
 
-	.soft-panel-footer{
+	.spider-panel-footer{
 		display: flex; 
 		align-items: center; 
 		justify-content: space-between; 
@@ -6176,8 +6199,8 @@ import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { MessagesModule } from 'primeng/messages';
 import { CoreModule } from './core/modules/core.module';
-import { SoftMessageService } from './core/services/soft-message.service';
-import { SoftErrorHandler } from './core/handlers/soft-error-handler';
+import { SpiderMessageService } from './core/services/spider-message.service';
+import { SpiderErrorHandler } from './core/handlers/spider-error-handler';
 import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -6187,7 +6210,7 @@ import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-s
 import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
 import { environment } from 'src/environments/environment';
 import { BusinessModule } from './business/business.module';
-import { SoftTranslocoModule } from './core/modules/soft-transloco.module';
+import { SpiderTranslocoModule } from './core/modules/spider-transloco.module';
 
 @NgModule({
   declarations: [
@@ -6204,17 +6227,17 @@ import { SoftTranslocoModule } from './core/modules/soft-transloco.module';
     MessagesModule,
     ToastModule,
     SocialLoginModule,
-    SoftTranslocoModule.forRoot(),
+    SpiderTranslocoModule.forRoot(),
     NgxSpinnerModule.forRoot({ type: 'ball-clip-rotate-multiple' }),
     BusinessModule,
     CoreModule,
   ],
   providers: [
-    SoftMessageService,
+    SpiderMessageService,
     MessageService,
     {
     provide: ErrorHandler,
-    useClass: SoftErrorHandler,
+    useClass: SpiderErrorHandler,
     },
     {
       provide: 'SocialAuthServiceConfig',
@@ -6368,7 +6391,7 @@ export class BusinessModule {
         {
             return $$"""
 import { ValidationErrors } from "@angular/forms";
-import { SoftFormArray, SoftFormControl, SoftValidatorFn } from "src/app/core/components/soft-form-control/soft-form-control";
+import { SpiderFormArray, SpiderFormControl, SpiderValidatorFn } from "src/app/core/components/spider-form-control/spider-form-control";
 import { TranslocoService } from '@jsverse/transloco';
 import { Injectable } from '@angular/core';
 import { ValidatorServiceGenerated } from "./validation-rules.generated";
@@ -6384,8 +6407,8 @@ export class ValidatorService extends ValidatorServiceGenerated {
         super(translocoService)
     }
 
-    isArrayEmpty(control: SoftFormControl): SoftValidatorFn {
-        const validator: SoftValidatorFn = (): ValidationErrors | null => {
+    isArrayEmpty(control: SpiderFormControl): SpiderValidatorFn {
+        const validator: SpiderValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
             const notEmptyRule = typeof value !== 'undefined' && value !== null && value.length !== 0;
@@ -6399,8 +6422,8 @@ export class ValidatorService extends ValidatorServiceGenerated {
         return validator;
     }
 
-    notEmpty(control: SoftFormControl): void {
-        const validator: SoftValidatorFn = (): ValidationErrors | null => {
+    notEmpty(control: SpiderFormControl): void {
+        const validator: SpiderValidatorFn = (): ValidationErrors | null => {
             const value = control.value;
 
             const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
@@ -6415,8 +6438,8 @@ export class ValidatorService extends ValidatorServiceGenerated {
         control.updateValueAndValidity();
     }
 
-    isFormArrayEmpty(control: SoftFormArray): SoftValidatorFn {
-        const validator: SoftValidatorFn = (): ValidationErrors | null => {
+    isFormArrayEmpty(control: SpiderFormArray): SpiderValidatorFn {
+        const validator: SpiderValidatorFn = (): ValidationErrors | null => {
             const value = control;
 
             const notEmptyRule = typeof value !== 'undefined' && value !== null && value.length !== 0;

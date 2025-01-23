@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Attributes.UI
+namespace Spider.DesktopApp.Attributes.UI
 {
     public class MenuNameAttribute : Attribute
     {

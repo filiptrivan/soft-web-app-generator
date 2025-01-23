@@ -1,12 +1,12 @@
 ﻿using Microsoft.Data.SqlClient;
-using Soft.Generator.DesktopApp.Controllers;
-using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Extensions;
-using Soft.Generator.DesktopApp.Pages;
-using Soft.Generator.DesktopApp.Services;
+using Spider.DesktopApp.Controllers;
+using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Extensions;
+using Spider.DesktopApp.Pages;
+using Spider.DesktopApp.Services;
 using System.Data;
 
-namespace Soft.Generator.DesktopApp
+namespace Spider.DesktopApp
 {
     public partial class Form1 : Form
     {

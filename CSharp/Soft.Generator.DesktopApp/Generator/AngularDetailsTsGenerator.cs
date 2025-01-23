@@ -1,14 +1,14 @@
-﻿using Soft.Generator.DesktopApp.Attributes.UI;
-using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Generator.Helpers;
-using Soft.Generator.DesktopApp.Interfaces;
+﻿using Spider.DesktopApp.Attributes.UI;
+using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Generator.Helpers;
+using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Generator
+namespace Spider.DesktopApp.Generator
 {
     public class AngularDetailsTsGenerator : IFileGenerator
     {
@@ -32,7 +32,7 @@ namespace Soft.Generator.DesktopApp.Generator
                 return null;
 
             string result = $$"""
-import { SoftFormGroup } from 'src/app/core/components/soft-form-control/soft-form-control';
+import { SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
 import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -42,7 +42,7 @@ import { TranslateClassNamesService } from 'src/app/business/services/translates
 import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
 import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
 import { BaseFormService } from 'src/app/core/services/base-form.service';
-import { SoftMessageService } from 'src/app/core/services/soft-message.service';
+import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
 import { {{entity.Name}} } from 'src/app/business/entities/business-entities.generated';
 
 @Component({
@@ -51,12 +51,12 @@ import { {{entity.Name}} } from 'src/app/business/entities/business-entities.gen
     styles: [],
 })
 export class {{entity.Name}}DetailsComponent extends BaseFormCopy implements OnInit {
-    {{entity.Name.FirstCharToLower()}}FormGroup = new SoftFormGroup<{{entity.Name}}>({});
+    {{entity.Name.FirstCharToLower()}}FormGroup = new SpiderFormGroup<{{entity.Name}}>({});
 
     constructor(
         protected override differs: KeyValueDiffers,
         protected override http: HttpClient,
-        protected override messageService: SoftMessageService, 
+        protected override messageService: SpiderMessageService, 
         protected override changeDetectorRef: ChangeDetectorRef,
         protected override router: Router, 
         protected override route: ActivatedRoute, 

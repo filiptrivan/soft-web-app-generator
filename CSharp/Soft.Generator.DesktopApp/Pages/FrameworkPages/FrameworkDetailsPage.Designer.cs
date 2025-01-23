@@ -1,4 +1,4 @@
-﻿namespace Soft.Generator.DesktopApp.Pages.FrameworkPages
+﻿namespace Spider.DesktopApp.Pages.FrameworkPages
 {
     partial class FrameworkDetailsPage
     {

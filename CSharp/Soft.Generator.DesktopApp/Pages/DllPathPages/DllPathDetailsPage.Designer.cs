@@ -1,4 +1,4 @@
-﻿namespace Soft.Generator.DesktopApp.Pages.DllPathPages
+﻿namespace Spider.DesktopApp.Pages.DllPathPages
 {
     partial class DllPathDetailsPage
     {

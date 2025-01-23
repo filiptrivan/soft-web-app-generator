@@ -1,15 +1,15 @@
-﻿using Soft.Generator.DesktopApp.Attributes.UI;
-using Soft.Generator.DesktopApp.Generator.Helpers;
-using Soft.Generator.DesktopApp.Interfaces;
+﻿using Spider.DesktopApp.Attributes.UI;
+using Spider.DesktopApp.Generator.Helpers;
+using Spider.DesktopApp.Interfaces;
 using Pluralize;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Soft.Generator.DesktopApp.Entities;
+using Spider.DesktopApp.Entities;
 
-namespace Soft.Generator.DesktopApp.Generator
+namespace Spider.DesktopApp.Generator
 {
     public class AngularModulesGenerator : IFileGenerator
     {
@@ -31,9 +31,9 @@ namespace Soft.Generator.DesktopApp.Generator
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PrimengModule } from 'src/app/core/modules/primeng.module';
-import { SoftControlsModule } from 'src/app/core/controls/soft-controls.module';
+import { SpiderControlsModule } from 'src/app/core/controls/spider-controls.module';
 import { CardSkeletonComponent } from "../../core/components/card-skeleton/card-skeleton.component";
-import { SoftDataTableComponent } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { SpiderDataTableComponent } from 'src/app/core/components/spider-data-table/spider-data-table.component';
 import { CommonModule } from '@angular/common';
 import { IndexCardComponent } from 'src/app/core/components/index-card/index-card.component';
 import { TranslocoDirective } from '@jsverse/transloco';
@@ -50,8 +50,8 @@ const routes: Routes = [
         CommonModule,
         PrimengModule,
         TranslocoDirective,
-        SoftDataTableComponent,
-        SoftControlsModule,
+        SpiderDataTableComponent,
+        SpiderControlsModule,
         CardSkeletonComponent,
         IndexCardComponent,
 {{string.Join("\n", GetBaseDetailsComponentImports(entityGroup.ToList()))}}

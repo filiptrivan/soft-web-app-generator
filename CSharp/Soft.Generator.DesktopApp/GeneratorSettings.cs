@@ -1,29 +1,29 @@
-//using Soft.Generator.DesktopApp.Attributes;
+//using Spider.DesktopApp.Attributes;
 
-//namespace Soft.Generator.Security.GeneratorSettings
+//namespace Spider.Security.GeneratorSettings
 //{
 //    public class GeneratorSettings
 //    {
 
-//        [Output(@"E:\Projects\Soft.Generator\Source\Soft.Generator.SPA\src\app\business\entities\generated")]
+//        [Output(@"E:\Projects\Spider\Source\Spider.SPA\src\app\business\entities\generated")]
 //        public string NgEntitiesGenerator { get; set; }
 
-//        [Output(@"E:\Projects\Soft.Generator\Source\Soft.Generator.SPA\src\app\business\enums\generated")]
+//        [Output(@"E:\Projects\Spider\Source\Spider.SPA\src\app\business\enums\generated")]
 //        public string NgEnumsGenerator { get; set; }
 
-//        [Output(@"E:\Projects\Soft.Generator\Source\Soft.Generator.SPA\src\app\business\services\translates\generated")]
+//        [Output(@"E:\Projects\Spider\Source\Spider.SPA\src\app\business\services\translates\generated")]
 //        public string NgTranslatesGenerator { get; set; }
 
-//        [Output(@"E:\Projects\Soft.Generator\Source\Soft.Generator.SPA\src\app\business\services\validation\generated")]
+//        [Output(@"E:\Projects\Spider\Source\Spider.SPA\src\app\business\services\validation\generated")]
 //        public string NgValidatorsGenerator { get; set; }
 
-//        [Output(@"E:\Projects\Soft.Generator\Source\Soft.Generator.Security\DataMappers\SecurityMapper.generated.cs")]
+//        [Output(@"E:\Projects\Spider\Source\Spider.Security\DataMappers\SecurityMapper.generated.cs")]
 //        public string MapperlyGenerator { get; set; }
 
-//        [Output(@"E:\Projects\Soft.Generator\Source\Soft.Generator.Security\DTO\Generated\SecurityDTOList.generated.cs")]
+//        [Output(@"E:\Projects\Spider\Source\Spider.Security\DTO\Generated\SecurityDTOList.generated.cs")]
 //        public string EntitiesToDTOGenerator { get; set; }
 
-//        [Output(@"E:\Projects\Soft.Generator\Source\Soft.Generator.Security\ValidationRules\SecurityValidationRules.generated.cs")]
+//        [Output(@"E:\Projects\Spider\Source\Spider.Security\ValidationRules\SecurityValidationRules.generated.cs")]
 //        public string FluentValidationGenerator { get; set; }
 //    }
 //}

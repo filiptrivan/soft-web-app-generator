@@ -18,7 +18,7 @@ namespace Soft.SourceGenerator.NgTable.Helpers
 {
     public static class Helper
     {
-        public static readonly string DisplayNameAttribute = "SoftDisplayName";
+        public static readonly string DisplayNameAttribute = "DisplayName";
         public static readonly string MethodNameForExcelExportMapping = "ExcelMap"; // Change to ExcelProjectTo
         public static readonly string MapperlyIgnoreAttribute = "MapperIgnoreTarget";
 
@@ -42,7 +42,7 @@ namespace Soft.SourceGenerator.NgTable.Helpers
                 {
                     var classSymbols = new List<INamedTypeSymbol>();
                     foreach (var referencedAssembly in compilation.SourceModule.ReferencedAssemblySymbols
-                             .Where(a => a.Name.Contains("Soft") || a.Name.Contains("Playerty")))
+                             .Where(a => a.Name.Contains("Spider") || a.Name.Contains("Playerty")))
                     {
                         GetClassesFromDTO(referencedAssembly.GlobalNamespace, classSymbols);
                     }
@@ -57,7 +57,7 @@ namespace Soft.SourceGenerator.NgTable.Helpers
                 {
                     var classSymbols = new List<INamedTypeSymbol>();
                     foreach (var referencedAssembly in compilation.SourceModule.ReferencedAssemblySymbols
-                             .Where(a => a.Name.Contains("Soft") || a.Name.Contains("Playerty")))
+                             .Where(a => a.Name.Contains("Spider") || a.Name.Contains("Playerty")))
                     {
                         GetClassesFromEntities(referencedAssembly.GlobalNamespace, classSymbols);
                     }
@@ -233,7 +233,7 @@ namespace Soft.SourceGenerator.NgTable.Helpers
                 {
                     IdentifierText="Name", Type="string", Attributes=new List<SoftAttribute>
                     {
-                        new SoftAttribute { Name="SoftDisplayName" },
+                        new SoftAttribute { Name="DisplayName" },
                         new SoftAttribute { Name="Required" },
                         new SoftAttribute { Name="StringLength", Value="255, MinimumLength = 1" },
                     }

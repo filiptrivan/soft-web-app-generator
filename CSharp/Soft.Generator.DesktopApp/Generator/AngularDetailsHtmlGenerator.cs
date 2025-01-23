@@ -1,7 +1,7 @@
-﻿using Soft.Generator.DesktopApp.Attributes.UI;
-using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Generator.Helpers;
-using Soft.Generator.DesktopApp.Interfaces;
+﻿using Spider.DesktopApp.Attributes.UI;
+using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Generator.Helpers;
+using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Generator
+namespace Spider.DesktopApp.Generator
 {
     public class AngularDetailsHtmlGenerator : IFileGenerator
     {
@@ -35,7 +35,7 @@ namespace Soft.Generator.DesktopApp.Generator
 
             string result = $$"""
 <ng-container *transloco="let t">
-    <soft-card [title]="t('{{entity.Name}}')" icon="pi pi-file">
+    <spider-card [title]="t('{{entity.Name}}')" icon="pi pi-file">
 
         <{{entity.Name.FromPascalToKebabCase()}}-base-details 
         [formGroup]="formGroup" 
@@ -44,7 +44,7 @@ namespace Soft.Generator.DesktopApp.Generator
         [getCrudMenuForOrderedData]="getCrudMenuForOrderedData"
         ></{{entity.Name.FromPascalToKebabCase()}}-base-details>
 
-    </soft-card>
+    </spider-card>
 </ng-container>
 """;
 

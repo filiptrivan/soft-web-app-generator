@@ -1,6 +1,6 @@
-﻿using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Generator.Helpers;
-using Soft.Generator.DesktopApp.Interfaces;
+﻿using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Generator.Helpers;
+using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Generator
+namespace Spider.DesktopApp.Generator
 {
     public class NetControllerMethodsGenerator : IFileGenerator
     {
@@ -27,10 +27,10 @@ namespace Soft.Generator.DesktopApp.Generator
             return $$"""
 using Microsoft.AspNetCore.Mvc;
 using Azure.Storage.Blobs;
-using Soft.Generator.Shared.Attributes;
-using Soft.Generator.Shared.DTO;
-using Soft.Generator.Shared.Helpers;
-using Soft.Generator.Shared.Interfaces;
+using Spider.Shared.Attributes;
+using Spider.Shared.DTO;
+using Spider.Shared.Helpers;
+using Spider.Shared.Interfaces;
 using {{appName}}.Business.DTO;
 using {{appName}}.Business.Entities;
 using {{appName}}.Business.Services;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Extensions
+namespace Spider.DesktopApp.Extensions
 {
     public static class Helpers
     {

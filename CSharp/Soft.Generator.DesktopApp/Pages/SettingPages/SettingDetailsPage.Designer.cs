@@ -1,4 +1,4 @@
-﻿namespace Soft.Generator.DesktopApp.Pages.SettingPages
+﻿namespace Spider.DesktopApp.Pages.SettingPages
 {
     partial class SettingDetailsPage
     {

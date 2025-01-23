@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Generator.Helpers
+namespace Spider.DesktopApp.Generator.Helpers
 {
     public class Helper
     {

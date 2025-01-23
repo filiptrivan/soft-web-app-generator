@@ -1,5 +1,5 @@
 ﻿using Pluralize.NET;
-using Soft.Generator.DesktopApp.Attributes.UI;
+using Spider.DesktopApp.Attributes.UI;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using CaseConverter;
 
-namespace Soft.Generator.DesktopApp.Generator.Helpers
+namespace Spider.DesktopApp.Generator.Helpers
 {
     public static class Extensions
     {

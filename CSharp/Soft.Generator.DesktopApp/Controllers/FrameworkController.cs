@@ -1,12 +1,12 @@
-﻿using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Services;
+﻿using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Controllers
+namespace Spider.DesktopApp.Controllers
 {
     public class FrameworkController
     {

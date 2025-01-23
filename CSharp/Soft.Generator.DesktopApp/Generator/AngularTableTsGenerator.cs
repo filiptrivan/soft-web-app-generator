@@ -1,6 +1,6 @@
-﻿using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Generator.Helpers;
-using Soft.Generator.DesktopApp.Interfaces;
+﻿using Spider.DesktopApp.Entities;
+using Spider.DesktopApp.Generator.Helpers;
+using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Soft.Generator.DesktopApp.Generator
+namespace Spider.DesktopApp.Generator
 {
     public class AngularTableTsGenerator : IFileGenerator
     {
@@ -32,7 +32,7 @@ namespace Soft.Generator.DesktopApp.Generator
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { Column } from 'src/app/core/components/soft-data-table/soft-data-table.component';
+import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
 import { {{entity.Name}} } from 'src/app/business/entities/business-entities.generated';
 import { firstValueFrom } from 'rxjs';
 
