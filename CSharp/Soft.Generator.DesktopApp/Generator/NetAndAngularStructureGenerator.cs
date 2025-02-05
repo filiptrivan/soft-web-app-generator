@@ -2970,10 +2970,8 @@ public class Startup
 
     public void ConfigureContainer(IServiceContainer container)
     {
-        // Register container (AntiPattern)
-        container.RegisterInstance(typeof(IServiceContainer), container);
+        container.RegisterInstance(container);
 
-        // Init WebAPI
         container.RegisterFrom<CompositionRoot>();
     }
 
@@ -3035,7 +3033,7 @@ namespace {{appName}}.WebAPI
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
@@ -3261,7 +3259,7 @@ namespace {{appName}}.WebAPI.DI
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
@@ -3295,7 +3293,7 @@ namespace {{appName}}.WebAPI.DI
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<ImplicitUsings>enable</ImplicitUsings>
 	</PropertyGroup>
 
@@ -3372,7 +3370,7 @@ namespace {{appName}}.Business
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -3835,7 +3833,7 @@ import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import { filter, Subscription } from 'rxjs';
 import { ApiService } from '../../../business/services/api/api.service';
 import { LayoutService } from '../../services/app.layout.service';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
 import { UserExtended } from 'src/app/business/entities/business-entities.generated';
 
 interface SpiderMenuItem {
@@ -4041,19 +4039,19 @@ export class AppSidebarComponent {
         private string GetAppMenuItemComponentTsData()
         {
             return $$$"""
-import { ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { firstValueFrom, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { MenuService } from './app.menu.service';
 import { LayoutService } from '../../services/app.layout.service';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
 import { SpiderMenuItem } from './app.menu.component';
 import { ApiService } from '../../../business/services/api/api.service';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { SpiderFormControl } from '../../../core/components/spider-form-control/spider-form-control';
-import { environment } from 'src/environments/environment';
+import { ConfigService } from 'src/app/business/services/config.service';
+import { SpiderFormControl, PrimengOption, getPrimengCodebookListForAutocomplete } from '@playerty/spider';
 
 @Component({
     // eslint-disable-next-line @angular-eslint/component-selector
@@ -4098,6 +4096,7 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
         private menuService: MenuService, 
         private authService: AuthService,
         private apiService: ApiService,
+        private config: ConfigService
     ) {
         this.menuSourceSubscription = this.menuService.menuSource$.subscribe(value => {
             Promise.resolve(null).then(() => {
@@ -4665,7 +4664,7 @@ export class AuthModule { }
             return $$"""
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpiderMessageService } from '../../../../core/services/spider-message.service';
-import { AuthService } from '../../../../business/services/auth/auth.service';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
 import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
 import { LayoutService } from '../../../services/app.layout.service';
 import { HttpClient } from '@angular/common/http';
@@ -4859,7 +4858,7 @@ export class AuthComponent {
 import { BaseFormService } from 'src/app/core/services/base-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SpiderMessageService } from '../../../../core/services/spider-message.service';
-import { AuthService } from '../../../../business/services/auth/auth.service';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
 import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
 import { LayoutService } from '../../../services/app.layout.service';
 import { HttpClient } from '@angular/common/http';
