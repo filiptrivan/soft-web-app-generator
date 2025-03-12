@@ -54,26 +54,10 @@ namespace Spider.DesktopApp.Generator
                                                     new SpiderFolder
                                                     {
                                                         Name = "entities",
-                                                        Files =
-                                                        {
-                                                            new SpiderFile 
-                                                            {
-                                                                Name = "security-entities.generated.ts",
-                                                                Data = GetSecurityEntitiesTsData(),
-                                                            }
-                                                        }
                                                     },
                                                     new SpiderFolder
                                                     {
                                                         Name = "enums",
-                                                        Files =
-                                                        {
-                                                            new SpiderFile
-                                                            {
-                                                                Name = "security-enums.generated.ts",
-                                                                Data = GetSecurityEnumsTsData(),
-                                                            }
-                                                        }
                                                     },
                                                     new SpiderFolder
                                                     {
@@ -85,6 +69,15 @@ namespace Spider.DesktopApp.Generator
                                                     },
                                                     new SpiderFolder
                                                     {
+                                                        Name = "layout",
+                                                        Files =
+                                                        {
+                                                            new SpiderFile { Name = "layout.component.html", Data = GetLayoutComponentHtmlCode() },
+                                                            new SpiderFile { Name = "layout.component.ts", Data = GetLayoutComponentTsCode() },
+                                                        }
+                                                    },
+                                                    new SpiderFolder
+                                                    {
                                                         Name = "services",
                                                         ChildFolders =
                                                         {
@@ -93,7 +86,6 @@ namespace Spider.DesktopApp.Generator
                                                                 Name = "api",
                                                                 Files =
                                                                 {
-                                                                    new SpiderFile { Name = "api.service.security.ts", Data = GetAPIServiceSecurityTsCode() },
                                                                     new SpiderFile { Name = "api.service.ts", Data = GetAPIServiceTsCode() },
                                                                 }
                                                             },
@@ -107,7 +99,11 @@ namespace Spider.DesktopApp.Generator
                                                             },
                                                             new SpiderFolder
                                                             {
-                                                                Name = "helpers",
+                                                                Name = "layout",
+                                                                Files =
+                                                                {
+                                                                    new SpiderFile { Name = "layout.service.ts", Data = GetLayoutServiceTsCode() },
+                                                                }
                                                             },
                                                             new SpiderFolder
                                                             {
@@ -775,7 +771,7 @@ export class NotificationModule { }
         {
             return $$"""
 <ng-container *transloco="let t">
-    <spider-card [title]="t('PartnerNotification')" icon="pi pi-bell">
+    <spider-card [title]="t('Notification')" icon="pi pi-bell">
         <spider-panel [isFirstMultiplePanel]="true" [showPanelHeader]="false">
             <panel-body>
                 <div class="grid">
@@ -1428,768 +1424,64 @@ SOFTWARE.
         {
             return $$"""
 import { Injectable, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, firstValueFrom, Observable, of, Subject, Subscription } from 'rxjs';
-import { map, tap, delay, finalize } from 'rxjs/operators';
-import { environment } from '../../../../environments/environment';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { SocialUser, SocialAuthService } from '@abacritt/angularx-social-login';
-import { ExternalProvider, Login, VerificationTokenRequest, AuthResult, Registration, RegistrationVerificationResult, RefreshTokenRequest } from 'src/app/business/entities/security-entities.generated';
-import { UserExtended } from 'src/app/business/entities/business-entities.generated';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { ConfigService } from '../config.service';
+import { adjustColor, AuthBaseService, getHtmlImgDisplayString64, InitCompanyAuthDialogDetails } from '@playerty/spider';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AuthService implements OnDestroy {
-  private readonly apiUrl = environment.apiUrl;
-  private timer?: Subscription;
-
-  private _user = new BehaviorSubject<UserExtended | null>(null);
-  user$ = this._user.asObservable();
-
-  private _currentUserPermissions = new BehaviorSubject<string[] | null>(null);
-  currentUserPermissions$ = this._currentUserPermissions.asObservable();
-
-  // Google auth
-  private authChangeSub = new Subject<boolean>();
-  private extAuthChangeSub = new Subject<SocialUser>();
-  public authChanged = this.authChangeSub.asObservable();
-  public extAuthChanged = this.extAuthChangeSub.asObservable();
+export class AuthService extends AuthBaseService implements OnDestroy {
 
   constructor(
-    private router: Router,
-    private http: HttpClient,
-    private externalAuthService: SocialAuthService,
-    private apiService: ApiService,
+    protected override router: Router,
+    protected override http: HttpClient,
+    protected override externalAuthService: SocialAuthService,
+    protected override apiService: ApiService,
+    protected override config: ConfigService,
+    private route: ActivatedRoute,
   ) {
-    window.addEventListener('storage', this.storageEventListener.bind(this));
-
-    // Google auth
-    this.externalAuthService.authState.subscribe((user) => {
-      const externalAuth: ExternalProvider = {
-        // provider: user.provider,
-        idToken: user.idToken
-      }
-      this.loginExternal(externalAuth).subscribe(() => {
-        this.navigateToDashboard();
-      });
-      this.extAuthChangeSub.next(user);
-    });
+    super(router, http, externalAuthService, apiService, config);
   }
 
-  private storageEventListener(event: StorageEvent) {
-    if (event.storageArea === localStorage) {
-      if (event.key === 'logout-event') {
-        this.stopTokenTimer();
-        this._user.next(null);
-        this._currentUserPermissions.next(null);
-      }
-      if (event.key === 'login-event') {
-        this.stopTokenTimer();
-
-        this.apiService.getCurrentUser().subscribe(async (user: UserExtended) => {
-            this._user.next({
-              id: user.id,
-              email: user.email
-            });
-            await firstValueFrom(this.getCurrentUserPermissions()); // FT: Needs to be after setting local storage
-          });
-      }
-    }
-  }
-
-  sendLoginVerificationEmail(body: Login): Observable<any> {
-    const browserId = this.getBrowserId();
-    body.browserId = browserId;
-    return this.apiService.sendLoginVerificationEmail(body);
-  }
-
-  login(body: VerificationTokenRequest): Observable<Promise<AuthResult>> {
-    const browserId = this.getBrowserId();
-    body.browserId = browserId;
-    const loginResultObservable = this.http.post<AuthResult>(`${this.apiUrl}/Security/Login`, body);
-    return this.handleLoginResult(loginResultObservable);
-  }
-
-  loginExternal(body: ExternalProvider): Observable<Promise<AuthResult>> {
-    const browserId = this.getBrowserId();
-    body.browserId = browserId;
-    const loginResultObservable = this.http.post<AuthResult>(`${this.apiUrl}/Security/LoginExternal`, body);
-    return this.handleLoginResult(loginResultObservable);
-  }
-
-  sendRegistrationVerificationEmail(body: Registration): Observable<RegistrationVerificationResult> {
-    const browserId = this.getBrowserId();
-    body.browserId = browserId;
-    return this.apiService.sendRegistrationVerificationEmail(body);
-  }
-
-  register(body: VerificationTokenRequest): Observable<Promise<AuthResult>> {
-    const browserId = this.getBrowserId();
-    body.browserId = browserId;
-    const loginResultObservable = this.apiService.register(body);
-    return this.handleLoginResult(loginResultObservable);
-  }
-
-  handleLoginResult(loginResultObservable: Observable<AuthResult>){
-    return loginResultObservable.pipe(
-      map(async (loginResult: AuthResult) => {
-        this._user.next({
-          id: loginResult.userId,
-          email: loginResult.email,
-        });
-        this.setLocalStorage(loginResult);
-        this.startTokenTimer();
-        await firstValueFrom(this.getCurrentUserPermissions()); // FT: Needs to be after setting local storage
-        return loginResult;
-      })
-    );
-  }
-
-  logout() {
-    const browserId = this.getBrowserId();
-    this.http
-      .get(`${this.apiUrl}/Security/Logout?browserId=${browserId}`)
-      .pipe(
-        finalize(() => {
-          this.clearLocalStorage();
-          this._user.next(null);
-          this._currentUserPermissions.next(null);
-          this.stopTokenTimer();
-          this.router.navigate([environment.loginSlug]);
-        })
-      )
-      .subscribe();
-  }
-
-  refreshToken(): Observable<Promise<AuthResult> | null> {
-    let refreshToken = localStorage.getItem(environment.refreshTokenKey);
-
-    if (!refreshToken) {
-      this.clearLocalStorage();
-      return of(null);
-    }
-
-    const browserId = this.getBrowserId();
-    let body: RefreshTokenRequest = new RefreshTokenRequest();
-    body.browserId = browserId;
-    body.refreshToken = refreshToken;
-    return this.http
-    .post<AuthResult>(`${this.apiUrl}/Security/RefreshToken`, body, environment.httpSkipSpinnerOptions)
-    .pipe(
-      map(async (loginResult) => {
-        this._user.next({
-          id: loginResult.userId,
-          email: loginResult.email
-        });
-        this.setLocalStorage(loginResult);
-        this.startTokenTimer();
-        await firstValueFrom(this.getCurrentUserPermissions()); // FT: Needs to be after setting local storage
-        return loginResult;
-      })
-    );
-  }
-
-  setLocalStorage(loginResult: AuthResult) {
-    localStorage.setItem(environment.accessTokenKey, loginResult.accessToken);
-    localStorage.setItem(environment.refreshTokenKey, loginResult.refreshToken);
-    localStorage.setItem('login-event', 'login' + Math.random());
-  }
-
-  clearLocalStorage() {
-    localStorage.removeItem(environment.accessTokenKey);
-    localStorage.removeItem(environment.refreshTokenKey);
-    localStorage.setItem('logout-event', 'logout' + Math.random());
-  }
-
-  getBrowserId() {
-    let browserId = localStorage.getItem(environment.browserIdKey); // FT: We don't need to remove this from the local storage ever, only if the user manuely deletes it, we will handle it
-    if (!browserId) {
-      browserId = crypto.randomUUID();
-      localStorage.setItem(environment.browserIdKey, browserId);
-    }
-    return browserId;
-  }
-
-  isAccessTokenExpired(): Observable<boolean> {
-    const expired = this.getTokenRemainingTime() < 5000;
-    return of(expired);
-  }
-
-  getTokenRemainingTime() {
-    const accessToken = localStorage.getItem(environment.accessTokenKey);
-    if (!accessToken) {
-      return 0;
-    }
-    const jwtToken = JSON.parse(atob(accessToken.split('.')[1]));
-    const expires = new Date(jwtToken.exp * 1000);
-    return expires.getTime() - Date.now();
-  }
-
-  private startTokenTimer() {
-    const timeout = this.getTokenRemainingTime();
-    this.timer = of(true)
-      .pipe(
-        delay(timeout),
-        tap({
-          next: () => this.refreshToken().subscribe(),
-        })
-      )
-      .subscribe();
-  }
-
-  private stopTokenTimer() {
-    this.timer?.unsubscribe();
-  }
-
-  navigateToDashboard(){
-    this.router.navigate(['/']);
-  }
-
-  logoutGoogle = () => {
-    this.externalAuthService.signOut();
-  }
-
-  getCurrentUserPermissions(): Observable<string[]> {
-    return this.apiService.getCurrentUserPermissionCodes().pipe(
-      map(permissionCodes => {
-        this._currentUserPermissions.next(permissionCodes);
-        return permissionCodes;
-      }
-    ));
-  }
-
-  ngOnDestroy(): void {
-    window.removeEventListener('storage', this.storageEventListener.bind(this));
-  }
-}
-
-""";
-        }
-
-        private string GetSecurityEnumsTsData()
-        {
-            return $$"""
-export enum LoginVerificationResultStatusCodes
-{
-
-}
-
-export enum RegistrationVerificationResultStatusCodes
-{
-    UserDoesNotExistAndDoesNotHaveValidToken = 0,
-	UserWithoutPasswordExists = 1,
-	UserWithPasswordExists = 2,
-	UnexpectedError = 3,
 }
 """;
         }
 
-        private string GetSecurityEntitiesTsData()
+        private string GetLayoutServiceTsCode()
         {
             return $$"""
-import { BaseEntity } from "src/app/core/entities/base-entity";
-import { TableFilter } from "src/app/core/entities/table-filter";
-import { TableFilterContext } from "src/app/core/entities/table-filter-context";
-import { TableFilterSortMeta } from "src/app/core/entities/table-filter-sort-meta";
-import { MimeTypes } from "src/app/core/entities/mime-type";
-import { RegistrationVerificationResultStatusCodes } from "../enums/security-enums.generated";
+import { Injectable, OnDestroy } from '@angular/core';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { ConfigService } from '../config.service';
+import { getPrimengAutocompleteCodebookOptions, InitTopBarData, LayoutBaseService, PrimengOption, User } from '@playerty/spider';
+import { combineLatest, map } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { Router } from '@angular/router';
 
-
-export class JwtAuthResult extends BaseEntity
-{
-    userId?: number;
-	userEmail?: string;
-	accessToken?: string;
-	token?: RefreshToken;
-
-    constructor(
-    {
-        userId,
-		userEmail,
-		accessToken,
-		token
-    }:{
-        userId?: number;
-		userEmail?: string;
-		accessToken?: string;
-		token?: RefreshToken;     
-    } = {}
-    ) {
-        super('JwtAuthResult'); 
-
-        this.userId = userId;
-		this.userEmail = userEmail;
-		this.accessToken = accessToken;
-		this.token = token;
-    }
-}
-
-
-export class RolePermission extends BaseEntity
-{
-    roleDisplayName?: string;
-	roleId?: number;
-	permissionDisplayName?: string;
-	permissionId?: number;
+@Injectable({
+  providedIn: 'root',
+})
+export class LayoutService extends LayoutBaseService implements OnDestroy {
 
     constructor(
-    {
-        roleDisplayName,
-		roleId,
-		permissionDisplayName,
-		permissionId
-    }:{
-        roleDisplayName?: string;
-		roleId?: number;
-		permissionDisplayName?: string;
-		permissionId?: number;     
-    } = {}
+        protected override apiService: ApiService,
+        protected override config: ConfigService,
+        protected override authService: AuthService,
+        private router: Router
     ) {
-        super('RolePermission'); 
+        super(apiService, config, authService);
 
-        this.roleDisplayName = roleDisplayName;
-		this.roleId = roleId;
-		this.permissionDisplayName = permissionDisplayName;
-		this.permissionId = permissionId;
+        this.initUnreadNotificationsCountForCurrentUser();
     }
+
 }
-
-
-export class RolePermissionSaveBody extends BaseEntity
-{
-    rolePermissionDTO?: RolePermission;
-
-    constructor(
-    {
-        rolePermissionDTO
-    }:{
-        rolePermissionDTO?: RolePermission;     
-    } = {}
-    ) {
-        super('RolePermissionSaveBody'); 
-
-        this.rolePermissionDTO = rolePermissionDTO;
-    }
-}
-
-
-export class AuthResult extends BaseEntity
-{
-    userId?: number;
-	email?: string;
-	accessToken?: string;
-	refreshToken?: string;
-
-    constructor(
-    {
-        userId,
-		email,
-		accessToken,
-		refreshToken
-    }:{
-        userId?: number;
-		email?: string;
-		accessToken?: string;
-		refreshToken?: string;     
-    } = {}
-    ) {
-        super('AuthResult'); 
-
-        this.userId = userId;
-		this.email = email;
-		this.accessToken = accessToken;
-		this.refreshToken = refreshToken;
-    }
-}
-
-
-export class VerificationTokenRequest extends BaseEntity
-{
-    verificationCode?: string;
-	browserId?: string;
-	email?: string;
-
-    constructor(
-    {
-        verificationCode,
-		browserId,
-		email
-    }:{
-        verificationCode?: string;
-		browserId?: string;
-		email?: string;     
-    } = {}
-    ) {
-        super('VerificationTokenRequest'); 
-
-        this.verificationCode = verificationCode;
-		this.browserId = browserId;
-		this.email = email;
-    }
-}
-
-
-export class RegistrationVerificationResult extends BaseEntity
-{
-    status?: RegistrationVerificationResultStatusCodes;
-	message?: string;
-
-    constructor(
-    {
-        status,
-		message
-    }:{
-        status?: RegistrationVerificationResultStatusCodes;
-		message?: string;     
-    } = {}
-    ) {
-        super('RegistrationVerificationResult'); 
-
-        this.status = status;
-		this.message = message;
-    }
-}
-
-
-export class RegistrationVerificationToken extends BaseEntity
-{
-    email?: string;
-	browserId?: string;
-	expireAt?: Date;
-
-    constructor(
-    {
-        email,
-		browserId,
-		expireAt
-    }:{
-        email?: string;
-		browserId?: string;
-		expireAt?: Date;     
-    } = {}
-    ) {
-        super('RegistrationVerificationToken'); 
-
-        this.email = email;
-		this.browserId = browserId;
-		this.expireAt = expireAt;
-    }
-}
-
-
-export class ExternalProvider extends BaseEntity
-{
-    idToken?: string;
-	browserId?: string;
-
-    constructor(
-    {
-        idToken,
-		browserId
-    }:{
-        idToken?: string;
-		browserId?: string;     
-    } = {}
-    ) {
-        super('ExternalProvider'); 
-
-        this.idToken = idToken;
-		this.browserId = browserId;
-    }
-}
-
-
-export class UserRole extends BaseEntity
-{
-    roleId?: number;
-	userId?: number;
-
-    constructor(
-    {
-        roleId,
-		userId
-    }:{
-        roleId?: number;
-		userId?: number;     
-    } = {}
-    ) {
-        super('UserRole'); 
-
-        this.roleId = roleId;
-		this.userId = userId;
-    }
-}
-
-
-export class UserRoleSaveBody extends BaseEntity
-{
-    userRoleDTO?: UserRole;
-
-    constructor(
-    {
-        userRoleDTO
-    }:{
-        userRoleDTO?: UserRole;     
-    } = {}
-    ) {
-        super('UserRoleSaveBody'); 
-
-        this.userRoleDTO = userRoleDTO;
-    }
-}
-
-
-export class LoginVerificationToken extends BaseEntity
-{
-    email?: string;
-	userId?: number;
-	browserId?: string;
-	expireAt?: Date;
-
-    constructor(
-    {
-        email,
-		userId,
-		browserId,
-		expireAt
-    }:{
-        email?: string;
-		userId?: number;
-		browserId?: string;
-		expireAt?: Date;     
-    } = {}
-    ) {
-        super('LoginVerificationToken'); 
-
-        this.email = email;
-		this.userId = userId;
-		this.browserId = browserId;
-		this.expireAt = expireAt;
-    }
-}
-
-
-export class Login extends BaseEntity
-{
-    email?: string;
-	browserId?: string;
-
-    constructor(
-    {
-        email,
-		browserId
-    }:{
-        email?: string;
-		browserId?: string;     
-    } = {}
-    ) {
-        super('Login'); 
-
-        this.email = email;
-		this.browserId = browserId;
-    }
-}
-
-
-export class RefreshTokenRequest extends BaseEntity
-{
-    refreshToken?: string;
-	browserId?: string;
-
-    constructor(
-    {
-        refreshToken,
-		browserId
-    }:{
-        refreshToken?: string;
-		browserId?: string;     
-    } = {}
-    ) {
-        super('RefreshTokenRequest'); 
-
-        this.refreshToken = refreshToken;
-		this.browserId = browserId;
-    }
-}
-
-
-export class Registration extends BaseEntity
-{
-    email?: string;
-	browserId?: string;
-
-    constructor(
-    {
-        email,
-		browserId
-    }:{
-        email?: string;
-		browserId?: string;     
-    } = {}
-    ) {
-        super('Registration'); 
-
-        this.email = email;
-		this.browserId = browserId;
-    }
-}
-
-
-export class Role extends BaseEntity
-{
-    name?: string;
-	description?: string;
-	version?: number;
-	id?: number;
-	createdAt?: Date;
-	modifiedAt?: Date;
-
-    constructor(
-    {
-        name,
-		description,
-		version,
-		id,
-		createdAt,
-		modifiedAt
-    }:{
-        name?: string;
-		description?: string;
-		version?: number;
-		id?: number;
-		createdAt?: Date;
-		modifiedAt?: Date;     
-    } = {}
-    ) {
-        super('Role'); 
-
-        this.name = name;
-		this.description = description;
-		this.version = version;
-		this.id = id;
-		this.createdAt = createdAt;
-		this.modifiedAt = modifiedAt;
-    }
-}
-
-
-export class RoleSaveBody extends BaseEntity
-{
-    roleDTO?: Role;
-	selectedPermissionIds?: number[];
-	selectedUserIds?: number[];
-
-    constructor(
-    {
-        roleDTO,
-		selectedPermissionIds,
-		selectedUserIds
-    }:{
-        roleDTO?: Role;
-		selectedPermissionIds?: number[];
-		selectedUserIds?: number[];     
-    } = {}
-    ) {
-        super('RoleSaveBody'); 
-
-        this.roleDTO = roleDTO;
-		this.selectedPermissionIds = selectedPermissionIds;
-		this.selectedUserIds = selectedUserIds;
-    }
-}
-
-
-export class RefreshToken extends BaseEntity
-{
-    email?: string;
-	ipAddress?: string;
-	browserId?: string;
-	tokenString?: string;
-	expireAt?: Date;
-
-    constructor(
-    {
-        email,
-		ipAddress,
-		browserId,
-		tokenString,
-		expireAt
-    }:{
-        email?: string;
-		ipAddress?: string;
-		browserId?: string;
-		tokenString?: string;
-		expireAt?: Date;     
-    } = {}
-    ) {
-        super('RefreshToken'); 
-
-        this.email = email;
-		this.ipAddress = ipAddress;
-		this.browserId = browserId;
-		this.tokenString = tokenString;
-		this.expireAt = expireAt;
-    }
-}
-
-
-export class Permission extends BaseEntity
-{
-    name?: string;
-	nameLatin?: string;
-	description?: string;
-	descriptionLatin?: string;
-	code?: string;
-	id?: number;
-
-    constructor(
-    {
-        name,
-		nameLatin,
-		description,
-		descriptionLatin,
-		code,
-		id
-    }:{
-        name?: string;
-		nameLatin?: string;
-		description?: string;
-		descriptionLatin?: string;
-		code?: string;
-		id?: number;     
-    } = {}
-    ) {
-        super('Permission'); 
-
-        this.name = name;
-		this.nameLatin = nameLatin;
-		this.description = description;
-		this.descriptionLatin = descriptionLatin;
-		this.code = code;
-		this.id = id;
-    }
-}
-
-
-export class PermissionSaveBody extends BaseEntity
-{
-    permissionDTO?: Permission;
-
-    constructor(
-    {
-        permissionDTO
-    }:{
-        permissionDTO?: Permission;     
-    } = {}
-    ) {
-        super('PermissionSaveBody'); 
-
-        this.permissionDTO = permissionDTO;
-    }
-}
-
 
 """;
         }
@@ -6458,22 +5750,22 @@ export class ValidatorService extends ValidatorServiceGenerated {
         private string GetMergeLabelsCode()
         {
             return $$"""
-import { environment } from "src/environments/environment";
 import { Injectable } from "@angular/core";
 import { TranslateLabelsGeneratedService } from "./labels.generated";
-
+import { TranslateLabelsAbstractService } from '@playerty/spider';
 
 @Injectable({
     providedIn: 'root',
 })
-export class TranslateLabelsService {
+export class TranslateLabelsService extends TranslateLabelsAbstractService {
 
     constructor(
         private translateLabelsGeneratedService: TranslateLabelsGeneratedService,
     ) {
+        super();
     }
 
-    translate(name: string){
+    translate = (name: string) => {
         let result = null;
 
         result = this.translateLabelsGeneratedService.translate(name);
@@ -6489,7 +5781,6 @@ export class TranslateLabelsService {
         private string GetMergeClassNamesTsCode()
         {
             return $$"""
-import { environment } from "src/environments/environment";
 import { Injectable } from "@angular/core";
 import { TranslateClassNamesGeneratedService } from "./class-names.generated";
 
@@ -6522,152 +5813,147 @@ export class TranslateClassNamesService {
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ApiGeneratedService } from './api.service.generated';
-import { map, Observable } from 'rxjs';
-import * as FileSaver from 'file-saver';
-import { TableFilter } from '../../../core/entities/table-filter';
-import { PrimengOption } from 'src/app/core/entities/primeng-option';
-import { Namebook } from '../../../core/entities/namebook';
-import { getFileNameFromContentDisposition } from 'src/app/core/services/helper-functions';
-import { Codebook } from 'src/app/core/entities/codebook';
+import { ConfigService } from '../config.service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class ApiService extends ApiGeneratedService {
 
-    constructor(protected override http: HttpClient) {
-        super(http);
+    constructor(
+        protected override http: HttpClient,
+        protected override config: ConfigService,
+    ) {
+        super(http, config);
     }
 
-    exportListToExcel(exportTableDataToExcelObservableMethod: (tableFilter: TableFilter) => Observable<any>, tableFilter: TableFilter) {
-        exportTableDataToExcelObservableMethod(tableFilter).subscribe(res => {
-            let fileName = getFileNameFromContentDisposition(res, "ExcelExport.xlsx");
-            FileSaver.saveAs(res.body, decodeURIComponent(fileName));
-        });
-    }
-
-    getPrimengNamebookListForDropdown(getListForDropdownObservable: () => Observable<Namebook[]>): Observable<PrimengOption[]>{
-        return getListForDropdownObservable().pipe(
-            map(res => {
-                return res.map(x => ({ label: x.displayName, value: x.id }));
-            })
-        );
-    }
-
-    getPrimengCodebookListForDropdown(getListForDropdownObservable: () => Observable<Codebook[]>): Observable<PrimengOption[]>{
-        return getListForDropdownObservable().pipe(
-            map(res => {
-                return res.map(x => ({ label: x.displayName, value: x.code }));
-            })
-        );
-    }
-
-    getPrimengNamebookListForAutocomplete(getListForAutocompleteObservable: (limit: number, query: string) => Observable<Namebook[]>, limit: number, query: string): Observable<PrimengOption[]>{
-        return getListForAutocompleteObservable(limit, query).pipe(
-            map(res => {
-                return res.map(x => ({ label: x.displayName, value: x.id }));
-            })
-        );
-    }
-
-    getPrimengCodebookListForAutocomplete(getListForAutocompleteObservable: (limit: number, query: string) => Observable<Codebook[]>, limit: number, query: string): Observable<PrimengOption[]>{
-        return getListForAutocompleteObservable(limit, query).pipe(
-            map(res => {
-                return res.map(x => ({ label: x.displayName, value: x.code }));
-            })
-        );
-    }
 }
 """;
         }
 
-        private string GetAPIServiceSecurityTsCode()
+        private string GetLayoutComponentHtmlCode()
+        {
+            return $"""
+<div class="layout-wrapper" [ngClass]="containerClass">
+    <topbar></topbar>
+    <div class="layout-sidebar">
+        <sidebar [menu]="menu"></sidebar>
+    </div>
+    <div class="layout-main-container">
+        <div class="layout-main">
+            <router-outlet></router-outlet>
+        </div>
+        <footer></footer>
+    </div>
+    <div class="layout-mask"></div>
+</div>
+""";
+        }
+
+        private string GetLayoutComponentTsCode()
         {
             return $$"""
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
-import { Namebook } from '../../../core/entities/namebook';
-import { TableFilter } from '../../../core/entities/table-filter';
-import { TableResponse } from 'src/app/core/entities/table-response';
-import { Login, Registration, RegistrationVerificationResult, RefreshTokenRequest, AuthResult, Role } from '../../entities/security-entities.generated';
+import { TranslocoService } from '@jsverse/transloco';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
+import { Router, RouterModule } from '@angular/router';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
+import { ConfigService } from 'src/app/business/services/config.service';
+import { Subscription } from 'rxjs';
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+import { FooterComponent, LayoutBaseComponent, AppSidebarComponent, AppTopBarComponent, LayoutBaseService, PrimengModule, SpiderMenuItem} from '@playerty/spider';
+import { CommonModule } from '@angular/common';
+import { BusinessPermissionCodes } from '../enums/business-enums.generated';
+import { SecurityPermissionCodes } from '@playerty/spider';
 
-@Injectable()
-export class ApiSecurityService {
+@Component({
+    selector: 'layout',
+    templateUrl: './layout.component.html',
+    standalone: true,
+    imports: [
+        CommonModule,
+        FormsModule,
+        HttpClientModule,
+        RouterModule,
+        PrimengModule,
+        FooterComponent,
+        AppSidebarComponent,
+        AppTopBarComponent,
+    ]
+})
+export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDestroy {
+    menu: SpiderMenuItem[];
 
-    constructor(protected http: HttpClient) {
-
+    constructor(
+        protected override layoutService: LayoutBaseService, 
+        protected override renderer: Renderer2, 
+        protected override router: Router,
+        private authService: AuthService,
+        private config: ConfigService,
+        private translocoService: TranslocoService
+    ) {
+        super(layoutService, renderer, router);
     }
 
-    //#region Authentication
-
-    sendLoginVerificationEmail = (loginDTO: Login): Observable<any> => { 
-        return this.http.post<any>(`${environment.apiUrl}/Security/SendLoginVerificationEmail`, loginDTO, environment.httpOptions);
+    ngOnInit(): void {
+        this.menu = [
+            {
+                visible: true,
+                items: [
+                    { 
+                        label: this.translocoService.translate('Home'), 
+                        icon: 'pi pi-fw pi-home', 
+                        routerLink: [''],
+                        visible: true,
+                    },
+                    {
+                        label: this.translocoService.translate('Administration'),
+                        icon: 'pi pi-fw pi-cog',
+                        visible: true,
+                        hasPermission: (permissionCodes: string[]): boolean => { 
+                            return (permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended) ||
+                                    permissionCodes?.includes(SecurityPermissionCodes.ReadRole) ||
+                                    permissionCodes?.includes(BusinessPermissionCodes.ReadNotification)
+                        },
+                        items: [
+                            {
+                                label: this.translocoService.translate('UserList'),
+                                icon: 'pi pi-fw pi-user',
+                                routerLink: [`/${this.config.administrationSlug}/users`],
+                                hasPermission: (permissionCodes: string[]): boolean => { 
+                                    return (permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended))
+                                },
+                                visible: true,
+                            },
+                            {
+                                label: this.translocoService.translate('RoleList'),
+                                icon: 'pi pi-fw pi-id-card',
+                                routerLink: [`/${this.config.administrationSlug}/roles`],
+                                hasPermission: (permissionCodes: string[]): boolean => { 
+                                    return (permissionCodes?.includes(SecurityPermissionCodes.ReadRole))
+                                },
+                                visible: true,
+                            },
+                            {
+                                label: this.translocoService.translate('NotificationList'),
+                                icon: 'pi pi-fw pi-bell',
+                                routerLink: [`/${this.config.administrationSlug}/notifications`],
+                                hasPermission: (permissionCodes: string[]): boolean => { 
+                                    return (permissionCodes?.includes(BusinessPermissionCodes.ReadNotification))
+                                },
+                                visible: true,
+                            },
+                        ]
+                    },
+                ]
+            },
+        ];
     }
 
-    sendRegistrationVerificationEmail = (registrationDTO: Registration): Observable<RegistrationVerificationResult> => { 
-        return this.http.post<RegistrationVerificationResult>(`${environment.apiUrl}/Security/SendRegistrationVerificationEmail`, registrationDTO, environment.httpOptions);
+    override onAfterNgDestroy = () => {
+        
     }
-
-    logout = (browserId: string): Observable<any> => { 
-        return this.http.get<any>(`${environment.apiUrl}/Security/Logout?browserId=${browserId}`);
-    }
-
-    refreshToken = (request: RefreshTokenRequest): Observable<AuthResult> => { 
-        return this.http.post<AuthResult>(`${environment.apiUrl}/Security/RefreshToken`, request, environment.httpOptions);
-    }
-
-    //#endregion
-
-    //#region Role
-
-    getRoleTableData = (dto: TableFilter): Observable<TableResponse> => { 
-        return this.http.post<TableResponse>(`${environment.apiUrl}/Security/GetRoleTableData`, dto, environment.httpSkipSpinnerOptions);
-    }
-
-    exportRoleTableDataToExcel = (dto: TableFilter): Observable<any> => { 
-        return this.http.post<any>(`${environment.apiUrl}/Security/ExportRoleTableDataToExcel`, dto, environment.httpOptions);
-    }
-
-    deleteRole = (id: number): Observable<any> => { 
-        return this.http.delete<any>(`${environment.apiUrl}/Security/DeleteRole?id=${id}`);
-    }
-
-    getRole = (id: number): Observable<Role> => {
-        return this.http.get<Role>(`${environment.apiUrl}/Security/GetRole?id=${id}`);
-    }
-
-    saveRole = (dto: Role): Observable<Role> => { 
-        return this.http.put<Role>(`${environment.apiUrl}/Security/SaveRole`, dto, environment.httpOptions);
-    }
-
-    getUsersNamebookListForRole = (roleId: number): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetUsersNamebookListForRole?roleId=${roleId}`, environment.httpSkipSpinnerOptions);
-    }
-
-    getRoleListForAutocomplete = (limit: number, query: string): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetRoleListForAutocomplete?limit=${limit}&query=${query}`, environment.httpSkipSpinnerOptions);
-    }
-
-    getRoleListForDropdown = (): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetRoleListForDropdown`, environment.httpSkipSpinnerOptions);
-    }
-
-    //#endregion
-
-    //#region Permission
-
-    getPermissionListForDropdown = (): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetPermissionListForDropdown`, environment.httpSkipSpinnerOptions);
-    }
-
-    getPermissionsNamebookListForRole = (roleId: number): Observable<Namebook[]> => {
-        return this.http.get<Namebook[]>(`${environment.apiUrl}/Security/GetPermissionsNamebookListForRole?roleId=${roleId}`, environment.httpSkipSpinnerOptions);
-    }
-
-    //#endregion
-
 }
-
 
 """;
         }

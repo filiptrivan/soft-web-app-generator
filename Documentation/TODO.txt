@@ -27,3 +27,4 @@
 27. u prevode dodaj RoleList, Icon, IsDisabled, RecipientsForNotification
 28. u gitignore dodaj appsettings
 29. dodaj funkcionalnost broja notifikacija i na ui i na backendu
+30. Updejtuj pakete na 9.0.1
