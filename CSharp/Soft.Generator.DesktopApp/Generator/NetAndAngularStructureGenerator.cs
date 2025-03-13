@@ -119,10 +119,14 @@ namespace Spider.DesktopApp.Generator
                                                                 Name = "validators",
                                                                 Files =
                                                                 {
-                                                                    new SpiderFile { Name = "validation-rules.ts", Data = GetValidationRulesTsCode() },
+                                                                    new SpiderFile { Name = "validators.ts", Data = GetValidatorsTsCode() },
                                                                 }
                                                             },
                                                         },
+                                                        Files =
+                                                        {
+                                                            new SpiderFile { Name = "config.service.ts", Data = GetConfigServiceTsCode() },
+                                                        }
                                                     },
                                                 },
                                                 Files =
@@ -132,114 +136,7 @@ namespace Spider.DesktopApp.Generator
                                             },
                                             new SpiderFolder
                                             {
-                                                Name = "core", // FT: Copy
-                                            },
-                                            new SpiderFolder
-                                            {
-                                                Name = "layout",
-                                                ChildFolders =
-                                                {
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "components",
-                                                        ChildFolders =
-                                                        {
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "auth",
-                                                                ChildFolders =
-                                                                {
-                                                                    new SpiderFolder
-                                                                    {
-                                                                        Name = "login",
-                                                                        Files =
-                                                                        {
-                                                                            new SpiderFile { Name = "login.component.html", Data = GetLoginComponentHtmlData() },
-                                                                            new SpiderFile { Name = "login.component.ts", Data = GetLoginComponentTsData() },
-                                                                        }
-                                                                    },
-                                                                    new SpiderFolder
-                                                                    {
-                                                                        Name = "partials",
-                                                                        Files =
-                                                                        {
-                                                                            new SpiderFile { Name = "auth.component.html", Data = GetAuthComponentHtmlData() },
-                                                                            new SpiderFile { Name = "auth.component.ts", Data = GetAuthComponentTsData() },
-                                                                        }
-                                                                    },
-                                                                    new SpiderFolder
-                                                                    {
-                                                                        Name = "registration",
-                                                                        Files =
-                                                                        {
-                                                                            new SpiderFile { Name = "registration.component.html", Data = GetRegistrationComponentHtmlData() },
-                                                                            new SpiderFile { Name = "registration.component.ts", Data = GetRegistrationComponentTsData() },
-                                                                        }
-                                                                    },
-                                                                },
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "auth.module.ts", Data = GetAuthModuleTsData() }
-                                                                }
-                                                            },
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "dashboard",
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "dashboard.component.html", Data = GetDashboardComponentHtmlData() },
-                                                                    new SpiderFile { Name = "dashboard.component.ts", Data = GetDashboardComponentTsData() },
-                                                                    new SpiderFile { Name = "dashboard.module.ts", Data = GetDashboardModuleTsData() },
-                                                                }
-                                                            },
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "layout",
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "app.layout.component.html", Data = GetAppLayoutComponentHtmlData() },
-                                                                    new SpiderFile { Name = "app.layout.component.ts", Data = GetAppLayoutComponentTsData() },
-                                                                    new SpiderFile { Name = "app.layout.module.ts", Data = GetAppLayoutModuleTsData() },
-                                                                }
-                                                            },
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "sidebar",
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "app.menu.component.html", Data = GetAppMenuComponentHtmlData() },
-                                                                    new SpiderFile { Name = "app.menu.component.ts", Data = GetAppMenuComponentTsData() },
-                                                                    new SpiderFile { Name = "app.menu.service.ts", Data = GetAppMenuServiceTsData() },
-                                                                    new SpiderFile { Name = "app.menuitem.component.html", Data = GetAppMenuItemComponentHtmlData() },
-                                                                    new SpiderFile { Name = "app.menuitem.component.ts", Data = GetAppMenuItemComponentTsData() },
-                                                                    new SpiderFile { Name = "app.sidebar.component.html", Data = GetAppSidebarComponentHtmlData() },
-                                                                    new SpiderFile { Name = "app.sidebar.component.ts", Data = GetAppSidebarComponentTsData() },
-                                                                }
-                                                            },
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "topbar",
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "app.topbar.component.html", Data = GetAppTopbarComponentHtmlData() },
-                                                                    new SpiderFile { Name = "app.topbar.component.ts", Data = GetAppTopbarComponentTsData() },
-                                                                }
-                                                            },
-                                                        },
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "services",
-                                                        Files =
-                                                        {
-                                                            new SpiderFile { Name = "app.layout.service.ts", Data = GetAppLayoutServiceTsData() }
-                                                        }
-                                                    }
-                                                },
-                                            },
-                                            new SpiderFolder
-                                            {
-                                                Name = "modules",
+                                                Name = "features",
                                                 ChildFolders =
                                                 {
                                                     new SpiderFolder
@@ -252,8 +149,8 @@ namespace Spider.DesktopApp.Generator
                                                                 Name = "pages",
                                                                 ChildFolders =
                                                                 {
-                                                                    new SpiderFolder 
-                                                                    { 
+                                                                    new SpiderFolder
+                                                                    {
                                                                         Name = "notification",
                                                                         Files =
                                                                         {
@@ -295,6 +192,45 @@ namespace Spider.DesktopApp.Generator
                                                     },
                                                     new SpiderFolder
                                                     {
+                                                        Name = "dashboard",
+                                                        Files =
+                                                        {
+                                                            new SpiderFile { Name = "dashboard.component.html", Data = GetDashboardComponentHtmlData() },
+                                                            new SpiderFile { Name = "dashboard.component.ts", Data = GetDashboardComponentTsData() },
+                                                            new SpiderFile { Name = "dashboard.module.ts", Data = GetDashboardModuleTsData() },
+                                                        }
+                                                    },
+                                                    new SpiderFolder
+                                                    {
+                                                        Name = "legal",
+                                                        ChildFolders =
+                                                        {
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "privacy-policy",
+                                                                Files =
+                                                                {
+                                                                    new SpiderFile { Name = "privacy-policy.component.html", Data = GetPrivacyPolicyComponentHtmlData() },
+                                                                    new SpiderFile { Name = "privacy-policy.component.ts", Data = GetPrivacyPolicyComponentTsData() },
+                                                                },
+                                                            },
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "user-agreement",
+                                                                Files =
+                                                                {
+                                                                    new SpiderFile { Name = "user-agreement.component.html", Data = GetUserAgreementComponentHtmlData() },
+                                                                    new SpiderFile { Name = "user-agreement.component.ts", Data = GetUserAgreementComponentTsData() },
+                                                                },
+                                                            },
+                                                        },
+                                                        Files =
+                                                        {
+                                                            new SpiderFile { Name = "legal.module.ts", Data = GetLegalModuleTsData() },
+                                                        }
+                                                    },
+                                                    new SpiderFolder
+                                                    {
                                                         Name = "notification",
                                                         ChildFolders =
                                                         {
@@ -318,10 +254,10 @@ namespace Spider.DesktopApp.Generator
                                         },
                                         Files =
                                         {
+                                            new SpiderFile { Name = "app-routing.module.ts", Data = GetAppRoutingModuleTsData() },
                                             new SpiderFile { Name = "app.component.html", Data = GetAppComponentHtmlData() },
                                             new SpiderFile { Name = "app.component.ts", Data = GetAppComponentTsData() },
                                             new SpiderFile { Name = "app.module.ts", Data = GetAppModuleTsData() },
-                                            new SpiderFile { Name = "app-routing.module.ts", Data = GetAppRoutingModuleTsData() },
                                         }
                                     },
                                     new SpiderFolder
@@ -588,6 +524,841 @@ namespace Spider.DesktopApp.Generator
             GenerateProjectStructure(appStructure, outputPath);
         }
 
+        private string GetNotificationDetailsComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <spider-card [title]="t('Notification')" icon="pi pi-bell">
+        <spider-panel [isFirstMultiplePanel]="true" [showPanelHeader]="false">
+            <panel-body>
+                <div class="grid">
+                    <div class="col-12">
+                        <spider-checkbox [control]="isMarkedAsRead" [label]="t('NotifyUsers')" [fakeLabel]="false"></spider-checkbox>
+                    </div>
+                </div>
+            </panel-body>
+        </spider-panel>
+
+        <notification-base-details
+        [formGroup]="formGroup" 
+        [notificationFormGroup]="notificationFormGroup" 
+        (onSave)="onSave()"
+        [isLastMultiplePanel]="true"
+        [additionalButtons]="additionalButtons"
+        (onIsAuthorizedForSaveChange)="isAuthorizedForSaveChange($event)"
+        />
+
+    </spider-card>
+</ng-container>
+""";
+        }
+
+        private string GetNotificationDetailsComponentTsData()
+        {
+            return $$"""
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { Notification } from 'src/app/business/entities/business-entities.generated';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { BaseFormCopy, SpiderFormGroup, SpiderFormControl, SpiderButton, SpiderMessageService, BaseFormService, IsAuthorizedForSaveEvent } from '@playerty/spider';
+
+@Component({
+    selector: 'notification-details',
+    templateUrl: './notification-details.component.html',
+    styles: [],
+})
+export class NotificationDetailsComponent extends BaseFormCopy implements OnInit {
+    notificationFormGroup = new SpiderFormGroup<Notification>({});
+
+    isMarkedAsRead = new SpiderFormControl<boolean>(true, {updateOn: 'change'});
+
+    additionalButtons: SpiderButton[] = [];
+    sendEmailNotificationButton = new SpiderButton({label: this.translocoService.translate('SendEmailNotification'), icon: 'pi pi-send', disabled: true});
+
+    constructor(
+        protected override differs: KeyValueDiffers,
+        protected override http: HttpClient,
+        protected override messageService: SpiderMessageService, 
+        protected override changeDetectorRef: ChangeDetectorRef,
+        protected override router: Router, 
+        protected override route: ActivatedRoute,
+        protected override translocoService: TranslocoService,
+        protected override baseFormService: BaseFormService,
+        private apiService: ApiService,
+    ) {
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, baseFormService);
+    }
+
+    override ngOnInit() {
+        this.sendEmailNotificationButton.onClick = this.sendEmailNotification;
+        this.additionalButtons.push(this.sendEmailNotificationButton);
+    }
+
+    isAuthorizedForSaveChange = (event: IsAuthorizedForSaveEvent) => {
+        this.sendEmailNotificationButton.disabled = !event.isAuthorizedForSave;
+
+        if (event.isAuthorizedForSave) {
+            this.isMarkedAsRead.enable();
+        }
+        else{
+            this.isMarkedAsRead.disable();
+        }
+    }
+
+    // FT: We must to do it like arrow function
+    sendEmailNotification = () => {
+        this.apiService.sendNotificationEmail(this.notificationFormGroup.controls.id.value, this.notificationFormGroup.controls.version.value).subscribe(() => {
+            this.messageService.successMessage(this.translocoService.translate('SuccessfulAttempt'));
+        });
+    }
+
+    override onBeforeSave = (): void => {
+        this.saveBody.isMarkedAsRead = this.isMarkedAsRead.value;
+    }
+
+}
+
+""";
+        }
+
+        private string GetNotificationTableComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <spider-data-table 
+    [tableTitle]="t('NotificationList')" 
+    [cols]="cols" 
+    [getTableDataObservableMethod]="getNotificationTableDataObservableMethod" 
+    [exportTableDataToExcelObservableMethod]="exportNotificationTableDataToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteNotificationObservableMethod"
+    >
+    </spider-data-table>
+</ng-container>
+""";
+        }
+
+        private string GetNotificationTableComponentTsData()
+        {
+            return $$"""
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
+
+@Component({
+    selector: 'notification-table',
+    templateUrl: './notification-table.component.html',
+    styles: []
+})
+export class NotificationTableComponent implements OnInit {
+    cols: Column[];
+
+    getNotificationTableDataObservableMethod = this.apiService.getNotificationTableData;
+    exportNotificationTableDataToExcelObservableMethod = this.apiService.exportNotificationTableDataToExcel;
+    deleteNotificationObservableMethod = this.apiService.deleteNotification;
+
+    constructor(
+        private apiService: ApiService,
+        private translocoService: TranslocoService,
+    ) { }
+
+    ngOnInit(){
+        this.cols = [
+            {name: this.translocoService.translate('Actions'), actions:[
+                {name: this.translocoService.translate('Details'), field: 'Details'},
+                {name: this.translocoService.translate('Delete'), field: 'Delete'},
+            ]},
+            {name: this.translocoService.translate('Title'), filterType: 'text', field: 'title'},
+            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
+        ]
+    }
+
+}
+
+""";
+        }
+
+        private string GetRoleDetailsComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <spider-card [title]="t('Role')" icon="pi pi-id-card">
+
+        <role-base-details 
+        [formGroup]="formGroup" 
+        [roleFormGroup]="roleFormGroup" 
+        (onSave)="onSave()" 
+        ></role-base-details>
+
+    </spider-card>
+</ng-container>
+""";
+        }
+
+        private string GetRoleDetailsComponentTsData()
+        {
+            return $$$"""
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { Role, SpiderMessageService, BaseFormCopy, BaseFormService, SpiderFormGroup } from '@playerty/spider';
+
+@Component({
+    selector: 'role-details',
+    templateUrl: './role-details.component.html',
+    styles: [],
+})
+export class RoleDetailsComponent extends BaseFormCopy implements OnInit {
+    roleFormGroup = new SpiderFormGroup<Role>({});
+
+    constructor(
+        protected override differs: KeyValueDiffers,
+        protected override http: HttpClient,
+        protected override messageService: SpiderMessageService, 
+        protected override changeDetectorRef: ChangeDetectorRef,
+        protected override router: Router, 
+        protected override route: ActivatedRoute, 
+        protected override translocoService: TranslocoService,
+        protected override baseFormService: BaseFormService,
+    ) {
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, baseFormService);
+    }
+}
+
+""";
+        }
+
+        private string GetRoleTableComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <spider-data-table 
+    [tableTitle]="t('RoleList')" 
+    [cols]="cols" 
+    [getTableDataObservableMethod]="getRoleTableDataObservableMethod" 
+    [exportTableDataToExcelObservableMethod]="exportRoleTableDataToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteRoleObservableMethod"
+    ></spider-data-table>
+</ng-container>
+""";
+        }
+
+        private string GetRoleTableComponentTsData()
+        {
+            return $$"""
+import { Component, OnInit } from '@angular/core';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { Column } from '@playerty/spider';
+
+@Component({
+    selector: 'role-table',
+    templateUrl: './role-table.component.html',
+    styles: []
+})
+export class RoleTableComponent implements OnInit {
+    cols: Column[];
+
+    getRoleTableDataObservableMethod = this.apiService.getRoleTableData;
+    exportRoleTableDataToExcelObservableMethod = this.apiService.exportRoleTableDataToExcel;
+    deleteRoleObservableMethod = this.apiService.deleteRole;
+
+    constructor(
+        private apiService: ApiService,
+        private translocoService: TranslocoService,
+    ) { }
+
+    ngOnInit(){
+        this.cols = [
+            {name: this.translocoService.translate('Actions'), actions:[
+                {name: this.translocoService.translate('Details'), field: 'Details'},
+                {name: this.translocoService.translate('Delete'), field: 'Delete'},
+            ]},
+            {name: this.translocoService.translate('Name'), filterType: 'text', field: 'name'},
+            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
+        ]
+    }
+}
+
+""";
+        }
+
+        private string GetUserDetailsComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <user-extended-base-details
+    [panelTitle]="userExtendedFormGroup.getRawValue().email"
+    panelIcon="pi pi-user"
+    [formGroup]="formGroup" 
+    [userExtendedFormGroup]="userExtendedFormGroup" 
+    (onSave)="onSave()" 
+    [showIsDisabledForUserExtended]="showIsDisabledControl"
+    [showHasLoggedInWithExternalProviderForUserExtended]="showHasLoggedInWithExternalProvider"
+    [authorizedForSaveObservable]="authorizedForSaveObservable"
+    (onIsAuthorizedForSaveChange)="isAuthorizedForSaveChange($event)"
+    ></user-extended-base-details>
+</ng-container>
+""";
+        }
+
+        private string GetUserDetailsComponentTsData()
+        {
+            return $$"""
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { UserExtended } from 'src/app/business/entities/business-entities.generated';
+import { BaseFormCopy, SpiderFormGroup, SpiderMessageService, BaseFormService, IsAuthorizedForSaveEvent } from '@playerty/spider';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
+import { combineLatest, map, Observable } from 'rxjs';
+import { BusinessPermissionCodes } from 'src/app/business/enums/business-enums.generated';
+
+@Component({
+    selector: 'user-details',
+    templateUrl: './user-details.component.html',
+    styles: [],
+})
+export class UserDetailsComponent extends BaseFormCopy implements OnInit {
+    userExtendedFormGroup = new SpiderFormGroup<UserExtended>({});
+
+    showIsDisabledControl: boolean = false;
+    showHasLoggedInWithExternalProvider: boolean = false;
+
+    isAuthorizedForSave: boolean = false;
+
+    constructor(
+        protected override differs: KeyValueDiffers,
+        protected override http: HttpClient,
+        protected override messageService: SpiderMessageService, 
+        protected override changeDetectorRef: ChangeDetectorRef,
+        protected override router: Router, 
+        protected override route: ActivatedRoute, 
+        protected override translocoService: TranslocoService,
+        protected override baseFormService: BaseFormService,
+        private authService: AuthService
+    ) {
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, baseFormService);
+    }
+
+    override ngOnInit() {
+
+    }
+
+    authorizedForSaveObservable = (): Observable<boolean> => {
+        return combineLatest([this.authService.currentUserPermissionCodes$, this.authService.user$]).pipe(
+            map(([currentUserPermissionCodes, currentUser]) => {
+                if (currentUserPermissionCodes != null && currentUser != null) {
+                    const IsDisabledAndExternalLoggedInControls = this.showIsDisabledAndExternalLoggedInControlsForPermissions(currentUserPermissionCodes);
+                    this.showIsDisabledControl = IsDisabledAndExternalLoggedInControls;
+                    this.showHasLoggedInWithExternalProvider = IsDisabledAndExternalLoggedInControls;
+                    return this.isCurrentUserPage(currentUser.id);
+                }
+
+                return false;
+            })
+        );
+    }
+
+    showIsDisabledAndExternalLoggedInControlsForPermissions = (currentUserPermissionCodes: string[]) => {
+        return currentUserPermissionCodes.includes(BusinessPermissionCodes.ReadUserExtended) ||
+               currentUserPermissionCodes.includes(BusinessPermissionCodes.UpdateUserExtended);
+    }
+
+    isCurrentUserPage = (currentUserId: number) => {
+        return currentUserId === this.userExtendedFormGroup.getRawValue().id;
+    }
+
+    isAuthorizedForSaveChange = (event: IsAuthorizedForSaveEvent) => {
+        this.isAuthorizedForSave = event.isAuthorizedForSave;
+
+        this.userExtendedFormGroup.controls.hasLoggedInWithExternalProvider.disable();
+    }
+
+    override onBeforeSave = (): void => {
+
+    }
+}
+
+""";
+        }
+
+        private string GetUserTableComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    <spider-data-table [tableTitle]="t('UserList')" 
+    [cols]="cols" 
+    [getTableDataObservableMethod]="getUserTableDataObservableMethod" 
+    [exportTableDataToExcelObservableMethod]="exportUserTableDataToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="deleteUserObservableMethod"
+    [showAddButton]="false"
+    ></spider-data-table>
+</ng-container>
+""";
+        }
+
+        private string GetUserTableComponentTsData()
+        {
+            return $$"""
+import { ApiService } from '../../../../business/services/api/api.service';
+import { TranslocoService } from '@jsverse/transloco';
+import { Component, OnInit } from '@angular/core';
+import { Column } from '@playerty/spider';
+
+@Component({
+    selector: 'user-table',
+    templateUrl: './user-table.component.html',
+    styles: []
+})
+export class UserTableComponent implements OnInit {
+    cols: Column[];
+
+    getUserTableDataObservableMethod = this.apiService.getUserExtendedTableData;
+    exportUserTableDataToExcelObservableMethod = this.apiService.exportUserExtendedTableDataToExcel;
+    deleteUserObservableMethod = this.apiService.deleteUserExtended;
+
+    constructor(
+        private apiService: ApiService,
+        private translocoService: TranslocoService,
+    ) { }
+
+    ngOnInit(){
+        this.cols = [
+            {name: this.translocoService.translate('Actions'), actions:[
+                {name: this.translocoService.translate('Details'), field: 'Details'},
+                {name:  this.translocoService.translate('Delete'), field: 'Delete'},
+            ]},
+            {name: this.translocoService.translate('Email'), filterType: 'text', field: 'email'},
+            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
+        ]
+    }
+}
+
+""";
+        }
+
+        private string GetAdministrationModuleTsData()
+        {
+            return $$"""
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { UserTableComponent } from './pages/users/user-table.component';
+import { UserDetailsComponent } from './pages/users/user-details.component';
+import { RoleTableComponent } from './pages/roles/role-table.component';
+import { RoleDetailsComponent } from './pages/roles/role-details.component';
+import { NotificationDetailsComponent } from './pages/notifications/notification-details.component';
+import { NotificationTableComponent } from './pages/notifications/notification-table.component';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { NotificationBaseDetailsComponent, UserExtendedBaseDetailsComponent } from 'src/app/business/components/base-details/business-base-details.generated';
+import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { PrimengModule, SpiderDataTableComponent, SpiderControlsModule, CardSkeletonComponent, RoleBaseDetailsComponent } from '@playerty/spider';
+
+const routes: Routes = [
+    {
+        path: 'users',
+        component: UserTableComponent,
+    },
+    {
+        path: 'users/:id',
+        component: UserDetailsComponent,
+    },
+    {
+        path: 'roles',
+        component: RoleTableComponent,
+    },
+    {
+        path: 'roles/:id',
+        component: RoleDetailsComponent,
+    },
+    {
+        path: 'notifications',
+        component: NotificationTableComponent,
+    },
+    {
+        path: 'notifications/:id',
+        component: NotificationDetailsComponent,
+    },
+];
+
+@NgModule({
+    imports: [
+    RouterModule.forChild(routes),
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    PrimengModule,
+    SpiderDataTableComponent,
+    SpiderControlsModule,
+    CardSkeletonComponent,
+    TranslocoDirective,
+    NotificationBaseDetailsComponent,
+    UserExtendedBaseDetailsComponent,
+    RoleBaseDetailsComponent,
+],
+declarations: [
+        UserTableComponent,
+        UserDetailsComponent, 
+        RoleTableComponent,
+        RoleDetailsComponent,
+        NotificationTableComponent,
+        NotificationDetailsComponent,
+    ],
+    providers:[]
+})
+export class AdministrationModule { }
+
+""";
+        }
+
+        private string GetDashboardComponentHtmlData()
+        {
+            return $$"""
+<ng-container *transloco="let t">
+    Welcome!
+</ng-container>
+""";
+        }
+
+        private string GetDashboardComponentTsData()
+        {
+            return $$"""
+import { PartnerUser, Tier } from 'src/app/business/entities/business-entities.generated';
+import { ApiService } from '../../../business/services/api/api.service';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
+import { firstValueFrom, Subscription } from 'rxjs';
+
+@Component({
+  templateUrl: './dashboard.component.html',
+})
+export class DashboardComponent implements OnInit {
+
+  constructor(
+    private apiService: ApiService,
+    private authService: AuthService,
+  ) {}
+
+  ngOnInit() {
+
+  }
+
+  ngOnDestroy(): void {
+
+  }
+
+}
+
+""";
+        }
+
+        private string GetDashboardModuleTsData()
+        {
+            return $$"""
+import { NgModule } from '@angular/core';
+import { DashboardComponent } from './pages/dashboard.component';
+import { TranslocoDirective } from '@jsverse/transloco';
+import { RouterModule, Routes } from '@angular/router';
+
+const routes: Routes = [
+    {
+        path: '', 
+        component: DashboardComponent
+    }
+];
+
+@NgModule({
+    imports: [
+    RouterModule.forChild(routes),
+    TranslocoDirective,
+],
+    declarations: [DashboardComponent],
+    providers:[]
+})
+export class DashboardModule { }
+
+""";
+        }
+
+        private string GetPrivacyPolicyComponentHtmlData()
+        {
+            return $$$"""
+<div style="padding: 30px;">
+  <div class="card dashboard-card-wrappe">
+
+    <div class="big-header" style="margin-bottom: 20px;">
+      <h1 class="remove-h-css">POLITIKA PRIVATNOSTI</h1>
+      <div class="bold-header-separator"></div>
+    </div>
+
+    <p style="margin-bottom: 20px;">Vaša privatnost nam je važna. Ova Politika privatnosti objašnjava kako <strong>{{companyName}}</strong> prikuplja, koristi i štiti vaše lične podatke. Korišćenjem naše Platforme, saglasni ste sa obradom podataka u skladu sa ovom politikom.</p>
+
+    <spider-panel [isFirstMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="1. PRIKUPLJANJE PODATAKA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>1.1.</strong> Prikupljamo podatke koje nam dobrovoljno dostavite prilikom registracije i korišćenja Platforme.</p>
+        <p><strong>1.2.</strong> Automatski prikupljamo tehničke podatke o vašem uređaju, IP adresi i obrascima korišćenja Platforme.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="2. KORIŠĆENJE PODATAKA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>2.1.</strong> Vaše podatke koristimo za obezbeđivanje, unapređenje i personalizaciju usluga na Platformi.</p>
+        <p><strong>2.2.</strong> Podaci se mogu koristiti u analitičke svrhe kako bismo poboljšali korisničko iskustvo.</p>
+        <p><strong>2.3.</strong> Nećemo koristiti vaše podatke u svrhe koje nisu navedene u ovoj Politici bez vaše saglasnosti.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="3. DELJENJE PODATAKA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>3.1.</strong> Vaši podaci neće biti prodati niti iznajmljeni trećim licima.</p>
+        <p><strong>3.2.</strong> Možemo podeliti podatke sa trećim licima isključivo u sledećim slučajevima:</p>
+        <ul>
+          <li>kada imamo vašu izričitu saglasnost,</li>
+          <li>kada je to neophodno za pružanje usluga (npr. hosting partneri),</li>
+          <li>kada to zahteva zakon ili nadležni organi.</li>
+        </ul>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="4. ZAŠTITA PODATAKA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>4.1.</strong> Preduzimamo odgovarajuće mere zaštite kako bismo osigurali sigurnost vaših podataka.</p>
+        <p><strong>4.2.</strong> Iako činimo sve da zaštitimo vaše podatke, ne možemo garantovati apsolutnu bezbednost.</p>
+        <p><strong>4.3.</strong> Vi ste odgovorni za čuvanje svojih pristupnih podataka.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="5. PRAVA KORISNIKA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>5.1.</strong> Imate pravo da pristupite, izmenite ili izbrišete svoje podatke.</p>
+        <p><strong>5.2.</strong> Možete podneti zahtev za prekid obrade vaših podataka kontaktiranjem naše podrške.</p>
+        <p><strong>5.3.</strong> Imate pravo da uložite prigovor na obradu podataka u skladu sa važećim zakonima.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="6. KOLAČIĆI I TEHNOLOGIJE PRAĆENJA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>6.1.</strong> Platforma koristi kolačiće za poboljšanje funkcionalnosti i personalizaciju iskustva.</p>
+        <p><strong>6.2.</strong> Možete onemogućiti kolačiće u podešavanjima svog pretraživača.</p>
+        <p><strong>6.3.</strong> Korišćenjem Platforme pristajete na upotrebu kolačića.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="7. IZMENI I AŽURIRANJE POLITIKE"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>7.1.</strong> Zadržavamo pravo da izmenimo ovu Politiku privatnosti u bilo kom trenutku.</p>
+        <p><strong>7.2.</strong> O svim izmenama korisnici će biti blagovremeno obavešteni putem e-maila ili notifikacija na Platformi.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isLastMultiplePanel]="true" [showPanelHeader]="false">
+        <panel-body [normalBottomPadding]="true">
+          Za sva pitanja ili zahteve vezane za vašu privatnost, kontaktirajte nas na <strong>filiptrivan5&commat;gmail.com</strong>.
+          <p>Hvala što koristite <strong>{{companyName}}</strong>!</p>
+        </panel-body>
+    </spider-panel>
+
+  </div>
+</div>
+
+
+""";
+        }
+
+        private string GetPrivacyPolicyComponentTsData()
+        {
+            return $$"""
+import { Component, OnInit } from '@angular/core';
+import { SpiderPanelsModule } from '@playerty/spider';
+import { ConfigService } from 'src/app/business/services/config.service';
+
+@Component({
+  templateUrl: './privacy-policy.component.html',
+  standalone: true,
+  imports: [
+    SpiderPanelsModule
+  ]
+})
+export class PrivacyPolicyComponent implements OnInit {
+  companyName = this.config.companyName;
+
+  constructor(
+    private config: ConfigService
+  ) {}
+
+  ngOnInit() {
+
+  }
+
+
+}
+
+""";
+        }
+
+        private string GetUserAgreementComponentHtmlData()
+        {
+            return $$$"""
+<div style="padding: 30px;">
+  <div class="card dashboard-card-wrappe">
+
+    <div class="big-header" style="margin-bottom: 20px;">
+      <h1 class="remove-h-css">USLOVI KORIŠĆENJA</h1>
+      <div class="bold-header-separator"></div>
+    </div>
+
+    <p style="margin-bottom: 20px;">Dobrodošli na <strong>{{companyName}}</strong>, platformu za kreiranje i upravljanje lojalti programima. Korišćenjem naše platforme, saglasni ste sa sledećim uslovima korišćenja. Molimo vas da ih pažljivo pročitate.</p>
+
+    <spider-panel [isFirstMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="1. OPŠTE ODREDBE"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>1.1.</strong> Ovi uslovi korišćenja regulišu pravila i obaveze korisnika prilikom korišćenja <strong>{{companyName}}</strong> (dalje u tekstu: "Platforma").</p>
+        <p><strong>1.2.</strong> Pristupom ili korišćenjem Platforme prihvatate ove uslove u celosti.</p>
+        <p><strong>1.3.</strong> Ukoliko se ne slažete sa bilo kojim delom ovih uslova, molimo vas da ne koristite Platformu.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="2. REGISTRACIJA I KORIŠĆENJE PLATFORME"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>2.1.</strong> Da biste koristili Platformu, morate se registrovati i kreirati korisnički nalog.</p>
+        <p><strong>2.2.</strong> Odgovorni ste za tačnost podataka koje unosite prilikom registracije.</p>
+        <p><strong>2.3.</strong> Vaš nalog je ličan i nije dozvoljeno deljenje pristupnih podataka sa trećim licima.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="3. PRAVA I OBAVEZE KORISNIKA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>3.1.</strong> Korisnik se obavezuje da će Platformu koristiti u skladu sa važećim zakonima i propisima.</p>
+        <p><strong>3.2.</strong> Zabranjeno je zloupotrebljavati Platformu, uključujući, ali ne ograničavajući se na pokušaje neovlašćenog pristupa, manipulaciju podacima ili korišćenje Platforme u nezakonite svrhe.</p>
+      </panel-body>
+    </spider-panel>
+
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="4. OGRANIČENJE ODGOVORNOSTI"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>4.1.</strong> Platforma se pruža "kao takva", bez ikakvih garancija.</p>
+        <p><strong>4.2.</strong> Ne garantujemo neprekidan rad ili potpunu bezbednost podataka, ali preduzimamo sve razumne mere za njihovu zaštitu.</p>
+        <p><strong>4.3.</strong> Ne snosimo odgovornost za bilo kakve gubitke ili štetu nastalu usled korišćenja Platforme.</p>
+      </panel-body>
+    </spider-panel>
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="5. ZAŠTITA PRIVATNOSTI I PODATAKA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>5.1.</strong> Svi podaci korisnika biće obrađeni u skladu sa našom Politikom privatnosti.</p>
+        <p><strong>5.2.</strong> Nećemo deliti vaše podatke sa trećim licima bez vašeg pristanka, osim ako je to zakonski obavezno.</p>
+      </panel-body>
+    </spider-panel>
+
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="6. IZMENI I DOPUNE USLOVA KORIŠĆENJA"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>6.1.</strong> Zadržavamo pravo da u bilo kom trenutku izmenimo ili dopunimo ove uslove korišćenja.</p>
+        <p><strong>6.2.</strong> O svim izmenama korisnici će biti blagovremeno obavešteni putem e-maila ili notifikacija na Platformi.</p>
+      </panel-body>
+    </spider-panel>
+
+
+    <spider-panel [isMiddleMultiplePanel]="true">
+      <panel-header [showBigTitle]="true" title="7. ZAVRŠNE ODREDBE"></panel-header>
+      <panel-body [normalBottomPadding]="true">
+        <p><strong>7.1.</strong> Ovi uslovi stupaju na snagu danom objavljivanja na Platformi.</p>
+        <p><strong>7.2.</strong> Svi sporovi koji proisteknu iz korišćenja Platforme rešavaće se mirnim putem, a ukoliko to nije moguće, nadležan je sud u <strong>Beogradu</strong>.</p>
+      </panel-body>
+    </spider-panel>
+
+
+    <spider-panel [isLastMultiplePanel]="true" [showPanelHeader]="false">
+        <panel-body [normalBottomPadding]="true">
+          Za sva pitanja ili nejasnoće, kontaktirajte nas na <strong>filiptrivan5&commat;gmail.com</strong>.
+          <p>Hvala što koristite <strong>{{companyName}}</strong>!</p>
+        </panel-body>
+    </spider-panel>
+
+  </div>
+</div>
+""";
+        }
+
+        private string GetUserAgreementComponentTsData()
+        {
+            return $$"""
+import { Component, OnInit } from '@angular/core';
+import { SpiderPanelsModule } from '@playerty/spider';
+import { ConfigService } from 'src/app/business/services/config.service';
+
+@Component({
+  templateUrl: './user-agreement.component.html',
+  standalone: true,
+  imports: [
+    SpiderPanelsModule
+  ]
+})
+export class UserAgreementComponent implements OnInit {
+  companyName = this.config.companyName;
+
+  constructor(
+    private config: ConfigService
+  ) {}
+
+  ngOnInit() {
+
+  }
+
+
+}
+
+""";
+        }
+
+        private string GetLegalModuleTsData()
+        {
+            return $$"""
+import { RouterModule, Routes } from "@angular/router";
+import { NgModule } from "@angular/core";
+import { PrivacyPolicyComponent } from "./privacy-policy/privacy-policy.component";
+import { UserAgreementComponent } from "./user-agreement/user-agreement.component";
+
+const routes: Routes = [
+    {
+        path: 'privacy-policy',
+        component: PrivacyPolicyComponent,
+    },
+    {
+        path: 'user-agreement',
+        component: UserAgreementComponent,
+    },
+];
+
+@NgModule({
+    imports: [
+        RouterModule.forChild(routes),
+    ],
+    declarations: [
+    ],
+    providers:[]
+})
+export class LegalModule { }
+
+""";
+        }
+
         private string GetClientNotificationComponentHtmlData()
         {
             return $$$"""
@@ -601,7 +1372,7 @@ namespace Spider.DesktopApp.Generator
       <div style="display: flex; justify-content: space-between;">
       </div>
       @for (notification of currentUserNotifications?.data; track $index) {
-        <div [class]="(notification.isMarkedAsRead ? 'primary-lighter-color-background' : '') + ' notification-border'" style="padding: 18px; margin: 0px;">
+        <div [class]="(notification.isMarkedAsRead ? 'primary-lighter-color-background' : '') + ' transparent-card'" style="margin: 0px;">
           <div class="text-wrapper">
             <div class="header" style="margin-bottom: 10px; display: flex; justify-content: space-between; position: relative;">
               <div>
@@ -620,7 +1391,7 @@ namespace Spider.DesktopApp.Generator
         </div>
       }
       @if (currentUserNotifications?.totalRecords == 0) {
-        {{t('YouDoNotHaveAnyNotifications')}}
+        {{t('YouDoNotHaveAnyNotification')}}
       }
     </div>
     <p-paginator
@@ -706,22 +1477,27 @@ export class NotificationComponent implements OnInit {
   deleteNotificationForCurrentUser = () => {
     this.apiService.deleteNotificationForCurrentUser(this.lastMenuToggledNotification.id, this.lastMenuToggledNotification.version).subscribe(() => {
       this.messageService.successMessage(this.translocoService.translate('SuccessfulAction'));
-      this.getNotificationsForCurrentUser();
+      this.onAfterNotificationCrudOperation();
     });
   }
 
   markNotificationAsReadForCurrentUser = () => {
     this.apiService.markNotificationAsReadForCurrentUser(this.lastMenuToggledNotification.id, this.lastMenuToggledNotification.version).subscribe(() => {
       this.messageService.successMessage(this.translocoService.translate('SuccessfulAction'));
-      this.getNotificationsForCurrentUser();
+      this.onAfterNotificationCrudOperation();
     });
   }
 
   markNotificationAsUnreadForCurrentUser = () => {
     this.apiService.markNotificationAsUnreadForCurrentUser(this.lastMenuToggledNotification.id, this.lastMenuToggledNotification.version).subscribe(() => {
       this.messageService.successMessage(this.translocoService.translate('SuccessfulAction'));
-      this.getNotificationsForCurrentUser();
+      this.onAfterNotificationCrudOperation();
     });
+  }
+
+  onAfterNotificationCrudOperation = () => {
+    this.getNotificationsForCurrentUser();
+    this.layoutService.setUnreadNotificationsCountForCurrentUser().subscribe(); // FT: Don't need to unsubscribe from the http observable
   }
 
 }
@@ -735,11 +1511,8 @@ export class NotificationComponent implements OnInit {
 import { RouterModule, Routes } from "@angular/router";
 import { NotificationComponent } from "./pages/notification.component";
 import { NgModule } from "@angular/core";
-import { PrimengModule } from "src/app/core/modules/primeng.module";
-import { SpiderDataTableComponent } from "src/app/core/components/spider-data-table/spider-data-table.component";
-import { SpiderControlsModule } from "src/app/core/controls/spider-controls.module";
-import { CardSkeletonComponent } from "src/app/core/components/card-skeleton/card-skeleton.component";
 import { TranslocoDirective } from "@jsverse/transloco";
+import { PrimengModule, SpiderDataTableComponent, SpiderControlsModule, CardSkeletonComponent } from '@playerty/spider';
 
 const routes: Routes = [
     {
@@ -767,939 +1540,206 @@ export class NotificationModule { }
 """;
         }
 
-        private string GetNotificationDetailsComponentHtmlData()
+        private string GetAppRoutingModuleTsData()
         {
             return $$"""
-<ng-container *transloco="let t">
-    <spider-card [title]="t('Notification')" icon="pi pi-bell">
-        <spider-panel [isFirstMultiplePanel]="true" [showPanelHeader]="false">
-            <panel-body>
-                <div class="grid">
-                    <div class="col-12">
-                        <spider-checkbox [control]="isMarkedAsRead" [label]="t('NotifyUsers')" [initializeToFalse]="false" [fakeLabel]="false"></spider-checkbox>
-                    </div>
-                </div>
-            </panel-body>
-        </spider-panel>
-
-        <notification-base-details
-        [formGroup]="formGroup" 
-        [notificationFormGroup]="notificationFormGroup" 
-        (onSave)="onSave()"
-        [isLastMultiplePanel]="true"
-        [additionalButtons]="additionalButtons"
-        />
-
-    </spider-card>
-</ng-container>
-""";
-        }
-
-        private string GetNotificationDetailsComponentTsData()
-        {
-            return $$"""
-import { BaseFormService } from './../../../../core/services/base-form.service';
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslocoService } from '@jsverse/transloco';
-import { Notification } from 'src/app/business/entities/business-entities.generated';
-import { ApiService } from 'src/app/business/services/api/api.service';
-import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
-import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
-import { SpiderFormControl, SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
-import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
-import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
-import { SpiderButton } from 'src/app/core/entities/spider-button';
-
-@Component({
-    selector: 'notification-details',
-    templateUrl: './notification-details.component.html',
-    styles: [],
-})
-export class NotificationDetailsComponent extends BaseFormCopy implements OnInit {
-    notificationFormGroup = new SpiderFormGroup<Notification>({});
-
-    isMarkedAsRead = new SpiderFormControl<boolean>(true, {updateOn: 'change'})
-
-    additionalButtons: SpiderButton[];
-
-    constructor(
-        protected override differs: KeyValueDiffers,
-        protected override http: HttpClient,
-        protected override messageService: SpiderMessageService, 
-        protected override changeDetectorRef: ChangeDetectorRef,
-        protected override router: Router, 
-        protected override route: ActivatedRoute,
-        protected override translocoService: TranslocoService,
-        protected override translateClassNamesService: TranslateClassNamesService,
-        protected override validatorService: ValidatorService,
-        protected override baseFormService: BaseFormService,
-        private apiService: ApiService,
-    ) {
-        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService, baseFormService);
-    }
-
-    override ngOnInit() {
-        this.additionalButtons = [
-            {label: this.translocoService.translate('SendEmailNotification'), onClick: this.sendEmailNotification, icon: 'pi pi-send'}
-        ];
-    }
-
-    // FT: We must to do it like arrow function
-    sendEmailNotification = () => {
-        this.apiService.sendNotificationEmail(this.notificationFormGroup.controls.id.value, this.notificationFormGroup.controls.version.value).subscribe(() => {
-            this.messageService.successMessage(this.translocoService.translate('SuccessfulAttempt'));
-        });
-    }
-
-    override onBeforeSave = (): void => {
-        this.saveBody.isMarkedAsRead = this.isMarkedAsRead.value;
-    }
-}
-
-""";
-        }
-
-        private string GetNotificationTableComponentHtmlData()
-        {
-            return $$"""
-<ng-container *transloco="let t">
-    <spider-data-table 
-    [tableTitle]="t('NotificationList')" 
-    [cols]="cols" 
-    [getTableDataObservableMethod]="getNotificationTableDataObservableMethod" 
-    [exportTableDataToExcelObservableMethod]="exportNotificationTableDataToExcelObservableMethod"
-    [deleteItemFromTableObservableMethod]="deleteNotificationObservableMethod"
-    >
-    </spider-data-table>
-</ng-container>
-""";
-        }
-
-        private string GetNotificationTableComponentTsData()
-        {
-            return $$"""
-import { Component, OnInit } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
-import { ApiService } from 'src/app/business/services/api/api.service';
-import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
-
-@Component({
-    selector: 'notification-table',
-    templateUrl: './notification-table.component.html',
-    styles: []
-})
-export class NotificationTableComponent implements OnInit {
-    cols: Column[];
-
-    getNotificationTableDataObservableMethod = this.apiService.getNotificationTableData;
-    exportNotificationTableDataToExcelObservableMethod = this.apiService.exportNotificationTableDataToExcel;
-    deleteNotificationObservableMethod = this.apiService.deleteNotification;
-
-    constructor(
-        private apiService: ApiService,
-        private translocoService: TranslocoService,
-    ) { }
-
-    ngOnInit(){
-        this.cols = [
-            {name: this.translocoService.translate('Actions'), actions:[
-                {name: this.translocoService.translate('Details'), field: 'Details'},
-                {name: this.translocoService.translate('Delete'), field: 'Delete'},
-            ]},
-            {name: this.translocoService.translate('Title'), filterType: 'text', field: 'title'},
-            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
-        ]
-    }
-
-}
-
-""";
-        }
-
-        private string GetRoleDetailsComponentHtmlData()
-        {
-            return $$"""
-<ng-container *transloco="let t">
-    @defer (when model != null) {
-        <spider-card [title]="detailsTitle" icon="pi pi-id-card">
-            <spider-panel>
-                <panel-header></panel-header>
-
-                <panel-body>
-                    <form [formGroup]="formGroup" class="grid">
-                        <div class="col-12">
-                            <spider-textbox [control]="control('name')"></spider-textbox>
-                        </div>
-                        <div class="col-12">
-                            <spider-textarea [control]="control('description')"></spider-textarea>
-                        </div>
-                        <div class="col-12">
-                            <spider-multiautocomplete 
-                                [control]="selectedUsers"
-                                (onTextInput)="searchUsers($event)" 
-                                [label]="t('UserList')"
-                                [options]="userOptions"
-                                ></spider-multiautocomplete>
-                        </div>
-                        <div class="col-12">
-                            <spider-multiselect
-                                [control]="selectedPermissions"
-                                [label]="t('PermissionList')"
-                                [options]="permissionOptions"></spider-multiselect>
-                        </div>
-                    </form>
-                </panel-body>
-
-            <panel-footer>
-                <p-button (onClick)="onSave()" [label]="t('Save')" icon="pi pi-save"></p-button>
-                <spider-return-button></spider-return-button>
-            </panel-footer>
-
-            </spider-panel>
-        </spider-card>
-    } @placeholder {
-        <card-skeleton [height]="502"></card-skeleton>
-    }
-</ng-container>
-""";
-        }
-
-        private string GetRoleDetailsComponentTsData()
-        {
-            return $$$"""
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslocoService } from '@jsverse/transloco';
-import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { forkJoin } from 'rxjs';
-import { Role, RoleSaveBody } from 'src/app/business/entities/security-entities.generated';
-import { ApiService } from 'src/app/business/services/api/api.service';
-import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
-import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
-import { BaseForm } from 'src/app/core/components/base-form/base-form';
-import { SpiderFormControl } from 'src/app/core/components/spider-form-control/spider-form-control';
-import { PrimengOption } from 'src/app/core/entities/primeng-option';
-import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
-
-@Component({
-    selector: 'role-details',
-    templateUrl: './role-details.component.html',
-    styles: [],
-})
-export class RoleDetailsComponent extends BaseForm<Role> implements OnInit {
-    userOptions: PrimengOption[];
-    selectedUsers = new SpiderFormControl<PrimengOption[]>(null, {updateOn: 'change'})
-
-    permissionOptions: PrimengOption[];
-    selectedPermissions = new SpiderFormControl<number[]>(null, {updateOn: 'change'})
-
-    constructor(
-        protected override differs: KeyValueDiffers,
-        protected override http: HttpClient,
-        protected override messageService: SpiderMessageService, 
-        protected override changeDetectorRef: ChangeDetectorRef,
-        protected override router: Router, 
-        protected override route: ActivatedRoute, 
-        protected override translocoService: TranslocoService,
-        protected override translateClassNamesService: TranslateClassNamesService,
-        protected override validatorService: ValidatorService,
-        private apiService: ApiService
-    ) {
-        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService);
-    }
-
-    override ngOnInit() {
-        this.controllerName = 'Security';
-
-        this.route.params.subscribe((params) => {
-            this.modelId = params['id'];
-            this.apiService.getPermissionListForDropdown().subscribe(nl => {
-                this.permissionOptions = nl.map(n => { return { label: n.displayName, value: n.id } });
-            });
-            if(this.modelId > 0){
-                forkJoin({
-                    role: this.apiService.getRole(this.modelId),
-                    users: this.apiService.getUsersNamebookListForRole(this.modelId),
-                    permissions: this.apiService.getPermissionsNamebookListForRole(this.modelId),
-                  }).subscribe(({ role, users, permissions }) => {
-                    this.init(new Role(role));
-                    this.selectedUsers.setValue(
-                        users.map(user => ({ label: user.displayName, value: user.id }))
-                    );
-                    this.selectedPermissions.setValue(
-                        permissions.map(permission => { return permission.id })
-                    );
-                  });
-            }
-            else{
-                this.init(new Role({id:0}));
-            }
-        });
-    }
-
-    init(model: Role){
-        this.initFormGroup(model);
-    }
-
-    searchUsers(event: AutoCompleteCompleteEvent){ 
-        this.apiService.getUserExtendedListForAutocomplete(50, event?.query).subscribe(nl => {
-            this.userOptions = nl.map(n => { return { label: n.displayName, value: n.id }});
-        })
-    }
-
-    override onBeforeSave = (): void => {
-        this.saveBody = new RoleSaveBody();
-        this.saveBody.selectedUserIds = this.selectedUsers.value?.map(x => x.value);
-        this.saveBody.selectedPermissionIds = this.selectedPermissions.value;
-        this.saveBody.roleDTO = this.model;
-    }
-}
-
-""";
-        }
-
-        private string GetRoleTableComponentHtmlData()
-        {
-            return $$"""
-<ng-container *transloco="let t">
-    <spider-data-table 
-    [tableTitle]="t('RoleList')" 
-    [cols]="cols" 
-    [getTableDataObservableMethod]="getRoleTableDataObservableMethod" 
-    [exportTableDataToExcelObservableMethod]="exportRoleTableDataToExcelObservableMethod"
-    [deleteItemFromTableObservableMethod]="deleteRoleObservableMethod"
-    ></spider-data-table>
-</ng-container>
-""";
-        }
-
-        private string GetRoleTableComponentTsData()
-        {
-            return $$"""
-import { Component, OnInit } from '@angular/core';
-import { TranslocoService } from '@jsverse/transloco';
-import { ApiService } from 'src/app/business/services/api/api.service';
-import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
-
-@Component({
-    selector: 'role-table',
-    templateUrl: './role-table.component.html',
-    styles: []
-})
-export class RoleTableComponent implements OnInit {
-    cols: Column[];
-
-    getRoleTableDataObservableMethod = this.apiService.getRoleTableData;
-    exportRoleTableDataToExcelObservableMethod = this.apiService.exportRoleTableDataToExcel;
-    deleteRoleObservableMethod = this.apiService.deleteRole;
-
-    constructor(
-        private apiService: ApiService,
-        private translocoService: TranslocoService,
-    ) { }
-
-    ngOnInit(){
-        this.cols = [
-            {name: this.translocoService.translate('Actions'), actions:[
-                {name: this.translocoService.translate('Details'), field: 'Details'},
-                {name: this.translocoService.translate('Delete'), field: 'Delete'},
-            ]},
-            {name: this.translocoService.translate('Name'), filterType: 'text', field: 'name'},
-            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
-        ]
-    }
-
-}
-
-""";
-        }
-
-        private string GetUserDetailsComponentHtmlData()
-        {
-            return $$"""
-<ng-container *transloco="let t">
-    <spider-card [title]="t('User')" icon="pi pi-user">
-
-        <user-extended-base-details
-        [formGroup]="formGroup" 
-        [userExtendedFormGroup]="userExtendedFormGroup" 
-        (onSave)="onSave()" 
-        (onUserExtendedFormGroupInitFinish)="userExtendedFormGroupInitFinish()"
-        ></user-extended-base-details>
-
-    </spider-card>
-</ng-container>
-""";
-        }
-
-        private string GetUserDetailsComponentTsData()
-        {
-            return $$"""
-import { HttpClient } from '@angular/common/http';
-import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { TranslocoService } from '@jsverse/transloco';
-import { UserExtended } from 'src/app/business/entities/business-entities.generated';
-import { ApiService } from 'src/app/business/services/api/api.service';
-import { TranslateClassNamesService } from 'src/app/business/services/translates/merge-class-names';
-import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
-import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
-import { SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
-import { BaseFormService } from 'src/app/core/services/base-form.service';
-import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
-
-@Component({
-    selector: 'user-details',
-    templateUrl: './user-details.component.html',
-    styles: [],
-})
-export class UserDetailsComponent extends BaseFormCopy implements OnInit {
-    userExtendedFormGroup = new SpiderFormGroup<UserExtended>({});
-
-    constructor(
-        protected override differs: KeyValueDiffers,
-        protected override http: HttpClient,
-        protected override messageService: SpiderMessageService, 
-        protected override changeDetectorRef: ChangeDetectorRef,
-        protected override router: Router, 
-        protected override route: ActivatedRoute, 
-        protected override translocoService: TranslocoService,
-        protected override translateClassNamesService: TranslateClassNamesService,
-        protected override validatorService: ValidatorService,
-        protected override baseFormService: BaseFormService,
-        private apiService: ApiService,
-    ) {
-        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, translateClassNamesService, validatorService, baseFormService);
-    }
-
-    override ngOnInit() {
-
-    }
-
-    userExtendedFormGroupInitFinish(){
-        this.userExtendedFormGroup.controls.email.disable();
-    }
-
-    override onBeforeSave = (): void => {
-
-    }
-}
-
-""";
-        }
-
-        private string GetUserTableComponentHtmlData()
-        {
-            return $$"""
-<ng-container *transloco="let t">
-    <spider-data-table 
-    [tableTitle]="t('UserList')" 
-    [cols]="cols" 
-    [getTableDataObservableMethod]="getUserTableDataObservableMethod" 
-    [exportTableDataToExcelObservableMethod]="exportUserTableDataToExcelObservableMethod"
-    [deleteItemFromTableObservableMethod]="deleteUserObservableMethod"
-    [showAddButton]="false"
-    ></spider-data-table>
-</ng-container>
-""";
-        }
-
-        private string GetUserTableComponentTsData()
-        {
-            return $$"""
-import { ApiService } from './../../../../business/services/api/api.service';
-import { TranslocoService } from '@jsverse/transloco';
-import { Component, OnInit } from '@angular/core';
-import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
-
-@Component({
-    selector: 'user-table',
-    templateUrl: './user-table.component.html',
-    styles: []
-})
-export class UserTableComponent implements OnInit {
-    cols: Column[];
-
-    getUserTableDataObservableMethod = this.apiService.getUserExtendedTableData;
-    exportUserTableDataToExcelObservableMethod = this.apiService.exportUserExtendedTableDataToExcel;
-    deleteUserObservableMethod = this.apiService.deleteUserExtended;
-
-    constructor(
-        private apiService: ApiService,
-        private translocoService: TranslocoService,
-    ) { }
-
-    ngOnInit(){
-        this.cols = [
-            {name: this.translocoService.translate('Actions'), actions:[
-                {name: this.translocoService.translate('Details'), field: 'Details'},
-                {name:  this.translocoService.translate('Delete'), field: 'Delete'},
-            ]},
-            {name: this.translocoService.translate('Email'), filterType: 'text', field: 'email'},
-            {name: this.translocoService.translate('CreatedAt'), filterType: 'date', field: 'createdAt', showMatchModes: true},
-        ]
-    }
-}
-
-""";
-        }
-
-        private string GetAdministrationModuleTsData()
-        {
-            return $$"""
+import { PreloadAllModules, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { UserTableComponent } from './pages/user/user-table.component';
-import { PrimengModule } from 'src/app/core/modules/primeng.module';
-import { UserDetailsComponent } from './pages/user/user-details.component';
-import { SpiderControlsModule } from 'src/app/core/controls/spider-controls.module';
-import { CardSkeletonComponent } from "../../core/components/card-skeleton/card-skeleton.component";
-import { SpiderDataTableComponent } from 'src/app/core/components/spider-data-table/spider-data-table.component';
-import { RoleTableComponent } from './pages/role/role-table.component';
-import { RoleDetailsComponent } from './pages/role/role-details.component';
-import { NotificationDetailsComponent } from './pages/notification/notification-details.component';
-import { NotificationTableComponent } from './pages/notification/notification-table.component';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { NotificationBaseDetailsComponent, UserExtendedBaseDetailsComponent } from 'src/app/business/components/base-details/business-base-details.generated';
-
-const routes: Routes = [
-    {
-        path: 'users',
-        component: UserTableComponent,
-    },
-    {
-        path: 'users/:id',
-        component: UserDetailsComponent,
-    },
-    {
-        path: 'roles',
-        component: RoleTableComponent,
-    },
-    {
-        path: 'roles/:id',
-        component: RoleDetailsComponent,
-    },
-    {
-        path: 'notifications',
-        component: NotificationTableComponent,
-    },
-    {
-        path: 'notifications/:id',
-        component: NotificationDetailsComponent,
-    },
-];
+import { AuthGuard, NotAuthGuard, NotFoundComponent } from '@playerty/spider';
+import { LayoutComponent } from './business/layout/layout.component';
 
 @NgModule({
     imports: [
-        RouterModule.forChild(routes),
-        PrimengModule,
-        SpiderDataTableComponent,
-        SpiderControlsModule,
-        CardSkeletonComponent,
-        TranslocoDirective,
-        NotificationBaseDetailsComponent,
-        UserExtendedBaseDetailsComponent
+        RouterModule.forRoot([
+            {
+                path: '', 
+                component: LayoutComponent,
+                children: [
+                    {
+                        path: '',
+                        loadChildren: () => import('./features/dashboard/dashboard.module').then(m => m.DashboardModule),
+                        canActivate: [AuthGuard]
+                    },
+                    { 
+                        path: 'administration',
+                        loadChildren: () => import('./features/administration/administration.module').then(m => m.AdministrationModule),
+                        canActivate: [AuthGuard]
+                    },
+                    { 
+                        path: '',
+                        loadChildren: () => import('./features/notification/notification.module').then(m => m.NotificationModule),
+                        canActivate: [AuthGuard]
+                    },
+                ],
+            },
+            {
+                path: '',
+                children: [
+                    { 
+                        path: '',
+                        loadChildren: () => import('@playerty/spider').then(m => m.AuthModule),
+                        canActivate: [NotAuthGuard],
+                    },
+                ],
+            },
+            {
+                path: '',
+                children: [
+                    { 
+                        path: '',
+                        loadChildren: () => import('./features/legal/legal.module').then(m => m.LegalModule),
+                    },
+                ],
+            },
+            // { path: 'landing', loadChildren: () => import('./layout/components/landing/landing.module').then(m => m.LandingModule) },
+            { path: 'not-found', component: NotFoundComponent },
+            { path: '**', redirectTo: 'not-found' },
+        ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload', preloadingStrategy: PreloadAllModules })
     ],
-    declarations: [
-        UserTableComponent,
-        UserDetailsComponent, 
-        RoleTableComponent,
-        RoleDetailsComponent,
-        NotificationTableComponent,
-        NotificationDetailsComponent,
-    ],
-    providers:[]
+    exports: [RouterModule]
 })
-export class AdministrationModule { }
-
-""";
-        }
-
-        private string GetGitIgnoreData()
-        {
-            return $$"""
-# C#
-**/.vs/
-**/*.exe
-**/*.dll
-**/*.log
-**/bin/
-**/obj/
-**/*.user
-**/*.suo
-**/*.pdb
-
-# Angular
-**/dist/
-**/tmp/
-**/out-tsc/
-**/bazel-out/
-**/.angular/cache/
-
-# Node
-**/node_modules/
-**/npm-debug.log
-**/yarn-error.log
-**/*.env
-**/*.env.local
-
-# IDEs and editors
-**/.idea/
-**/.project
-**/.classpath
-**/.c9/
-**/*.launch
-**/.settings/
-**/*.sublime-workspace
-
-# Visual Studio Code
-**/.vscode/*
-**/!.vscode/settings.json
-**/!.vscode/tasks.json
-**/!.vscode/launch.json
-**/!.vscode/extensions.json
-**/.history/*
-
-# Miscellaneous
-**/.sass-cache/
-**/connect.lock
-**/coverage
-**/libpeerconnection.log
-**/testem.log
-**/typings
-**/*.pid
-**/*.bak
-**/*.tmp
-
-# System files
-**/.DS_Store
-**/Thumbs.db
-""";
-        }
-
-        private string GetMitLicenseData()
-        {
-            return $$"""
-MIT License
-
-Copyright (c) 2024 Filip Trivan
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-""";
-        }
-
-        private string GetLogoDarkSvgData()
-        {
-            return $$"""
-<svg width="85" height="63" viewBox="0 0 85 63" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path fill-rule="evenodd" clip-rule="evenodd" d="M27.017 30.3135C27.0057 30.5602 27 30.8085 27 31.0581C27 39.9267 34.1894 47.1161 43.0581 47.1161C51.9267 47.1161 59.1161 39.9267 59.1161 31.0581C59.1161 30.8026 59.1102 30.5485 59.0984 30.2959C60.699 30.0511 62.2954 29.7696 63.8864 29.4515L64.0532 29.4181C64.0949 29.9593 64.1161 30.5062 64.1161 31.0581C64.1161 42.6881 54.6881 52.1161 43.0581 52.1161C31.428 52.1161 22 42.6881 22 31.0581C22 30.514 22.0206 29.9747 22.0612 29.441L22.1136 29.4515C23.7428 29.7773 25.3777 30.0646 27.017 30.3135ZM52.4613 18.0397C49.8183 16.1273 46.5698 15 43.0581 15C39.54 15 36.2862 16.1313 33.6406 18.05C31.4938 17.834 29.3526 17.5435 27.221 17.1786C31.0806 12.7781 36.7449 10 43.0581 10C49.3629 10 55.0207 12.7708 58.8799 17.1612C56.7487 17.5285 54.6078 17.8214 52.4613 18.0397ZM68.9854 28.4316C69.0719 29.2954 69.1161 30.1716 69.1161 31.0581C69.1161 45.4495 57.4495 57.1161 43.0581 57.1161C28.6666 57.1161 17 45.4495 17 31.0581C17 30.1793 17.0435 29.3108 17.1284 28.4544L12.2051 27.4697C12.0696 28.6471 12 29.8444 12 31.0581C12 48.211 25.9052 62.1161 43.0581 62.1161C60.211 62.1161 74.1161 48.211 74.1161 31.0581C74.1161 29.8366 74.0456 28.6317 73.9085 27.447L68.9854 28.4316ZM69.6705 15.0372L64.3929 16.0927C59.6785 9.38418 51.8803 5 43.0581 5C34.2269 5 26.4218 9.39306 21.7089 16.1131L16.4331 15.0579C21.867 6.03506 31.7578 0 43.0581 0C54.3497 0 64.234 6.02581 69.6705 15.0372Z" fill="black"/>
-<mask id="path-2-inside-1" fill="white">
-<path d="M42.5 28.9252C16.5458 30.2312 0 14 0 14C0 14 26 22.9738 42.5 22.9738C59 22.9738 85 14 85 14C85 14 68.4542 27.6193 42.5 28.9252Z"/>
-</mask>
-<path d="M0 14L5.87269 -3.01504L-12.6052 26.8495L0 14ZM42.5 28.9252L41.5954 10.948L42.5 28.9252ZM85 14L96.4394 27.8975L79.1273 -3.01504L85 14ZM0 14C-12.6052 26.8495 -12.5999 26.8546 -12.5946 26.8598C-12.5928 26.8617 -12.5874 26.8669 -12.5837 26.8706C-12.5762 26.8779 -12.5685 26.8854 -12.5605 26.8932C-12.5445 26.9088 -12.5274 26.9254 -12.5092 26.943C-12.4729 26.9782 -12.4321 27.0174 -12.387 27.0605C-12.2969 27.1467 -12.1892 27.2484 -12.0642 27.3646C-11.8144 27.5968 -11.4949 27.8874 -11.1073 28.2273C-10.3332 28.9063 -9.28165 29.7873 -7.96614 30.7967C-5.34553 32.8073 -1.61454 35.3754 3.11693 37.872C12.5592 42.8544 26.4009 47.7581 43.4046 46.9025L41.5954 10.948C32.6449 11.3983 25.2366 8.83942 19.9174 6.03267C17.2682 4.63475 15.2406 3.22667 13.9478 2.23478C13.3066 1.74283 12.8627 1.366 12.6306 1.16243C12.5151 1.06107 12.4538 1.00422 12.4485 0.999363C12.446 0.996981 12.4576 1.00773 12.4836 1.03256C12.4966 1.04498 12.5132 1.06094 12.5334 1.08055C12.5436 1.09035 12.5546 1.10108 12.5665 1.11273C12.5725 1.11855 12.5787 1.12461 12.5852 1.13091C12.5884 1.13405 12.5934 1.13895 12.595 1.14052C12.6 1.14548 12.6052 1.15049 0 14ZM43.4046 46.9025C59.3275 46.1013 72.3155 41.5302 81.3171 37.1785C85.8337 34.9951 89.4176 32.8333 91.9552 31.151C93.2269 30.3079 94.2446 29.5794 94.9945 29.0205C95.3698 28.7409 95.6788 28.503 95.92 28.3138C96.0406 28.2192 96.1443 28.1366 96.2309 28.067C96.2742 28.0321 96.3133 28.0005 96.348 27.9723C96.3654 27.9581 96.3817 27.9448 96.3969 27.9323C96.4045 27.9261 96.4119 27.9201 96.419 27.9143C96.4225 27.9114 96.4276 27.9072 96.4294 27.9057C96.4344 27.9016 96.4394 27.8975 85 14C73.5606 0.102497 73.5655 0.0985097 73.5703 0.0945756C73.5718 0.0933319 73.5765 0.0894438 73.5795 0.0869551C73.5856 0.0819751 73.5914 0.077195 73.597 0.0726136C73.6082 0.0634509 73.6185 0.055082 73.6278 0.0474955C73.6465 0.0323231 73.6614 0.0202757 73.6726 0.0112606C73.695 -0.00676378 73.7026 -0.0126931 73.6957 -0.00726687C73.6818 0.00363418 73.6101 0.0596753 73.4822 0.154983C73.2258 0.346025 72.7482 0.691717 72.0631 1.14588C70.6873 2.05798 68.5127 3.38259 65.6485 4.7672C59.8887 7.55166 51.6267 10.4432 41.5954 10.948L43.4046 46.9025ZM85 14C79.1273 -3.01504 79.1288 -3.01557 79.1303 -3.01606C79.1306 -3.01618 79.1319 -3.01664 79.1326 -3.01688C79.134 -3.01736 79.135 -3.0177 79.1356 -3.01791C79.1369 -3.01834 79.1366 -3.01823 79.1347 -3.01759C79.131 -3.01633 79.1212 -3.01297 79.1055 -3.00758C79.0739 -2.99681 79.0185 -2.97794 78.9404 -2.95151C78.7839 -2.89864 78.5366 -2.81564 78.207 -2.7068C77.5472 -2.48895 76.561 -2.16874 75.3165 -1.78027C72.8181 -1.00046 69.3266 0.039393 65.3753 1.07466C57.0052 3.26771 48.2826 4.97383 42.5 4.97383V40.9738C53.2174 40.9738 65.7448 38.193 74.4997 35.8992C79.1109 34.691 83.1506 33.4874 86.0429 32.5846C87.4937 32.1318 88.6676 31.7509 89.4942 31.478C89.9077 31.3414 90.2351 31.2317 90.4676 31.1531C90.5839 31.1138 90.6765 31.0823 90.7443 31.0591C90.7783 31.0475 90.806 31.038 90.8275 31.0306C90.8382 31.0269 90.8473 31.0238 90.8549 31.0212C90.8586 31.0199 90.862 31.0187 90.865 31.0177C90.8665 31.0172 90.8684 31.0165 90.8691 31.0163C90.871 31.0156 90.8727 31.015 85 14ZM42.5 4.97383C36.7174 4.97383 27.9948 3.26771 19.6247 1.07466C15.6734 0.039393 12.1819 -1.00046 9.68352 -1.78027C8.43897 -2.16874 7.4528 -2.48895 6.79299 -2.7068C6.46337 -2.81564 6.21607 -2.89864 6.05965 -2.95151C5.98146 -2.97794 5.92606 -2.99681 5.89453 -3.00758C5.87876 -3.01297 5.86897 -3.01633 5.86528 -3.01759C5.86344 -3.01823 5.86312 -3.01834 5.86435 -3.01791C5.86497 -3.0177 5.86597 -3.01736 5.86736 -3.01688C5.86805 -3.01664 5.86939 -3.01618 5.86973 -3.01606C5.87116 -3.01557 5.87269 -3.01504 0 14C-5.87269 31.015 -5.87096 31.0156 -5.86914 31.0163C-5.8684 31.0165 -5.86647 31.0172 -5.86498 31.0177C-5.86201 31.0187 -5.85864 31.0199 -5.85486 31.0212C-5.84732 31.0238 -5.83818 31.0269 -5.82747 31.0306C-5.80603 31.038 -5.77828 31.0475 -5.74435 31.0591C-5.67649 31.0823 -5.58388 31.1138 -5.46761 31.1531C-5.23512 31.2317 -4.9077 31.3414 -4.49416 31.478C-3.66764 31.7509 -2.49366 32.1318 -1.04289 32.5846C1.84938 33.4874 5.88908 34.691 10.5003 35.8992C19.2552 38.193 31.7826 40.9738 42.5 40.9738V4.97383Z" fill="black" mask="url(#path-2-inside-1)"/>
-</svg>
-""";
-        }
-
-        private string GetAuthServiceTsCode()
-        {
-            return $$"""
-import { Injectable, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
-import { ApiService } from 'src/app/business/services/api/api.service';
-import { SocialAuthService } from '@abacritt/angularx-social-login';
-import { ConfigService } from '../config.service';
-import { adjustColor, AuthBaseService, getHtmlImgDisplayString64, InitCompanyAuthDialogDetails } from '@playerty/spider';
-
-@Injectable({
-  providedIn: 'root',
-})
-export class AuthService extends AuthBaseService implements OnDestroy {
-
-  constructor(
-    protected override router: Router,
-    protected override http: HttpClient,
-    protected override externalAuthService: SocialAuthService,
-    protected override apiService: ApiService,
-    protected override config: ConfigService,
-    private route: ActivatedRoute,
-  ) {
-    super(router, http, externalAuthService, apiService, config);
-  }
-
+export class AppRoutingModule {
 }
+
 """;
         }
 
-        private string GetLayoutServiceTsCode()
+        private string GetAppComponentHtmlData()
         {
             return $$"""
-import { Injectable, OnDestroy } from '@angular/core';
-import { ApiService } from 'src/app/business/services/api/api.service';
-import { ConfigService } from '../config.service';
-import { getPrimengAutocompleteCodebookOptions, InitTopBarData, LayoutBaseService, PrimengOption, User } from '@playerty/spider';
-import { combineLatest, map } from 'rxjs';
-import { AuthService } from '../auth/auth.service';
-import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { Router } from '@angular/router';
+<!-- FT HACK: I don't know why, but translations on the layout component work only if we wrap everything with transloco -->
+<ng-container *transloco="let t">
 
-@Injectable({
-  providedIn: 'root',
+    <router-outlet></router-outlet>
+
+    <p-confirmDialog 
+    [acceptLabel]="t('Confirm')" 
+    [rejectLabel]="t('Cancle')" 
+    rejectButtonStyleClass="p-button-secondary" 
+    [style]="{width: '400px'}" 
+    [header]="t('AreYouSure')"
+    [message]="t('PleaseConfirmToProceed')"
+    icon="pi pi-exclamation-circle"
+    ></p-confirmDialog>
+
+</ng-container>
+
+<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-clip-rotate-multiple" [fullScreen]="true"></ngx-spinner>
+<p-toast [breakpoints]="{ '600px': { width: '100%', right: '0', left: '0' } }"></p-toast>
+""";
+        }
+
+        private string GetAppComponentTsData()
+        {
+            return $$"""
+import { TranslocoService } from '@jsverse/transloco';
+import { Component, OnInit } from '@angular/core';
+import { PrimeNGConfig } from 'primeng/api';
+
+@Component({
+    selector: 'app-root',
+    templateUrl: './app.component.html'
 })
-export class LayoutService extends LayoutBaseService implements OnDestroy {
+export class AppComponent implements OnInit {
 
     constructor(
-        protected override apiService: ApiService,
-        protected override config: ConfigService,
-        protected override authService: AuthService,
-        private router: Router
+        private primengConfig: PrimeNGConfig, 
+        private translocoService: TranslocoService
     ) {
-        super(apiService, config, authService);
 
-        this.initUnreadNotificationsCountForCurrentUser();
     }
 
-}
+    async ngOnInit() {
+        this.primengConfig.ripple = true;
 
-""";
-        }
-
-        private string GetNotificationControllerCsData(string appName)
-        {
-            return $$"""
-using Microsoft.AspNetCore.Mvc;
-using Azure.Storage.Blobs;
-using Spider.Shared.Attributes;
-using Spider.Shared.Interfaces;
-using Spider.Shared.DTO;
-using {{appName}}.Business.DTO;
-using {{appName}}.Business.Services;
-
-namespace {{appName}}.WebAPI.Controllers
-{
-    [ApiController]
-    [Route("/api/[controller]/[action]")]
-    public class NotificationController : NotificationBaseController
-    {
-        private readonly IApplicationDbContext _context;
-        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
-
-        public NotificationController(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
-            : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
-        {
-            _context = context;
-            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
-        }
-
-        [HttpGet]
-        [AuthGuard]
-        public async Task SendNotificationEmail(long notificationId, int notificationVersion)
-        {
-            await _{{appName.FirstCharToLower()}}BusinessService.SendNotificationEmail(notificationId, notificationVersion);
-        }
-
-        [HttpDelete]
-        [AuthGuard]
-        public async Task DeleteNotificationForCurrentUser(long notificationId, int notificationVersion)
-        {
-            await _{{appName.FirstCharToLower()}}BusinessService.DeleteNotificationForCurrentUser(notificationId, notificationVersion);
-        }
-
-        [HttpGet]
-        [AuthGuard]
-        public async Task MarkNotificationAsReadForCurrentUser(long notificationId, int notificationVersion)
-        {
-            await _{{appName.FirstCharToLower()}}BusinessService.MarkNotificationAsReadForCurrentUser(notificationId, notificationVersion);
-        }
-
-        [HttpGet]
-        [AuthGuard]
-        public async Task MarkNotificationAsUnreadForCurrentUser(long notificationId, int notificationVersion)
-        {
-            await _{{appName.FirstCharToLower()}}BusinessService.MarkNotificationAsUnreadForCurrentUser(notificationId, notificationVersion);
-        }
-
-        [HttpPost]
-        [AuthGuard]
-        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
-        {
-            return await _{{appName.FirstCharToLower()}}BusinessService.GetNotificationsForCurrentUser(tableFilterDTO);
-        }
-
-        // TODO FT: This should exist in other systems
-        //[HttpGet]
-        //[AuthGuard]
-        //public async Task<int> GetUnreadNotificationCountForCurrentUser()
-        //{
-        //    return await _{{appName.FirstCharToLower()}}BusinessService.GetUnreGetUnreadNotificationCountForCurrentUser();
-        //}
-
+        this.translocoService.selectTranslateObject('Primeng').subscribe((primengTranslations) => {
+            this.primengConfig.setTranslation(primengTranslations);
+        });
     }
 }
 
 """;
         }
 
-        private string GetSecurityControllerCsData(string appName)
+        private string GetAppModuleTsData()
         {
             return $$"""
-using Microsoft.AspNetCore.Mvc;
-using Spider.Security.Interface;
-using Spider.Security.Services;
-using Spider.Security.SecurityControllers;
-using Spider.Shared.Interfaces;
-using Spider.Shared.Attributes;
-using Spider.Shared.DTO;
-using Microsoft.EntityFrameworkCore;
-using Spider.Shared.Terms;
-using Spider.Security.DTO;
-using Spider.Shared.Extensions;
-using {{appName}}.Business.Entities;
-using {{appName}}.Business.Services;
-using {{appName}}.Business.DTO;
+import { NgModule } from '@angular/core';
+import { AppComponent } from './app.component';
+import { NgxSpinnerModule } from 'ngx-spinner';
+import { SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
+import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
+import { environment } from 'src/environments/environment';
+import { BusinessModule } from './business/business.module';
+import { TranslateLabelsService } from './business/services/translates/merge-labels';
+import { ValidatorService } from './business/services/validators/validators';
+import { AuthService } from 'src/app/business/services/auth/auth.service';
+import { ConfigService } from './business/services/config.service';
+import { AppRoutingModule } from './app-routing.module';
+import { MessageService } from 'primeng/api';
+import { AuthBaseService, ConfigBaseService, CoreModule, LayoutBaseService, SpiderTranslocoModule, TranslateLabelsAbstractService, ValidatorAbstractService } from '@playerty/spider';
+import { LayoutService } from './business/services/layout/layout.service';
 
-namespace {{appName}}.WebAPI.Controllers
-{
-    [ApiController]
-    [Route("/api/[controller]/[action]")]
-    public class SecurityController : SecurityBaseController<UserExtended>
+@NgModule({
+  declarations: [
+    AppComponent,
+  ],
+  imports: [
+    AppRoutingModule,
+    SpiderTranslocoModule.forRoot(),
+    NgxSpinnerModule.forRoot({ type: 'ball-clip-rotate-multiple' }),
+    BusinessModule,
+    CoreModule,
+  ],
+  providers: [
+    MessageService,
     {
-        private readonly ILogger<SecurityController> _logger;
-        private readonly SecurityBusinessService<UserExtended> _securityBusinessService;
-        private readonly IJwtAuthManager _jwtAuthManagerService;
-        private readonly IApplicationDbContext _context;
-        private readonly AuthenticationService _authenticationService;
-        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
-
-
-        public SecurityController(ILogger<SecurityController> logger, SecurityBusinessService<UserExtended> securityBusinessService, IJwtAuthManager jwtAuthManagerService, IApplicationDbContext context, AuthenticationService authenticationService,
-            {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService)
-            : base(securityBusinessService, jwtAuthManagerService, context, authenticationService)
-        {
-            _logger = logger;
-            _securityBusinessService = securityBusinessService;
-            _jwtAuthManagerService = jwtAuthManagerService;
-            _context = context;
-            _authenticationService = authenticationService;
-            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
+      provide: 'SocialAuthServiceConfig',
+      useValue: {
+        autoLogin: false,
+        providers: [
+          {
+            id: GoogleLoginProvider.PROVIDER_ID,
+            provider: new GoogleLoginProvider(
+              environment.googleClientId, 
+              {
+                scopes: 'email',
+                oneTapEnabled: false,
+                prompt: 'none',
+                // plugin_name: 'the name of the Google OAuth project you created'
+              },
+            )
+          },
+        ],
+        onError: (err) => {
+          console.error(err);
         }
-
-        /// <summary>
-        /// FT: Put the method here, if something needs to be done after the operation from the security service
-        /// </summary>
-        [HttpPost]
-        public async Task<AuthResultDTO> Register(VerificationTokenRequestDTO request)
-        {
-            return await _context.WithTransactionAsync(async () =>
-            {
-                AuthResultDTO authResultDTO = await _securityBusinessService.Register(request);
-                return authResultDTO;
-            });
-        }
-
-        /// <summary>
-        /// FT: Put the method here, if something needs to be done after the operation from the security service
-        /// </summary
-        [HttpPost]
-        public async Task<AuthResultDTO> Login(VerificationTokenRequestDTO request)
-        {
-            AuthResultDTO authResultDTO = _securityBusinessService.Login(request);
-            return authResultDTO;
-        }
-
-        /// <summary>
-        /// FT: Put the method here, if something needs to be done after the operation from the security service
-        /// </summary>
-        [HttpPost]
-        public async Task<AuthResultDTO> LoginExternal(ExternalProviderDTO externalProviderDTO) // TODO FT: Add enum for which external provider you should login user
-        {
-            return await _context.WithTransactionAsync(async () =>
-            {
-                AuthResultDTO authResultDTO = await _securityBusinessService.LoginExternal(externalProviderDTO, SettingsProvider.Current.GoogleClientId);
-                return authResultDTO;
-            });
-        }
-
-    }
-}
-
-""";
-        }
-
-        private string GetUserExtendedControllerCsData(string appName)
-        {
-            return $$"""
-using Microsoft.AspNetCore.Mvc;
-using Spider.Shared.Attributes;
-using Spider.Shared.Interfaces;
-using Azure.Storage.Blobs;
-using Spider.Shared.DTO;
-using Spider.Shared.Terms;
-using Spider.Security.Services;
-using {{appName}}.Business.Services;
-using {{appName}}.Business.DTO;
-using {{appName}}.Business.Entities;
-
-namespace {{appName}}.WebAPI.Controllers
-{
-    [ApiController]
-    [Route("/api/[controller]/[action]")]
-    public class UserExtendedController : UserExtendedBaseController
+      } as SocialAuthServiceConfig
+    },
     {
-        private readonly IApplicationDbContext _context;
-        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
-        private readonly AuthenticationService _authenticationService;
-
-        public UserExtendedController(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient, AuthenticationService authenticationService)
-            : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
-        {
-            _context = context;
-            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
-            _authenticationService = authenticationService;
-        }
-
-        [HttpGet]
-        [AuthGuard]
-        [SkipSpinner]
-        public async Task<UserExtendedDTO> GetCurrentUser()
-        {
-            long userId = _authenticationService.GetCurrentUserId();
-            return await _{{appName.FirstCharToLower()}}BusinessService.GetUserExtendedDTOAsync(userId);
-        }
-
-        [HttpGet]
-        [AuthGuard]
-        [SkipSpinner]
-        public async Task<List<string>> GetCurrentUserPermissionCodes()
-        {
-            return await _{{appName.FirstCharToLower()}}BusinessService.GetCurrentUserPermissionCodes(); // FT: Not authorizing because we are reading this from the jwt token
-        }
-
-    }
-}
-
+      provide: ValidatorAbstractService,
+      useClass: ValidatorService,
+    },
+    {
+      provide: TranslateLabelsAbstractService,
+      useClass: TranslateLabelsService,
+    },
+    { 
+      provide: AuthBaseService, 
+      useExisting: AuthService 
+    },
+    { 
+      provide: ConfigBaseService, 
+      useExisting: ConfigService 
+    },
+    { 
+      provide: LayoutBaseService, 
+      useExisting: LayoutService 
+    },
+  ],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
 """;
         }
 
@@ -2012,6 +2052,223 @@ namespace {{appName}}.Business.Entities
         public virtual List<Notification> Notifications { get; } = new(); // M2M
     }
 }
+""";
+        }
+
+        private string GetNotificationControllerCsData(string appName)
+        {
+            return $$"""
+using Microsoft.AspNetCore.Mvc;
+using Azure.Storage.Blobs;
+using Spider.Shared.Attributes;
+using Spider.Shared.Interfaces;
+using Spider.Shared.DTO;
+using {{appName}}.Business.DTO;
+using {{appName}}.Business.Services;
+
+namespace {{appName}}.WebAPI.Controllers
+{
+    [ApiController]
+    [Route("/api/[controller]/[action]")]
+    public class NotificationController : NotificationBaseController
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
+
+        public NotificationController(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
+            : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
+        {
+            _context = context;
+            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        public async Task SendNotificationEmail(long notificationId, int notificationVersion)
+        {
+            await _{{appName.FirstCharToLower()}}BusinessService.SendNotificationEmail(notificationId, notificationVersion);
+        }
+
+        [HttpDelete]
+        [AuthGuard]
+        public async Task DeleteNotificationForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _{{appName.FirstCharToLower()}}BusinessService.DeleteNotificationForCurrentUser(notificationId, notificationVersion);
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        public async Task MarkNotificationAsReadForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _{{appName.FirstCharToLower()}}BusinessService.MarkNotificationAsReadForCurrentUser(notificationId, notificationVersion);
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        public async Task MarkNotificationAsUnreadForCurrentUser(long notificationId, int notificationVersion)
+        {
+            await _{{appName.FirstCharToLower()}}BusinessService.MarkNotificationAsUnreadForCurrentUser(notificationId, notificationVersion);
+        }
+
+        [HttpPost]
+        [AuthGuard]
+        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        {
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetNotificationsForCurrentUser(tableFilterDTO);
+        }
+
+        // TODO FT: This should exist in other systems
+        //[HttpGet]
+        //[AuthGuard]
+        //public async Task<int> GetUnreadNotificationCountForCurrentUser()
+        //{
+        //    return await _{{appName.FirstCharToLower()}}BusinessService.GetUnreGetUnreadNotificationCountForCurrentUser();
+        //}
+
+    }
+}
+
+""";
+        }
+
+        private string GetSecurityControllerCsData(string appName)
+        {
+            return $$"""
+using Microsoft.AspNetCore.Mvc;
+using Spider.Security.Interface;
+using Spider.Security.Services;
+using Spider.Security.SecurityControllers;
+using Spider.Shared.Interfaces;
+using Spider.Shared.Attributes;
+using Spider.Shared.DTO;
+using Microsoft.EntityFrameworkCore;
+using Spider.Shared.Terms;
+using Spider.Security.DTO;
+using Spider.Shared.Extensions;
+using {{appName}}.Business.Entities;
+using {{appName}}.Business.Services;
+using {{appName}}.Business.DTO;
+
+namespace {{appName}}.WebAPI.Controllers
+{
+    [ApiController]
+    [Route("/api/[controller]/[action]")]
+    public class SecurityController : SecurityBaseController<UserExtended>
+    {
+        private readonly ILogger<SecurityController> _logger;
+        private readonly SecurityBusinessService<UserExtended> _securityBusinessService;
+        private readonly IJwtAuthManager _jwtAuthManagerService;
+        private readonly IApplicationDbContext _context;
+        private readonly AuthenticationService _authenticationService;
+        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
+
+
+        public SecurityController(ILogger<SecurityController> logger, SecurityBusinessService<UserExtended> securityBusinessService, IJwtAuthManager jwtAuthManagerService, IApplicationDbContext context, AuthenticationService authenticationService,
+            {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService)
+            : base(securityBusinessService, jwtAuthManagerService, context, authenticationService)
+        {
+            _logger = logger;
+            _securityBusinessService = securityBusinessService;
+            _jwtAuthManagerService = jwtAuthManagerService;
+            _context = context;
+            _authenticationService = authenticationService;
+            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
+        }
+
+        /// <summary>
+        /// FT: Put the method here, if something needs to be done after the operation from the security service
+        /// </summary>
+        [HttpPost]
+        public async Task<AuthResultDTO> Register(VerificationTokenRequestDTO request)
+        {
+            return await _context.WithTransactionAsync(async () =>
+            {
+                AuthResultDTO authResultDTO = await _securityBusinessService.Register(request);
+                return authResultDTO;
+            });
+        }
+
+        /// <summary>
+        /// FT: Put the method here, if something needs to be done after the operation from the security service
+        /// </summary
+        [HttpPost]
+        public async Task<AuthResultDTO> Login(VerificationTokenRequestDTO request)
+        {
+            AuthResultDTO authResultDTO = _securityBusinessService.Login(request);
+            return authResultDTO;
+        }
+
+        /// <summary>
+        /// FT: Put the method here, if something needs to be done after the operation from the security service
+        /// </summary>
+        [HttpPost]
+        public async Task<AuthResultDTO> LoginExternal(ExternalProviderDTO externalProviderDTO) // TODO FT: Add enum for which external provider you should login user
+        {
+            return await _context.WithTransactionAsync(async () =>
+            {
+                AuthResultDTO authResultDTO = await _securityBusinessService.LoginExternal(externalProviderDTO, SettingsProvider.Current.GoogleClientId);
+                return authResultDTO;
+            });
+        }
+
+    }
+}
+
+""";
+        }
+
+        private string GetUserExtendedControllerCsData(string appName)
+        {
+            return $$"""
+using Microsoft.AspNetCore.Mvc;
+using Spider.Shared.Attributes;
+using Spider.Shared.Interfaces;
+using Azure.Storage.Blobs;
+using Spider.Shared.DTO;
+using Spider.Shared.Terms;
+using Spider.Security.Services;
+using {{appName}}.Business.Services;
+using {{appName}}.Business.DTO;
+using {{appName}}.Business.Entities;
+
+namespace {{appName}}.WebAPI.Controllers
+{
+    [ApiController]
+    [Route("/api/[controller]/[action]")]
+    public class UserExtendedController : UserExtendedBaseController
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
+        private readonly AuthenticationService _authenticationService;
+
+        public UserExtendedController(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient, AuthenticationService authenticationService)
+            : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
+        {
+            _context = context;
+            _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
+            _authenticationService = authenticationService;
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        [SkipSpinner]
+        public async Task<UserExtendedDTO> GetCurrentUser()
+        {
+            long userId = _authenticationService.GetCurrentUserId();
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetUserExtendedDTOAsync(userId);
+        }
+
+        [HttpGet]
+        [AuthGuard]
+        [SkipSpinner]
+        public async Task<List<string>> GetCurrentUserPermissionCodes()
+        {
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetCurrentUserPermissionCodes(); // FT: Not authorizing because we are reading this from the jwt token
+        }
+
+    }
+}
+
 """;
         }
 
@@ -2995,1258 +3252,6 @@ namespace {{appName}}.Business.DataMappers
         #endregion
 
         #region Angular
-
-        private string GetAppLayoutServiceTsData()
-        {
-            return $$"""
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-
-export interface AppConfig {
-    inputStyle: string;
-    colorScheme: string; 
-    theme: string;
-    ripple: boolean;
-    menuMode: string;
-    scale: number;
-    color: string;
-}
-
-interface LayoutState {
-    staticMenuDesktopInactive: boolean;
-    overlayMenuActive: boolean;
-    profileSidebarVisible: boolean;
-    profileDropdownSidebarVisible:boolean;
-    configSidebarVisible: boolean;
-    staticMenuMobileActive: boolean;
-    menuHoverActive: boolean;
-}
-
-@Injectable({
-    providedIn: 'root',
-})
-export class LayoutService {
-
-    config: AppConfig = {
-        ripple: false,
-        inputStyle: 'outlined',
-        menuMode: 'static',
-        colorScheme: 'light',
-        theme: 'lara-light-indigo',
-        scale: 14,
-        color: `var(--primary-color)`,
-    };
-
-    state: LayoutState = {
-        staticMenuDesktopInactive: false,
-        overlayMenuActive: false,
-        profileSidebarVisible: false,
-        profileDropdownSidebarVisible: false,
-        configSidebarVisible: false,
-        staticMenuMobileActive: false,
-        menuHoverActive: false
-    };
-
-    private configUpdate = new Subject<AppConfig>();
-
-    private overlayOpen = new Subject<any>();
-
-    configUpdate$ = this.configUpdate.asObservable();
-
-    overlayOpen$ = this.overlayOpen.asObservable();
-
-    constructor() {
-    }
-
-    onMenuToggle() {
-        if (this.isOverlay()) {
-            this.state.overlayMenuActive = !this.state.overlayMenuActive;
-            if (this.state.overlayMenuActive) {
-                this.overlayOpen.next(null);
-            }
-        }
-
-        if (this.isDesktop()) {
-            this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
-        }
-        else {
-            this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
-
-            if (this.state.staticMenuMobileActive) {
-                this.overlayOpen.next(null);
-            }
-        }
-    }
-
-    showProfileSidebar() {
-        this.state.profileSidebarVisible = !this.state.profileSidebarVisible;
-        if (this.state.profileSidebarVisible) {
-            this.overlayOpen.next(null);
-        }
-    }
-
-    showProfileDropdownSidebar() {
-        this.state.profileDropdownSidebarVisible = !this.state.profileDropdownSidebarVisible;
-        if (this.state.profileDropdownSidebarVisible) {
-            this.overlayOpen.next(null);
-        }
-    }
-
-    showConfigSidebar() {
-        this.state.configSidebarVisible = true;
-    }
-
-    isOverlay() {
-        return this.config.menuMode === 'overlay';
-    }
-
-    isDesktop() {
-        return window.innerWidth > 991;
-    }
-
-    isMobile() {
-        return !this.isDesktop();
-    }
-
-    onConfigUpdate() {
-        this.configUpdate.next(this.config);
-    }
-
-}
-""";
-        }
-
-        private string GetAppTopbarComponentTsData()
-        {
-            return $$"""
-import { TranslocoService } from '@jsverse/transloco';
-import { NavigationEnd, Router } from '@angular/router';
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
-import { filter, Subscription } from 'rxjs';
-import { ApiService } from '../../../business/services/api/api.service';
-import { LayoutService } from '../../services/app.layout.service';
-import { AuthService } from 'src/app/business/services/auth/auth.service';
-import { UserExtended } from 'src/app/business/entities/business-entities.generated';
-
-interface SpiderMenuItem {
-  label?: string;
-  icon?: string;
-  showSeparator?: boolean;
-  onClick?: () => void;
-  showNotificationBadge?: boolean;
-}
-
-@Component({
-    selector: 'app-topbar',
-    templateUrl: './app.topbar.component.html',
-    styles: [
-    ]
-})
-export class AppTopBarComponent implements OnDestroy {
-    private userSubscription: Subscription | null = null;
-
-    currentUser: UserExtended;
-    currentUserNotificationsCount: number;
-    menuItems: SpiderMenuItem[] = [];
-    avatarLabel: string;
-    companyName: string = environment.companyName;
-    showProfileIcon: boolean = false;
-
-    @ViewChild('menubutton') menuButton!: ElementRef;
-
-    @ViewChild('topbarmenu') menu!: ElementRef;
-
-    @ViewChild('topbarprofiledropdownmenubutton') topbarProfileDropdownMenuButton!: ElementRef;
-
-    constructor(
-      public layoutService: LayoutService, 
-      private authService: AuthService, 
-      private apiService: ApiService,
-      protected router: Router,
-      private translocoService: TranslocoService,
-    ) { 
-    }
-
-  async ngOnInit(){
-    this.menuItems = [
-      {
-        label: this.translocoService.translate('YourProfile'),
-        icon: 'pi-user',
-        showSeparator: true,
-        onClick: () => {
-          this.routeToUserPage();
-        }
-      },
-      {
-        label: this.translocoService.translate('NotificationList'),
-        icon: 'pi-bell',
-        showNotificationBadge: true,
-        onClick: () => {
-          this.router.navigateByUrl(`/notifications`);
-        },
-      },
-      // {
-      //   label: this.translocoService.translate('Settings'),
-      //   icon: 'pi-cog'
-      // },
-      {
-        label: this.translocoService.translate('Logout'),
-        icon: 'pi-sign-out',
-        showSeparator: true,
-        onClick: () => {
-          this.authService.logout();
-        }
-      }
-    ]
-
-    this.userSubscription = this.authService.user$.subscribe(currentUser => {
-        this.currentUser = currentUser;
-        this.avatarLabel = currentUser?.email.charAt(0).toLocaleUpperCase();
-        this.showProfileIcon = true;
-    });
-
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        this.layoutService.state.profileDropdownSidebarVisible = false;
-      });
-  }
-
-  onDocumentClick(event: any) {
-    if (
-      !this.menu.nativeElement.contains(event.target) 
-    ) {
-      if (this.layoutService.state.profileDropdownSidebarVisible == true) {
-        this.layoutService.state.profileDropdownSidebarVisible = false;
-      }
-    }
-  }
-
-  routeToUserPage(){
-    this.router.navigateByUrl(`/administration/users/${this.currentUser.id}`);
-  }
-
-  ngOnDestroy(): void {
-    if (this.userSubscription) {
-      this.userSubscription.unsubscribe();
-    }
-  }
-
-}
-""";
-        }
-
-        private string GetAppTopbarComponentHtmlData()
-        {
-            return $$$"""
-<div class="layout-topbar">
-  <a class="layout-topbar-logo" routerLink="/">
-    <span>{{companyName?.toLocaleUpperCase()}}</span>
-  </a>
-
-  <button
-    #menubutton
-    class="p-link layout-menu-button layout-topbar-button"
-    (click)="layoutService.onMenuToggle()"
-  >
-    <i class="pi pi-bars"></i>
-  </button>
-
-  <div
-    #topbarmenu
-    class="profile-button"
-    >
-    <div
-      #topbarprofiledropdownmenubutton
-      (click)="layoutService.showProfileDropdownSidebar()"
-    >
-    <p-avatar
-        *ngIf="showProfileIcon"
-        [label]="avatarLabel"
-        [style]="{ 'background-color': 'var(--primary-color)', 'color': '#fff', 'cursor': 'pointer', 'width': '34px', 'height': '34px', 'font-size': '21px' }"
-        pBadge 
-        [badgeStyleClass]="'p-badge-danger'"
-        [badgeDisabled]="currentUserNotificationsCount == 0 || currentUserNotificationsCount == null"
-        [value]="currentUserNotificationsCount"
-        />
-    </div>
-    <div
-      #topbarprofiledropdownmenu
-      (document:click)="onDocumentClick($event)"
-    >
-    <div *ngIf="layoutService.state.profileDropdownSidebarVisible" style="width: 280px; position: absolute; right: 26px; top: 60px; padding: 15px;" class="card">
-      <div style="display: flex; flex-direction: column; justify-content: center; text-align: center; gap: 10px;">
-        <p-avatar
-          [label]="avatarLabel"
-          size="xlarge"
-          [style]="{ 'background-color': 'var(--primary-color)', 'color': '#fff', 'cursor': 'pointer' }"
-          (click)="routeToUserPage()"
-          />
-        <div>{{currentUser?.email}}</div>
-      </div>
-      <div style="margin-top: 15px;">
-        <div *ngFor="let item of menuItems" [style]="item.showSeparator ? 'margin-top: 5px;' : ''">
-          <div *ngIf="item.showSeparator" class="gray-separator"></div>
-          <div (click)="item.onClick()" class="hover-card" style="display: flex; align-items: center; gap: 5px; margin-top: 5px;">
-            <i 
-              class="pi pi-fw {{item.icon}} primary-color" 
-              style="font-size: 16px; position: relative;"
-              >
-              <span *ngIf="item.showNotificationBadge && currentUserNotificationsCount != 0" class="badge"></span>
-            </i>
-            <div> {{item.label}} </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-  </div>
-</div>
-""";
-        }
-
-        private string GetAppSidebarComponentTsData()
-        {
-            return $$"""
-import { Component, ElementRef } from '@angular/core';
-import { LayoutService } from "../../services/app.layout.service";
-
-@Component({
-    selector: 'app-sidebar',
-    templateUrl: './app.sidebar.component.html'
-})
-export class AppSidebarComponent {
-    constructor(public layoutService: LayoutService, public el: ElementRef) { }
-}
-""";
-        }
-
-        private string GetAppSidebarComponentHtmlData()
-        {
-            return $$"""
-<app-menu></app-menu>
-""";
-        }
-
-        private string GetAppMenuItemComponentTsData()
-        {
-            return $$$"""
-import { ChangeDetectorRef, Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { animate, state, style, transition, trigger } from '@angular/animations';
-import { firstValueFrom, Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
-import { MenuService } from './app.menu.service';
-import { LayoutService } from '../../services/app.layout.service';
-import { AuthService } from 'src/app/business/services/auth/auth.service';
-import { SpiderMenuItem } from './app.menu.component';
-import { ApiService } from '../../../business/services/api/api.service';
-import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { ConfigService } from 'src/app/business/services/config.service';
-import { SpiderFormControl, PrimengOption, getPrimengCodebookListForAutocomplete } from '@playerty/spider';
-
-@Component({
-    // eslint-disable-next-line @angular-eslint/component-selector
-    selector: '[app-menuitem]',
-    templateUrl: './app.menuitem.component.html',
-    animations: [
-        trigger('children', [
-            state('collapsed', style({
-                height: '0'
-            })),
-            state('expanded', style({
-                height: '*'
-            })),
-            transition('collapsed <=> expanded', animate('400ms cubic-bezier(0.86, 0, 0.07, 1)'))
-        ])
-    ]
-})
-export class AppMenuitemComponent implements OnInit, OnDestroy {
-
-    @Input() item: SpiderMenuItem;
-
-    @Input() index!: number;
-
-    @Input() @HostBinding('class.layout-root-menuitem') root!: boolean;
-
-    @Input() parentKey!: string;
-
-    active = false;
-
-    private menuSourceSubscription: Subscription;
-
-    private menuResetSubscription: Subscription;
-
-    private permissionSubscription: Subscription | null = null;
-
-    key: string = "";
-
-    constructor(
-        public layoutService: LayoutService, 
-        private cd: ChangeDetectorRef, 
-        public router: Router, 
-        private menuService: MenuService, 
-        private authService: AuthService,
-        private apiService: ApiService,
-        private config: ConfigService
-    ) {
-        this.menuSourceSubscription = this.menuService.menuSource$.subscribe(value => {
-            Promise.resolve(null).then(() => {
-                if (value.routeEvent) {
-                    this.active = (value.key === this.key || value.key.startsWith(this.key + '-')) ? true : false;
-                }
-                else {
-                    if (value.key !== this.key && !value.key.startsWith(this.key + '-')) {
-                        this.active = false;
-                    }
-                }
-            });
-        });
-
-        this.menuResetSubscription = this.menuService.resetSource$.subscribe(() => {
-            this.active = false;
-        });
-
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-            .subscribe(params => {
-                if (this.item.routerLink) {
-                    this.updateActiveStateFromRoute();
-                }
-            });
-    }
-
-    ngOnInit() {
-        this.permissionSubscription = this.authService.currentUserPermissions$.subscribe((currentUserPermissionCodes: string[]) => {
-            if (this.item && typeof this.item.hasPermission === 'function') {
-                this.item.visible = this.item.hasPermission(currentUserPermissionCodes);
-            }
-        });
-
-        this.key = this.parentKey ? this.parentKey + '-' + this.index : String(this.index);
-
-        if (this.item.routerLink) {
-            this.updateActiveStateFromRoute();
-        }
-    }
-
-    updateActiveStateFromRoute() {
-        let activeRoute = this.router.isActive(this.item.routerLink[0], { paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' });
-
-        if (activeRoute) {
-            this.menuService.onMenuStateChange({ key: this.key, routeEvent: true });
-        }
-    }
-
-    itemClick(event: Event) {
-        // avoid processing disabled items
-        if (this.item.disabled || event === null) {
-            event.preventDefault();
-            return;
-        }
-
-        // execute command
-        if (this.item.command) {
-            this.item.command({ originalEvent: event, item: this.item });
-        }
-
-        // toggle active state
-        if (this.item.items) {
-            this.active = !this.active;
-        }
-
-        this.menuService.onMenuStateChange({ key: this.key });
-    }
-
-    get submenuAnimation() {
-        return this.root ? 'expanded' : (this.active ? 'expanded' : 'collapsed');
-    }
-
-    @HostBinding('class.active-menuitem') 
-    get activeClass() {
-        return this.active && !this.root;
-    }
-
-    ngOnDestroy() {
-        if (this.menuSourceSubscription) {
-            this.menuSourceSubscription.unsubscribe();
-        }
-
-        if (this.menuResetSubscription) {
-            this.menuResetSubscription.unsubscribe();
-        }
-
-        if (this.permissionSubscription) {
-            this.permissionSubscription.unsubscribe();
-        }
-    }
-}
-
-""";
-        }
-
-        private string GetAppMenuItemComponentHtmlData()
-        {
-            return $$$"""
-<ng-container *transloco="let t">
-    <div *ngIf="root && item.visible === true" class="layout-menuitem-root-text">{{item.label}}</div>
-    <a *ngIf="(!item.routerLink || item.items) && item.visible === true" [attr.href]="item.url" (click)="itemClick($event)"
-       [ngClass]="item.styleClass" [attr.target]="item.target" tabindex="0" pRipple>
-        <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
-        <span class="layout-menuitem-text">{{item.label}}</span>
-        <i class="pi pi-fw pi-angle-down layout-submenu-toggler" *ngIf="item.items"></i>
-    </a>
-    <a *ngIf="(item.routerLink && !item.items) && item.visible === true" (click)="itemClick($event)" [ngClass]="item.styleClass"
-    [routerLink]="item.routerLink" routerLinkActive="active-route" [routerLinkActiveOptions]="item.routerLinkActiveOptions||{ paths: 'exact', queryParams: 'ignored', matrixParams: 'ignored', fragment: 'ignored' }"
-    [fragment]="item.fragment" [queryParamsHandling]="item.queryParamsHandling" [preserveFragment]="item.preserveFragment"
-    [skipLocationChange]="item.skipLocationChange" [replaceUrl]="item.replaceUrl" [state]="item.state" [queryParams]="item.queryParams"
-    [attr.target]="item.target" tabindex="0" pRipple>
-        <i [ngClass]="item.icon" class="layout-menuitem-icon"></i>
-        <span class="layout-menuitem-text">{{item.label}}</span>
-        <i class="pi pi-fw pi-angle-down layout-submenu-toggler" *ngIf="item.items"></i>
-    </a>
-
-    <ul *ngIf="item.items && item.visible === true" [@children]="submenuAnimation">
-        <ng-template ngFor let-child let-i="index" [ngForOf]="item.items">
-            <li app-menuitem [item]="child" [index]="i" [parentKey]="key" [class]="child.badgeStyleClass"></li>
-        </ng-template>
-    </ul>
-</ng-container>
-""";
-        }
-
-        private string GetAppMenuServiceTsData()
-        {
-            return $$"""
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
-import { MenuChangeEvent } from '../../../core/entities/menuchangeevent';
-
-@Injectable({
-    providedIn: 'root'
-})
-export class MenuService {
-
-    private menuSource = new Subject<MenuChangeEvent>();
-    private resetSource = new Subject();
-
-    menuSource$ = this.menuSource.asObservable();
-    resetSource$ = this.resetSource.asObservable();
-
-    onMenuStateChange(event: MenuChangeEvent) {
-        this.menuSource.next(event);
-    }
-
-    reset() {
-        this.resetSource.next(true);
-    }
-}
-""";
-        }
-
-        private string GetAppMenuComponentTsData()
-        {
-            return $$"""
-import { TranslocoService } from '@jsverse/transloco';
-import { Subscription } from 'rxjs';
-import { OnInit } from '@angular/core';
-import { Component } from '@angular/core';
-import { LayoutService } from '../../services/app.layout.service';
-import { MenuItem } from 'primeng/api';
-import { environment } from 'src/environments/environment';
-
-export interface SpiderMenuItem extends MenuItem{
-    hasPermission?: (permissionCodes: string[]) => boolean;
-}
-
-@Component({
-    selector: 'app-menu',
-    templateUrl: './app.menu.component.html'
-})
-export class AppMenuComponent implements OnInit {
-    menu: SpiderMenuItem[] = [];
-
-    constructor(
-        public layoutService: LayoutService, 
-        private translocoService: TranslocoService
-    ) {
-
-    }
-
-    ngOnInit() {
-        this.menu = [
-            {
-                visible: true,
-                items: [
-                    { 
-                        label: this.translocoService.translate('Home'), 
-                        icon: 'pi pi-fw pi-home', 
-                        routerLink: [''],
-                        visible: true,
-                    }, 
-                ]
-            },
-        ];
-    }
-
-
-    ngOnDestroy(): void {
-    }
-
-}
-
-""";
-        }
-
-        private string GetAppMenuComponentHtmlData()
-        {
-            return $$"""
-<ul class="layout-menu">
-    <ng-container *ngFor="let item of model; let i = index;">
-        <li app-menuitem *ngIf="!item.separator" [item]="item" [index]="i" [root]="true"></li>
-        <li *ngIf="item.separator" class="gray-separator" style="margin-top: 11px;"></li>
-    </ng-container>
-</ul>
-
-""";
-        }
-
-        private string GetAppLayoutModuleTsData()
-        {
-            return $$"""
-import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { RouterModule } from '@angular/router';
-import { AppLayoutComponent } from "./app.layout.component";
-import { PrimengModule } from '../../../core/modules/primeng.module';
-import { BrowserModule } from '@angular/platform-browser';
-import { SpiderAutocompleteComponent } from "../../../core/controls/spider-autocomplete/spider-autocomplete.component";
-import { TranslocoDirective } from '@jsverse/transloco';
-import { AppFooterComponent } from '../../../core/components/footer/app.footer.component';
-import { AppMenuComponent } from '../sidebar/app.menu.component';
-import { AppMenuitemComponent } from '../sidebar/app.menuitem.component';
-import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
-import { AppTopBarComponent } from '../topbar/app.topbar.component';
-
-@NgModule({
-    declarations: [
-        AppMenuitemComponent,
-        AppTopBarComponent,
-        AppFooterComponent,
-        AppMenuComponent,
-        AppSidebarComponent,
-        AppLayoutComponent,
-    ],
-    imports: [
-        FormsModule,
-        HttpClientModule,
-        BrowserAnimationsModule,
-        BrowserModule,
-        RouterModule,
-        PrimengModule,
-        TranslocoDirective,
-        SpiderAutocompleteComponent,
-    ],
-    exports: [
-        FormsModule,
-        AppLayoutComponent,
-        PrimengModule,
-    ]
-})
-export class AppLayoutModule { }
-""";
-        }
-
-        private string GetAppLayoutComponentTsData()
-        {
-            return $$"""
-import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
-import { NavigationEnd, Router } from '@angular/router';
-import { filter, Subscription } from 'rxjs';
-import { LayoutService } from "../../services/app.layout.service";
-import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
-import { AppTopBarComponent } from '../topbar/app.topbar.component';
-
-@Component({
-    selector: 'app-layout',
-    templateUrl: './app.layout.component.html'
-})
-export class AppLayoutComponent implements OnDestroy {
-
-    overlayMenuOpenSubscription: Subscription;
-
-    menuOutsideClickListener: any;
-
-    profileMenuOutsideClickListener: any;
-
-    @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
-
-    @ViewChild(AppTopBarComponent) appTopbar!: AppTopBarComponent;
-
-    constructor(
-        public layoutService: LayoutService, 
-        public renderer: Renderer2, 
-        public router: Router,
-    ) {
-        this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
-            if (!this.menuOutsideClickListener) {
-                this.menuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                    const isOutsideClicked = !(
-                        this.appSidebar.el.nativeElement.isSameNode(event.target) || 
-                        this.appSidebar.el.nativeElement.contains(event.target) ||
-                        this.appTopbar.menuButton.nativeElement.isSameNode(event.target) || 
-                        this.appTopbar.menuButton.nativeElement.contains(event.target) ||
-                        (event.target.closest('.p-autocomplete-items')) ||
-                        (event.target.closest('.p-autocomplete-clear-icon'))
-                    );
-
-                    if (isOutsideClicked) {
-                        this.hideMenu();
-                    }
-                });
-            }
-
-            if (!this.profileMenuOutsideClickListener) {
-                this.profileMenuOutsideClickListener = this.renderer.listen('document', 'click', event => {
-                    const isOutsideClicked = !(this.appTopbar.menu.nativeElement.isSameNode(event.target) || this.appTopbar.menu.nativeElement.contains(event.target));
-
-                    if (isOutsideClicked) {
-                        this.hideProfileMenu();
-                    }
-                });
-            }
-
-            if (this.layoutService.state.staticMenuMobileActive) {
-                this.blockBodyScroll();
-            }
-        });
-
-        this.router.events.pipe(filter(event => event instanceof NavigationEnd))
-            .subscribe(() => {
-                this.hideMenu();
-                this.hideProfileMenu();
-            });
-    }
-
-    hideMenu() {
-        this.layoutService.state.overlayMenuActive = false;
-        this.layoutService.state.staticMenuMobileActive = false;
-        this.layoutService.state.menuHoverActive = false;
-        if (this.menuOutsideClickListener) {
-            this.menuOutsideClickListener();
-            this.menuOutsideClickListener = null;
-        }
-        this.unblockBodyScroll();
-    }
-
-    hideProfileMenu() {
-        this.layoutService.state.profileSidebarVisible = false;
-        if (this.profileMenuOutsideClickListener) {
-            this.profileMenuOutsideClickListener();
-            this.profileMenuOutsideClickListener = null;
-        }
-    }
-
-    blockBodyScroll(): void {
-        if (document.body.classList) {
-            document.body.classList.add('blocked-scroll');
-        }
-        else {
-            document.body.className += ' blocked-scroll';
-        }
-    }
-
-    unblockBodyScroll(): void {
-        if (document.body.classList) {
-            document.body.classList.remove('blocked-scroll');
-        }
-        else {
-            document.body.className = document.body.className.replace(new RegExp('(^|\\b)' +
-                'blocked-scroll'.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-        }
-    }
-
-    get containerClass() {
-        return {
-            'layout-theme-light': this.layoutService.config.colorScheme === 'light',
-            'layout-theme-dark': this.layoutService.config.colorScheme === 'dark',
-            'layout-overlay': this.layoutService.config.menuMode === 'overlay',
-            'layout-static': this.layoutService.config.menuMode === 'static',
-            'layout-static-inactive': this.layoutService.state.staticMenuDesktopInactive && this.layoutService.config.menuMode === 'static',
-            'layout-overlay-active': this.layoutService.state.overlayMenuActive,
-            'layout-mobile-active': this.layoutService.state.staticMenuMobileActive,
-            'p-input-filled': this.layoutService.config.inputStyle === 'filled',
-            'p-ripple-disabled': !this.layoutService.config.ripple
-        }
-    }
-
-    ngOnDestroy() {
-        if (this.overlayMenuOpenSubscription) {
-            this.overlayMenuOpenSubscription.unsubscribe();
-        }
-
-        if (this.menuOutsideClickListener) {
-            this.menuOutsideClickListener();
-        }
-    }
-}
-""";
-        }
-
-        private string GetAppLayoutComponentHtmlData()
-        {
-            return $$"""
-<div class="layout-wrapper" [ngClass]="containerClass">
-    <app-topbar></app-topbar>
-    <div class="layout-sidebar">
-        <app-sidebar></app-sidebar>
-    </div>
-    <div class="layout-main-container">
-        <div class="layout-main">
-            <router-outlet></router-outlet>
-        </div>
-        <app-footer></app-footer>
-    </div>
-    <div class="layout-mask"></div>
-</div>
-""";
-        }
-
-        private string GetDashboardModuleTsData()
-        {
-            return $$"""
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { DashboardComponent } from './dashboard.component';
-import { MenuModule } from 'primeng/menu';
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { StyleClassModule } from 'primeng/styleclass';
-import { PanelMenuModule } from 'primeng/panelmenu';
-import { ApiService } from '../../../business/services/api/api.service';
-import { PrimengModule } from '../../../core/modules/primeng.module';
-import { SpiderDataTableComponent } from 'src/app/core/components/spider-data-table/spider-data-table.component';
-import { SpiderControlsModule } from 'src/app/core/controls/spider-controls.module';
-import { CardSkeletonComponent } from 'src/app/core/components/card-skeleton/card-skeleton.component';
-import { QRCodeModule } from 'angularx-qrcode';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { InfoCardComponent } from "../../../core/components/info-card/info-card.component";
-import { RouterModule, Routes } from '@angular/router';
-
-const routes: Routes = [
-    {
-        path: '', 
-        component: DashboardComponent
-    }
-];
-
-@NgModule({
-    imports: [
-        RouterModule.forChild(routes),
-        CommonModule,
-        FormsModule,
-        MenuModule,
-        TableModule,
-        StyleClassModule,
-        PanelMenuModule,
-        ButtonModule,
-        PrimengModule,
-        QRCodeModule,
-        SpiderDataTableComponent,
-        SpiderControlsModule,
-        CardSkeletonComponent,
-        TranslocoDirective,
-        InfoCardComponent,
-    ],
-    declarations: [DashboardComponent],
-    providers:[ApiService]
-})
-export class DashboardModule { }
-""";
-        }
-
-        private string GetDashboardComponentTsData()
-        {
-            return $$"""
-import { ApiService } from '../../../business/services/api/api.service';
-import { LayoutService } from '../../services/app.layout.service';
-import { Component, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-
-@Component({
-  templateUrl: './dashboard.component.html',
-})
-export class DashboardComponent implements OnInit {
-  private permissionsSubscription: Subscription | null = null;
-
-  constructor(
-    public layoutService: LayoutService,
-    private apiService: ApiService,
-  ) {}
-
-  ngOnInit() {
-    
-  }
-
-  ngOnDestroy(): void {
-    
-  }
-}
-
-""";
-        }
-
-        private string GetDashboardComponentHtmlData()
-        {
-            return $$"""
-<ng-container *transloco="let t">
-  Dashboard
-</ng-container>
-""";
-        }
-
-        private string GetAuthModuleTsData()
-        {
-            return $$"""
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { RegistrationComponent } from './registration/registration.component';
-import { LoginComponent } from './login/login.component';
-import { PrimengModule } from '../../../core/modules/primeng.module';
-import { SpiderControlsModule } from 'src/app/core/controls/spider-controls.module';
-import { AuthComponent } from './partials/auth.component';
-import { TranslocoDirective } from '@jsverse/transloco';
-import { LoginVerificationComponent } from 'src/app/core/components/email-verification/login-verification.component';
-import { RegistrationVerificationComponent } from 'src/app/core/components/email-verification/registration-verification.component';
-
-const routes: Routes = [
-    { 
-        path: 'registration', 
-        component: RegistrationComponent
-    },
-    { 
-        path: 'login', 
-        component: LoginComponent
-    },
-];
-
-@NgModule({
-    imports: [
-        RouterModule.forChild(routes),
-        AuthComponent,
-        PrimengModule,
-        SpiderControlsModule,
-        LoginVerificationComponent,
-        RegistrationVerificationComponent,
-        TranslocoDirective,
-    ],
-    declarations: [
-        RegistrationComponent,
-        LoginComponent,
-    ]
-})
-export class AuthModule { }
-""";
-        }
-
-        private string GetRegistrationComponentTsData()
-        {
-            return $$"""
-import { ActivatedRoute, Router } from '@angular/router';
-import { SpiderMessageService } from '../../../../core/services/spider-message.service';
-import { AuthService } from 'src/app/business/services/auth/auth.service';
-import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
-import { LayoutService } from '../../../services/app.layout.service';
-import { HttpClient } from '@angular/common/http';
-import { Registration } from 'src/app/business/entities/security-entities.generated';
-import { TranslocoService } from '@jsverse/transloco';
-import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
-import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
-import { SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
-import { TranslateLabelsService } from 'src/app/business/services/translates/merge-labels';
-import { BaseFormService } from 'src/app/core/services/base-form.service';
-
-@Component({
-    selector: 'app-registration',
-    templateUrl: './registration.component.html',
-})
-export class RegistrationComponent extends BaseFormCopy implements OnInit {
-    registrationFormGroup = new SpiderFormGroup<Registration>({});
-
-    companyName: string;
-    showEmailSentDialog: boolean = false;
-
-    constructor(
-      protected override differs: KeyValueDiffers,
-      protected override http: HttpClient,
-      protected override messageService: SpiderMessageService, 
-      protected override changeDetectorRef: ChangeDetectorRef,
-      protected override router: Router, 
-      protected override route: ActivatedRoute,
-      protected override translocoService: TranslocoService,
-      protected override baseFormService: BaseFormService,
-      private translateLabelsService: TranslateLabelsService,
-      private validatorService: ValidatorService,
-      public layoutService: LayoutService, 
-      private authService: AuthService, 
-    ) { 
-      super(differs, http, messageService, changeDetectorRef, router, route, translocoService, baseFormService);
-    }
-
-    override ngOnInit(){
-        this.formGroup.setValidatorMethod = this.validatorService.setValidator;
-        this.formGroup.translateLabelMethod = this.translateLabelsService.translate;
-
-        this.initRegistrationFormGroup(new Registration({}));
-    }
-
-    initRegistrationFormGroup(model: Registration){
-        this.initFormGroup(this.registrationFormGroup, this.formGroup, model, model.typeName, []);
-    }
-
-    companyNameChange(companyName: string){
-        this.companyName = companyName;
-    }
-
-    sendRegistrationVerificationEmail() {
-        let isFormGroupValid: boolean = this.checkFormGroupValidity();
-        if (isFormGroupValid == false) return;
-        // const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
-        this.authService.sendRegistrationVerificationEmail(this.registrationFormGroup.getRawValue()).subscribe(() => {
-            this.showEmailSentDialog = true;
-        });
-    }
-
-}
-
-""";
-        }
-
-        private string GetRegistrationComponentHtmlData()
-        {
-            return $$$"""
-<ng-container *transloco="let t">
-    @if (registrationFormGroup != null) {
-        @if (showEmailSentDialog == false) {
-            <auth (onCompanyNameChange)="companyNameChange($event)">
-                <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
-                    <div class="col-12" style="padding-left: 0; padding-right: 0;">
-                        <spider-textbox [control]="control('email', registrationFormGroup)"></spider-textbox>
-                    </div>
-
-                    <div class="mb-4 gap-5">
-                        <div class="text-center" style="font-size: smaller;">
-                            {{t('AgreementsOnRegister')}} <b class="primary-color cursor-pointer">{{t('UserAgreement')}}</b>, <b class="primary-color cursor-pointer">{{t('PrivacyPolicy')}}</b>, {{t('and')}} <b class="primary-color cursor-pointer">{{t('CookiePolicy')}}</b>.
-                        </div>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                        <p-button [label]="t('AgreeAndJoin')" (onClick)="sendRegistrationVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-                        <p-button [label]="t('AlreadyOnLoyalty', {companyName: companyName})" routerLink="/auth/login" [style]="{width: '100%'}"></p-button>
-                    </div>
-                </form>
-            </auth>
-        }
-        @else {
-            <registration-verification [email]="registrationFormGroup.controls.email.getRawValue()"></registration-verification>
-        }
-    }
-    @else {
-        <!-- TODO FT: Add skeleton -->
-    }
-</ng-container>
-""";
-        }
-
-        private string GetAuthComponentTsData()
-        {
-            return $$"""
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { environment } from "src/environments/environment";
-import { LayoutService } from "src/app/layout/services/app.layout.service";
-import { GoogleButtonComponent } from "../../../../core/components/google-button/google-button.component";
-import { CommonModule } from "@angular/common";
-import { getHtmlImgDisplayString64 } from "src/app/core/services/helper-functions";
-import { Subscription } from "rxjs";
-import { TranslocoDirective } from "@jsverse/transloco";
-
-@Component({
-  selector: 'auth',
-  templateUrl: './auth.component.html',
-  styles: [],
-  imports: [
-    CommonModule,
-    GoogleButtonComponent,
-    TranslocoDirective,
-  ],
-  standalone: true,
-})
-export class AuthComponent {
-    @Output() onCompanyNameChange: EventEmitter<string> = new EventEmitter();
-    @Input() showGoogleAuth: boolean = true;
-
-    hasGoogleAuth: boolean = environment.googleAuth;
-    companyName: string;
-    image: string;
-
-    constructor(public layoutService: LayoutService) {}
-
-    ngOnInit(){
-        this.image = `assets/primeng/images/logo-dark.svg`
-        this.companyName = environment.companyName;
-        this.onCompanyNameChange.next(this.companyName);
-    }
-
-    onGoogleSignIn(googleWrapper: any){
-      googleWrapper.click();
-    }
-
-    ngOnDestroy(): void {
-
-    }
-}
-""";
-        }
-
-        private string GetAuthComponentHtmlData()
-        {
-            return $$$"""
-<ng-container *transloco="let t">
-    <div class="flex min-h-screen overflow-hidden" style="padding: 20px;">
-        <div class="flex flex-column w-full">
-            <div class="w-full sm:w-30rem" style="margin: auto; border-radius:50px; padding:0.3rem; background: linear-gradient(180deg, var(--primary-color) 10%, rgba(33, 150, 243, 0) 30%);">
-                <div class="surface-card py-6 px-5 sm:px-6" style="border-radius:45px;">
-                    <div class="text-center" style="margin-bottom: 38px;">
-                        <img [src]="image" alt="{{companyName}} Logo" height="60">
-                    </div>
-
-                    <ng-content></ng-content>
-
-                    <div *ngIf="hasGoogleAuth && showGoogleAuth">
-                        <div style="display: flex; align-items: center; gap: 7px; justify-content: center; margin-bottom: 16px;">
-                            <div class="separator"></div>
-                            <div>{{t('or')}}</div>
-                            <div class="separator"></div>
-                        </div>
-                        <div>
-                            <!-- https://code-maze.com/how-to-sign-in-with-google-angular-aspnet-webapi/ -->
-                            <google-button (loginWithGoogle)="onGoogleSignIn($event)"></google-button> 
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-</ng-container>
-""";
-        }
-
-        private string GetLoginComponentTsData()
-        {
-            return $$"""
-import { BaseFormService } from 'src/app/core/services/base-form.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SpiderMessageService } from '../../../../core/services/spider-message.service';
-import { AuthService } from 'src/app/business/services/auth/auth.service';
-import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
-import { LayoutService } from '../../../services/app.layout.service';
-import { HttpClient } from '@angular/common/http';
-import { environment } from 'src/environments/environment';
-import { Login } from 'src/app/business/entities/security-entities.generated';
-import { TranslocoService } from '@jsverse/transloco';
-import { BaseFormCopy } from 'src/app/core/components/base-form/base-form copy';
-import { SpiderFormGroup } from 'src/app/core/components/spider-form-control/spider-form-control';
-import { ValidatorService } from 'src/app/business/services/validators/validation-rules';
-import { TranslateLabelsService } from 'src/app/business/services/translates/merge-labels';
-
-@Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-})
-export class LoginComponent extends BaseFormCopy implements OnInit {
-    loginFormGroup = new SpiderFormGroup<Login>({});
-
-    companyName: string;
-    showEmailSentDialog: boolean = false;
-    usersCanRegister: boolean = environment.usersCanRegister;
-
-    constructor(
-      protected override differs: KeyValueDiffers,
-      protected override http: HttpClient,
-      protected override messageService: SpiderMessageService, 
-      protected override changeDetectorRef: ChangeDetectorRef,
-      protected override router: Router, 
-      protected override route: ActivatedRoute,
-      protected override translocoService: TranslocoService,
-      protected override baseFormService: BaseFormService,
-      private translateLabelsService: TranslateLabelsService,
-      private validatorService: ValidatorService,
-      public layoutService: LayoutService, 
-      private authService: AuthService, 
-    ) { 
-      super(differs, http, messageService, changeDetectorRef, router, route, translocoService, baseFormService);
-    }
-
-    override ngOnInit(){
-        this.formGroup.setValidatorMethod = this.validatorService.setValidator;
-        this.formGroup.translateLabelMethod = this.translateLabelsService.translate;
-
-        this.initLoginFormGroup(new Login({}));
-    }
-
-    initLoginFormGroup(model: Login){
-      this.initFormGroup(this.loginFormGroup, this.formGroup, model, model.typeName, []);
-    }
-
-    companyNameChange(companyName: string){
-      this.companyName = companyName;
-    }
-
-    sendLoginVerificationEmail() {
-        let isFormGroupValid: boolean = this.checkFormGroupValidity();
-        if (isFormGroupValid == false) return;
-        this.authService.sendLoginVerificationEmail(this.loginFormGroup.getRawValue()).subscribe(()=>{
-            this.showEmailSentDialog = true;
-        });
-    }
-
-}
-
-""";
-        }
-
-        private string GetLoginComponentHtmlData()
-        {
-            return $$$"""
-<ng-container *transloco="let t">
-    @if (loginFormGroup != null) {
-        @if (showEmailSentDialog == false) {
-            <auth (onCompanyNameChange)="companyNameChange($event)">
-                <form [formGroup]="formGroup" style="margin-bottom: 16px;"> <!-- FT: We are not loading anything from the server here so we don't need defer block -->
-                    <div class="col-12" style="padding-left: 0; padding-right: 0; margin-bottom: 32px;">
-                        <spider-textbox [control]="control('email', loginFormGroup)"></spider-textbox>
-                    </div>
-
-                    <div style="display: flex; flex-direction: column; gap: 16px;">
-                        <p-button [label]="t('Login')" (onClick)="sendLoginVerificationEmail()" [outlined]="true" [style]="{width: '100%'}"></p-button>
-                        <p-button *ngIf="usersCanRegister" [label]="t('NewToLoyaltyJoinNow', {companyName: companyName})" routerLink="/auth/registration" [style]="{width: '100%'}"></p-button>
-                    </div>
-                </form>
-            </auth>
-        }
-        @else {
-            <login-verification [email]="loginFormGroup.controls.email.getRawValue()"></login-verification>
-        }
-    }
-    @else {
-        <!-- TODO FT: Add skeleton -->
-    }
-</ng-container>
-""";
-        }
 
         private string GetVercelJsonData()
         {
@@ -5478,184 +4483,6 @@ $gutter: 1rem; //for primeflex grid system
 """;
         }
 
-        private string GetAppModuleTsData()
-        {
-            return $$"""
-import { ErrorHandler, NgModule } from '@angular/core';
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { NotfoundComponent } from './core/components/notfound/notfound.component';
-import { AppLayoutModule } from './layout/components/layout/app.layout.module';
-import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
-import { MessagesModule } from 'primeng/messages';
-import { CoreModule } from './core/modules/core.module';
-import { SpiderMessageService } from './core/services/spider-message.service';
-import { SpiderErrorHandler } from './core/handlers/spider-error-handler';
-import { BrowserModule } from '@angular/platform-browser';
-import { CommonModule } from '@angular/common';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ApiService } from './business/services/api/api.service';
-import { NgxSpinnerModule, NgxSpinnerService } from 'ngx-spinner';
-import { SocialLoginModule, SocialAuthServiceConfig } from '@abacritt/angularx-social-login';
-import { GoogleLoginProvider } from '@abacritt/angularx-social-login';
-import { environment } from 'src/environments/environment';
-import { BusinessModule } from './business/business.module';
-import { SpiderTranslocoModule } from './core/modules/spider-transloco.module';
-
-@NgModule({
-  declarations: [
-    AppComponent,
-    NotfoundComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    AppLayoutModule,
-    MessagesModule,
-    ToastModule,
-    SocialLoginModule,
-    SpiderTranslocoModule.forRoot(),
-    NgxSpinnerModule.forRoot({ type: 'ball-clip-rotate-multiple' }),
-    BusinessModule,
-    CoreModule,
-  ],
-  providers: [
-    SpiderMessageService,
-    MessageService,
-    {
-    provide: ErrorHandler,
-    useClass: SpiderErrorHandler,
-    },
-    {
-      provide: 'SocialAuthServiceConfig',
-      useValue: {
-        autoLogin: false,
-        providers: [
-          {
-            id: GoogleLoginProvider.PROVIDER_ID,
-            provider: new GoogleLoginProvider(
-              environment.googleClientId, 
-              {
-                scopes: 'email',
-                oneTapEnabled: false,
-                prompt: 'none',
-                // plugin_name: 'the name of the Google OAuth project you created'
-              },
-            )
-          },
-        ],
-        onError: (err) => {
-          console.error(err);
-        }
-      } as SocialAuthServiceConfig
-    },
-    ApiService,
-    NgxSpinnerService,
-  ],
-  bootstrap: [AppComponent],
-})
-export class AppModule {}
-""";
-        }
-
-        private string GetAppComponentTsData()
-        {
-            return $$"""
-import { TranslocoService } from '@jsverse/transloco';
-import { Component, OnInit } from '@angular/core';
-import { PrimeNGConfig } from 'primeng/api';
-
-@Component({
-    selector: 'app-root',
-    templateUrl: './app.component.html'
-})
-export class AppComponent implements OnInit {
-
-    constructor(private primengConfig: PrimeNGConfig, private translocoService: TranslocoService) { }
-
-    ngOnInit() {
-        this.primengConfig.ripple = true; // FT: We are using ripple because of the android mobile devices
-
-        this.translocoService.selectTranslateObject('Primeng').subscribe((primengTranslations) => {
-            this.primengConfig.setTranslation(primengTranslations);
-          });
-    }
-}
-""";
-        }
-
-        private string GetAppComponentHtmlData()
-        {
-            return $$"""
-<!-- FT HACK: I don't know why, but translations on the layout component work only if wrap we everything with transloco -->
-<ng-container *transloco="let t">
-    <router-outlet></router-outlet>
-</ng-container>
-
-<ngx-spinner bdColor="rgba(0, 0, 0, 0.8)" size="medium" color="#fff" type="ball-clip-rotate-multiple" [fullScreen]="true"></ngx-spinner>
-<p-toast [breakpoints]="{ '600px': { width: '100%', right: '0', left: '0' } }"></p-toast>
-""";
-        }
-
-        private string GetAppRoutingModuleTsData()
-        {
-            return $$"""
-import { PreloadAllModules, RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './core/components/notfound/notfound.component';
-import { AppLayoutComponent } from "./layout/components/layout/app.layout.component";
-import { AuthGuard } from './core/guards/auth.guard';
-import { NotAuthGuard } from './core/guards/not-auth.guard';
-
-@NgModule({
-    imports: [
-        RouterModule.forRoot([
-            {
-                path: '', 
-                component: AppLayoutComponent,
-                children: [
-                    {
-                        path: '',
-                        loadChildren: () => import('./layout/components/dashboard/dashboard.module').then(m => m.DashboardModule),
-                        canActivate: [AuthGuard]
-                    },
-                    { 
-                        path: 'administration',
-                        loadChildren: () => import('./modules/administration/administration.module').then(m => m.AdministrationModule),
-                        canActivate: [AuthGuard]
-                    },
-                    { 
-                        path: '',
-                        loadChildren: () => import('./modules/notification/notification.module').then(m => m.NotificationModule),
-                        canActivate: [AuthGuard]
-                    },
-                ],
-            },
-            {
-                path: '',
-                children: [
-                    { 
-                        path: 'auth',
-                        loadChildren: () => import('./layout/components/auth/auth.module').then(m => m.AuthModule),
-                        canActivate: [NotAuthGuard],
-                    },
-                ],
-            },
-            { path: 'not-found', component: NotfoundComponent },
-            { path: '**', redirectTo: 'not-found' },
-        ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload', preloadingStrategy: PreloadAllModules })
-    ],
-    exports: [RouterModule]
-})
-export class AppRoutingModule {
-}
-""";
-        }
-
         private string GetBusinessModuleTsData()
         {
             return $$"""
@@ -5678,70 +4505,58 @@ export class BusinessModule {
 """;
         }
 
-        private string GetValidationRulesTsCode()
+        private string GetValidatorsTsCode()
         {
             return $$"""
-import { ValidationErrors } from "@angular/forms";
-import { SpiderFormArray, SpiderFormControl, SpiderValidatorFn } from "src/app/core/components/spider-form-control/spider-form-control";
 import { TranslocoService } from '@jsverse/transloco';
 import { Injectable } from '@angular/core';
-import { ValidatorServiceGenerated } from "./validation-rules.generated";
+import { ValidatorServiceGenerated } from "./validators.generated";
+import { ValidatorAbstractService, SpiderFormControl, SpiderValidatorFn } from '@playerty/spider';
 
 @Injectable({
     providedIn: 'root',
 })
-export class ValidatorService extends ValidatorServiceGenerated {
+export class ValidatorService extends ValidatorAbstractService {
 
     constructor(
         protected override translocoService: TranslocoService,
+        private validatorServiceGenerated: ValidatorServiceGenerated,
     ) {
-        super(translocoService)
+        super(translocoService);
     }
 
-    isArrayEmpty(control: SpiderFormControl): SpiderValidatorFn {
-        const validator: SpiderValidatorFn = (): ValidationErrors | null => {
-            const value = control.value;
-
-            const notEmptyRule = typeof value !== 'undefined' && value !== null && value.length !== 0;
-
-            const arrayValid = notEmptyRule;
-
-            return arrayValid ? null : { _ : this.translocoService.translate('NotEmpty')};
-        };
-        validator.hasNotEmptyRule = true;
-        control.required = true;
-        return validator;
+    override setValidator = (formControl: SpiderFormControl, className: string): SpiderValidatorFn => {
+        return this.validatorServiceGenerated.setValidator(formControl, className);
     }
 
-    notEmpty(control: SpiderFormControl): void {
-        const validator: SpiderValidatorFn = (): ValidationErrors | null => {
-            const value = control.value;
+}
+""";
+        }
 
-            const notEmptyRule = typeof value !== 'undefined' && value !== null && value !== '';
+        private string GetConfigServiceTsCode()
+        {
+            return $$"""
+import { Injectable } from "@angular/core";
+import { environment } from "src/environments/environment";
+import { ConfigBaseService } from '@playerty/spider';
 
-            const arrayValid = notEmptyRule;
+@Injectable({
+  providedIn: 'root',
+})
+export class ConfigService extends ConfigBaseService
+{
+    override production: boolean = environment.production;
+    override apiUrl: string = environment.apiUrl;
+    override frontendUrl: string = environment.frontendUrl;
+    override googleClientId: string = environment.googleClientId;
+    override companyName: string = environment.companyName;
 
-            return arrayValid ? null : { _ : this.translocoService.translate('NotEmpty')};
-        };
-        validator.hasNotEmptyRule = true;
-        control.required = true;
-        control.validator = validator;
-        control.updateValueAndValidity();
-    }
+    /* URLs */
+    administrationSlug: string = 'administration';
 
-    isFormArrayEmpty(control: SpiderFormArray): SpiderValidatorFn {
-        const validator: SpiderValidatorFn = (): ValidationErrors | null => {
-            const value = control;
-
-            const notEmptyRule = typeof value !== 'undefined' && value !== null && value.length !== 0;
-
-            const arrayValid = notEmptyRule;
-
-            return arrayValid ? null : { _ : this.translocoService.translate('NotEmpty')};
-        };
-        validator.hasNotEmptyRule = true;
-        control.required = true;
-        return validator;
+    constructor(
+    ) {
+        super();
     }
 }
 """;
@@ -5828,6 +4643,72 @@ export class ApiService extends ApiGeneratedService {
     }
 
 }
+""";
+        }
+
+        private string GetAuthServiceTsCode()
+        {
+            return $$"""
+import { Injectable, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
+import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { SocialAuthService } from '@abacritt/angularx-social-login';
+import { ConfigService } from '../config.service';
+import { adjustColor, AuthBaseService, getHtmlImgDisplayString64, InitCompanyAuthDialogDetails } from '@playerty/spider';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService extends AuthBaseService implements OnDestroy {
+
+  constructor(
+    protected override router: Router,
+    protected override http: HttpClient,
+    protected override externalAuthService: SocialAuthService,
+    protected override apiService: ApiService,
+    protected override config: ConfigService,
+    private route: ActivatedRoute,
+  ) {
+    super(router, http, externalAuthService, apiService, config);
+  }
+
+}
+""";
+        }
+
+        private string GetLayoutServiceTsCode()
+        {
+            return $$"""
+import { Injectable, OnDestroy } from '@angular/core';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { ConfigService } from '../config.service';
+import { getPrimengAutocompleteCodebookOptions, InitTopBarData, LayoutBaseService, PrimengOption, User } from '@playerty/spider';
+import { combineLatest, map } from 'rxjs';
+import { AuthService } from '../auth/auth.service';
+import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
+import { Router } from '@angular/router';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LayoutService extends LayoutBaseService implements OnDestroy {
+
+    constructor(
+        protected override apiService: ApiService,
+        protected override config: ConfigService,
+        protected override authService: AuthService,
+        private router: Router
+    ) {
+        super(apiService, config, authService);
+
+        this.initUnreadNotificationsCountForCurrentUser();
+    }
+
+}
+
 """;
         }
 
@@ -5955,6 +4836,108 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
     }
 }
 
+""";
+        }
+
+        private string GetGitIgnoreData()
+        {
+            return $$"""
+# C#
+**/.vs/
+**/*.exe
+**/*.dll
+**/*.log
+**/bin/
+**/obj/
+**/*.user
+**/*.suo
+**/*.pdb
+
+# Angular
+**/dist/
+**/tmp/
+**/out-tsc/
+**/bazel-out/
+**/.angular/cache/
+
+# Node
+**/node_modules/
+**/npm-debug.log
+**/yarn-error.log
+**/*.env
+**/*.env.local
+
+# IDEs and editors
+**/.idea/
+**/.project
+**/.classpath
+**/.c9/
+**/*.launch
+**/.settings/
+**/*.sublime-workspace
+
+# Visual Studio Code
+**/.vscode/*
+**/!.vscode/settings.json
+**/!.vscode/tasks.json
+**/!.vscode/launch.json
+**/!.vscode/extensions.json
+**/.history/*
+
+# Miscellaneous
+**/.sass-cache/
+**/connect.lock
+**/coverage
+**/libpeerconnection.log
+**/testem.log
+**/typings
+**/*.pid
+**/*.bak
+**/*.tmp
+
+# System files
+**/.DS_Store
+**/Thumbs.db
+""";
+        }
+
+        private string GetMitLicenseData()
+        {
+            return $$"""
+MIT License
+
+Copyright (c) 2024 Filip Trivan
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+""";
+        }
+
+        private string GetLogoDarkSvgData()
+        {
+            return $$"""
+<svg width="85" height="63" viewBox="0 0 85 63" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M27.017 30.3135C27.0057 30.5602 27 30.8085 27 31.0581C27 39.9267 34.1894 47.1161 43.0581 47.1161C51.9267 47.1161 59.1161 39.9267 59.1161 31.0581C59.1161 30.8026 59.1102 30.5485 59.0984 30.2959C60.699 30.0511 62.2954 29.7696 63.8864 29.4515L64.0532 29.4181C64.0949 29.9593 64.1161 30.5062 64.1161 31.0581C64.1161 42.6881 54.6881 52.1161 43.0581 52.1161C31.428 52.1161 22 42.6881 22 31.0581C22 30.514 22.0206 29.9747 22.0612 29.441L22.1136 29.4515C23.7428 29.7773 25.3777 30.0646 27.017 30.3135ZM52.4613 18.0397C49.8183 16.1273 46.5698 15 43.0581 15C39.54 15 36.2862 16.1313 33.6406 18.05C31.4938 17.834 29.3526 17.5435 27.221 17.1786C31.0806 12.7781 36.7449 10 43.0581 10C49.3629 10 55.0207 12.7708 58.8799 17.1612C56.7487 17.5285 54.6078 17.8214 52.4613 18.0397ZM68.9854 28.4316C69.0719 29.2954 69.1161 30.1716 69.1161 31.0581C69.1161 45.4495 57.4495 57.1161 43.0581 57.1161C28.6666 57.1161 17 45.4495 17 31.0581C17 30.1793 17.0435 29.3108 17.1284 28.4544L12.2051 27.4697C12.0696 28.6471 12 29.8444 12 31.0581C12 48.211 25.9052 62.1161 43.0581 62.1161C60.211 62.1161 74.1161 48.211 74.1161 31.0581C74.1161 29.8366 74.0456 28.6317 73.9085 27.447L68.9854 28.4316ZM69.6705 15.0372L64.3929 16.0927C59.6785 9.38418 51.8803 5 43.0581 5C34.2269 5 26.4218 9.39306 21.7089 16.1131L16.4331 15.0579C21.867 6.03506 31.7578 0 43.0581 0C54.3497 0 64.234 6.02581 69.6705 15.0372Z" fill="black"/>
+<mask id="path-2-inside-1" fill="white">
+<path d="M42.5 28.9252C16.5458 30.2312 0 14 0 14C0 14 26 22.9738 42.5 22.9738C59 22.9738 85 14 85 14C85 14 68.4542 27.6193 42.5 28.9252Z"/>
+</mask>
+<path d="M0 14L5.87269 -3.01504L-12.6052 26.8495L0 14ZM42.5 28.9252L41.5954 10.948L42.5 28.9252ZM85 14L96.4394 27.8975L79.1273 -3.01504L85 14ZM0 14C-12.6052 26.8495 -12.5999 26.8546 -12.5946 26.8598C-12.5928 26.8617 -12.5874 26.8669 -12.5837 26.8706C-12.5762 26.8779 -12.5685 26.8854 -12.5605 26.8932C-12.5445 26.9088 -12.5274 26.9254 -12.5092 26.943C-12.4729 26.9782 -12.4321 27.0174 -12.387 27.0605C-12.2969 27.1467 -12.1892 27.2484 -12.0642 27.3646C-11.8144 27.5968 -11.4949 27.8874 -11.1073 28.2273C-10.3332 28.9063 -9.28165 29.7873 -7.96614 30.7967C-5.34553 32.8073 -1.61454 35.3754 3.11693 37.872C12.5592 42.8544 26.4009 47.7581 43.4046 46.9025L41.5954 10.948C32.6449 11.3983 25.2366 8.83942 19.9174 6.03267C17.2682 4.63475 15.2406 3.22667 13.9478 2.23478C13.3066 1.74283 12.8627 1.366 12.6306 1.16243C12.5151 1.06107 12.4538 1.00422 12.4485 0.999363C12.446 0.996981 12.4576 1.00773 12.4836 1.03256C12.4966 1.04498 12.5132 1.06094 12.5334 1.08055C12.5436 1.09035 12.5546 1.10108 12.5665 1.11273C12.5725 1.11855 12.5787 1.12461 12.5852 1.13091C12.5884 1.13405 12.5934 1.13895 12.595 1.14052C12.6 1.14548 12.6052 1.15049 0 14ZM43.4046 46.9025C59.3275 46.1013 72.3155 41.5302 81.3171 37.1785C85.8337 34.9951 89.4176 32.8333 91.9552 31.151C93.2269 30.3079 94.2446 29.5794 94.9945 29.0205C95.3698 28.7409 95.6788 28.503 95.92 28.3138C96.0406 28.2192 96.1443 28.1366 96.2309 28.067C96.2742 28.0321 96.3133 28.0005 96.348 27.9723C96.3654 27.9581 96.3817 27.9448 96.3969 27.9323C96.4045 27.9261 96.4119 27.9201 96.419 27.9143C96.4225 27.9114 96.4276 27.9072 96.4294 27.9057C96.4344 27.9016 96.4394 27.8975 85 14C73.5606 0.102497 73.5655 0.0985097 73.5703 0.0945756C73.5718 0.0933319 73.5765 0.0894438 73.5795 0.0869551C73.5856 0.0819751 73.5914 0.077195 73.597 0.0726136C73.6082 0.0634509 73.6185 0.055082 73.6278 0.0474955C73.6465 0.0323231 73.6614 0.0202757 73.6726 0.0112606C73.695 -0.00676378 73.7026 -0.0126931 73.6957 -0.00726687C73.6818 0.00363418 73.6101 0.0596753 73.4822 0.154983C73.2258 0.346025 72.7482 0.691717 72.0631 1.14588C70.6873 2.05798 68.5127 3.38259 65.6485 4.7672C59.8887 7.55166 51.6267 10.4432 41.5954 10.948L43.4046 46.9025ZM85 14C79.1273 -3.01504 79.1288 -3.01557 79.1303 -3.01606C79.1306 -3.01618 79.1319 -3.01664 79.1326 -3.01688C79.134 -3.01736 79.135 -3.0177 79.1356 -3.01791C79.1369 -3.01834 79.1366 -3.01823 79.1347 -3.01759C79.131 -3.01633 79.1212 -3.01297 79.1055 -3.00758C79.0739 -2.99681 79.0185 -2.97794 78.9404 -2.95151C78.7839 -2.89864 78.5366 -2.81564 78.207 -2.7068C77.5472 -2.48895 76.561 -2.16874 75.3165 -1.78027C72.8181 -1.00046 69.3266 0.039393 65.3753 1.07466C57.0052 3.26771 48.2826 4.97383 42.5 4.97383V40.9738C53.2174 40.9738 65.7448 38.193 74.4997 35.8992C79.1109 34.691 83.1506 33.4874 86.0429 32.5846C87.4937 32.1318 88.6676 31.7509 89.4942 31.478C89.9077 31.3414 90.2351 31.2317 90.4676 31.1531C90.5839 31.1138 90.6765 31.0823 90.7443 31.0591C90.7783 31.0475 90.806 31.038 90.8275 31.0306C90.8382 31.0269 90.8473 31.0238 90.8549 31.0212C90.8586 31.0199 90.862 31.0187 90.865 31.0177C90.8665 31.0172 90.8684 31.0165 90.8691 31.0163C90.871 31.0156 90.8727 31.015 85 14ZM42.5 4.97383C36.7174 4.97383 27.9948 3.26771 19.6247 1.07466C15.6734 0.039393 12.1819 -1.00046 9.68352 -1.78027C8.43897 -2.16874 7.4528 -2.48895 6.79299 -2.7068C6.46337 -2.81564 6.21607 -2.89864 6.05965 -2.95151C5.98146 -2.97794 5.92606 -2.99681 5.89453 -3.00758C5.87876 -3.01297 5.86897 -3.01633 5.86528 -3.01759C5.86344 -3.01823 5.86312 -3.01834 5.86435 -3.01791C5.86497 -3.0177 5.86597 -3.01736 5.86736 -3.01688C5.86805 -3.01664 5.86939 -3.01618 5.86973 -3.01606C5.87116 -3.01557 5.87269 -3.01504 0 14C-5.87269 31.015 -5.87096 31.0156 -5.86914 31.0163C-5.8684 31.0165 -5.86647 31.0172 -5.86498 31.0177C-5.86201 31.0187 -5.85864 31.0199 -5.85486 31.0212C-5.84732 31.0238 -5.83818 31.0269 -5.82747 31.0306C-5.80603 31.038 -5.77828 31.0475 -5.74435 31.0591C-5.67649 31.0823 -5.58388 31.1138 -5.46761 31.1531C-5.23512 31.2317 -4.9077 31.3414 -4.49416 31.478C-3.66764 31.7509 -2.49366 32.1318 -1.04289 32.5846C1.84938 33.4874 5.88908 34.691 10.5003 35.8992C19.2552 38.193 31.7826 40.9738 42.5 40.9738V4.97383Z" fill="black" mask="url(#path-2-inside-1)"/>
+</svg>
 """;
         }
 
