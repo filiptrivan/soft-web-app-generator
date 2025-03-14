@@ -27,6 +27,22 @@ namespace Spider.DesktopApp.Generator
                         {
                             new SpiderFolder
                             {
+                                Name = "plop",
+                                ChildFolders =
+                                {
+                                    new SpiderFolder
+                                    {
+                                        Name = "output"
+                                    }
+                                },
+                                Files =
+                                {
+                                    new SpiderFile { Name = "spider-form-html-template.hbs", Data = GetSpiderFormHtmlTemplateHbsData() },
+                                    new SpiderFile { Name = "spider-form-ts-template.hbs", Data = GetSpiderFormTsTemplateHbsData() },
+                                }
+                            },
+                            new SpiderFolder
+                            {
                                 Name = "src",
                                 ChildFolders =
                                 {
@@ -270,27 +286,24 @@ namespace Spider.DesktopApp.Generator
                                                 Name = "i18n",
                                                 Files =
                                                 {
-                                                    new SpiderFile { Name = "en.json", Data = GetTranslocoEnJsonCode() },
-                                                    new SpiderFile { Name = "sr-Latn-RS.json", Data = GetTranslocoSrLatnRSJsonCode() },
                                                     new SpiderFile { Name = "en.generated.json", Data = "" },
+                                                    new SpiderFile { Name = "en.json", Data = GetTranslocoEnJsonCode() },
                                                     new SpiderFile { Name = "sr-Latn-RS.generated.json", Data = "" },
+                                                    new SpiderFile { Name = "sr-Latn-RS.json", Data = GetTranslocoSrLatnRSJsonCode() },
                                                 }
                                             },
                                             new SpiderFolder
                                             {
-                                                Name = "primeng",
+                                                Name = "images",
                                                 ChildFolders =
                                                 {
                                                     new SpiderFolder
                                                     {
-                                                        Name = "styles", // FT: Copy
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "images",
+                                                        Name = "logo",
                                                         Files =
                                                         {
-                                                            new SpiderFile { Name = "logo-dark.svg", Data = GetLogoDarkSvgData() }
+                                                            new SpiderFile { Name = "favicon.ico", Data = GetFaviconIcoData() },
+                                                            new SpiderFile { Name = "logo.svg", Data = GetLogoSvgData() },
                                                         }
                                                     }
                                                 }
@@ -298,7 +311,7 @@ namespace Spider.DesktopApp.Generator
                                         },
                                         Files =
                                         {
-                                            new SpiderFile { Name = "shared.scss", Data = GetSharedScssCode() },
+                                            new SpiderFile { Name = "shared.scss", Data = "" },
                                             new SpiderFile { Name = "styles.scss", Data = GetStylesScssCode() },
                                         }
                                     },
@@ -323,7 +336,8 @@ namespace Spider.DesktopApp.Generator
                         {
                             new SpiderFile { Name = ".editorconfig", Data = GetEditOrConfigData() },
                             new SpiderFile { Name = "angular.json", Data = GetAngularJsonData(appName) },
-                            new SpiderFile { Name = "package.json", Data = GetPackageData(appName) },
+                            new SpiderFile { Name = "package.json", Data = GetPackageJsonData(appName) },
+                            new SpiderFile { Name = "plopfile.js", Data = GetPlopFileJsData() },
                             new SpiderFile { Name = "README.md", Data = "" },
                             new SpiderFile { Name = "tsconfig.app.json", Data = GetTsConfigAppJsonData() },
                             new SpiderFile { Name = "tsconfig.json", Data = GetTsConfigJsonData() },
@@ -361,7 +375,6 @@ namespace Spider.DesktopApp.Generator
                                                 {
                                                     new SpiderFile { Name = "NotificationDTO.cs", Data = GetNotificationDTOCsData(appName) },
                                                     new SpiderFile { Name = "NotificationSaveBodyDTO.cs", Data = GetNotificationSaveBodyDTOCsData(appName) },
-                                                    new SpiderFile { Name = "UserExtendedSaveBodyDTO.cs", Data = GetUserExtendedSaveBodyDTOCsData(appName) },
                                                 }
                                             },
                                             new SpiderFolder
@@ -389,9 +402,8 @@ namespace Spider.DesktopApp.Generator
                                         Name = "Services",
                                         Files =
                                         {
-                                            new SpiderFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
-                                            new SpiderFile { Name = $"NotificationService.cs", Data = GetNotificationServiceCsData(appName) },
                                             new SpiderFile { Name = $"AuthorizationBusinessService.cs", Data = GetAuthorizationServiceCsData(appName) },
+                                            new SpiderFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
                                         }
                                     },
                                     new SpiderFolder
@@ -412,7 +424,6 @@ namespace Spider.DesktopApp.Generator
                                 Files =
                                 {
                                     new SpiderFile { Name = $"{appName}ApplicationDbContext.cs", Data = GetInfrastructureApplicationDbContextData(appName) },
-                                    new SpiderFile { Name = "GeneratorSettings.cs", Data = GetInfrastructureGeneratorSettingsData(appName) },
                                     new SpiderFile { Name = $"{appName}.Infrastructure.csproj", Data = GetInfrastructureCsProjData(appName) },
                                 }
                             },
@@ -423,9 +434,19 @@ namespace Spider.DesktopApp.Generator
                                 {
                                     new SpiderFolder
                                     {
-                                        Name = "Terms",
+                                        Name = "FluentValidation",
                                         Files =
                                         {
+                                            new SpiderFile { Name = "TranslatePropertiesConfiguration.cs", Data = GetTranslatePropertiesConfigurationCsData(appName) },
+                                        }
+                                    },
+                                    new SpiderFolder
+                                    {
+                                        Name = "Resources",
+                                        Files =
+                                        {
+                                            new SpiderFile { Name = "Terms.Designer.cs", Data = GetTermsDesignerCsData(appName) },
+                                            new SpiderFile { Name = "Terms.resx", Data = GetTermsResxData() },
                                             new SpiderFile { Name = "TermsGenerated.Designer.cs", Data = GetTermsGeneratedDesignerCsData(appName) },
                                             new SpiderFile { Name = "TermsGenerated.resx", Data = GetTermsGeneratedResxData() },
                                             new SpiderFile { Name = "TermsGenerated.sr-Latn-RS.cs", Data = GetTermsGeneratedSrLatnRSResxData() },
@@ -1789,6 +1810,251 @@ export class AppModule {}
 
         #region NET
 
+        private string GetTranslatePropertiesConfigurationCsData(string appName)
+        {
+            return $$"""
+using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using {{appName}}.Shared.Resources;
+using Spider.Shared.Extensions;
+using Spider.Shared.Resources;
+
+namespace {{appName}}.Shared.FluentValidation
+{
+    public class TranslatePropertiesConfiguration : IConfigureOptions<MvcOptions>
+    {
+        public TranslatePropertiesConfiguration()
+        {
+
+        }
+
+        public void Configure(MvcOptions options)
+        {
+            ValidatorOptions.Global.DisplayNameResolver = (type, memberInfo, expression) =>
+            {
+                string translatedPropertyName =
+                    TermsGenerated.ResourceManager.GetTranslation(memberInfo.Name) ??
+                    Terms.ResourceManager.GetTranslation(memberInfo.Name) ??
+                    SharedTerms.ResourceManager.GetTranslation(memberInfo.Name);
+
+                return translatedPropertyName;
+            };
+        }
+    }
+}
+
+""";
+        }
+
+        private string GetTermsDesignerCsData(string appName)
+        {
+            return $$"""
+//------------------------------------------------------------------------------
+// <auto-generated>
+//     This code was generated by a tool.
+//     Runtime Version:4.0.30319.42000
+//
+//     Changes to this file may cause incorrect behavior and will be lost if
+//     the code is regenerated.
+// </auto-generated>
+//------------------------------------------------------------------------------
+
+namespace {{appName}}.Shared.Resources {
+    using System;
+
+
+    /// <summary>
+    ///   A strongly-typed resource class, for looking up localized strings, etc.
+    /// </summary>
+    // This class was auto-generated by the StronglyTypedResourceBuilder
+    // class via a tool like ResGen or Visual Studio.
+    // To add or remove a member, edit your .ResX file then rerun ResGen
+    // with the /str option, or rebuild your VS project.
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    public class Terms {
+
+        private static global::System.Resources.ResourceManager resourceMan;
+
+        private static global::System.Globalization.CultureInfo resourceCulture;
+
+        [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
+        internal Terms() {
+        }
+
+        /// <summary>
+        ///   Returns the cached ResourceManager instance used by this class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Resources.ResourceManager ResourceManager {
+            get {
+                if (object.ReferenceEquals(resourceMan, null)) {
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("{{appName}}.Shared.Resources.Terms", typeof(Terms).Assembly);
+                    resourceMan = temp;
+                }
+                return resourceMan;
+            }
+        }
+
+        /// <summary>
+        ///   Overrides the current thread's CurrentUICulture property for all
+        ///   resource lookups using this strongly typed resource class.
+        /// </summary>
+        [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
+        public static global::System.Globalization.CultureInfo Culture {
+            get {
+                return resourceCulture;
+            }
+            set {
+                resourceCulture = value;
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Test {
+            get {
+                return ResourceManager.GetString("Test", resourceCulture);
+            }
+        }
+    }
+}
+
+""";
+        }
+
+        private string GetTermsResxData()
+        {
+            return $$"""
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+
+    Version 2.0
+
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+
+    Example:
+
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and businessSystemd with the 
+    mimetype set.
+
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Test" xml:space="preserve">
+    <value></value>
+  </data>
+</root>
+""";
+        }
+
         private string GetTermsGeneratedDesignerCsData(string appName)
         {
             return $$"""
@@ -2031,12 +2297,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace {{appName}}.Business.Entities
 {
-    [UIDoNotGenerate]
-    [TranslateSingularSrLatnRS("Korisnik")]
     [Index(nameof(Email), IsUnique = true)]
     public class UserExtended : BusinessObject<long>, IUser
     {
-        [TranslateSingularSrLatnRS("Email")]
+        [UIDoNotGenerate]
+        [UIControlWidth("col-12")]
         [DisplayName]
         [CustomValidator("EmailAddress()")]
         [StringLength(70, MinimumLength = 5)]
@@ -2047,6 +2312,7 @@ namespace {{appName}}.Business.Entities
 
         public bool? IsDisabled { get; set; }
 
+        [ExcludeServiceMethodsFromGeneration]
         public virtual List<Role> Roles { get; } = new(); // M2M
 
         public virtual List<Notification> Notifications { get; } = new(); // M2M
@@ -2321,23 +2587,6 @@ namespace {{appName}}.Business.DTO
     public partial class NotificationSaveBodyDTO
     {
         public bool IsMarkedAsRead { get; set; }
-    }
-}
-""";
-        }
-
-        private string GetUserExtendedSaveBodyDTOCsData(string appName)
-        {
-            return $$"""
-namespace {{appName}}.Business.DTO
-{
-    
-    public partial class UserExtendedSaveBodyDTO
-    {
-        /// <summary>
-        /// Needs to have it here, because in generated business service, we don't have reference to the security service
-        /// </summary>
-        public List<int> SelectedRolesIds { get; set; }
     }
 }
 """;
@@ -2873,22 +3122,6 @@ namespace {{appName}}.WebAPI.DI
 """;
         }
 
-        private string GetInfrastructureGeneratorSettingsData(string appName)
-        {
-            return $$"""
-using Spider.Shared.Attributes;
-
-namespace {{appName}}.Infrastructure.GeneratorSettings
-{
-    public class GeneratorSettings
-    {
-        [Output("true")]
-        public bool DbContextGenerator { get; set; }
-    }
-}
-""";
-        }
-
         private string GetBusinessSettingsCsData(string appName)
         {
             return $$"""
@@ -2973,51 +3206,6 @@ namespace {{appName}}.Business.GeneratorSettings
 """;
         }
 
-        private string GetNotificationServiceCsData(string appName)
-        {
-            return $$"""
-using {{appName}}.Business.Entities;
-using Spider.Security.Interface;
-using Spider.Shared.Extensions;
-using Spider.Shared.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace {{appName}}.Business.Services
-{
-    public class NotificationService
-    {
-        private readonly IApplicationDbContext _context;
-
-        public NotificationService(IApplicationDbContext context)
-        {
-            _context = context;
-        }
-
-        public async Task SendNotification(UserExtended user, string notificationTitle, string notificationDescription)
-        {
-            await _context.WithTransactionAsync(async () =>
-            {
-                Notification notification = new Notification
-                {
-                    Title = notificationTitle,
-                    Description = notificationDescription,
-                };
-
-                user.Notifications.Add(notification);
-
-                await _context.SaveChangesAsync();
-            });
-        }
-
-    }
-}
-""";
-        }
-
         private string GetAuthorizationServiceCsData(string appName)
         {
             return $$"""
@@ -3032,7 +3220,11 @@ namespace {{appName}}.Business.Services
         private readonly IApplicationDbContext _context;
         private readonly AuthenticationService _authenticationService;
 
-        public AuthorizationBusinessService(IApplicationDbContext context, AuthenticationService authenticationService, BlobContainerClient blobContainerClient)
+        public AuthorizationBusinessService(
+            IApplicationDbContext context, 
+            AuthenticationService authenticationService, 
+            BlobContainerClient blobContainerClient
+        )
             : base(context, authenticationService, blobContainerClient)
         {
             _context = context;
@@ -3272,7 +3464,6 @@ namespace {{appName}}.Business.DataMappers
     "outDir": "./out-tsc/spec",
     "types": [
       "jasmine",
-      "@angular/localize"
     ]
   },
   "include": [
@@ -3292,7 +3483,7 @@ namespace {{appName}}.Business.DataMappers
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@core/*": ["app/core/*"]
+      "@playerty/spider": ["../../../SpiderFramework/spider-framework/Angular/projects/spider/src/public-api"]
     },
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
@@ -3306,27 +3497,25 @@ namespace {{appName}}.Business.DataMappers
     "downlevelIteration": true,
     "importHelpers": true,
     "module": "ES2022",
-    // "module": "es2020",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "target": "ES2022",
-    // "target": "es5",
     "resolveJsonModule": true,
     "useDefineForClassFields": false,
     "lib": [
       "ES2022",
-      // "es2021",
       "dom"
     ]
   },
   "exclude": ["node_modules", "**/node_modules/*"],
   "angularCompilerOptions": {
+    "preserveSymlinks": true,
     "enableI18nLegacyMessageIdFormat": false,
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
-    "strictInputTypes": true,
+    "strictInputTypes": true
   }
 }
 
@@ -3342,7 +3531,6 @@ namespace {{appName}}.Business.DataMappers
   "compilerOptions": {
     "outDir": "./out-tsc/app",
     "types": [
-      "@angular/localize"
     ]
   },
   "files": [
@@ -3356,64 +3544,104 @@ namespace {{appName}}.Business.DataMappers
 """;
         }
 
-        private string GetPackageData(string projectName)
+        private string GetPackageJsonData(string appName)
         {
             return $$"""
 {
-  "name": "{{projectName.ToLower()}}.spa",
-  "version": "0.0.0",
-  "scripts": {
-    "ng": "ng",
-    "start": "ng serve --port=4200 --open --configuration=development",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "i18n:extract": "transloco-keys-manager extract --langs en sr-Latn-RS",
-    "i18n:find": "transloco-keys-manager find"
-  },
-  "private": true,
-  "dependencies": {
-    "@abacritt/angularx-social-login": "2.2.0",
-    "@angular/animations": "17.0.0",
-    "@angular/cdk": "17.2.0",
-    "@angular/common": "17.0.0",
-    "@angular/compiler": "17.0.0",
-    "@angular/core": "17.0.0",
-    "@angular/forms": "17.0.0",
-    "@angular/platform-browser": "17.0.0",
-    "@angular/platform-browser-dynamic": "17.0.0",
-    "@angular/router": "17.0.0",
-    "@jsverse/transloco": "7.5.0",
-    "angularx-qrcode": "17.0.1",
-    "file-saver": "^2.0.5",
-    "json-parser": "^3.1.2",
-    "json.date-extensions": "^1.2.2",
-    "ngx-spinner": "^16.0.2",
-    "primeflex": "^3.3.1",
-    "primeicons": "^7.0.0",
-    "primeng": "^17.18.9",
-    "quill": "^2.0.2",
-    "rxjs": "~7.8.0",
-    "tslib": "^2.3.0",
-    "webpack-dev-server": "^4.15.1",
-    "zone.js": "^0.14.10"
-  },
-  "devDependencies": {
-    "@angular-devkit/build-angular": "17.0.7",
-    "@angular/cli": "17.0.7",
-    "@angular/compiler-cli": "17.0.0",
-    "@angular/localize": "17.0.0",
-    "@jsverse/transloco-keys-manager": "^5.1.0",
-    "@types/jasmine": "~5.1.0",
-    "jasmine-core": "~5.1.0",
-    "karma": "~6.4.0",
-    "karma-chrome-launcher": "~3.2.0",
-    "karma-coverage": "~2.2.0",
-    "karma-jasmine": "~5.1.0",
-    "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "~5.2.2"
-  }
+    "name": "{{appName.ToLower()}}.spa",
+    "version": "0.0.0",
+    "scripts": {
+        "ng": "ng",
+        "start": "ng serve --port=4200 --open --configuration=development",
+        "build": "ng build",
+        "watch": "ng build --watch --configuration development",
+        "test": "ng test",
+        "i18n:extract": "transloco-keys-manager extract --langs en sr-Latn-RS",
+        "i18n:find": "transloco-keys-manager find"
+    },
+    "private": true,
+    "dependencies": {
+        "@abacritt/angularx-social-login": "2.2.0",
+        "@angular/animations": "17.3.12",
+        "@angular/cdk": "17.3.10",
+        "@angular/common": "17.3.12",
+        "@angular/compiler": "17.3.12",
+        "@angular/core": "17.3.12",
+        "@angular/forms": "17.3.12",
+        "@angular/platform-browser": "17.3.12",
+        "@angular/platform-browser-dynamic": "17.3.12",
+        "@angular/router": "17.3.12",
+        "@jsverse/transloco": "7.5.0",
+        "@jsverse/transloco-preload-langs": "7.0.1",
+        "@playerty/spider": "latest",
+        "file-saver": "2.0.5",
+        "json-parser": "3.1.2",
+        "ngx-spinner": "17.0.0",
+        "primeflex": "3.3.1",
+        "primeicons": "7.0.0",
+        "primeng": "17.18.9",
+        "quill": "2.0.2",
+        "rxjs": "7.8.1",
+        "tslib": "2.3.0",
+        "webpack-dev-server": "4.15.1",
+        "zone.js": "0.14.10"
+    },
+    "devDependencies": {
+        "@angular-devkit/build-angular": "17.3.11",
+        "@angular/cli": "17.3.11",
+        "@angular/compiler-cli": "17.3.12",
+        "@jsverse/transloco-keys-manager": "5.1.0",
+        "@types/jasmine": "5.1.0",
+        "jasmine-core": "5.1.0",
+        "karma": "6.4.0",
+        "karma-chrome-launcher": "3.2.0",
+        "karma-coverage": "2.2.0",
+        "karma-jasmine": "5.1.0",
+        "karma-jasmine-html-reporter": "2.1.0",
+        "typescript": "5.2.2"
+    }
 }
+""";
+        }
+
+        private string GetPlopFileJsData()
+        {
+            return $$$"""
+module.exports = function (plop) {
+  plop.setHelper('toKebab', function (text) {
+      return text
+        .replace(/([a-z])([A-Z])/g, '$1-$2')
+        .replace(/\s+/g, '-')
+        .toLowerCase();
+  });
+
+  plop.setHelper('firstCharToLower', function (text) {
+      return text.charAt(0).toLowerCase() + text.slice(1);
+  });
+
+  plop.setGenerator('generate-form-component', {
+    description: 'Generate form component',
+    prompts: [
+      {
+        type: 'input',
+        name: 'filename',
+        message: 'Write name of the entity: ',
+      }
+    ],
+    actions: [
+      {
+        type: 'add',
+        path: 'plop/output/{{toKebab filename}}-details.component.html',
+        templateFile: 'plop/spider-form-html-template.hbs',
+      },
+      {
+        type: 'add',
+        path: 'plop/output/{{toKebab filename}}-details.component.ts',
+        templateFile: 'plop/spider-form-ts-template.hbs',
+      },
+    ],
+  });
+};
 """;
         }
 
@@ -3446,6 +3674,7 @@ namespace {{appName}}.Business.DataMappers
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+            "preserveSymlinks": true,
             "outputPath": "dist/{{appName}}.SPA",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -3493,7 +3722,7 @@ namespace {{appName}}.Business.DataMappers
               "sourceMap": true,
 			  "outputHashing": "all",
 			  "namedChunks": true,
-              "aot": true
+              "aot": false
             }
           },
           "defaultConfiguration": "production"
@@ -3553,7 +3782,7 @@ root = true
 [*]
 charset = utf-8
 indent_style = space
-indent_size = 2
+indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
 
@@ -3569,8 +3798,6 @@ trim_trailing_whitespace = false
         private string GetMainTsData()
         {
             return $$"""
-/// <reference types="@angular/localize" />
-
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 import { AppModule } from './app/app.module';
@@ -3593,7 +3820,7 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   <meta name="author" content="{{appName.ToTitleCase()}}">
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="./assets/demo/images/logo/favicon.ico">
+  <link rel="icon" type="image/x-icon" href="./assets/images/logo/favicon.ico">
 </head>
 <body>
   <app-root></app-root>
@@ -3605,620 +3832,41 @@ platformBrowserDynamic().bootstrapModule(AppModule)
         private string GetEnvironmentTsCode(string appName, string primaryColor)
         {
             return $$"""
-import { HttpHeaders, HttpParams } from "@angular/common/http";
-
+// FT: In environment putting only the variables which are different in dev and prod, and which the client would change ocasionaly so we don't need to redeploy the app
 export const environment = {
-    production: false,
-    apiUrl: 'https://localhost:44388/api',
-    frontendUrl: 'http://localhost:4200',
-    googleAuth: true,
-    googleClientId: '24372003240-44eprq8dn4s0b5f30i18tqksep60uk5u.apps.googleusercontent.com',
-    companyName: '{{appName.ToTitleCase()}}',
-    primaryColor: '{{primaryColor}}',
-    usersCanRegister: true,
-    httpOptions: {
-      // headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-    },
-    httpSkipSpinnerOptions: {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      params: new HttpParams().set('X-Skip-Spinner', 'true')
-    },
-
-    /* URLs */
-    loginSlug: 'auth/login',
-    administrationSlug: 'administration',
-
-    /* Local storage */
-    accessTokenKey: 'access_token',
-    refreshTokenKey: 'refresh_token',
-    browserIdKey: 'browser_id',
-
-    /* Query params */
-
-  };
+  production: false,
+  apiUrl: 'https://localhost:44388/api',
+  frontendUrl: 'http://localhost:4200',
+  googleClientId: '24372003240-44eprq8dn4s0b5f30i18tqksep60uk5u.apps.googleusercontent.com',
+  companyName: '{{appName.ToTitleCase()}}',
+  primaryColor: '{{primaryColor}}',
+};
 """;
         }
 
         private string GetStylesScssCode()
         {
             return $$"""
-/* You can add global styles to this file, and also import other style files */
-
-$gutter: 1rem; //for primeflex grid system
-@import "./primeng/styles/layout/layout.scss";
-
-/* PrimeNG */
-@import "./primeng/styles/themes/saga/saga-blue/theme.scss";
+//#region PrimeNG
 
 @import "../../node_modules/primeng/resources/primeng.min.css";
+$gutter: 1rem; // FT: For primeflex grid system, it needs to be rigth above primeflex import!
 @import "../../node_modules/primeflex/primeflex.scss";
 @import "../../node_modules/primeicons/primeicons.css";
-// PrimeNG editor
+/* PrimeNG editor */
 @import "../../node_modules/quill/dist/quill.core.css";
 @import "../../node_modules/quill/dist/quill.snow.css";
 
+//#endregion
+
+//#region Spider
+
+@import "../../../../../SpiderFramework/spider-framework/Angular/projects/spider/src/lib/styles/styles.scss";
+// @import "../../node_modules/@playerty/spider/styles/styles/styles.scss";
+
+//#endregion
 
 @import "shared.scss";
-""";
-        }
-
-        private string GetSharedScssCode()
-        {
-            return $$"""
-@import './primeng/styles/layout/variables';
-
-.table-header {
-	display: flex;
-	justify-content: space-between; 
-	align-items: center;
-}
-
-@media (max-width: 640px) {
-	.table-header {
-		display: flex;
-		flex-direction: column;
-		align-items: start;
-		gap: 14px;
-	}
-}
-
-.c-dashboard-item {
-	position: relative;
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	border: solid 1px #e0e0e0;
-	border-radius: 5px;
-	padding: 20px 30px;
-	flex-grow:1;
-
-	&__icon {
-		margin-bottom: 10px;
-		font-size: 3.2em;
-	}
-	&__title {
-		font-size: 1.1em;
-		text-align: center;
-		text-decoration: none !important;
-	}
-	&__bullets {
-
-	}
-	&__bullet {
-
-	}
-
-	&__bg {
-		position: absolute;
-		top: 0px;
-		bottom: 0px;
-		left: 0px;
-		right: 0px;
-		background-color: #fff;
-		z-index: -5;
-
-		&-icon {
-			position: absolute;
-			bottom: 0px;
-			right: 30px;
-			font-size: 15em;
-			//transform: rotate(-45deg);
-			opacity: 0.04;
-			text-decoration: none !important;
-		}
-	}
-
-	&--eo {
-		min-height: 200px;
-	}
-	&--codebooks {
-		min-height: 100px;
-		cursor: pointer;
-	}
-	&--home {
-		min-height: 160px;
-		cursor: pointer;
-    z-index: 1;
-		&:hover {
-			text-decoration: none;
-
-			.c-dashboard-item__bg {
-				background-color: #f8f8f8;
-			}
-			.c-dashboard-item__bg-icon {
-				opacity: 0.2;
-				transform: rotate(0deg);
-			}
-		}
-
-		.c-dashboard-item__icon {
-			font-size: 4em;
-		}
-		.c-dashboard-item__title {
-			font-size: 1.3em;
-		}
-		.c-dashboard-item__bg-icon {
-			font-size: 9em;
-			right: 40px;
-			bottom: 20px;
-			transform: rotate(-20deg);
-			opacity: 0.1;
-			transition: all 1s;
-		}
-	}
-}
-
-.error-color{
-	background-color: $errorColor;
-}
-
-.error-color-font{
-	color: $errorColor;
-}
-
-.success-color-font{
-	color: green;
-}
-
-.error-color-light{
-	background-color: $errorColorLight;
-}
-
-.spider-table {
-	.p-paginator {
-		padding: 1rem;
-	}
-	.p-paginator-left-content {
-		@media (min-width: 1400px) {			
-			position: absolute;
-			padding: 14px;
-			left: 0;
-		}
-	}
-	.p-paginator-right-content {
-		@media (min-width: 1400px) {			
-			position: absolute;
-			padding: 14px;
-			right: 0;
-		}
-	}
-}
-
-.spider-panel{
-	.p-panel-content{
-		padding: 0;
-	}
-
-	.spider-panel-footer{
-		display: flex; 
-		align-items: center; 
-		justify-content: space-between; 
-		gap: 10px; 
-		border-top: 1px solid #dee2e6;
-		border-bottom-right-radius: 12px;
-    	border-bottom-left-radius: 12px;
-		padding: 1rem;
-	}
-}
-
-.disabled{
-	background-color: $disabled;
-}
-
-.primary-color{
-	color: var(--primary-color);
-}
-
-.primary-color-background{
-	background-color: var(--primary-color);
-}
-
-.primary-lighter-color-background{
-	background-color: var(--primary-lighter-color);
-}
-
-.bold {
-	font-weight: 500;
-}
-
-.separator{
-	border-top: 1px solid var(--primary-color);
-	width: 100%;
-}
-
-.gray-separator{
-	border-top: 1px solid $shade400;
-	width: 100%;
-}
-
-// FT: You need to manually adjust the height
-.vertical-gray-separator{
-	border-left: 1px solid $shade400;
-}
-
-
-
-.google-signin-button {
-	width: 100%;
-	max-width: 300px;
-}
-
-.hover-card {
-	padding: 10px;
-	border-radius: 12px;
-	cursor: pointer;
-}
-
-.hover-card:hover {
-	background-color: $disabled;
-}
-
-.dialog{
-	width: 600px;
-}
-
-@media (max-width: 600px) {
-	.dialog{
-		width: 100%;
-	}
-}
-
-.header{
-	font-size: 17.5px;
-}
-
-.header-separator{
-	margin-top: 7px;
-	border-top: 3px solid var(--primary-color);
-	width: 60px;
-}
-
-.big-header{
-	font-size: 34px; 
-	font-weight: 400;
-	i{
-		font-size: 32px; 
-		font-weight: 400;
-	}
-}
-
-.bold-header-separator{
-	margin-top: 7px;
-	border-top: 6px solid var(--primary-color);
-	width: 100px;
-}
-
-@media (max-width: 600px) {
-	.big-header{
-		font-size: 28px;
-		i{
-			font-size: 26px; 
-			font-weight: 400;
-		}
-	}
-}
-
-.link{
-	color: var(--primary-color);
-	cursor: pointer;
-}
-
-.link:hover {
-	color: var(--primary-dark-color);
-}
-
-.blockHead {
-	background-color: var(--primary-color);
-	/*width: 150px; */
-	height: 60px;
-	line-height: 60px;
-	display: inline-block;
-	position: relative;
-  }
-
-.blockHead:after {
-	color: var(--primary-color);
-	border-left: 30px solid;
-	border-top: 30px solid transparent;
-	border-bottom: 30px solid transparent;
-	display: inline-block;
-	content: '';
-	position: absolute;
-	right: -30px;
-	top:0
-}
-
-.blocktext{
-	color:white;
-	font-weight:bold;
-	padding-left:10px;
-	font-family:Arial;
-	font-size:11;
-}
-
-.qr-component-wrapper{
-	display: flex; 
-	gap: 13px; 
-	align-items: center;
-	.text-wrapper{
-		width: 60%;
-	}
-}
-
-@media (max-width: 600px) {
-	.qr-component-wrapper{
-		display: flex; 
-		flex-direction: column;
-		gap: 13px;
-		align-items: unset;
-		.text-wrapper{
-			padding-top: 20px;
-			padding-bottom: 20px;
-			margin-bottom: 10px;
-			width: 100%;
-			border-bottom: 1px solid $shade400;
-			width: 100%;
-		}
-	}
-}
-
-@media (max-width: 600px) {
-	.responsive-hidden{
-		display: none;
-	}
-}
-
-.qr-code{
-	border: 2px solid var(--primary-dark-color);
-}
-
-.notification-border{
-	border-top: 1px solid var(--primary-light-color);
-	border-left: 1px solid var(--primary-light-color);
-	border-right: 1px solid var(--primary-light-color);
-}
-
-.notification-border:last-child {
-    border-bottom: 1px solid var(--primary-light-color);
-}
-
-.card-overflow-icon{
-    text-align: center;
-	transform: rotate(30deg);
-	color: var(--primary-light-color);
-	opacity: 0.2;
-	position: absolute; 
-	overflow: hidden; 
-	right: -30px; 
-	top: -25px; 
-	z-index: 1;
-	i {
-		font-size: 270px;
-	}
-}
-
-.badge {
-	position: absolute;
-	width: 10px;
-	height: 10px;
-	top: -5px;
-	right: -1px;
-	border-radius: 100%;
-	background: $dangerButtonBg;
-  }
-
-.dashboard-card-wrapper {
-	display: flex; 
-	flex-direction: column; 
-	gap: 14px; 
-	padding: 30px;
-	position: relative; 
-	overflow: hidden;
-}
-
-@media (max-width: 600px) {
-	.dashboard-card-wrapper{
-		padding: 20px;
-	}
-}
-
-.dashboard-card-wrapper-with-grid {
-	display: flex; 
-	flex-direction: column; 
-	gap: 14px; 
-	padding: 30px;
-	padding-bottom: 16px; // -14px
-	position: relative; 
-	overflow: hidden;
-}
-
-@media (max-width: 600px) {
-	.dashboard-card-wrapper-with-grid{
-		padding: 20px;
-		padding-bottom: 6px; // -14px
-	}
-}
-
-.icon-hover {
-	cursor: pointer;
-	padding: 7px;
-	border-radius: 50%;
-	transition: background-color 0.3s ease;
-}
-
-.icon-hover:hover {
-	background-color: $shade200;
-}
-
-.gray-color {
-	color: $shade600;
-}
-
-.multiple-panel-first{
-	.p-panel .p-panel-content {
-		border-bottom-left-radius: 0px;
-		border-bottom-right-radius: 0px;
-		border-bottom: none;
-	}
-}
-
-.multiple-panel-middle{
-	.p-panel-header {
-		border-top-left-radius: 0px;
-		border-top-right-radius: 0px;
-	}
-
-	.p-panel .p-panel-content {
-		border-bottom-left-radius: 0px;
-		border-bottom-right-radius: 0px;
-		border-bottom: none;
-	}
-}
-
-.multiple-panel-last{
-	.p-panel-header {
-		border-top-left-radius: 0px;
-		border-top-right-radius: 0px;
-	}
-}
-
-.index-card-wrapper {
-	.text {
-		.header {
-			font-size: large;
-			font-weight: 500;
-			color: rgb(131, 131, 131);
-			margin-bottom: 5px;
-		}
-		.description {
-			font-size: small;
-			color: rgb(150, 150, 150);
-		}
-	}
-}
-
-.last-card-child {
-	margin-bottom: 0px !important;
-}
-
-.number-circle {
-	border-radius: 50%;
-	width: 30px;
-	height: 30px;
-	padding: 5px;
-
-	background: var(--primary-dark-color);
-	border: 1px solid var(--primary-dark-color);
-	color: white;
-	text-align: center;
-	margin-right: 16px;
-	display: inline-block;
-}
-
-.non-grid-panel-bottom-padding{
-	padding-bottom: 14px;
-}
-
-@media (max-width: 600px) {
-	.non-grid-panel-bottom-padding{
-		padding-bottom: 0px;
-	}
-}
-
-.panel-body-wrapper{
-	padding: 28px; 
-	padding-bottom: 14px;
-}
-
-@media (max-width: 600px) {
-	.panel-body-wrapper{
-		padding: 14px; 
-		padding-bottom: 0px;
-	}
-}
-
-@media (max-width: 600px) {
-	.panel-add-button{
-		margin-bottom: 14px;
-	}
-}
-
-.last-child-zero-margin{
-	margin-bottom: 0px !important;
-}
-
-.card-margin-bottom{
-	margin-bottom: 28px;
-}
-
-@media (max-width: 600px) {
-	.card-margin-bottom{
-		margin-bottom: 14px;
-	}
-}
-
-.card-with-grid-padding-bottom{
-	padding-bottom: 14px !important;
-}
-
-@media (max-width: 600px) {
-	.card-with-grid-padding-bottom{
-		padding-bottom: 6px !important;
-	}
-}
-
-.responsive-card-padding{
-	padding: 28px;
-}
-
-@media (max-width: 600px) {
-	.responsive-card-padding{
-		padding: 20px;
-	}
-}
-
-.image-container {
-    width: 300px;
-    height: 300px;
-	display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
-}
-
-.image-container img {
-	object-fit: cover;
-}
-
-.p-dataview .p-dataview-header {
-    background: transparent;
-    color: transparent;
-    border: none;
-    border-width: 0;
-    padding: 0;
-    font-weight: 0;
-}
 """;
         }
 
@@ -4226,10 +3874,18 @@ $gutter: 1rem; //for primeflex grid system
         {
             return $$$"""
 {
+    "SelectFromTheList": "Odaberite...",
+    "OnDate": "Na datum",
     "Submit": "Potvrdite",
     "UserList": "Korisnici",
+    "HasLoggedInWithExternalProvider": "Prijavljen sa eksternim provajderom",
+    "IsDisabled": "Blokiran",
     "SuperRoles": "Super uloge",
     "Save": "Sačuvajte",
+    "RoleList": "Uloge",
+    "Permissions": "Dozvole",
+    "Settings": "Podešavanja",
+    "RecipientsForNotification": "Primaoci",
     "PermissionList": "Dozvole",
     "NotificationList": "Notifikacije",
     "NotifyUsers": "Obavestite korisnike",
@@ -4241,7 +3897,7 @@ $gutter: 1rem; //for primeflex grid system
     "and": "i",
     "CookiePolicy": "politiku upotrebe kolčića",
     "AgreeAndJoin": "Slažem se i pridružujem",
-    "AlreadyHasProfile": "Već imate profil? Prijavite se",
+    "AlreadyHasAccount": "Već imate profil? Prijavite se",
     "NewJoinNow": "Novi ste? Napravite profil",
     "ContinueWithGoogle": "Nastavite sa Google nalogom",
     "or": "ili",
@@ -4712,6 +4368,68 @@ export class LayoutService extends LayoutBaseService implements OnDestroy {
 """;
         }
 
+        private string GetSpiderFormHtmlTemplateHbsData()
+        {
+            return $$$"""
+<ng-container *transloco="let t">
+    <spider-card [title]="t('{{filename}}')" icon="pi pi-file-edit">
+
+        <{{toKebab filename}}-base-details
+        [formGroup]="formGroup" 
+        [{{firstCharToLower filename}}FormGroup]="{{firstCharToLower filename}}FormGroup" 
+        (onSave)="onSave()"
+        />
+
+    </spider-card>
+</ng-container>
+""";
+        }
+
+        private string GetSpiderFormTsTemplateHbsData()
+        {
+            return $$$"""
+import { HttpClient } from '@angular/common/http';
+import { ChangeDetectorRef, Component, KeyValueDiffers, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TranslocoService } from '@jsverse/transloco';
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { {{filename}} } from 'src/app/business/entities/business-entities.generated';
+import { BaseFormCopy, SpiderFormGroup, SpiderMessageService, BaseFormService } from '@playerty/spider';
+
+@Component({
+    selector: '{{toKebab filename}}-details',
+    templateUrl: './{{toKebab filename}}-details.component.html',
+    styles: [],
+})
+export class {{filename}}DetailsComponent extends BaseFormCopy implements OnInit {
+    {{firstCharToLower filename}}FormGroup = new SpiderFormGroup<{{filename}}>({});
+
+    constructor(
+        protected override differs: KeyValueDiffers,
+        protected override http: HttpClient,
+        protected override messageService: SpiderMessageService, 
+        protected override changeDetectorRef: ChangeDetectorRef,
+        protected override router: Router, 
+        protected override route: ActivatedRoute,
+        protected override translocoService: TranslocoService,
+        protected override baseFormService: BaseFormService,
+        private apiService: ApiService,
+    ) {
+        super(differs, http, messageService, changeDetectorRef, router, route, translocoService, baseFormService);
+    }
+
+    override ngOnInit() {
+
+    }
+
+    override onBeforeSave = (): void => {
+
+    }
+}
+
+""";
+        }
+
         private string GetLayoutComponentHtmlCode()
         {
             return $"""
@@ -4928,7 +4646,89 @@ SOFTWARE.
 """;
         }
 
-        private string GetLogoDarkSvgData()
+        private string GetFaviconIcoData()
+        {
+            return """
+    00     ¨%  6          ¨  Þ%       h  †6  (   0   `           $                                                                                                          Ið'J
+ó²J
+ó²Ið'                                                                                                                                                                        SòEôˆF	ôþH
+öÿL	õÿMòÿPó™Sò                                                                                                                                                        Ì ÏKïcDòéF	ôþH
+öÿL	õÿL	õÿQôÿQôÿTòîZðwŽ÷                                                                                                                                            bîFE	ïÒF	ôþF	ôþF	ôþH
+öÿL	õÿL	õÿQôÿQôÿVòÿ\îÿcêØbîF                                                                                                                                Ið'J
+ó²MòÿMòÿF	ôþF	ôþH
+öÿH
+öÿL	õÿQôÿQôÿVòÿYðÿaíÿféÿmæÿsâ»{ä*                                                                                                                SòSí‘QïùMòÿMòÿMòÿL	õÿL	õÿH
+öÿL	õÿL	õÿQôÿQôÿVòÿ\îÿféÿi	éÿqãÿvàÿ{Þÿ…×™žÕ                                                                                                    KïcZîïVñÿVñÿVñÿVñÿP
+õÿP
+õÿP
+õÿP
+õÿP
+õÿQôÿQôÿVòÿYðÿaíÿféÿmæÿqãÿ{Þÿ‚ÙÿŒ
+Óÿ”Îí®ØX                                                                                                Zî…\ñÿ\ñÿ\ñÿVñÿVñÿVöÿVöÿVöÿP
+õÿP
+õÿQôÿQôÿVòÿ\îÿaíÿi	éÿqãÿvàÿ{Þÿ‚ÙÿŒ
+Óÿ–ÌÿŸÇ                                                                                                ð_ðù\ñÿ\ñÿ\ñÿ\öÿ\öÿVöÿVöÿVöÿVöÿVòÿVòÿYðÿaíÿféÿmæÿqãÿ{Þÿ‚ÙÿŒ
+Óÿ–ÌÿÈüžÕ                                                                                                    bñ±dñÿdñÿböÿ\öÿ\öÿ\öÿ\öÿ[
+õÿ[
+õÿ[
+õÿ[
+õÿaíÿaíÿi	éÿqãÿvàÿ{Þÿ‚ÙÿŒ
+Óÿ–Ìÿ¡Ä¥                                                                                                        bîFgõÿgõÿe÷ÿböÿböÿböÿböÿaôÿaôÿ_
+òÿ_
+òÿaíÿi	éÿmæÿqãÿvàÿ‚ÙÿŒ
+Óÿ–ÌÿÈü³Ì:                                                                                                            ióØgõÿgõÿgõÿe÷ÿe÷ÿböÿböÿaôÿaôÿdñÿi	éÿmæÿqãÿvàÿ{Þÿ‚ÙÿŒ
+Óÿ–Ìÿ 
+ÆÕÌ Ï                                                                                                            hòQh÷—h÷—h÷—h÷—h÷—h÷—hò‘hò‘hò‘hò‘uæŒuæŒuæŒuæŒ‰	Õˆ‰	Õˆ‰	ÕˆŸÇ¦ÀE                                                                                                                                                                                                                                                                    ó7                                                                                                                                                                íŽ&                    Sòƒ ð¿                                                                                                                                                                ð‰™ð
+ˆ                {ä*–%ôýqî-                                                                                                                                                        é•ï€ùé•                bîF›'õÿƒó¯                                                                                                                                                        òyŒð	~ÿóy*                {ñY›'õÿ–%ôýð                                                                                                                                                ð€ñ	|ðð{ÿñ‚6                ‹ öj¡)öÿ›'õÿ‚ñ¡                                                                                                                                                ð†|ð	~ÿð{ÿñwK                „ó€¡)öÿ¡)öÿ›&ôó}õ                                        }õ… ÷ê‰ôô‰ôô‰ôôíóíó•çò•çò›ßò¥Øñ¥Øñ®Íæ×¸                                        ð
+ˆí€éð{ÿòwÿï[                †ó“§+øÿ§+øÿ¡)öÿ†ó“                                            ƒó¯!õÿ!õÿ“ ðÿ“ ðÿ—éÿ—éÿŸäÿ¥Þÿ¥Þÿ®Õÿº Ðž                                            ñ
+ƒlð	~ÿð{ÿòwÿñ
+ƒl                —!ô¦¬,ùÿ§+øÿ§+øÿ›&ôóŽ÷                                        ó7!õÿ“ ðÿ“ ðÿ™!îÿ›éÿ›éÿŸäÿ¥Þÿ®Õÿ®Õÿ³Ì:                                        Ì Ïì
+Ûð	~ÿòwÿòwÿór{                ‘!óº¬,ùÿ¬,ùÿ¬,ùÿ§+øÿ„ó€                                            ‘ôÕ–%ôý™!îÿ™!îÿ›éÿŸäÿ¥Þÿ­!Þÿ®Õÿ½$ØÊ                                            ï[ñ
+ƒÿð{ÿòwÿôrÿòyŒ                ›%øÈ±-úÿ±-úÿ¬,ùÿ¬,ùÿŸ&øäÌ Ï                                        “ôoŸ#ïÿŸ#ïÿŸ#ïÿ¤!èÿ¤!èÿ­!Þÿ­!Þÿµ#Úÿ¶Ël                                            ë‰Ïñ
+ƒÿð	~ÿòwÿôrÿõn›                %öØ´.ûÿ´.ûÿ±-úÿ¬,ùÿ¬,ùÿ‹ öj                                        }õ›&ôóŸ#ïÿ¦%íÿ¤!èÿ«$èÿ­!Þÿµ#Úÿ¸"Õñ×¸                                        ïIð‰ÿñ
+ƒÿð	~ÿòwÿôrÿõ k«                Ÿ&øä¸.üÿ´.ûÿ´.ûÿ±-úÿ±-úÿŸ&øä                                            —!ô¦¦%íÿ¦%íÿ«$èÿ±%äÿµ#Úÿµ#Úÿº Ðž                                            îÁðŒÿñ†ÿð	~ÿòwÿôrÿöoÅ                ³)ûë»/üÿ¸.üÿ¸.üÿ´.ûÿ´.ûÿ±-úÿ’ øS                                        ™ð)¦%íÿ«$èÿ«$èÿ±%äÿµ#Úÿ½&ÜÿÀ!Õ*                                        ñ‚6í“ÿðŒÿñ†ÿòÿó	|ÿôrÿöoÅ                ´,ùö¿/ýÿ»/üÿ»/üÿ¸.üÿµ.ýÿ´.ûÿ'úÒ                                            ¨#óË±'êÿ±%äÿ¹'ãÿ½&Üÿ½$ØÊ                                            íš­í“ÿðŒÿð‰ÿòÿó	|ÿòwÿòtÞ                ¼-üûÂ0ýÿ¿/ýÿ¿/ýÿ»/üÿ¸.üÿ¸.üÿµ.ýÿ”ù=                                        §ìe±'êÿ¹'ãÿ¹'ãÿ½&ÜÿÂ!Õ]                                        íŽ&ì›þí“ÿïÿð‰ÿñ
+ƒÿó	|ÿó	|ÿñ	|ð            Ì ÏÆ0þÿÆ0þÿÂ0ýÿÂ0ýÿ¿/ýÿ¿/ýÿ»/üÿ¸.üÿ›%øÈ                                        Ì Ï»'ìâ¹'ãÿ¿*äþÂ'ÛíŽ÷                                        íš­ì›þî˜ÿïÿð‰ÿñ
+ƒÿòÿó	|ÿó	|ÿÌ Ï        ðÌ0þÿÊ0ýÿÆ0þÿÆ0þÿÂ0ýÿ¿/ýÿ¿/ýÿ»/üÿµ.ýÿŒù*                                        ²#ã™¿*äþÃ*áþº Ðž                                        é•ê¡øì›þî˜ÿïÿðŒÿñ†ÿòÿòÿó	|ÿð€        ó7Ï0þÿÌ0þÿÊ0ýÿÆ0þÿÆ0þÿÂ0ýÿÂ0ýÿ¿/ýÿ¿/ýÿ¢#úº                                        ¸ Ø ¿*äþÃ*áþ¸ Ø                                         ë¢—ì£ÿíŸÿî˜ÿð“ÿðŒÿð‰ÿñ†ÿñ
+ƒÿòÿíŽ&        ’ øSÒ0þÿÏ0þÿÌ0þÿÌ0þÿÈ0þÿÆ0þÿÂ0ýÿÂ0ýÿ¿/ýÿ¼-üûð                                        ½$ØÊ½$ØÊ                                        ×¸é!¬ðì£ÿíŸÿî›ÿð“ÿïÿðŒÿð‰ÿñ†ÿñ
+ƒÿñ‚6        “ôoÖ1ÿÿÒ0þÿÏ0þÿÏ0þÿÌ0þÿÈ0þÿÆ0þÿÆ0þÿÂ0ýÿÂ0ýÿ—!ô¦                                        ®ØXÂ!Õ]                                        é ¨‰ë ¬ÿì§ÿíŸÿî›ÿï–ÿïÿïÿðŒÿð‰ÿñ†ÿïI        œøƒÙ1ÿÿÖ1ÿÿÒ0þÿÒ0þÿÏ0þÿÌ0þÿÊ0ýÿÆ0þÿÆ0þÿÂ0ýÿ¼+ûö}õ                                                                                ð
+ˆé!¬ðë ¬ÿì§ÿì£ÿíŸÿî˜ÿð“ÿð“ÿïÿðŒÿð‰ÿï[        ¡ ÷–Ù1ÿÿÙ1ÿÿÖ1ÿÿÔ0þÿÒ0þÿÏ0þÿÌ0þÿÊ0ýÿÊ0ýÿÆ0þÿÆ0þÿ¡ ÷–                                                                                è!«zê"²ÿê!¯ÿëªÿì£ÿíŸÿî›ÿî˜ÿï–ÿð“ÿïÿðŒÿñ
+ƒl        ¬"ö®Ù1ÿÿÙ1ÿÿÙ1ÿÿÖ1ÿÿÖ1ÿÿÒ0þÿÏ0þÿÌ0þÿÌ0þÿÊ0ýÿÈ0þÿ¼+ûöŽ÷                                                                        Ì Ïæ%µäé#¶ÿê!¯ÿë ¬ÿì§ÿíŸÿíŸÿî›ÿî˜ÿï–ÿð“ÿïÿð†|        ¢#úºÙ1ÿÿÙ1ÿÿÙ1ÿÿÙ1ÿÿÖ1ÿÿÔ0þÿÒ0þÿÏ0þÿÏ0þÿÌ0þÿÊ0ýÿÊ0ýÿ³!ï€                                                                        å ºmè%ºÿé#¶ÿê"²ÿë ¬ÿì§ÿì£ÿíŸÿíŸÿî›ÿî˜ÿï–ÿð“ÿð‰™        ¨#óËÙ1ÿÿÙ1ÿÿÙ1ÿÿÙ1ÿÿÙ1ÿÿÖ1ÿÿÖ1ÿÿÒ0þÿÒ0þÿÏ0þÿÏ0þÿÌ0þÿ¼*öí                                                                        å&¼Öç'½ÿè%ºÿê"²ÿê!¯ÿëªÿì§ÿì£ÿíŸÿíŸÿî›ÿî˜ÿï–ÿð‰™        Ž÷œøƒ¼+ûöÙ1ÿÿÙ1ÿÿÙ1ÿÿÙ1ÿÿÙ1ÿÿÖ1ÿÿÒ0þÿÒ0þÿÏ0þÿÐ0üþÐ0üþ§ìe                                                                å$²Oæ'Áþç'½ÿè%ºÿé#¶ÿê"²ÿë ¬ÿëªÿì§ÿì£ÿì£ÿíŸÿîÙñ
+ƒlð
+ˆ                    “ôo³)ûëÙ1ÿÿÙ1ÿÿÙ1ÿÿÙ1ÿÿÖ1ÿÿÔ0þÿÓ0üÿÒ0þÿÐ0üþ¾(ôã                                                                å&¼Öå)Æÿæ'Áþç'½ÿé#¶ÿê"²ÿê!¯ÿë ¬ÿëªÿì§ÿîÙí–aÌ Ï                                    ’ øSµ&üÝÖ1ÿÿÙ1ÿÿÙ1ÿÿ×1þÿÔ0þÿÔ0þÿÓ0üÿÐ0üþ®ØX                                                        ìª:ä+Ìÿå)Æÿæ'Áþç'½ÿè%ºÿé#¶ÿê"²ÿê!¯ÿë¨ÆïI                                                        ”ù=³%ùÐÔ0þÿÙ1ÿÿ×1þÿ×1þÿÔ0þÿÓ0üÿ»'ìâ                                                        æ'ÁÅä+Ìÿå)Æÿå)Æÿæ'Áþè%ºÿé#¶ÿë¨Æìª:                                                                        ™ð)µ$öÀÓ0üÿ×1þÿ×1þÿ×1þÿÓ0üÿ³Ì:                                                ã"µ-ã,Òÿä+Ìÿä+Ìÿå)Æÿæ'Áþê®´íŽ&                                                                                        žÕ¬"ö®Ð0üþ×1þÿÖ1ûÿÆ&ìÊ                                                å'Ä¹ã,Òÿã,Òÿå)Èõç ¸ é•                                                                                                        Ž÷³!ï€Î+õóÖ1ûÿÀ!Õ*                                        í$¿â-Öûã+Îðç ¸ ×¸                                                                                                                        Ì ÏÆ#â}Ê$ßx                                        å ºmå ºmÌ Ï                                                                ÿÿþÿÿ  ÿÿøÿÿ  ÿÿðÿÿ  ÿÿÀÿÿ  ÿÿ  ÿÿ  ÿü  ?ÿ  ÿø  ÿ  ÿð  ÿ  ÿø  ÿ  ÿø  ÿ  ÿü  ?ÿ  ÿü  ?ÿ  ÿþ  ÿ  ÿÿÿÿÿÿ  ÿÿÿÿÿÿ  ïÿÿÿÿ÷  ïÿÿÿÿ÷  çÿÿÿÿç  çÿÿÿÿç  ãÿÿÿÿç  ÃÿÀÿÇ  ÁÿÀÿÇ  Áÿàÿ‡  Àÿàÿƒ  Àÿðÿ  Àÿðÿ  Àðþ  Àøþ  À?øü  À?ü?ü  Àü?ø  Àü?ø  Àþð  Àþð  Àÿÿà  €ÿÿà  €ÿÿà  €ÿÿÀ  €ÿÿÀ  €ÿÿ€  Àÿÿ€  ø ÿÿ   þ ÿÿ   ÿ€þÿ  ÿàþÿ  ÿø?üÿ  ÿþ?üÿ  ÿÿÿÿÿÿ  (       @                                                                                     Jò'I	õµI	õµJò'                                                                                                        \ðDòˆF	ôøH
+öÿL	õÿQóûUò™vó                                                                                        l ÿF
+îjF	ðêDóÿH
+öÿL	õÿOôÿSóÿXðÿbëîk	åw€ë                                                                            RîKPîÖLñÿLñÿL	õÿH
+öÿL	õÿOôÿSóÿ]îÿféÿpãÿzÞÙ‡	ÕU                                                                    Xì¢YîÿUñÿUñÿP
+õÿP
+õÿP
+õÿOôÿSóÿXðÿbëÿkæÿtáÿ~ÛÿŽ
+ÒÿœÈ˜                                                                \í^ñÿ^ñÿZõÿZõÿV÷ÿV÷ÿVóÿVòÿ]îÿféÿpãÿyÞÿ†	×ÿ”Íÿ¢Âq                                                                vófòöaôÿaôÿ]÷ÿ]÷ÿZõÿ]óÿ]óÿbëÿkæÿtáÿ~ÛÿŽ
+Òÿ›ÈöÍ¡                                                                    hó¬gõÿgõÿcøÿcøÿbôÿbôÿf
+ïÿlêÿq
+åÿyÞÿ†	×ÿ”Íÿ¢
+Å                                                                        gñ%h÷ch÷ch÷ceô`g÷^kñ[kñ[xíY~
+ßW~
+ßW	ÒU™ÉU±Ä                                            Œñ                                                                                                        Í¡            \ðñŸ                                                                                                        ï‚~ìŠ        yò(“%ôö\ð                                                                                                ìŠï
+€êõ
+z        zïAœ(õÿ€ï                                                                                                î‚lñ	}ÿóv)        xíY£*÷ÿ™%öí€ë                        l ÿøª„ó®†ï­ŽéªŽéª™â§ ×¦©Ðžã «                        ã «ï€Þðzÿòr:        †ñp¨+øÿ£*÷ÿƒõ}                            † ÷¾‘ ñÿ‘ ñÿ•ëÿšçÿ¡ßÿª×ÿ±Í´                            ñyZñ	}ÿñwÿõsI        ‰ò†¯,ùÿ¨+øÿ™%öíÝ Á                        Š úT—"ñÿ—"ñÿŸ!êÿ¡åÿ©Ýÿ±Õÿ½ ÍG                            ð
+ƒÑðzÿótÿñyZ        ó›³.úÿ¯,ùÿ«-ùÿˆ"øi                            ›$õáŸ#îÿŸ!êÿ¨!äÿ°"Üÿ·!ÔàÝ Á                        ë‹Kñ
+ƒÿñ	}ÿótÿõ lj        • õ®·.ûÿ³.úÿ¯,ùÿ›$õá                            —î‰¥$îÿ©$ëü¯$âÿ·%ßÿÀ#Ó€                            ëŽÄð‡ÿñ	}ÿótÿõ mz        ›#ö¿¼/ýÿ¸/üÿ·.ûÿ³.úÿŠ úT                        vó©$ëü¯%èÿ·%ßÿ»%Ùù±Ä                        ê›;ï‘ÿð‡ÿñ	}ÿótÿôqŒ        ¡%ùÌÂ0ýÿ¿/ýÿ¸/üÿ¸/üÿž)úÕ                            ©!é·´(çÿ·%ßÿ½%Ô³                            í™·ï‘ÿðŒÿñ
+ƒÿózÿôtž        ª&øÝÇ0ýÿÂ0ýÿ¿/ýÿ¼/ýÿ¸/üÿ— ù>                        ª#äBº*æÿÀ)àÿ½ ÍG                        í¡*ëœýï”ÿðŒÿñ
+ƒÿñ	}ÿòz°        ±'úéË0þÿÇ0ýÿÂ0ýÿ¿/ýÿ¿/ýÿ¡%ùÌ                            »(âÞÁ(ÛÞ                            ì¡«íŸÿï–ÿðŒÿð‡ÿñ
+ƒÿóÁ        º*ûóÐ/þÿË0þÿÈ1þÿÅ0þÿÂ0ýÿ¼/ýÿ ô+                        »$ÝÀ#Ó€                        æªë ¨ùíŸÿî™ÿï‘ÿðŒÿð‡ÿð
+ƒÑ        Ä-ýûÔ1ÿÿÐ/þÿÎ1þÿË0þÿÇ0ýÿÂ0ýÿ¤%ø¼                        ÝÅ¤ê                        ê ªŸë«ÿí¢ÿîšÿï”ÿï‘ÿðŒÿð‡â        Ð/þÿÙ1ÿÿÔ1ÿÿÒ1þÿÎ1þÿË0þÿÇ0ýÿÄ-ýûŒñ                                                á¶è#³õê!¯ÿì§ÿíŸÿî™ÿï”ÿï‘ÿðï        Ö1ÿÿÙ1ÿÿÙ1ÿÿÖ1ÿÿÒ1þÿÎ1þÿË0þÿÊ0üÿ­$õ«                                                è#±“è#·ÿê!¯ÿì§ÿí¢ÿíŸÿîšÿï–ÿï‘ÿÝ Á¤êÃ+ûùÙ1ÿÿÙ1ÿÿÙ1ÿÿ×0ÿÿÒ1þÿÐ/þÿÎ1þÿÃ+ûù¤ê                                        ÝÅæ&½ñè%ºÿé"´ÿë«ÿì§ÿí¢ÿíŸÿîšÿï”ÝìŠ        š"új¸(ýèÙ1ÿÿÙ1ÿÿ×0ÿÿÔ1ÿÿÒ1þÿÎ1þÿ²!ð™                                        è$¶…å)Åÿç'¾ÿè#·ÿê!¯ÿë«ÿì§ÿížÕì—`Ý Á                    › ùYµ%üÝ×0ÿÿ×0ÿÿÔ1ÿÿÔ0ýÿÉ-øöl ÿ                                Ý Áå(Åêå)Åÿç'¾ÿè%ºÿé"´ÿë¨ÌîžL                                        — ù>·%øÐÔ0ýÿÔ1ÿÿÔ0ýÿ¾#è…                                å#»tä,Ïýå*Éÿæ&Âüë °Âê›;                                                         ô+¼%ò¿Ò/ûýÎ+óñ                                ã)Ìää,Ïýè!¹¹í¡*                                                                        ÂàÈ$é°Ê'ßH                        â%¹>ä$À¢á¶                                        ÿþÿÿøÿÿðÿÿÀÿÿ  ÿÿ€ÿÿ€ÿÿ€ÿÿÿÿÿÿÿÿÿßÿÿÿßÿÿûÏÿÿûÏðóÏðó‡øã‡øãƒøÃƒü?Áü?þ€þ€ÿ€þ€þ€?ü€?üàøøøþøÿñÿÿï÷ÿ(                                                            @ì(FõµNô¶Wó)                                        Q
+äJ
+íŽIóøJ
+öÿQóÿ_ìûsã™†Î                                [ïÊXñÿTõÿRôÿVòÿiçÿ|Ýÿ˜ÊÂ                                còydõÿa÷ÿ_ôÿeîÿrâÿ‰
+Ôÿ¥Ài                    €+ÿ        ]èg÷>f÷<gò9vè8‚Ý5–
+Í3¿ ¿        ÿ €    wîyï|                                                î…\ÿ €€ò(“$ôé  ÿ          ÿyõg…ëfåb Ô^ÿ ÿ        ÿ ÿï
+~Òõ pƒóB¨,÷ÿ„õj            Œ ôÎ– íÿ âÿ°ÐÅ            î…Kñyÿó p)ˆñ^³.ùÿ›'øá            ñj£$ìÿ¯"ßÿ¿#Í`            î‰Åòwÿö k9ôw¼/ûÿ¶/üÿˆ#ùX        f ÿ­&éíº%ÜïÛ$¶        ëš?ïŒÿó	{ÿñtK• öÇ0ýÿ¿0ýÿ¤(ûØ            ³#â À$Õ            êž¾î‘ÿó
+‚ÿòz`  ù§Ð0þÿÈ1þÿÂ0ýÿ—÷B        º"Ý%Ä'Ë'        ç"¨5ê¦þî–ÿðŒÿò
+u¥"øºÙ1ÿÿÒ0þÿË1þÿ¯&øÎ                        é#±·ê «ÿížÿï–ÿîŠ‰–÷a½)þðÙ1ÿÿÓ1þÿÍ0üþª ê0                ë!·'è(¾ûê"±ÿì§ÿîšÒðD        ŸüZº%ùÝÕ0ýÿÀ&ïÃ                å%¿²æ(Äþé®ÏïœP                        °îJÅ&íËÉ(×        á-´å$Áºê«=                þ  ø  ð  ø  ÿÿ  ÿÿ  ¿ý  ¼=  žy  žy  q  ñ  à  ‡á  ãÇ  ûß  
+""";
+        }
+
+        private string GetLogoSvgData()
         {
             return $$"""
 <svg width="85" height="63" viewBox="0 0 85 63" fill="none" xmlns="http://www.w3.org/2000/svg">
