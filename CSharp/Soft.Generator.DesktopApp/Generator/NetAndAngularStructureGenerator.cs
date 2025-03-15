@@ -414,7 +414,7 @@ namespace Spider.DesktopApp.Generator
                                 Files =
                                 {
                                     new SpiderFile { Name = "GeneratorSettings.cs", Data = GetBusinessGeneratorSettingsData(appName) },
-                                    new SpiderFile { Name = $"{appName}.Business.csproj", Data = GetBusinessCsProjData() },
+                                    new SpiderFile { Name = $"{appName}.Business.csproj", Data = GetBusinessCsProjData(appName) },
                                     new SpiderFile { Name = $"Settings.cs", Data = GetBusinessSettingsCsData(appName) },
                                 }
                             },
@@ -449,7 +449,7 @@ namespace Spider.DesktopApp.Generator
                                             new SpiderFile { Name = "Terms.resx", Data = GetTermsResxData() },
                                             new SpiderFile { Name = "TermsGenerated.Designer.cs", Data = GetTermsGeneratedDesignerCsData(appName) },
                                             new SpiderFile { Name = "TermsGenerated.resx", Data = GetTermsGeneratedResxData() },
-                                            new SpiderFile { Name = "TermsGenerated.sr-Latn-RS.cs", Data = GetTermsGeneratedSrLatnRSResxData() },
+                                            new SpiderFile { Name = "TermsGenerated.sr-Latn-RS.resx", Data = GetTermsGeneratedSrLatnRSResxData() },
                                         }
                                     }
                                 },
@@ -463,6 +463,14 @@ namespace Spider.DesktopApp.Generator
                                 Name = $"{appName}.WebAPI",
                                 ChildFolders =
                                 {
+                                    new SpiderFolder
+                                    {
+                                        Name = "Properties",
+                                        Files =
+                                        {
+                                            new SpiderFile { Name = "launchSettings.json", Data = GetLaunchSettingsJsonData() },
+                                        }
+                                    },
                                     new SpiderFolder
                                     {
                                         Name = "Controllers",
@@ -484,14 +492,6 @@ namespace Spider.DesktopApp.Generator
                                     new SpiderFolder
                                     {
                                         Name = "Helpers",
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "Properties",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "launchSettings.json", Data = GetLaunchSettingsJsonData() },
-                                        }
                                     },
                                 },
                                 Files =
@@ -1777,24 +1777,7 @@ export class AppModule {}
 
         private string GenerateFolder(SpiderFolder appStructure, string path)
         {
-            if (appStructure.Name == "core")
-            {
-                string sourcePath = Settings.GeneralCoreFrontendPath;
-                string destinationPath = path.Replace("core", "");
-
-                Helper.CopyFolder(sourcePath, destinationPath, "core");
-            }
-            else if (appStructure.Name == "styles")
-            {
-                string sourcePath = Settings.GeneralStylesFrontendPath;
-                string destinationPath = path.Replace("styles", "");
-
-                Helper.CopyFolder(sourcePath, destinationPath, "styles");
-            }
-            else
-            {
-                Helper.MakeFolder(path, appStructure.Name);
-            }
+            Helper.MakeFolder(path, appStructure.Name);
 
             return Path.Combine(path, appStructure.Name);
         }
@@ -2068,7 +2051,7 @@ namespace {{appName}}.Shared.Resources {
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace {{appName}}.Shared.Terms {
+namespace {{appName}}.Shared.Resources {
     using System;
 
 
@@ -2099,7 +2082,7 @@ namespace {{appName}}.Shared.Terms {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("{{appName}}.Shared.Terms.TermsGenerated", typeof(TermsGenerated).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("{{appName}}.Shared.Resources.TermsGenerated", typeof(TermsGenerated).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -2130,65 +2113,104 @@ namespace {{appName}}.Shared.Terms {
             return $$"""
 <?xml version="1.0" encoding="utf-8"?>
 <root>
-  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microspider-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
-    <xsd:element name="root" msdata:IsDataSet="true">
-      <xsd:complexType>
-        <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="data">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
-              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
-              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="resheader">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
-              </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" />
-            </xsd:complexType>
-          </xsd:element>
-        </xsd:choice>
-      </xsd:complexType>
-    </xsd:element>
-  </xsd:schema>
-  <resheader name="resmimetype">
-    <value>text/microspider-resx</value>
-  </resheader>
-  <resheader name="version">
-    <value>2.0</value>
-  </resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
+	<!-- 
+		Microsoft ResX Schema
 
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
+
+	<xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+		<xsd:element name="root" msdata:IsDataSet="true">
+			<xsd:complexType>
+				<xsd:choice maxOccurs="unbounded">
+					<xsd:element name="data">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+								<xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+							<xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+							<xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+						</xsd:complexType>
+					</xsd:element>
+					<xsd:element name="resheader">
+						<xsd:complexType>
+							<xsd:sequence>
+								<xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+							</xsd:sequence>
+							<xsd:attribute name="name" type="xsd:string" use="required" />
+						</xsd:complexType>
+					</xsd:element>
+				</xsd:choice>
+			</xsd:complexType>
+		</xsd:element>
+	</xsd:schema>
+	<resheader name="resmimetype">
+		<value>text/microsoft-resx</value>
+	</resheader>
+	<resheader name="version">
+		<value>1.3</value>
+	</resheader>
+	<resheader name="reader">
+		<value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
+	<resheader name="writer">
+		<value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+	</resheader>
 </root>
 """;
         }
@@ -2273,7 +2295,7 @@ namespace {{appName}}.Business.Entities
         [M2MMaintanceEntity(nameof(Notification.Recipients))]
         public virtual Notification Notification { get; set; }
 
-        [M2MExtendEntity(nameof(User.Notifications))]
+        [M2MEntity(nameof(User.Notifications))]
         public virtual UserExtended User { get; set; }
 
         public bool IsMarkedAsRead { get; set; }
@@ -2287,7 +2309,7 @@ namespace {{appName}}.Business.Entities
             return $$"""
 using Microsoft.EntityFrameworkCore;
 using Spider.Security.Entities;
-using Spider.Security.Interface;
+using Spider.Security.Interfaces;
 using Spider.Shared.Attributes;
 using Spider.Shared.Attributes.EF;
 using Spider.Shared.Attributes.EF.Translation;
@@ -2327,6 +2349,7 @@ namespace {{appName}}.Business.Entities
 using Microsoft.AspNetCore.Mvc;
 using Azure.Storage.Blobs;
 using Spider.Shared.Attributes;
+using Spider.Shared.Attributes.EF.UI;
 using Spider.Shared.Interfaces;
 using Spider.Shared.DTO;
 using {{appName}}.Business.DTO;
@@ -2341,7 +2364,11 @@ namespace {{appName}}.WebAPI.Controllers
         private readonly IApplicationDbContext _context;
         private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
 
-        public NotificationController(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient)
+        public NotificationController(
+            IApplicationDbContext context, 
+            {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, 
+            BlobContainerClient blobContainerClient
+        )
             : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
         {
             _context = context;
@@ -2376,20 +2403,14 @@ namespace {{appName}}.WebAPI.Controllers
             await _{{appName.FirstCharToLower()}}BusinessService.MarkNotificationAsUnreadForCurrentUser(notificationId, notificationVersion);
         }
 
-        [HttpPost]
+        [HttpGet]
         [AuthGuard]
-        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        [SkipSpinner]
+        [UIDoNotGenerate]
+        public async Task<int> GetUnreadNotificationsCountForCurrentUser()
         {
-            return await _{{appName.FirstCharToLower()}}BusinessService.GetNotificationsForCurrentUser(tableFilterDTO);
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetUnreadNotificationsCountForCurrentUser();
         }
-
-        // TODO FT: This should exist in other systems
-        //[HttpGet]
-        //[AuthGuard]
-        //public async Task<int> GetUnreadNotificationCountForCurrentUser()
-        //{
-        //    return await _{{appName.FirstCharToLower()}}BusinessService.GetUnreGetUnreadNotificationCountForCurrentUser();
-        //}
 
     }
 }
@@ -2401,7 +2422,7 @@ namespace {{appName}}.WebAPI.Controllers
         {
             return $$"""
 using Microsoft.AspNetCore.Mvc;
-using Spider.Security.Interface;
+using Spider.Security.Interfaces;
 using Spider.Security.Services;
 using Spider.Security.SecurityControllers;
 using Spider.Shared.Interfaces;
@@ -2423,59 +2444,28 @@ namespace {{appName}}.WebAPI.Controllers
     {
         private readonly ILogger<SecurityController> _logger;
         private readonly SecurityBusinessService<UserExtended> _securityBusinessService;
-        private readonly IJwtAuthManager _jwtAuthManagerService;
         private readonly IApplicationDbContext _context;
-        private readonly AuthenticationService _authenticationService;
         private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
 
 
-        public SecurityController(ILogger<SecurityController> logger, SecurityBusinessService<UserExtended> securityBusinessService, IJwtAuthManager jwtAuthManagerService, IApplicationDbContext context, AuthenticationService authenticationService,
-            {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService)
-            : base(securityBusinessService, jwtAuthManagerService, context, authenticationService)
+        public SecurityController(
+            ILogger<SecurityController> logger, 
+            SecurityBusinessService<UserExtended> securityBusinessService, 
+            IJwtAuthManager jwtAuthManagerService, 
+            IApplicationDbContext context, 
+            AuthenticationService authenticationService,
+            AuthorizationService authorizationService,
+            {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService
+        )
+            : base(securityBusinessService, jwtAuthManagerService, context, authenticationService, authorizationService)
         {
             _logger = logger;
             _securityBusinessService = securityBusinessService;
-            _jwtAuthManagerService = jwtAuthManagerService;
             _context = context;
-            _authenticationService = authenticationService;
             _{{appName.FirstCharToLower()}}BusinessService = {{appName.FirstCharToLower()}}BusinessService;
         }
 
-        /// <summary>
-        /// FT: Put the method here, if something needs to be done after the operation from the security service
-        /// </summary>
-        [HttpPost]
-        public async Task<AuthResultDTO> Register(VerificationTokenRequestDTO request)
-        {
-            return await _context.WithTransactionAsync(async () =>
-            {
-                AuthResultDTO authResultDTO = await _securityBusinessService.Register(request);
-                return authResultDTO;
-            });
-        }
-
-        /// <summary>
-        /// FT: Put the method here, if something needs to be done after the operation from the security service
-        /// </summary
-        [HttpPost]
-        public async Task<AuthResultDTO> Login(VerificationTokenRequestDTO request)
-        {
-            AuthResultDTO authResultDTO = _securityBusinessService.Login(request);
-            return authResultDTO;
-        }
-
-        /// <summary>
-        /// FT: Put the method here, if something needs to be done after the operation from the security service
-        /// </summary>
-        [HttpPost]
-        public async Task<AuthResultDTO> LoginExternal(ExternalProviderDTO externalProviderDTO) // TODO FT: Add enum for which external provider you should login user
-        {
-            return await _context.WithTransactionAsync(async () =>
-            {
-                AuthResultDTO authResultDTO = await _securityBusinessService.LoginExternal(externalProviderDTO, SettingsProvider.Current.GoogleClientId);
-                return authResultDTO;
-            });
-        }
+       
 
     }
 }
@@ -2507,7 +2497,12 @@ namespace {{appName}}.WebAPI.Controllers
         private readonly {{appName}}BusinessService _{{appName.FirstCharToLower()}}BusinessService;
         private readonly AuthenticationService _authenticationService;
 
-        public UserExtendedController(IApplicationDbContext context, {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, BlobContainerClient blobContainerClient, AuthenticationService authenticationService)
+        public UserExtendedController(
+            IApplicationDbContext context, 
+            {{appName}}BusinessService {{appName.FirstCharToLower()}}BusinessService, 
+            BlobContainerClient blobContainerClient, 
+            AuthenticationService authenticationService
+        )
             : base(context, {{appName.FirstCharToLower()}}BusinessService, blobContainerClient)
         {
             _context = context;
@@ -2518,18 +2513,10 @@ namespace {{appName}}.WebAPI.Controllers
         [HttpGet]
         [AuthGuard]
         [SkipSpinner]
-        public async Task<UserExtendedDTO> GetCurrentUser()
+        public async Task<UserExtendedDTO> GetCurrentUserExtended()
         {
             long userId = _authenticationService.GetCurrentUserId();
-            return await _{{appName.FirstCharToLower()}}BusinessService.GetUserExtendedDTOAsync(userId);
-        }
-
-        [HttpGet]
-        [AuthGuard]
-        [SkipSpinner]
-        public async Task<List<string>> GetCurrentUserPermissionCodes()
-        {
-            return await _{{appName.FirstCharToLower()}}BusinessService.GetCurrentUserPermissionCodes(); // FT: Not authorizing because we are reading this from the jwt token
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetUserExtendedDTO(userId, false); // FT: Don't need to authorize because he is current user
         }
 
     }
@@ -2553,7 +2540,7 @@ namespace {{appName}}.Business.Entities
 {
     public class Notification : BusinessObject<long>, INotification<UserExtended>
     {
-        [UIColWidth("col-12")]
+        [UIControlWidth("col-12")]
         [DisplayName]
         [StringLength(100, MinimumLength = 1)]
         [Required]
@@ -2568,9 +2555,9 @@ namespace {{appName}}.Business.Entities
         [StringLength(1000, MinimumLength = 1)]
         public string EmailBody { get; set; }
 
-        #region UIColumn
-        [UIColumn(nameof(UserExtendedDTO.Email))]
-        [UIColumn(nameof(UserExtendedDTO.CreatedAt))]
+        #region UITableColumn
+        [UITableColumn(nameof(UserExtendedDTO.Email))]
+        [UITableColumn(nameof(UserExtendedDTO.CreatedAt))]
         #endregion
         [SimpleManyToManyTableLazyLoad]
         public virtual List<UserExtended> Recipients { get; } = new(); // M2M
@@ -2776,6 +2763,12 @@ public class Startup
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
         app.SpiderConfigure(env);
+
+        app.UseEndpoints(endpoints =>
+        {
+            endpoints
+                .MapControllers();
+        });
     }
 }
 """;
@@ -2804,6 +2797,8 @@ namespace {{appName}}.WebAPI
         private string GetProgramCsData(string appName)
         {
             return $$"""
+using Serilog;
+
 namespace {{appName}}.WebAPI
 {
     public class Program
@@ -2814,7 +2809,12 @@ namespace {{appName}}.WebAPI
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
+            Host
+                .CreateDefaultBuilder(args)
+                .UseSerilog((context, configuration) =>
+                {
+                    configuration.ReadFrom.Configuration(context.Configuration);
+                })
                 .UseLightInject()
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
@@ -2840,16 +2840,20 @@ namespace {{appName}}.WebAPI
 		<PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.1" />
 		<PackageReference Include="LightInject.Microsoft.Hosting" Version="1.6.1" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.2">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.1">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="8.0.2" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.2" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="9.0.1" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Azure" Version="1.7.6" />
 		<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="7.3.1" />
 		<PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
 		<PackageReference Include="NucleusFramework.Core" Version="6.1.9" />
+        <PackageReference Include="Serilog.Extensions.Hosting" Version="9.0.0" />
+        <PackageReference Include="Serilog.Settings.Configuration" Version="9.0.0" />
+        <PackageReference Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
 		<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.3.1" />
 	</ItemGroup>
@@ -2892,11 +2896,7 @@ namespace {{appName}}.WebAPI.GeneratorSettings
 {
     public class GeneratorSettings
     {
-        [Output("true")]
-        public string ControllerGenerator { get; set; }
 
-        [Output("true")]
-        public string TranslationsGenerator { get; set; }
     }
 }
 """;
@@ -2906,13 +2906,33 @@ namespace {{appName}}.WebAPI.GeneratorSettings
         {
             return $$"""
 {
-  "AppSettings": {
-    "Logging": {
-      "LogLevel": {
+    "Serilog": {
+        "Using": [
+            "Serilog.Sinks.ApplicationInsights",
+            "Serilog.Sinks.Console"
+        ],
+        "MinimumLevel": {
         "Default": "Information",
-        "Microsoft.AspNetCore": "Information"
-      }
+        "Override": {
+            "Microsoft": "Warning",
+            "System": "Warning"
+        }
+        },
+        "WriteTo": [
+        {
+            "Name": "Console"
+        },
+        {
+            "Name": "ApplicationInsights",
+            "Args": {
+            "connectionString": "",
+            "telemetryConverter": "Serilog.Sinks.ApplicationInsights.TelemetryConverters.TraceTelemetryConverter, Serilog.Sinks.ApplicationInsights"
+            }
+        }
+        ],
+        "Enrich": [ "FromLogContext", "WithMachineName", "WithThreadId" ]
     },
+  "AppSettings": {
     "AllowedHosts": "*",
     "{{appName}}.WebAPI": {
       "GoogleClientId": "24372003240-44eprq8dn4s0b5f30i18tqksep60uk5u.apps.googleusercontent.com",
@@ -2925,7 +2945,11 @@ namespace {{appName}}.WebAPI.GeneratorSettings
       "AppHasLatinTranslation": false
     },
     "Spider.Shared": {
+      "ApplicationName": "{{appName}}",
       "EmailSender": "{{emailSender}}",
+      "UnhandledExceptionRecipients": [
+        "{{emailSender}}"
+      ],
       "SmtpHost": "smtp.gmail.com",
       "SmtpPort": 587,
       "SmtpUser": "{{smtpUser}}",
@@ -2941,6 +2965,9 @@ namespace {{appName}}.WebAPI.GeneratorSettings
       "BlobStorageContainerName": "files",
 
       "ConnectionString": "Data source=localhost\\SQLEXPRESS;Initial Catalog={{appName}};Integrated Security=True;Encrypt=false;MultipleActiveResultSets=True;"
+
+      "RequestsLimitNumber": 70,
+      "RequestsLimitWindow": 60
     },
     "Spider.Security": {
       "JwtKey": "{{jwtKey}}",
@@ -3012,15 +3039,15 @@ namespace {{appName}}.WebAPI.GeneratorSettings
         {
             return $$"""
 using LightInject;
-using Spider.Security.Interface;
+using Spider.Security.Interfaces;
 using Spider.Shared.Excel;
 using Spider.Security.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
-using Spider.Shared.FluentValidation;
 using Spider.Shared.Emailing;
 using {{appName}}.Business.Services;
 using {{appName}}.Business.Entities;
+using {{appName}}.Shared.FluentValidation;
 
 namespace {{appName}}.WebAPI.DI
 {
@@ -3031,10 +3058,10 @@ namespace {{appName}}.WebAPI.DI
             // Framework
             registry.Register<AuthenticationService>();
             registry.Register<AuthorizationService>();
-            registry.Register<Spider.Security.Services.SecurityBusinessService<UserExtended>>();
+            registry.Register<SecurityBusinessService<UserExtended>>();
             registry.Register<Spider.Security.Services.BusinessServiceGenerated<UserExtended>>();
             registry.Register<Spider.Security.Services.AuthorizationBusinessService<UserExtended>>();
-            registry.Register<Spider.Security.Services.AuthorizationBusinessServiceGenerated>();
+            registry.Register<Spider.Security.Services.AuthorizationBusinessServiceGenerated<UserExtended>>();
             registry.Register<ExcelService>();
             registry.Register<EmailingService>();
             registry.RegisterSingleton<IConfigureOptions<MvcOptions>, TranslatePropertiesConfiguration>();
@@ -3146,7 +3173,7 @@ namespace {{appName}}.Business
 """;
         }
 
-        private string GetBusinessCsProjData()
+        private string GetBusinessCsProjData(string appName)
         {
             return $$"""
 <Project Sdk="Microsoft.NET.Sdk">
@@ -3159,6 +3186,7 @@ namespace {{appName}}.Business
   <ItemGroup>
     <ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
     <ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -3212,6 +3240,11 @@ namespace {{appName}}.Business.GeneratorSettings
 using Azure.Storage.Blobs;
 using Spider.Security.Services;
 using Spider.Shared.Interfaces;
+using Spider.Shared.Extensions;
+using Spider.Shared.Exceptions;
+using {{appName}}.Business.Entities;
+using {{appName}}.Business.DTO;
+using {{appName}}.Business.Enums;
 
 namespace {{appName}}.Business.Services
 {
@@ -3230,6 +3263,46 @@ namespace {{appName}}.Business.Services
             _context = context;
             _authenticationService = authenticationService;
         }
+
+        #region UserExtended
+
+        public override async Task AuthorizeUserExtendedReadAndThrow(long? userExtendedId)
+        {
+            await _context.WithTransactionAsync(async () =>
+            {
+                bool hasAdminReadPermission = await IsAuthorizedAsync<UserExtended>(BusinessPermissionCodes.ReadUserExtended);
+                bool isCurrentUser = _authenticationService.GetCurrentUserId() == userExtendedId;
+
+                if (isCurrentUser == false && hasAdminReadPermission == false)
+                    throw new UnauthorizedException();
+            });
+        }
+
+        public override async Task AuthorizeUserExtendedUpdateAndThrow(UserExtendedDTO userExtendedDTO)
+        {
+            await _context.WithTransactionAsync(async () =>
+            {
+                bool hasAdminUpdatePermission = await IsAuthorizedAsync<UserExtended>(BusinessPermissionCodes.UpdateUserExtended);
+                if (hasAdminUpdatePermission)
+                    return;
+
+                long currentUserId = _authenticationService.GetCurrentUserId();
+                if (currentUserId != userExtendedDTO.Id)
+                    throw new UnauthorizedException();
+
+                UserExtended userExtended = await GetInstanceAsync<UserExtended, long>(userExtendedDTO.Id, null);
+
+                if (
+                    userExtendedDTO.IsDisabled != userExtended.IsDisabled ||
+                    userExtendedDTO.HasLoggedInWithExternalProvider != userExtended.HasLoggedInWithExternalProvider
+                )
+                {
+                    throw new UnauthorizedException();
+                }
+            });
+        }
+
+        #endregion
 
     }
 }
@@ -3270,8 +3343,15 @@ namespace {{appName}}.Business.Services
         private readonly EmailingService _emailingService;
         private readonly BlobContainerClient _blobContainerClient;
 
-        public {{appName}}BusinessService(IApplicationDbContext context, ExcelService excelService, {{appName}}.Business.Services.AuthorizationBusinessService authorizationService, SecurityBusinessService<UserExtended> securityBusinessService, 
-            AuthenticationService authenticationService, EmailingService emailingService, BlobContainerClient blobContainerClient)
+        public {{appName}}BusinessService(
+            IApplicationDbContext context, 
+            ExcelService excelService, 
+            {{appName}}.Business.Services.AuthorizationBusinessService authorizationService, 
+            SecurityBusinessService<UserExtended> securityBusinessService, 
+            AuthenticationService authenticationService, 
+            EmailingService emailingService, 
+            BlobContainerClient blobContainerClient
+        )
             : base(context, excelService, authorizationService, blobContainerClient)
         {
             _context = context;
@@ -3284,36 +3364,25 @@ namespace {{appName}}.Business.Services
 
         #region User
 
+        /// <summary>
+        /// FT: IsDisabled is handled inside authorization service
+        /// </summary>
         protected override async Task OnBeforeSaveUserExtendedAndReturnSaveBodyDTO(UserExtendedSaveBodyDTO userExtendedSaveBodyDTO)
         {
             await _context.WithTransactionAsync(async () =>
             {
-                if (userExtendedSaveBodyDTO.UserExtendedDTO.Id == 0)
+                if (userExtendedSaveBodyDTO.UserExtendedDTO.Id <= 0)
                     throw new HackerException("You can't add new user.");
 
-                UserExtended user = await GetInstanceAsync<UserExtended, long>(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.UserExtendedDTO.Version);
+                UserExtended userExtended = await GetInstanceAsync<UserExtended, long>(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.UserExtendedDTO.Version);
 
-                if (userExtendedSaveBodyDTO.UserExtendedDTO.Email != user.Email)
-                    throw new HackerException("You can't change email from here.");
-
-                await _securityBusinessService.UpdateRoleListForUser(userExtendedSaveBodyDTO.UserExtendedDTO.Id, userExtendedSaveBodyDTO.SelectedRolesIds);
-            });
-        }
-
-        public async Task<List<string>> GetCurrentUserPermissionCodes()
-        {
-            return await _context.WithTransactionAsync(async () =>
-            {
-                UserExtended currentUser = await _authenticationService.GetCurrentUser<UserExtended>();
-
-                if (currentUser == null)
-                    return new List<string>();
-
-                return currentUser.Roles
-                    .SelectMany(x => x.Permissions)
-                    .Select(x => x.Code)
-                    .Distinct()
-                    .ToList();
+                if (userExtendedSaveBodyDTO.UserExtendedDTO.Email != userExtended.Email ||
+                    userExtendedSaveBodyDTO.UserExtendedDTO.HasLoggedInWithExternalProvider != userExtended.HasLoggedInWithExternalProvider
+                //userExtendedSaveBodyDTO.UserExtendedDTO.AccessedTheSystem != userExtended.AccessedTheSystem
+                )
+                {
+                    throw new HackerException("You can't change Email, HasLoggedInWithExternalProvider nor AccessedTheSystem from the main UI form.");
+                }
             });
         }
 
@@ -3325,7 +3394,7 @@ namespace {{appName}}.Business.Services
         {
             await _context.WithTransactionAsync(async () =>
             {
-                await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
+                await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(BusinessPermissionCodes.UpdateNotification);
 
                 // FT: Checking version because if the user didn't save and some other user changed the version, he will send emails to wrong users
                 Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
@@ -3336,13 +3405,14 @@ namespace {{appName}}.Business.Services
             });
         }
 
+        /// <summary>
+        /// FT: Don't need authorization because user can do whatever he wants with his notifications
+        /// </summary>
         public async Task DeleteNotificationForCurrentUser(long notificationId, int notificationVersion)
         {
             await _context.WithTransactionAsync(async () =>
             {
                 long currentUserId = _authenticationService.GetCurrentUserId();
-
-                //await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
 
                 Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
 
@@ -3352,13 +3422,14 @@ namespace {{appName}}.Business.Services
             });
         }
 
+        /// <summary>
+        /// FT: Don't need authorization because user can do whatever he wants with his notifications
+        /// </summary>
         public async Task MarkNotificationAsReadForCurrentUser(long notificationId, int notificationVersion)
         {
             await _context.WithTransactionAsync(async () =>
             {
                 long currentUserId = _authenticationService.GetCurrentUserId();
-
-                //await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
 
                 Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
 
@@ -3368,13 +3439,14 @@ namespace {{appName}}.Business.Services
             });
         }
 
+        /// <summary>
+        /// FT: Don't need authorization because user can do whatever he wants with his notifications
+        /// </summary>
         public async Task MarkNotificationAsUnreadForCurrentUser(long notificationId, int notificationVersion)
         {
             await _context.WithTransactionAsync(async () =>
             {
                 long currentUserId = _authenticationService.GetCurrentUserId();
-
-                //await _authorizationService.AuthorizeAndThrowAsync<UserExtended>(PermissionCodes.EditNotification);
 
                 Notification notification = await GetInstanceAsync<Notification, long>(notificationId, notificationVersion);
 
@@ -3384,38 +3456,19 @@ namespace {{appName}}.Business.Services
             });
         }
 
-        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        public async Task<int> GetUnreadNotificationsCountForCurrentUser()
         {
-            TableResponseDTO<NotificationDTO> result = new TableResponseDTO<NotificationDTO>();
-            long currentUserId = _authenticationService.GetCurrentUserId(); // FT: Not doing user.Notifications, because he could have a lot of them.
+            long currentUserId = _authenticationService.GetCurrentUserId();
 
-            await _context.WithTransactionAsync(async () =>
+            return await _context.WithTransactionAsync(async () =>
             {
-                IQueryable<UserNotification> userNotificationsQuery = _context.DbSet<UserNotification>()
-                    .Where(x => x.User.Id == currentUserId);
+                var notificationUsersQuery = _context.DbSet<UserNotification>()
+                    .Where(x => x.User.Id == currentUserId && x.IsMarkedAsRead == false);
 
-                int count = await userNotificationsQuery.CountAsync();
+                int count = await notificationUsersQuery.CountAsync();
 
-                List<NotificationDTO> notificationDTOList = await userNotificationsQuery
-                    .Skip(tableFilterDTO.First)
-                    .Take(tableFilterDTO.Rows)
-                    .Select(x => new NotificationDTO
-                    {
-                        Id = x.Notification.Id,
-                        Version = x.Notification.Version,
-                        Title = x.Notification.Title,
-                        Description = x.Notification.Description,
-                        CreatedAt = x.Notification.CreatedAt,
-                        IsMarkedAsRead = x.IsMarkedAsRead,
-                    })
-                    .OrderByDescending(x => x.CreatedAt)
-                    .ToListAsync();
-
-                result.Data = notificationDTOList;
-                result.TotalRecords = count;
+                return count;
             });
-
-            return result;
         }
 
         #endregion
