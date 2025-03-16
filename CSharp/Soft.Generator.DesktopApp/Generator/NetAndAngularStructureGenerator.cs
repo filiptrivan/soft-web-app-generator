@@ -22,523 +22,534 @@ namespace Spider.DesktopApp.Generator
                 {
                     new SpiderFolder
                     {
-                        Name = "Angular",
+                        Name = appName.ToKebabCase(),
                         ChildFolders =
                         {
                             new SpiderFolder
                             {
-                                Name = "plop",
+                                Name = "Angular",
                                 ChildFolders =
                                 {
                                     new SpiderFolder
                                     {
-                                        Name = "output"
-                                    }
-                                },
-                                Files =
-                                {
-                                    new SpiderFile { Name = "spider-form-html-template.hbs", Data = GetSpiderFormHtmlTemplateHbsData() },
-                                    new SpiderFile { Name = "spider-form-ts-template.hbs", Data = GetSpiderFormTsTemplateHbsData() },
-                                }
-                            },
-                            new SpiderFolder
-                            {
-                                Name = "src",
-                                ChildFolders =
-                                {
-                                    new SpiderFolder
-                                    {
-                                        Name = "app",
+                                        Name = "plop",
                                         ChildFolders =
                                         {
                                             new SpiderFolder
                                             {
-                                                Name = "business",
+                                                Name = "output"
+                                            }
+                                        },
+                                        Files =
+                                        {
+                                            new SpiderFile { Name = "spider-form-html-template.hbs", Data = GetSpiderFormHtmlTemplateHbsData() },
+                                            new SpiderFile { Name = "spider-form-ts-template.hbs", Data = GetSpiderFormTsTemplateHbsData() },
+                                        }
+                                    },
+                                    new SpiderFolder
+                                    {
+                                        Name = "src",
+                                        ChildFolders =
+                                        {
+                                            new SpiderFolder
+                                            {
+                                                Name = "app",
                                                 ChildFolders =
                                                 {
                                                     new SpiderFolder
                                                     {
-                                                        Name = "components",
+                                                        Name = "business",
                                                         ChildFolders =
                                                         {
                                                             new SpiderFolder
                                                             {
-                                                                Name = "base-details",
-                                                            },
-                                                        }
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "entities",
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "enums",
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "guards",
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "interceptors",
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "layout",
-                                                        Files =
-                                                        {
-                                                            new SpiderFile { Name = "layout.component.html", Data = GetLayoutComponentHtmlCode() },
-                                                            new SpiderFile { Name = "layout.component.ts", Data = GetLayoutComponentTsCode() },
-                                                        }
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "services",
-                                                        ChildFolders =
-                                                        {
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "api",
-                                                                Files =
+                                                                Name = "components",
+                                                                ChildFolders =
                                                                 {
-                                                                    new SpiderFile { Name = "api.service.ts", Data = GetAPIServiceTsCode() },
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "base-details",
+                                                                    },
                                                                 }
                                                             },
                                                             new SpiderFolder
                                                             {
-                                                                Name = "auth",
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "auth.service.ts", Data = GetAuthServiceTsCode() },
-                                                                }
+                                                                Name = "entities",
+                                                            },
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "enums",
+                                                            },
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "guards",
+                                                            },
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "interceptors",
                                                             },
                                                             new SpiderFolder
                                                             {
                                                                 Name = "layout",
                                                                 Files =
                                                                 {
-                                                                    new SpiderFile { Name = "layout.service.ts", Data = GetLayoutServiceTsCode() },
+                                                                    new SpiderFile { Name = "layout.component.html", Data = GetLayoutComponentHtmlCode() },
+                                                                    new SpiderFile { Name = "layout.component.ts", Data = GetLayoutComponentTsCode() },
                                                                 }
                                                             },
                                                             new SpiderFolder
                                                             {
-                                                                Name = "translates",
+                                                                Name = "services",
+                                                                ChildFolders =
+                                                                {
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "api",
+                                                                        Files =
+                                                                        {
+                                                                            new SpiderFile { Name = "api.service.ts", Data = GetAPIServiceTsCode() },
+                                                                        }
+                                                                    },
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "auth",
+                                                                        Files =
+                                                                        {
+                                                                            new SpiderFile { Name = "auth.service.ts", Data = GetAuthServiceTsCode() },
+                                                                        }
+                                                                    },
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "layout",
+                                                                        Files =
+                                                                        {
+                                                                            new SpiderFile { Name = "layout.service.ts", Data = GetLayoutServiceTsCode() },
+                                                                        }
+                                                                    },
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "translates",
+                                                                        Files =
+                                                                        {
+                                                                            new SpiderFile { Name = "merge-class-names.ts", Data = GetMergeClassNamesTsCode() },
+                                                                            new SpiderFile { Name = "merge-labels.ts", Data = GetMergeLabelsCode() },
+                                                                        }
+                                                                    },
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "validators",
+                                                                        Files =
+                                                                        {
+                                                                            new SpiderFile { Name = "validators.ts", Data = GetValidatorsTsCode() },
+                                                                        }
+                                                                    },
+                                                                },
                                                                 Files =
                                                                 {
-                                                                    new SpiderFile { Name = "merge-class-names.ts", Data = GetMergeClassNamesTsCode() },
-                                                                    new SpiderFile { Name = "merge-labels.ts", Data = GetMergeLabelsCode() },
-                                                                }
-                                                            },
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "validators",
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "validators.ts", Data = GetValidatorsTsCode() },
+                                                                    new SpiderFile { Name = "config.service.ts", Data = GetConfigServiceTsCode() },
                                                                 }
                                                             },
                                                         },
                                                         Files =
                                                         {
-                                                            new SpiderFile { Name = "config.service.ts", Data = GetConfigServiceTsCode() },
+                                                            new SpiderFile { Name = "business.module.ts", Data = GetBusinessModuleTsData() }
+                                                        }
+                                                    },
+                                                    new SpiderFolder
+                                                    {
+                                                        Name = "features",
+                                                        ChildFolders =
+                                                        {
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "administration",
+                                                                ChildFolders =
+                                                                {
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "pages",
+                                                                        ChildFolders =
+                                                                        {
+                                                                            new SpiderFolder
+                                                                            {
+                                                                                Name = "notification",
+                                                                                Files =
+                                                                                {
+                                                                                    new SpiderFile { Name = "notification-details.component.html", Data = GetNotificationDetailsComponentHtmlData() },
+                                                                                    new SpiderFile { Name = "notification-details.component.ts", Data = GetNotificationDetailsComponentTsData() },
+                                                                                    new SpiderFile { Name = "notification-table.component.html", Data = GetNotificationTableComponentHtmlData() },
+                                                                                    new SpiderFile { Name = "notification-table.component.ts", Data = GetNotificationTableComponentTsData() },
+                                                                                }
+                                                                            },
+                                                                            new SpiderFolder
+                                                                            {
+                                                                                Name = "user",
+                                                                                Files =
+                                                                                {
+                                                                                    new SpiderFile { Name = "user-details.component.html", Data = GetUserDetailsComponentHtmlData() },
+                                                                                    new SpiderFile { Name = "user-details.component.ts", Data = GetUserDetailsComponentTsData() },
+                                                                                    new SpiderFile { Name = "user-table.component.html", Data = GetUserTableComponentHtmlData() },
+                                                                                    new SpiderFile { Name = "user-table.component.ts", Data = GetUserTableComponentTsData() },
+                                                                                }
+                                                                            },
+                                                                            new SpiderFolder
+                                                                            {
+                                                                                Name = "role",
+                                                                                Files =
+                                                                                {
+                                                                                    new SpiderFile { Name = "role-details.component.html", Data = GetRoleDetailsComponentHtmlData() },
+                                                                                    new SpiderFile { Name = "role-details.component.ts", Data = GetRoleDetailsComponentTsData() },
+                                                                                    new SpiderFile { Name = "role-table.component.html", Data = GetRoleTableComponentHtmlData() },
+                                                                                    new SpiderFile { Name = "role-table.component.ts", Data = GetRoleTableComponentTsData() },
+                                                                                }
+                                                                            },
+                                                                        },
+                                                                    },
+                                                                },
+                                                                Files =
+                                                                {
+                                                                    new SpiderFile { Name = "administration.module.ts", Data = GetAdministrationModuleTsData() }
+                                                                }
+                                                            },
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "dashboard",
+                                                                Files =
+                                                                {
+                                                                    new SpiderFile { Name = "dashboard.component.html", Data = GetDashboardComponentHtmlData() },
+                                                                    new SpiderFile { Name = "dashboard.component.ts", Data = GetDashboardComponentTsData() },
+                                                                    new SpiderFile { Name = "dashboard.module.ts", Data = GetDashboardModuleTsData() },
+                                                                }
+                                                            },
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "legal",
+                                                                ChildFolders =
+                                                                {
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "privacy-policy",
+                                                                        Files =
+                                                                        {
+                                                                            new SpiderFile { Name = "privacy-policy.component.html", Data = GetPrivacyPolicyComponentHtmlData() },
+                                                                            new SpiderFile { Name = "privacy-policy.component.ts", Data = GetPrivacyPolicyComponentTsData() },
+                                                                        },
+                                                                    },
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "user-agreement",
+                                                                        Files =
+                                                                        {
+                                                                            new SpiderFile { Name = "user-agreement.component.html", Data = GetUserAgreementComponentHtmlData() },
+                                                                            new SpiderFile { Name = "user-agreement.component.ts", Data = GetUserAgreementComponentTsData() },
+                                                                        },
+                                                                    },
+                                                                },
+                                                                Files =
+                                                                {
+                                                                    new SpiderFile { Name = "legal.module.ts", Data = GetLegalModuleTsData() },
+                                                                }
+                                                            },
+                                                            new SpiderFolder
+                                                            {
+                                                                Name = "notification",
+                                                                ChildFolders =
+                                                                {
+                                                                    new SpiderFolder
+                                                                    {
+                                                                        Name = "pages",
+                                                                        Files =
+                                                                        {
+                                                                            new SpiderFile { Name = "notification.component.html", Data = GetClientNotificationComponentHtmlData() },
+                                                                            new SpiderFile { Name = "notification.component.ts", Data = GetClientNotificationComponentTsData() },
+                                                                        },
+                                                                    },
+                                                                },
+                                                                Files =
+                                                                {
+                                                                    new SpiderFile { Name = "notification.module.ts", Data = GetClientNotificationModuleTsData() },
+                                                                }
+                                                            },
                                                         }
                                                     },
                                                 },
                                                 Files =
                                                 {
-                                                    new SpiderFile { Name = "business.module.ts", Data = GetBusinessModuleTsData() }
+                                                    new SpiderFile { Name = "app-routing.module.ts", Data = GetAppRoutingModuleTsData() },
+                                                    new SpiderFile { Name = "app.component.html", Data = GetAppComponentHtmlData() },
+                                                    new SpiderFile { Name = "app.component.ts", Data = GetAppComponentTsData() },
+                                                    new SpiderFile { Name = "app.module.ts", Data = GetAppModuleTsData() },
                                                 }
                                             },
                                             new SpiderFolder
                                             {
-                                                Name = "features",
+                                                Name = "assets",
                                                 ChildFolders =
                                                 {
                                                     new SpiderFolder
                                                     {
-                                                        Name = "administration",
-                                                        ChildFolders =
-                                                        {
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "pages",
-                                                                ChildFolders =
-                                                                {
-                                                                    new SpiderFolder
-                                                                    {
-                                                                        Name = "notification",
-                                                                        Files =
-                                                                        {
-                                                                            new SpiderFile { Name = "notification-details.component.html", Data = GetNotificationDetailsComponentHtmlData() },
-                                                                            new SpiderFile { Name = "notification-details.component.ts", Data = GetNotificationDetailsComponentTsData() },
-                                                                            new SpiderFile { Name = "notification-table.component.html", Data = GetNotificationTableComponentHtmlData() },
-                                                                            new SpiderFile { Name = "notification-table.component.ts", Data = GetNotificationTableComponentTsData() },
-                                                                        }
-                                                                    },
-                                                                    new SpiderFolder
-                                                                    {
-                                                                        Name = "user",
-                                                                        Files =
-                                                                        {
-                                                                            new SpiderFile { Name = "user-details.component.html", Data = GetUserDetailsComponentHtmlData() },
-                                                                            new SpiderFile { Name = "user-details.component.ts", Data = GetUserDetailsComponentTsData() },
-                                                                            new SpiderFile { Name = "user-table.component.html", Data = GetUserTableComponentHtmlData() },
-                                                                            new SpiderFile { Name = "user-table.component.ts", Data = GetUserTableComponentTsData() },
-                                                                        }
-                                                                    },
-                                                                    new SpiderFolder
-                                                                    {
-                                                                        Name = "role",
-                                                                        Files =
-                                                                        {
-                                                                            new SpiderFile { Name = "role-details.component.html", Data = GetRoleDetailsComponentHtmlData() },
-                                                                            new SpiderFile { Name = "role-details.component.ts", Data = GetRoleDetailsComponentTsData() },
-                                                                            new SpiderFile { Name = "role-table.component.html", Data = GetRoleTableComponentHtmlData() },
-                                                                            new SpiderFile { Name = "role-table.component.ts", Data = GetRoleTableComponentTsData() },
-                                                                        }
-                                                                    },
-                                                                },
-                                                            },
-                                                        },
+                                                        Name = "i18n",
                                                         Files =
                                                         {
-                                                            new SpiderFile { Name = "administration.module.ts", Data = GetAdministrationModuleTsData() }
+                                                            new SpiderFile { Name = "en.generated.json", Data = "" },
+                                                            new SpiderFile { Name = "en.json", Data = GetTranslocoEnJsonCode() },
+                                                            new SpiderFile { Name = "sr-Latn-RS.generated.json", Data = "" },
+                                                            new SpiderFile { Name = "sr-Latn-RS.json", Data = GetTranslocoSrLatnRSJsonCode() },
                                                         }
                                                     },
                                                     new SpiderFolder
                                                     {
-                                                        Name = "dashboard",
-                                                        Files =
-                                                        {
-                                                            new SpiderFile { Name = "dashboard.component.html", Data = GetDashboardComponentHtmlData() },
-                                                            new SpiderFile { Name = "dashboard.component.ts", Data = GetDashboardComponentTsData() },
-                                                            new SpiderFile { Name = "dashboard.module.ts", Data = GetDashboardModuleTsData() },
-                                                        }
-                                                    },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "legal",
+                                                        Name = "images",
                                                         ChildFolders =
                                                         {
                                                             new SpiderFolder
                                                             {
-                                                                Name = "privacy-policy",
+                                                                Name = "logo",
                                                                 Files =
                                                                 {
-                                                                    new SpiderFile { Name = "privacy-policy.component.html", Data = GetPrivacyPolicyComponentHtmlData() },
-                                                                    new SpiderFile { Name = "privacy-policy.component.ts", Data = GetPrivacyPolicyComponentTsData() },
-                                                                },
-                                                            },
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "user-agreement",
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "user-agreement.component.html", Data = GetUserAgreementComponentHtmlData() },
-                                                                    new SpiderFile { Name = "user-agreement.component.ts", Data = GetUserAgreementComponentTsData() },
-                                                                },
-                                                            },
-                                                        },
-                                                        Files =
-                                                        {
-                                                            new SpiderFile { Name = "legal.module.ts", Data = GetLegalModuleTsData() },
+                                                                    new SpiderFile { Name = "favicon.ico", Data = GetFaviconIcoData() },
+                                                                    new SpiderFile { Name = "logo.svg", Data = GetLogoSvgData() },
+                                                                }
+                                                            }
                                                         }
                                                     },
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "notification",
-                                                        ChildFolders =
-                                                        {
-                                                            new SpiderFolder
-                                                            {
-                                                                Name = "pages",
-                                                                Files =
-                                                                {
-                                                                    new SpiderFile { Name = "notification.component.html", Data = GetClientNotificationComponentHtmlData() },
-                                                                    new SpiderFile { Name = "notification.component.ts", Data = GetClientNotificationComponentTsData() },
-                                                                },
-                                                            },
-                                                        },
-                                                        Files =
-                                                        {
-                                                            new SpiderFile { Name = "notification.module.ts", Data = GetClientNotificationModuleTsData() },
-                                                        }
-                                                    },
-                                                }
-                                            },
-                                        },
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "app-routing.module.ts", Data = GetAppRoutingModuleTsData() },
-                                            new SpiderFile { Name = "app.component.html", Data = GetAppComponentHtmlData() },
-                                            new SpiderFile { Name = "app.component.ts", Data = GetAppComponentTsData() },
-                                            new SpiderFile { Name = "app.module.ts", Data = GetAppModuleTsData() },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "assets",
-                                        ChildFolders =
-                                        {
-                                            new SpiderFolder
-                                            {
-                                                Name = "i18n",
+                                                },
                                                 Files =
                                                 {
-                                                    new SpiderFile { Name = "en.generated.json", Data = "" },
-                                                    new SpiderFile { Name = "en.json", Data = GetTranslocoEnJsonCode() },
-                                                    new SpiderFile { Name = "sr-Latn-RS.generated.json", Data = "" },
-                                                    new SpiderFile { Name = "sr-Latn-RS.json", Data = GetTranslocoSrLatnRSJsonCode() },
+                                                    new SpiderFile { Name = "shared.scss", Data = "" },
+                                                    new SpiderFile { Name = "styles.scss", Data = GetStylesScssCode() },
                                                 }
                                             },
                                             new SpiderFolder
                                             {
-                                                Name = "images",
-                                                ChildFolders =
+                                                Name = "environments",
+                                                Files =
                                                 {
-                                                    new SpiderFolder
-                                                    {
-                                                        Name = "logo",
-                                                        Files =
-                                                        {
-                                                            new SpiderFile { Name = "favicon.ico", Data = GetFaviconIcoData() },
-                                                            new SpiderFile { Name = "logo.svg", Data = GetLogoSvgData() },
-                                                        }
-                                                    }
+                                                    new SpiderFile { Name = "environment.prod.ts", Data = "" },
+                                                    new SpiderFile { Name = "environment.ts", Data = GetEnvironmentTsCode(appName, primaryColor) },
                                                 }
-                                            },
+                                            }
                                         },
                                         Files =
                                         {
-                                            new SpiderFile { Name = "shared.scss", Data = "" },
-                                            new SpiderFile { Name = "styles.scss", Data = GetStylesScssCode() },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "environments",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "environment.prod.ts", Data = "" },
-                                            new SpiderFile { Name = "environment.ts", Data = GetEnvironmentTsCode(appName, primaryColor) },
+                                            new SpiderFile { Name = "index.html", Data = GetIndexHtmlData(appName) },
+                                            new SpiderFile { Name = "main.ts", Data = GetMainTsData() },
                                         }
                                     }
                                 },
                                 Files =
                                 {
-                                    new SpiderFile { Name = "index.html", Data = GetIndexHtmlData(appName) },
-                                    new SpiderFile { Name = "main.ts", Data = GetMainTsData() },
+                                    new SpiderFile { Name = ".editorconfig", Data = GetEditOrConfigData() },
+                                    new SpiderFile { Name = "angular.json", Data = GetAngularJsonData(appName) },
+                                    new SpiderFile { Name = "package.json", Data = GetPackageJsonData(appName) },
+                                    new SpiderFile { Name = "plopfile.js", Data = GetPlopFileJsData() },
+                                    new SpiderFile { Name = "README.md", Data = "" },
+                                    new SpiderFile { Name = "tsconfig.app.json", Data = GetTsConfigAppJsonData() },
+                                    new SpiderFile { Name = "tsconfig.json", Data = GetTsConfigJsonData() },
+                                    new SpiderFile { Name = "tsconfig.spec.json", Data = GetTsConfigSpecJsonData() },
+                                    new SpiderFile { Name = "vercel.json", Data = GetVercelJsonData() },
                                 }
+                            },
+                            new SpiderFolder
+                            {
+                                Name = "API",
+                                ChildFolders =
+                                {
+                                    new SpiderFolder
+                                    {
+                                        Name = $"{appName}.Business",
+                                        ChildFolders =
+                                        {
+                                            new SpiderFolder
+                                            {
+                                                Name = "DataMappers",
+                                                Files = new List<SpiderFile>
+                                                {
+                                                    new SpiderFile { Name = "MapsterMapper.cs", Data = GetMapsterMapperCsData(appName) },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "DTO",
+                                                ChildFolders =
+                                                {
+                                                    new SpiderFolder
+                                                    {
+                                                        Name = "Partials",
+                                                        Files = new List<SpiderFile>
+                                                        {
+                                                            new SpiderFile { Name = "NotificationDTO.cs", Data = GetNotificationDTOCsData(appName) },
+                                                            new SpiderFile { Name = "NotificationSaveBodyDTO.cs", Data = GetNotificationSaveBodyDTOCsData(appName) },
+                                                        }
+                                                    },
+                                                    new SpiderFolder
+                                                    {
+                                                        Name = "Helpers"
+                                                    },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "Entities",
+                                                Files =
+                                                {
+                                                    new SpiderFile { Name = "Notification.cs", Data = GetNotificationCsData(appName) },
+                                                    new SpiderFile { Name = "UserExtended.cs", Data = GetUserExtendedCsData(appName) },
+                                                    new SpiderFile { Name = "UserNotification.cs", Data = GetUserNotificationCsData(appName) },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "Enums",
+                                                Files =
+                                                {
+                                                    new SpiderFile { Name = "BusinessPermissionCodes", Data = GetBusinessPermissionCodesCsData(appName) },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "Services",
+                                                Files =
+                                                {
+                                                    new SpiderFile { Name = $"AuthorizationBusinessService.cs", Data = GetAuthorizationServiceCsData(appName) },
+                                                    new SpiderFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "ValidationRules",
+                                            },
+                                        },
+                                        Files =
+                                        {
+                                            new SpiderFile { Name = "GeneratorSettings.cs", Data = GetBusinessGeneratorSettingsData(appName) },
+                                            new SpiderFile { Name = $"{appName}.Business.csproj", Data = GetBusinessCsProjData(appName) },
+                                            new SpiderFile { Name = $"Settings.cs", Data = GetBusinessSettingsCsData(appName) },
+                                        }
+                                    },
+                                    new SpiderFolder
+                                    {
+                                        Name = $"{appName}.Infrastructure",
+                                        Files =
+                                        {
+                                            new SpiderFile { Name = $"{appName}ApplicationDbContext.cs", Data = GetInfrastructureApplicationDbContextData(appName) },
+                                            new SpiderFile { Name = $"{appName}.Infrastructure.csproj", Data = GetInfrastructureCsProjData(appName) },
+                                        }
+                                    },
+                                    new SpiderFolder
+                                    {
+                                        Name = $"{appName}.Shared",
+                                        ChildFolders =
+                                        {
+                                            new SpiderFolder
+                                            {
+                                                Name = "FluentValidation",
+                                                Files =
+                                                {
+                                                    new SpiderFile { Name = "TranslatePropertiesConfiguration.cs", Data = GetTranslatePropertiesConfigurationCsData(appName) },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "Resources",
+                                                Files =
+                                                {
+                                                    new SpiderFile { Name = "Terms.Designer.cs", Data = GetTermsDesignerCsData(appName) },
+                                                    new SpiderFile { Name = "Terms.resx", Data = GetTermsResxData() },
+                                                    new SpiderFile { Name = "TermsGenerated.Designer.cs", Data = GetTermsGeneratedDesignerCsData(appName) },
+                                                    new SpiderFile { Name = "TermsGenerated.resx", Data = GetTermsGeneratedResxData() },
+                                                    new SpiderFile { Name = "TermsGenerated.sr-Latn-RS.resx", Data = GetTermsGeneratedSrLatnRSResxData() },
+                                                }
+                                            }
+                                        },
+                                        Files =
+                                        {
+                                            new SpiderFile { Name = $"{appName}.Shared.csproj", Data = GetSharedCsProjData() },
+                                        }
+                                    },
+                                    new SpiderFolder
+                                    {
+                                        Name = $"{appName}.WebAPI",
+                                        ChildFolders =
+                                        {
+                                            new SpiderFolder
+                                            {
+                                                Name = "Properties",
+                                                Files =
+                                                {
+                                                    new SpiderFile { Name = "launchSettings.json", Data = GetLaunchSettingsJsonData() },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "Controllers",
+                                                Files =
+                                                {
+                                                    new SpiderFile { Name = "NotificationController.cs", Data = GetNotificationControllerCsData(appName) },
+                                                    new SpiderFile { Name = "SecurityController.cs", Data = GetSecurityControllerCsData(appName) },
+                                                    new SpiderFile { Name = "UserExtendedController.cs", Data = GetUserExtendedControllerCsData(appName) },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "DI",
+                                                Files =
+                                                {
+                                                    new SpiderFile { Name = "CompositionRoot.cs", Data = GetCompositionRootCsData(appName) },
+                                                }
+                                            },
+                                            new SpiderFolder
+                                            {
+                                                Name = "Helpers",
+                                            },
+                                        },
+                                        Files =
+                                        {
+                                            new SpiderFile { Name = "appsettings.json", Data = GetAppSettingsJsonData(appName, null, null, null, null, null, null) }, // TODO FT: Add this to the app
+                                            new SpiderFile { Name = "GeneratorSettings.cs", Data = GetWebAPIGeneratorSettingsData(appName) },
+                                            new SpiderFile { Name = $"{appName}.WebAPI.csproj", Data = GetWebAPICsProjData(appName) },
+                                            new SpiderFile { Name = "Program.cs", Data = GetProgramCsData(appName) },
+                                            new SpiderFile { Name = "Settings.cs", Data = GetWebAPISettingsCsData(appName) },
+                                            new SpiderFile { Name = "Startup.cs", Data = GetStartupCsData(appName) },
+                                        }
+                                    },
+                                },
+                                Files =
+                                {
+                                    new SpiderFile { Name = $"{appName}.sln", Data = GetNetSolutionData(appName) }
+                                }
+                            },
+                            new SpiderFolder
+                            {
+                                Name = "Data",
+                                ChildFolders =
+                                {
+                                    new SpiderFolder
+                                    {
+                                        Name = "test-data"
+                                    },
+                                    new SpiderFolder
+                                    {
+                                        Name = "update-scripts"
+                                    },
+                                },
+                                Files =
+                                {
+                                    new SpiderFile { Name = "initialize-data.xlsx", Data = "" },
+                                    new SpiderFile { Name = "initialize-script.sql", Data = "" }
+                                }
+                            },
+                            new SpiderFolder
+                            {
+                                Name = "Documentation",
                             }
                         },
                         Files =
                         {
-                            new SpiderFile { Name = ".editorconfig", Data = GetEditOrConfigData() },
-                            new SpiderFile { Name = "angular.json", Data = GetAngularJsonData(appName) },
-                            new SpiderFile { Name = "package.json", Data = GetPackageJsonData(appName) },
-                            new SpiderFile { Name = "plopfile.js", Data = GetPlopFileJsData() },
-                            new SpiderFile { Name = "README.md", Data = "" },
-                            new SpiderFile { Name = "tsconfig.app.json", Data = GetTsConfigAppJsonData() },
-                            new SpiderFile { Name = "tsconfig.json", Data = GetTsConfigJsonData() },
-                            new SpiderFile { Name = "tsconfig.spec.json", Data = GetTsConfigSpecJsonData() },
-                            new SpiderFile { Name = "vercel.json", Data = GetVercelJsonData() },
+                            new SpiderFile { Name = ".gitignore", Data = GetGitIgnoreData() },
+                            new SpiderFile { Name = "License", Data = GetMitLicenseData() },
                         }
-                    },
-                    new SpiderFolder
-                    {
-                        Name = "API",
-                        ChildFolders =
-                        {
-                            new SpiderFolder
-                            {
-                                Name = $"{appName}.Business",
-                                ChildFolders =
-                                {
-                                    new SpiderFolder
-                                    {
-                                        Name = "DataMappers",
-                                        Files = new List<SpiderFile>
-                                        {
-                                            new SpiderFile { Name = "MapsterMapper.cs", Data = GetMapsterMapperCsData(appName) },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "DTO",
-                                        ChildFolders =
-                                        {
-                                            new SpiderFolder
-                                            {
-                                                Name = "Partials",
-                                                Files = new List<SpiderFile>
-                                                {
-                                                    new SpiderFile { Name = "NotificationDTO.cs", Data = GetNotificationDTOCsData(appName) },
-                                                    new SpiderFile { Name = "NotificationSaveBodyDTO.cs", Data = GetNotificationSaveBodyDTOCsData(appName) },
-                                                }
-                                            },
-                                            new SpiderFolder
-                                            {
-                                                Name = "Helpers"
-                                            },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "Entities",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "Notification.cs", Data = GetNotificationCsData(appName) },
-                                            new SpiderFile { Name = "UserExtended.cs", Data = GetUserExtendedCsData(appName) },
-                                            new SpiderFile { Name = "UserNotification.cs", Data = GetUserNotificationCsData(appName) },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "Enums",
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "Services",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = $"AuthorizationBusinessService.cs", Data = GetAuthorizationServiceCsData(appName) },
-                                            new SpiderFile { Name = $"{appName}BusinessService.cs", Data = GetBusinessServiceCsData(appName) },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "ValidationRules",
-                                    },
-                                },
-                                Files =
-                                {
-                                    new SpiderFile { Name = "GeneratorSettings.cs", Data = GetBusinessGeneratorSettingsData(appName) },
-                                    new SpiderFile { Name = $"{appName}.Business.csproj", Data = GetBusinessCsProjData(appName) },
-                                    new SpiderFile { Name = $"Settings.cs", Data = GetBusinessSettingsCsData(appName) },
-                                }
-                            },
-                            new SpiderFolder
-                            {
-                                Name = $"{appName}.Infrastructure",
-                                Files =
-                                {
-                                    new SpiderFile { Name = $"{appName}ApplicationDbContext.cs", Data = GetInfrastructureApplicationDbContextData(appName) },
-                                    new SpiderFile { Name = $"{appName}.Infrastructure.csproj", Data = GetInfrastructureCsProjData(appName) },
-                                }
-                            },
-                            new SpiderFolder
-                            {
-                                Name = $"{appName}.Shared",
-                                ChildFolders =
-                                {
-                                    new SpiderFolder
-                                    {
-                                        Name = "FluentValidation",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "TranslatePropertiesConfiguration.cs", Data = GetTranslatePropertiesConfigurationCsData(appName) },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "Resources",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "Terms.Designer.cs", Data = GetTermsDesignerCsData(appName) },
-                                            new SpiderFile { Name = "Terms.resx", Data = GetTermsResxData() },
-                                            new SpiderFile { Name = "TermsGenerated.Designer.cs", Data = GetTermsGeneratedDesignerCsData(appName) },
-                                            new SpiderFile { Name = "TermsGenerated.resx", Data = GetTermsGeneratedResxData() },
-                                            new SpiderFile { Name = "TermsGenerated.sr-Latn-RS.resx", Data = GetTermsGeneratedSrLatnRSResxData() },
-                                        }
-                                    }
-                                },
-                                Files =
-                                {
-                                    new SpiderFile { Name = $"{appName}.Shared.csproj", Data = GetSharedCsProjData() },
-                                }
-                            },
-                            new SpiderFolder
-                            {
-                                Name = $"{appName}.WebAPI",
-                                ChildFolders =
-                                {
-                                    new SpiderFolder
-                                    {
-                                        Name = "Properties",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "launchSettings.json", Data = GetLaunchSettingsJsonData() },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "Controllers",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "NotificationController.cs", Data = GetNotificationControllerCsData(appName) },
-                                            new SpiderFile { Name = "SecurityController.cs", Data = GetSecurityControllerCsData(appName) },
-                                            new SpiderFile { Name = "UserExtendedController.cs", Data = GetUserExtendedControllerCsData(appName) },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "DI",
-                                        Files =
-                                        {
-                                            new SpiderFile { Name = "CompositionRoot.cs", Data = GetCompositionRootCsData(appName) },
-                                        }
-                                    },
-                                    new SpiderFolder
-                                    {
-                                        Name = "Helpers",
-                                    },
-                                },
-                                Files =
-                                {
-                                    new SpiderFile { Name = "appsettings.json", Data = GetAppSettingsJsonData(appName, null, null, null, null, null, null) }, // TODO FT: Add this to the app
-                                    new SpiderFile { Name = "GeneratorSettings.cs", Data = GetWebAPIGeneratorSettingsData(appName) },
-                                    new SpiderFile { Name = $"{appName}.WebAPI.csproj", Data = GetWebAPICsProjData(appName) },
-                                    new SpiderFile { Name = "Program.cs", Data = GetProgramCsData(appName) },
-                                    new SpiderFile { Name = "Settings.cs", Data = GetWebAPISettingsCsData(appName) },
-                                    new SpiderFile { Name = "Startup.cs", Data = GetStartupCsData(appName) },
-                                }
-                            },
-                        },
-                        Files =
-                        {
-                            new SpiderFile { Name = $"{appName}.sln", Data = GetNetSolutionData(appName) }
-                        }
-                    },
-                    new SpiderFolder
-                    {
-                        Name = "Data",
-                        ChildFolders =
-                        {
-                            new SpiderFolder
-                            {
-                                Name = "test-data"
-                            },
-                            new SpiderFolder
-                            {
-                                Name = "update-scripts"
-                            },
-                        },
-                        Files =
-                        {
-                            new SpiderFile { Name = "initialize-data.xlsx", Data = "" },
-                            new SpiderFile { Name = "initialize-script.sql", Data = "" }
-                        }
-                    },
-                    new SpiderFolder
-                    {
-                        Name = "Documentation",
                     }
-                },
-                Files =
-                {
-                    new SpiderFile { Name = ".gitignore", Data = GetGitIgnoreData() },
-                    new SpiderFile { Name = "License", Data = GetMitLicenseData() },
                 }
             };
 
@@ -665,8 +676,8 @@ export class NotificationDetailsComponent extends BaseFormCopy implements OnInit
             return $$"""
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
+import { Column } from '@playerty/spider';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { Column } from 'src/app/core/components/spider-data-table/spider-data-table.component';
 
 @Component({
     selector: 'notification-table',
@@ -968,17 +979,17 @@ export class UserTableComponent implements OnInit {
             return $$"""
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { UserTableComponent } from './pages/users/user-table.component';
-import { UserDetailsComponent } from './pages/users/user-details.component';
-import { RoleTableComponent } from './pages/roles/role-table.component';
-import { RoleDetailsComponent } from './pages/roles/role-details.component';
-import { NotificationDetailsComponent } from './pages/notifications/notification-details.component';
-import { NotificationTableComponent } from './pages/notifications/notification-table.component';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { NotificationBaseDetailsComponent, UserExtendedBaseDetailsComponent } from 'src/app/business/components/base-details/business-base-details.generated';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PrimengModule, SpiderDataTableComponent, SpiderControlsModule, CardSkeletonComponent, RoleBaseDetailsComponent } from '@playerty/spider';
+import { NotificationDetailsComponent } from './pages/notification/notification-details.component';
+import { NotificationTableComponent } from './pages/notification/notification-table.component';
+import { RoleDetailsComponent } from './pages/role/role-details.component';
+import { RoleTableComponent } from './pages/role/role-table.component';
+import { UserDetailsComponent } from './pages/user/user-details.component';
+import { UserTableComponent } from './pages/user/user-table.component';
 
 const routes: Routes = [
     {
@@ -1049,11 +1060,7 @@ export class AdministrationModule { }
         private string GetDashboardComponentTsData()
         {
             return $$"""
-import { PartnerUser, Tier } from 'src/app/business/entities/business-entities.generated';
-import { ApiService } from '../../../business/services/api/api.service';
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from 'src/app/business/services/auth/auth.service';
-import { firstValueFrom, Subscription } from 'rxjs';
 
 @Component({
   templateUrl: './dashboard.component.html',
@@ -1061,8 +1068,7 @@ import { firstValueFrom, Subscription } from 'rxjs';
 export class DashboardComponent implements OnInit {
 
   constructor(
-    private apiService: ApiService,
-    private authService: AuthService,
+
   ) {}
 
   ngOnInit() {
@@ -1082,7 +1088,7 @@ export class DashboardComponent implements OnInit {
         {
             return $$"""
 import { NgModule } from '@angular/core';
-import { DashboardComponent } from './pages/dashboard.component';
+import { DashboardComponent } from './dashboard.component';
 import { TranslocoDirective } from '@jsverse/transloco';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -1432,18 +1438,15 @@ export class LegalModule { }
         private string GetClientNotificationComponentTsData()
         {
             return $$"""
+import { LayoutService } from './../../../business/services/layout/layout.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { AuthService } from 'src/app/business/services/auth/auth.service';
 import { MenuItem } from 'primeng/api';
 import { PaginatorState } from 'primeng/paginator';
-import { TableFilterContext } from 'src/app/core/entities/table-filter-context';
-import { TableResponse } from 'src/app/core/entities/table-response';
 import { TranslocoService } from '@jsverse/transloco';
 import { Notification } from 'src/app/business/entities/business-entities.generated';
-import { TableFilter } from 'src/app/core/entities/table-filter';
 import { Menu } from 'primeng/menu';
-import { SpiderMessageService } from 'src/app/core/services/spider-message.service';
+import { TableResponse, TableFilter, TableFilterContext, SpiderMessageService } from '@playerty/spider';
 
 @Component({
   templateUrl: './notification.component.html',
@@ -1463,9 +1466,9 @@ export class NotificationComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private authService: AuthService,
     private translocoService: TranslocoService,
     private messageService: SpiderMessageService,
+    private layoutService: LayoutService,
   ) {}
 
   ngOnInit() {
@@ -2304,6 +2307,26 @@ namespace {{appName}}.Business.Entities
 """;
         }
 
+        private string GetBusinessPermissionCodesCsData(string appName)
+        {
+            return $$"""
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace {{appName}}.Business.Enums
+{
+    public static partial class BusinessPermissionCodes
+    {
+
+    }
+}
+
+""";
+        }
+
         private string GetUserExtendedCsData(string appName)
         {
             return $$"""
@@ -2410,6 +2433,13 @@ namespace {{appName}}.WebAPI.Controllers
         public async Task<int> GetUnreadNotificationsCountForCurrentUser()
         {
             return await _{{appName.FirstCharToLower()}}BusinessService.GetUnreadNotificationsCountForCurrentUser();
+        }
+
+        [HttpPost]
+        [AuthGuard]
+        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        {
+            return await _{{appName.FirstCharToLower()}}BusinessService.GetNotificationsForCurrentUser(tableFilterDTO);
         }
 
     }
@@ -2640,13 +2670,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Nuget", "Nuget", "{D485BCE8
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.WebAPI", "{{appName}}.WebAPI\{{appName}}.WebAPI.csproj", "{1063DCDA-9291-4FAA-87B2-555E12511EE2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Security", "..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj", "{3B328631-AB3B-4B28-9FA5-4DA790670199}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Security", "..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj", "{3B328631-AB3B-4B28-9FA5-4DA790670199}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Shared", "..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj", "{53565A13-28F1-424F-B5A0-34125EF303CD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Shared", "..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj", "{53565A13-28F1-424F-B5A0-34125EF303CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Infrastructure", "..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj", "{587D08A6-A975-4673-90A4-77CF61B7B526}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.Infrastructure", "..\..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj", "{587D08A6-A975-4673-90A4-77CF61B7B526}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.SourceGenerators", "..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj", "{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Spider.SourceGenerators", "..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj", "{A30DFD0D-9EDD-4FD2-8CAF-85492EEEE6F1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "{{appName}}.Infrastructure", "{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj", "{8E0E2A3B-7A46-452E-9695-80E2BB1F4E9C}"
 EndProject
@@ -2859,10 +2889,10 @@ namespace {{appName}}.WebAPI
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
-		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
-		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
+		<ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
+		<ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\{{appName}}.Business\{{appName}}.Business.csproj" />
 		<ProjectReference Include="..\{{appName}}.Infrastructure\{{appName}}.Infrastructure.csproj" />
 		<ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
@@ -2964,7 +2994,7 @@ namespace {{appName}}.WebAPI.GeneratorSettings
       "BlobStorageUrl": "{{blobStorageUrl}}",
       "BlobStorageContainerName": "files",
 
-      "ConnectionString": "Data source=localhost\\SQLEXPRESS;Initial Catalog={{appName}};Integrated Security=True;Encrypt=false;MultipleActiveResultSets=True;"
+      "ConnectionString": "Data source=localhost\\SQLEXPRESS;Initial Catalog={{appName}};Integrated Security=True;Encrypt=false;MultipleActiveResultSets=True;",
 
       "RequestsLimitNumber": 70,
       "RequestsLimitWindow": 60
@@ -2982,7 +3012,7 @@ namespace {{appName}}.WebAPI.GeneratorSettings
       "AllowedBrowsersForTheSingleUser": 5,
       "GoogleClientId": "24372003240-44eprq8dn4s0b5f30i18tqksep60uk5u.apps.googleusercontent.com",
       "ExcelContentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    },
+    }
   }
 }
 """;
@@ -3090,7 +3120,7 @@ namespace {{appName}}.WebAPI.DI
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
+    <ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -3126,10 +3156,10 @@ namespace {{appName}}.WebAPI.DI
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj" />
-		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
-		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
-		<ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+		<ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.Infrastructure\Spider.Infrastructure.csproj" />
+		<ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
+		<ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.Shared\Spider.Shared.csproj" />
+		<ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
 		<ProjectReference Include="..\{{appName}}.Business\{{appName}}.Business.csproj" />
 		<ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
 	</ItemGroup>
@@ -3184,8 +3214,8 @@ namespace {{appName}}.Business
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
-    <ProjectReference Include="..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.Security\Spider.Security.csproj" />
+    <ProjectReference Include="..\..\..\..\SpiderFramework\spider-framework\Spider.SourceGenerators\Spider.SourceGenerators.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\{{appName}}.Shared\{{appName}}.Shared.csproj" />
   </ItemGroup>
 
@@ -3469,6 +3499,56 @@ namespace {{appName}}.Business.Services
 
                 return count;
             });
+        }
+
+        public async Task<TableResponseDTO<NotificationDTO>> GetNotificationsForCurrentUser(TableFilterDTO tableFilterDTO)
+        {
+            TableResponseDTO<NotificationDTO> result = new();
+            long currentUserId = _authenticationService.GetCurrentUserId(); // FT: Not doing user.Notifications, because he could have a lot of them.
+
+            await _context.WithTransactionAsync(async () =>
+            {
+                var notificationUsersQuery = _context.DbSet<UserNotification>()
+                    .Where(x => x.User.Id == currentUserId)
+                    .Select(x => new
+                    {
+                        UserId = x.User.Id,
+                        NotificationId = x.Notification.Id,
+                        IsMarkedAsRead = x.IsMarkedAsRead,
+                    });
+
+                int count = await notificationUsersQuery.CountAsync();
+
+                var notificationUsers = await notificationUsersQuery
+                    .Skip(tableFilterDTO.First)
+                    .Take(tableFilterDTO.Rows)
+                    .ToListAsync();
+
+                List<NotificationDTO> notificationsDTO = new();
+
+                foreach (var item in notificationUsers)
+                {
+                    NotificationDTO notificationDTO = new();
+
+                    Notification notification = await GetInstanceAsync<Notification, long>(item.NotificationId, null);
+                    notificationDTO.Id = notification.Id;
+                    notificationDTO.Version = notification.Version;
+                    notificationDTO.Title = notification.Title;
+                    notificationDTO.Description = notification.Description;
+                    notificationDTO.CreatedAt = notification.CreatedAt;
+
+                    notificationDTO.IsMarkedAsRead = item.IsMarkedAsRead;
+
+                    notificationsDTO.Add(notificationDTO);
+                }
+
+                notificationsDTO = notificationsDTO.OrderByDescending(x => x.CreatedAt).ToList();
+
+                result.Data = notificationsDTO;
+                result.TotalRecords = count;
+            });
+
+            return result;
         }
 
         #endregion
@@ -4040,6 +4120,7 @@ $gutter: 1rem; // FT: For primeflex grid system, it needs to be rigth above prim
     "IdToken": "/",
     "Browser": "/",
     "NewPassword": "Nova lozinka",
+    "NewToJoinNow": "Novi ste? Napravite profil",
     "ExpireAt": "Ističe",
     "UserEmail": "Email",
     "AccessToken": "/",
@@ -4101,7 +4182,6 @@ $gutter: 1rem; // FT: For primeflex grid system, it needs to be rigth above prim
     "Guid": "Guid",
     "Product": "Proizvod",
     "Transaction": "Transakcija",
-    "HasLoggedInWithExternalProvider": "Prijavljen sa eksternim provajderom",
     "NumberOfFailedAttemptsInARow": "Broj neuspešnih pokušaja uzastopno",
     "BirthDate": "Datum rođenja",
     "Gender": "Pol",
@@ -4359,14 +4439,12 @@ export class ApiService extends ApiGeneratedService {
         {
             return $$"""
 import { Injectable, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, combineLatest, Observable, of } from 'rxjs';
-import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
 import { ApiService } from 'src/app/business/services/api/api.service';
 import { SocialAuthService } from '@abacritt/angularx-social-login';
 import { ConfigService } from '../config.service';
-import { adjustColor, AuthBaseService, getHtmlImgDisplayString64, InitCompanyAuthDialogDetails } from '@playerty/spider';
+import { AuthBaseService } from '@playerty/spider';
 
 @Injectable({
   providedIn: 'root',
@@ -4379,7 +4457,6 @@ export class AuthService extends AuthBaseService implements OnDestroy {
     protected override externalAuthService: SocialAuthService,
     protected override apiService: ApiService,
     protected override config: ConfigService,
-    private route: ActivatedRoute,
   ) {
     super(router, http, externalAuthService, apiService, config);
   }
@@ -4394,11 +4471,8 @@ export class AuthService extends AuthBaseService implements OnDestroy {
 import { Injectable, OnDestroy } from '@angular/core';
 import { ApiService } from 'src/app/business/services/api/api.service';
 import { ConfigService } from '../config.service';
-import { getPrimengAutocompleteCodebookOptions, InitTopBarData, LayoutBaseService, PrimengOption, User } from '@playerty/spider';
-import { combineLatest, map } from 'rxjs';
+import { LayoutBaseService } from '@playerty/spider';
 import { AuthService } from '../auth/auth.service';
-import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -4563,9 +4637,11 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
                         icon: 'pi pi-fw pi-cog',
                         visible: true,
                         hasPermission: (permissionCodes: string[]): boolean => { 
-                            return (permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended) ||
-                                    permissionCodes?.includes(SecurityPermissionCodes.ReadRole) ||
-                                    permissionCodes?.includes(BusinessPermissionCodes.ReadNotification)
+                            return (
+                                permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended) ||
+                                permissionCodes?.includes(SecurityPermissionCodes.ReadRole) ||
+                                permissionCodes?.includes(BusinessPermissionCodes.ReadNotification)
+                            )
                         },
                         items: [
                             {
@@ -4573,7 +4649,9 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
                                 icon: 'pi pi-fw pi-user',
                                 routerLink: [`/${this.config.administrationSlug}/users`],
                                 hasPermission: (permissionCodes: string[]): boolean => { 
-                                    return (permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended))
+                                    return (
+                                        permissionCodes?.includes(BusinessPermissionCodes.ReadUserExtended)
+                                    )
                                 },
                                 visible: true,
                             },
@@ -4582,7 +4660,9 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
                                 icon: 'pi pi-fw pi-id-card',
                                 routerLink: [`/${this.config.administrationSlug}/roles`],
                                 hasPermission: (permissionCodes: string[]): boolean => { 
-                                    return (permissionCodes?.includes(SecurityPermissionCodes.ReadRole))
+                                    return (
+                                        permissionCodes?.includes(SecurityPermissionCodes.ReadRole)
+                                    )
                                 },
                                 visible: true,
                             },
@@ -4591,7 +4671,9 @@ export class LayoutComponent extends LayoutBaseComponent implements OnInit, OnDe
                                 icon: 'pi pi-fw pi-bell',
                                 routerLink: [`/${this.config.administrationSlug}/notifications`],
                                 hasPermission: (permissionCodes: string[]): boolean => { 
-                                    return (permissionCodes?.includes(BusinessPermissionCodes.ReadNotification))
+                                    return (
+                                        permissionCodes?.includes(BusinessPermissionCodes.ReadNotification)
+                                    )
                                 },
                                 visible: true,
                             },

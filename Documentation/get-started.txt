@@ -1,0 +1,2 @@
+1. fixing resources custom tool in {{appName}}.Shared
+2. npm install
