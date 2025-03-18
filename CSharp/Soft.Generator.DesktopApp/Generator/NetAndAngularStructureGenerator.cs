@@ -42,8 +42,11 @@ namespace Spider.DesktopApp.Generator
                                         },
                                         Files =
                                         {
-                                            new SpiderFile { Name = "spider-form-html-template.hbs", Data = GetSpiderFormHtmlTemplateHbsData() },
-                                            new SpiderFile { Name = "spider-form-ts-template.hbs", Data = GetSpiderFormTsTemplateHbsData() },
+                                            new SpiderFile { Name = "spider-controller-cs-template.hbs", Data = GetSpiderControllerCsTemplateHbsData(appName) },
+                                            new SpiderFile { Name = "spider-details-html-template.hbs", Data = GetSpiderDetailsHtmlTemplateHbsData() },
+                                            new SpiderFile { Name = "spider-details-ts-template.hbs", Data = GetSpiderDetailsTsTemplateHbsData() },
+                                            new SpiderFile { Name = "spider-table-html-template.hbs", Data = GetSpiderTableHtmlTemplateHbsData() },
+                                            new SpiderFile { Name = "spider-table-ts-template.hbs", Data = GetSpiderTableTsTemplateHbsData() },
                                         }
                                     },
                                     new SpiderFolder
@@ -536,7 +539,7 @@ namespace Spider.DesktopApp.Generator
                                 Files =
                                 {
                                     new SpiderFile { Name = "initialize-data.xlsx", Data = "" },
-                                    new SpiderFile { Name = "initialize-script.sql", Data = "" }
+                                    new SpiderFile { Name = "initialize-script.sql", Data = GetInitializeScriptSqlData(appName) }
                                 }
                             },
                             new SpiderFolder
@@ -2744,6 +2747,56 @@ EndGlobal
 """;
         }
 
+        private string GetInitializeScriptSqlData(string appName)
+        {
+            return $$"""
+-- FT: First you need to register the user in the app
+
+begin transaction;
+
+use {{appName}}
+
+insert into Permission(Name, Description, Code) values(N'Pregled korisnika', null, N'ReadUserExtended');
+insert into Permission(Name, Description, Code) values(N'Promena postojećih korisnika', null, N'UpdateUserExtended');
+insert into Permission(Name, Description, Code) values(N'Brisanje korisnika', null, N'DeleteUserExtended');
+insert into Permission(Name, Description, Code) values(N'Pregled notifikacija', null, N'ReadNotification');
+insert into Permission(Name, Description, Code) values(N'Promena postojećih notifikacija', null, N'UpdateNotification');
+insert into Permission(Name, Description, Code) values(N'Dodavanje novih notifikacija', null, N'InsertNotification');
+insert into Permission(Name, Description, Code) values(N'Brisanje notifikacija', null, N'DeleteNotification');
+insert into Permission(Name, Description, Code) values(N'Pregled uloga', null, N'ReadRole');
+insert into Permission(Name, Description, Code) values(N'Promena postojećih uloga', null, N'UpdateRole');
+insert into Permission(Name, Description, Code) values(N'Dodavanje novih uloga', null, N'InsertRole');
+insert into Permission(Name, Description, Code) values(N'Brisanje uloga', null, N'DeleteRole');
+
+INSERT INTO Role (Version, Name, CreatedAt, ModifiedAt) VALUES (1, N'Admin', getdate(), getdate());
+
+DECLARE @AdminRoleId INT;
+DECLARE @AdminUserId INT;
+SELECT @AdminRoleId = Id FROM Role WHERE Name = N'Admin';
+SELECT @AdminUserId = Id FROM [User] WHERE Id = 1;
+
+INSERT INTO UserRole (UserId, RoleId) VALUES (@AdminUserId, @AdminRoleId);
+
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 1);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 2);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 3);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 4);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 5);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 6);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 7);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 8);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 9);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 10);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 11);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 12);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 13);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 14);
+INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 15);
+
+commit;
+""";
+        }
+
         private string GetStartupCsData(string appName)
         {
             return $$"""
@@ -3752,27 +3805,56 @@ module.exports = function (plop) {
       return text.charAt(0).toLowerCase() + text.slice(1);
   });
 
-  plop.setGenerator('generate-form-component', {
-    description: 'Generate form component',
+  plop.setGenerator('generate-complete', {
+    description: 'Generate complete',
     prompts: [
       {
         type: 'input',
-        name: 'filename',
-        message: 'Write name of the entity: ',
+        name: 'filenames',
+        message: 'Write entity names (comma-separated): ',
       }
     ],
-    actions: [
-      {
-        type: 'add',
-        path: 'plop/output/{{toKebab filename}}-details.component.html',
-        templateFile: 'plop/spider-form-html-template.hbs',
-      },
-      {
-        type: 'add',
-        path: 'plop/output/{{toKebab filename}}-details.component.ts',
-        templateFile: 'plop/spider-form-ts-template.hbs',
-      },
-    ],
+    actions: function (data) {
+      const filenames = data.filenames.split(',').map(name => name.trim());
+      let actions = [];
+
+      filenames.forEach(filename => {
+        actions.push(
+          {
+            type: 'add',
+            path: 'plop/output/{{toKebab filename}}-details.component.html',
+            templateFile: 'plop/spider-details-html-template.hbs',
+            data: {filename}
+          },
+          {
+            type: 'add',
+            path: 'plop/output/{{toKebab filename}}-details.component.ts',
+            templateFile: 'plop/spider-details-ts-template.hbs',
+            data: {filename}
+          },
+          {
+            type: 'add',
+            path: 'plop/output/{{toKebab filename}}-table.component.html',
+            templateFile: 'plop/spider-table-html-template.hbs',
+            data: {filename}
+          },
+          {
+            type: 'add',
+            path: 'plop/output/{{toKebab filename}}-table.component.ts',
+            templateFile: 'plop/spider-table-ts-template.hbs',
+            data: {filename}
+          },
+          {
+            type: 'add',
+            path: 'plop/output/{{filename}}Controller.cs',
+            templateFile: 'plop/spider-controller-cs-template.hbs',
+            data: {filename}
+          },
+        );
+      });
+
+      return actions;
+    } 
   });
 };
 """;
@@ -4062,6 +4144,7 @@ $gutter: 1rem; // FT: For primeflex grid system, it needs to be rigth above prim
     "Actions": "Akcije",
     "Details": "Detalji",
     "User": "Korisnik",
+    "YouDoNotHaveAnyNotification": "Nemate nijednu notifikaciju.",
     "CreatedAt": "Kreirano",
     "Delete": "Obrišite",
     "Name": "Naziv",
@@ -4495,7 +4578,47 @@ export class LayoutService extends LayoutBaseService implements OnDestroy {
 """;
         }
 
-        private string GetSpiderFormHtmlTemplateHbsData()
+        private string GetSpiderControllerCsTemplateHbsData(string appName)
+        {
+            return $$$"""
+using Microsoft.AspNetCore.Mvc;
+using Spider.Shared.Attributes;
+using Spider.Shared.Interfaces;
+using Azure.Storage.Blobs;
+using Spider.Security.Services;
+using {{{appName}}}.Business.Services;
+using {{{appName}}}.Business.DTO;
+
+namespace {{{appName}}}.WebAPI.Controllers
+{
+    [ApiController]
+    [Route("/api/[controller]/[action]")]
+    public class {{filename}}Controller : {{filename}}BaseController
+    {
+        private readonly IApplicationDbContext _context;
+        private readonly {{{appName}}}BusinessService _{{{appName.FirstCharToLower()}}}BusinessService;
+        private readonly AuthenticationService _authenticationService;
+
+        public {{filename}}Controller(
+            IApplicationDbContext context, 
+            {{{appName}}}BusinessService {{{appName.FirstCharToLower()}}}BusinessService, 
+            BlobContainerClient blobContainerClient, 
+            AuthenticationService authenticationService
+        )
+            : base(context, {{{appName.FirstCharToLower()}}}BusinessService, blobContainerClient)
+        {
+            _context = context;
+            _{{{appName.FirstCharToLower()}}}BusinessService = {{{appName.FirstCharToLower()}}}BusinessService;
+            _authenticationService = authenticationService;
+        }
+
+    }
+}
+
+""";
+        }
+
+        private string GetSpiderDetailsHtmlTemplateHbsData()
         {
             return $$$"""
 <ng-container *transloco="let t">
@@ -4512,7 +4635,7 @@ export class LayoutService extends LayoutBaseService implements OnDestroy {
 """;
         }
 
-        private string GetSpiderFormTsTemplateHbsData()
+        private string GetSpiderDetailsTsTemplateHbsData()
         {
             return $$$"""
 import { HttpClient } from '@angular/common/http';
@@ -4554,6 +4677,62 @@ export class {{filename}}DetailsComponent extends BaseFormCopy implements OnInit
     }
 }
 
+""";
+        }
+
+        private string GetSpiderTableHtmlTemplateHbsData()
+        {
+            return $$$"""
+<ng-container *transloco="let t">
+
+    <spider-data-table [tableTitle]="t('{{filename}}List')" 
+    [cols]="cols" 
+    [getTableDataObservableMethod]="get{{filename}}TableDataObservableMethod" 
+    [exportTableDataToExcelObservableMethod]="export{{filename}}TableDataToExcelObservableMethod"
+    [deleteItemFromTableObservableMethod]="delete{{filename}}ObservableMethod"
+    [showAddButton]="false"
+    ></spider-data-table>
+
+</ng-container>
+""";
+        }
+
+        private string GetSpiderTableTsTemplateHbsData()
+        {
+            return $$$"""
+import { ApiService } from 'src/app/business/services/api/api.service';
+import { TranslocoService } from '@jsverse/transloco';
+import { Component, OnInit } from '@angular/core';
+import { Column } from '@playerty/spider';
+import { {{filename}} } from 'src/app/business/entities/business-entities.generated';
+
+@Component({
+    selector: '{{toKebab filename}}-table',
+    templateUrl: './{{toKebab filename}}-table.component.html',
+    styles: []
+})
+export class {{filename}}TableComponent implements OnInit {
+    cols: Column<{{filename}}>[];
+
+    get{{filename}}TableDataObservableMethod = this.apiService.get{{filename}}ExtendedTableData;
+    export{{filename}}TableDataToExcelObservableMethod = this.apiService.export{{filename}}ExtendedTableDataToExcel;
+    delete{{filename}}ObservableMethod = this.apiService.delete{{filename}}Extended;
+
+    constructor(
+        private apiService: ApiService,
+        private translocoService: TranslocoService,
+    ) { }
+
+    ngOnInit(){
+        this.cols = [
+            {name: this.translocoService.translate('Actions'), actions:[
+                {name: this.translocoService.translate('Details'), field: 'Details'},
+                {name:  this.translocoService.translate('Delete'), field: 'Delete'},
+            ]},
+            {name: this.translocoService.translate('Id'), filterType: 'numeric', field: 'id'},
+        ]
+    }
+}
 """;
         }
 

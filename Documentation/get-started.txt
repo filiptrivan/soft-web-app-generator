@@ -1,2 +1,11 @@
+1. fill empty values in appsettings (must fill blob connection string also)
 1. fixing resources custom tool in {{appName}}.Shared
 2. npm install
+3. make database in sql server
+4. initialize database from visual studio
+5. register
+6. execute the initialize script in sql server
+7. Dodaj specificne entitete
+8. Instaliraj plop globalno ako vec nisi (npm install -g plop)
+9. dodaj komponente u angular-u preko plop skripti (detalje, tabele i kontrolere)
+ - plop generate-form-component && plop generate-form-component
