@@ -6,6 +6,10 @@
 5. register
 6. execute the initialize script in sql server
 7. Dodaj specificne entitete
-8. Instaliraj plop globalno ako vec nisi (npm install -g plop)
+8. update database from visual studio
 9. dodaj komponente u angular-u preko plop skripti (detalje, tabele i kontrolere)
- - plop generate-form-component && plop generate-form-component
+ - plop generate-complete
+ - dodaj kolone na tabelama koje zelis da prikazes
+10. dodaj u app routing i side menu linkove ka stranicama
+
+-- Instaliraj plop globalno ako vec nisi (npm install -g plop)

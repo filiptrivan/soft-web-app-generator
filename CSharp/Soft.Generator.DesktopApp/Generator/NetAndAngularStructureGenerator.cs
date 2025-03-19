@@ -681,6 +681,7 @@ import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { Column } from '@playerty/spider';
 import { ApiService } from 'src/app/business/services/api/api.service';
+import { Notification } from 'src/app/business/entities/business-entities.generated';
 
 @Component({
     selector: 'notification-table',
@@ -688,7 +689,7 @@ import { ApiService } from 'src/app/business/services/api/api.service';
     styles: []
 })
 export class NotificationTableComponent implements OnInit {
-    cols: Column[];
+    cols: Column<Notification>[];
 
     getNotificationTableDataObservableMethod = this.apiService.getNotificationTableData;
     exportNotificationTableDataToExcelObservableMethod = this.apiService.exportNotificationTableDataToExcel;
@@ -787,7 +788,7 @@ export class RoleDetailsComponent extends BaseFormCopy implements OnInit {
 import { Component, OnInit } from '@angular/core';
 import { TranslocoService } from '@jsverse/transloco';
 import { ApiService } from 'src/app/business/services/api/api.service';
-import { Column } from '@playerty/spider';
+import { Column, Role } from '@playerty/spider';
 
 @Component({
     selector: 'role-table',
@@ -795,7 +796,7 @@ import { Column } from '@playerty/spider';
     styles: []
 })
 export class RoleTableComponent implements OnInit {
-    cols: Column[];
+    cols: Column<Role>[];
 
     getRoleTableDataObservableMethod = this.apiService.getRoleTableData;
     exportRoleTableDataToExcelObservableMethod = this.apiService.exportRoleTableDataToExcel;
@@ -931,7 +932,6 @@ export class UserDetailsComponent extends BaseFormCopy implements OnInit {
     [getTableDataObservableMethod]="getUserTableDataObservableMethod" 
     [exportTableDataToExcelObservableMethod]="exportUserTableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="deleteUserObservableMethod"
-    [showAddButton]="false"
     ></spider-data-table>
 </ng-container>
 """;
@@ -2462,7 +2462,7 @@ using Spider.Shared.Interfaces;
 using Spider.Shared.Attributes;
 using Spider.Shared.DTO;
 using Microsoft.EntityFrameworkCore;
-using Spider.Shared.Terms;
+using Spider.Shared.Resources;
 using Spider.Security.DTO;
 using Spider.Shared.Extensions;
 using {{appName}}.Business.Entities;
@@ -2514,7 +2514,7 @@ using Spider.Shared.Attributes;
 using Spider.Shared.Interfaces;
 using Azure.Storage.Blobs;
 using Spider.Shared.DTO;
-using Spider.Shared.Terms;
+using Spider.Shared.Resources;
 using Spider.Security.Services;
 using {{appName}}.Business.Services;
 using {{appName}}.Business.DTO;
@@ -2788,10 +2788,6 @@ INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 8);
 INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 9);
 INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 10);
 INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 11);
-INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 12);
-INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 13);
-INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 14);
-INSERT INTO RolePermission (RoleId, PermissionId) VALUES (@AdminRoleId, 15);
 
 commit;
 """;
@@ -4093,6 +4089,7 @@ $gutter: 1rem; // FT: For primeflex grid system, it needs to be rigth above prim
     "OnDate": "Na datum",
     "Submit": "Potvrdite",
     "UserList": "Korisnici",
+    "PartnerList": "Partneri",
     "HasLoggedInWithExternalProvider": "Prijavljen sa eksternim provajderom",
     "IsDisabled": "Blokiran",
     "SuperRoles": "Super uloge",
@@ -4714,9 +4711,9 @@ import { {{filename}} } from 'src/app/business/entities/business-entities.genera
 export class {{filename}}TableComponent implements OnInit {
     cols: Column<{{filename}}>[];
 
-    get{{filename}}TableDataObservableMethod = this.apiService.get{{filename}}ExtendedTableData;
-    export{{filename}}TableDataToExcelObservableMethod = this.apiService.export{{filename}}ExtendedTableDataToExcel;
-    delete{{filename}}ObservableMethod = this.apiService.delete{{filename}}Extended;
+    get{{filename}}TableDataObservableMethod = this.apiService.get{{filename}}TableData;
+    export{{filename}}TableDataToExcelObservableMethod = this.apiService.export{{filename}}TableDataToExcel;
+    delete{{filename}}ObservableMethod = this.apiService.delete{{filename}};
 
     constructor(
         private apiService: ApiService,
