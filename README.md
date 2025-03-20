@@ -27,18 +27,26 @@ Navigate to the generated backend folder and open the `.sln` file.
 ### 7. Add Entities to the Backend  
 - Place your entities in the `Entities` folder inside the **Business** project.  
 - Follow the specific **Entity Writing Rules** to ensure compatibility. (More details on attributes and rules are provided below.)  
-- Use attributes to describe the system requirements and relationships for proper generation.  
+- Use attributes to describe the system requirements and relationships for proper generation.
 
-### 8. Customize and Build  
-- Make additional customizations to the generated structure as needed.  
+---
+
+### 8. Customize
+1. Add migration with EF Core
+2. Update database with EF Core
+3. Update resources script (resx files in {appName}.Shared)
+4. Npm install
+
+---
+
+### 9. Build   
 - Run the solution and test your generated app.  
 
 ---
 
 # Entity Writing Rules  
-**Coming Soon:** Detailed guidelines on how to structure your entities and use attributes effectively.  
+**Coming Soon:** Detailed guidelines on how to structure your entities and use attributes effectively.
 
 ---
 
-# Notes  
-Feel free to contribute to this repository or raise issues in the GitHub Issue Tracker.  
+# Notes
