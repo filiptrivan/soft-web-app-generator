@@ -48,10 +48,13 @@ WHERE Id = @id
             where TEntity : class
             where ID : struct
         {
-            if (ids == null || ids.Count == 0)
-                throw new ArgumentException("Lista koju želite da obrišete ne može da bude prazna.");
+            if (ids == null)
+                throw new ArgumentNullException("Morate da prosledite listu.");
 
-            List<string> parameters = new List<string>();
+            if (ids.Count == 0)
+                return;
+
+            List<string> parameters = new();
             for (int i = 0; i < ids.Count; i++)
             {
                 parameters.Add($"@id{i}");

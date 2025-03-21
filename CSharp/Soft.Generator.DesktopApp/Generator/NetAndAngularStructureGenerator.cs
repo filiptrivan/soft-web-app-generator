@@ -406,7 +406,7 @@ namespace Spider.DesktopApp.Generator
                                                 Name = "Enums",
                                                 Files =
                                                 {
-                                                    new SpiderFile { Name = "BusinessPermissionCodes", Data = GetBusinessPermissionCodesCsData(appName) },
+                                                    new SpiderFile { Name = "BusinessPermissionCodes.cs", Data = GetBusinessPermissionCodesCsData(appName) },
                                                 }
                                             },
                                             new SpiderFolder
@@ -3818,31 +3818,31 @@ module.exports = function (plop) {
         actions.push(
           {
             type: 'add',
-            path: 'plop/output/{{toKebab filename}}-details.component.html',
+            path: 'plop/output/{{filename}}/{{toKebab filename}}-details.component.html',
             templateFile: 'plop/spider-details-html-template.hbs',
             data: {filename}
           },
           {
             type: 'add',
-            path: 'plop/output/{{toKebab filename}}-details.component.ts',
+            path: 'plop/output/{{filename}}/{{toKebab filename}}-details.component.ts',
             templateFile: 'plop/spider-details-ts-template.hbs',
             data: {filename}
           },
           {
             type: 'add',
-            path: 'plop/output/{{toKebab filename}}-table.component.html',
+            path: 'plop/output/{{filename}}/{{toKebab filename}}-table.component.html',
             templateFile: 'plop/spider-table-html-template.hbs',
             data: {filename}
           },
           {
             type: 'add',
-            path: 'plop/output/{{toKebab filename}}-table.component.ts',
+            path: 'plop/output/{{filename}}/{{toKebab filename}}-table.component.ts',
             templateFile: 'plop/spider-table-ts-template.hbs',
             data: {filename}
           },
           {
             type: 'add',
-            path: 'plop/output/{{filename}}Controller.cs',
+            path: 'plop/output/{{filename}}/{{filename}}Controller.cs',
             templateFile: 'plop/spider-controller-cs-template.hbs',
             data: {filename}
           },
@@ -4563,7 +4563,6 @@ export class LayoutService extends LayoutBaseService implements OnDestroy {
         protected override apiService: ApiService,
         protected override config: ConfigService,
         protected override authService: AuthService,
-        private router: Router
     ) {
         super(apiService, config, authService);
 
@@ -4625,6 +4624,7 @@ namespace {{{appName}}}.WebAPI.Controllers
         [formGroup]="formGroup" 
         [{{firstCharToLower filename}}FormGroup]="{{firstCharToLower filename}}FormGroup" 
         (onSave)="onSave()"
+        [getCrudMenuForOrderedData]="getCrudMenuForOrderedData"
         />
 
     </spider-card>
@@ -4687,7 +4687,7 @@ export class {{filename}}DetailsComponent extends BaseFormCopy implements OnInit
     [getTableDataObservableMethod]="get{{filename}}TableDataObservableMethod" 
     [exportTableDataToExcelObservableMethod]="export{{filename}}TableDataToExcelObservableMethod"
     [deleteItemFromTableObservableMethod]="delete{{filename}}ObservableMethod"
-    [showAddButton]="false"
+    [showAddButton]="true"
     ></spider-data-table>
 
 </ng-container>
