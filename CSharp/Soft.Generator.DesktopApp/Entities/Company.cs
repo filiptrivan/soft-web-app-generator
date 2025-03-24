@@ -1,5 +1,5 @@
-﻿using Spider.DesktopApp.Attributes;
-using Spider.DesktopApp.Attributes.UI;
+﻿using Spider.Shared.Attributes;
+using Spider.Shared.Attributes.UI;
 using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Spider.DesktopApp.Attributes.UI;
+﻿using Spider.Shared.Attributes.UI;
 using Spider.DesktopApp.Entities;
 using Spider.DesktopApp.Generator.Helpers;
 using Spider.DesktopApp.Interfaces;

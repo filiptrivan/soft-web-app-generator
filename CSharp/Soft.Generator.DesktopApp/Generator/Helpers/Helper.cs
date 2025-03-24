@@ -104,10 +104,7 @@ namespace Spider.DesktopApp.Generator.Helpers
         {
             if (Directory.Exists(path))
             {
-                DialogResult dialogResult = MessageBox.Show($"Direktorijum na putanji {path}, već postoji, da li želite nastavite?", "Potvrda", MessageBoxButtons.YesNo);
-
-                if (dialogResult == DialogResult.No)
-                    throw new Exception("Prekinuli ste operaciju.");
+                throw new Exception($"Direktorijum na putanji {path} već postoji.");
             }
         }
 
@@ -115,10 +112,7 @@ namespace Spider.DesktopApp.Generator.Helpers
         {
             if (File.Exists(path))
             {
-                DialogResult dialogResult = MessageBox.Show($"Datoteka na putanji {path}, već postoji, da li želite nastavite?", "Potvrda", MessageBoxButtons.YesNo);
-
-                if (dialogResult == DialogResult.No)
-                    throw new Exception("Prekinuli ste operaciju.");
+                throw new Exception($"Datoteka na putanji {path} već postoji.");
             }
         }
 

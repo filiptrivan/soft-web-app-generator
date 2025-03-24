@@ -1,4 +1,4 @@
-﻿using Spider.DesktopApp.Attributes;
+﻿using Spider.Shared.Attributes;
 using Spider.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;

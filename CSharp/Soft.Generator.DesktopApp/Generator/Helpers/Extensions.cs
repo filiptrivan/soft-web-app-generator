@@ -1,5 +1,5 @@
 ﻿using Pluralize.NET;
-using Spider.DesktopApp.Attributes.UI;
+using Spider.Shared.Attributes.UI;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

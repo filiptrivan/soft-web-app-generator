@@ -1,0 +1,82 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Soft.Generator.Shared\Soft.Generator.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Controls\SoftCheckbox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\SoftCheckListBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\SoftCombobox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\SoftDataGridView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\SoftReturnButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\SoftSaveButton.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Controls\SoftTextbox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Form1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="Pages\CompanyPages\CompanyDetailsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\CompanyPages\CompanyListPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\DllPathPages\DllPathDetailsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\DllPathPages\DllPathListPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\FrameworkPages\FrameworkDetailsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\FrameworkPages\FrameworkListPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\HomePages\HomePage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\PermissionPages\PermissionListPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\SettingPages\SettingDetailsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\SettingPages\SettingListPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\WebApplicationPages\WebApplicationDetailsPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Update="Pages\WebApplicationPages\WebApplicationListPage.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+  </ItemGroup>
+
+</Project>
