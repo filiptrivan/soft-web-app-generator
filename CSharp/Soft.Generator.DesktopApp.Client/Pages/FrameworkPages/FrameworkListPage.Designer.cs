@@ -36,7 +36,7 @@
             // 
             // frameworkBindingSource
             // 
-            frameworkBindingSource.DataSource = typeof(Entities.Framework);
+            frameworkBindingSource.DataSource = typeof(Shared.Entities.Framework);
             // 
             // softDataGridView1
             // 

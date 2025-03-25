@@ -1,6 +1,5 @@
 ﻿using Microsoft.Data.SqlClient;
 using Spider.DesktopApp.Client.Controllers;
-using Spider.DesktopApp.Client.Entities;
 using Spider.DesktopApp.Client.Extensions;
 using Spider.DesktopApp.Client.Pages;
 using Spider.DesktopApp.Client.Services;
@@ -22,12 +21,11 @@ namespace Spider.DesktopApp.Client
 
         #endregion
 
-        private readonly DesktopAppBusinessService _desktopAppService;
         private readonly PageNavigator _pageNavigator;
         private readonly ClientSharedService _clientSharedService;
 
         public Form1(
-            DesktopAppBusinessService desktopAppService, PageNavigator pageNavigator, ClientSharedService clientSharedService,
+            PageNavigator pageNavigator, ClientSharedService clientSharedService,
             WebApplicationController applicationController, CompanyController companyController, FrameworkController frameworkController, HomeController homeController, 
             DllPathController pathToDomainFolderController, PermissionController permissionController, SettingController settingController
             )
@@ -41,7 +39,6 @@ namespace Spider.DesktopApp.Client
             _settingController = settingController;
 
 
-            _desktopAppService = desktopAppService;
             _pageNavigator = pageNavigator;
             _clientSharedService = clientSharedService;
 

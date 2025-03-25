@@ -1,7 +1,6 @@
 ﻿using Spider.DesktopApp.Client.Controllers;
 using Spider.Shared.Entities;
-using Spider.DesktopApp.Pages.SettingPages;
-
+using Spider.DesktopApp.Client.Pages.SettingPages;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,7 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Spider.DesktopApp.Client.Services;
-using Spider.DesktopApp.Client.Pages.SettingPages;
 
 namespace Spider.DesktopApp.Client.Pages
 {

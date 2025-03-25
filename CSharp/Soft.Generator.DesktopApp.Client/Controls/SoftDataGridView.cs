@@ -1,6 +1,6 @@
 ﻿using Spider.DesktopApp.Client.Controllers;
+using Spider.DesktopApp.Client.Extensions;
 using Spider.Shared.Entities;
-using Spider.DesktopApp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;

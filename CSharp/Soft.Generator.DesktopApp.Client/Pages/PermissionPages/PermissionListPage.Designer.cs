@@ -36,7 +36,7 @@
             // 
             // permissionBindingSource
             // 
-            permissionBindingSource.DataSource = typeof(Entities.Permission);
+            permissionBindingSource.DataSource = typeof(Shared.Entities.Permission);
             // 
             // softDataGridView1
             // 
