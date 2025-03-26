@@ -4189,6 +4189,7 @@ $gutter: 1rem; // FT: For primeflex grid system, it needs to be rigth above prim
     "AddBelow": "Dodaj ispod",
     "ListCanNotBeEmpty": "Lista '{{value}}' ne može biti prazna.",
     "NotEmpty": "Polje ne sme biti prazno.",
+    "NotEmptyNumberRangeMaxNumberRangeMin": "Polje ne sme biti prazno i vrednost mora da bude između {{min}} i {{max}}.",
     "NotEmptyLengthEmailAddress": "Polje ne sme biti prazno, mora da ima minimum {{min}}, a maksimum {{max}} karaktera i mora biti validna email adresa.",
     "NotEmptyLength": "Polje ne sme biti prazno i mora da ima minimum {{min}}, a maksimum {{max}} karaktera.",
     "NotEmptySingleLength": "Polje ne sme biti prazno i mora da ima {{length}} karaktera.",
