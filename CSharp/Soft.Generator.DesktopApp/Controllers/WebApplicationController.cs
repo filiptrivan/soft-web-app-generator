@@ -24,9 +24,9 @@ namespace Spider.DesktopApp.Controllers
             return _desktopAppBusinessService.SaveWebApplication(webApplication);
         }
 
-        public void DeleteWebApplication(long id)
+        public void DeleteWebApplication(long webApplicationId)
         {
-            _desktopAppBusinessService.DeleteWebApplication(id);
+            _desktopAppBusinessService.DeleteWebApplication(webApplicationId);
         }
 
         public List<WebApplication> GetWebApplicationList()
@@ -34,9 +34,9 @@ namespace Spider.DesktopApp.Controllers
             return _desktopAppBusinessService.GetWebApplicationList();
         }
 
-        public WebApplication GetWebApplication(long id)
+        public WebApplication GetWebApplication(long webApplicationId)
         {
-            return _desktopAppBusinessService.GetWebApplication(id);
+            return _desktopAppBusinessService.GetWebApplication(webApplicationId);
         }
 
         public List<Company> GetCompanyList()

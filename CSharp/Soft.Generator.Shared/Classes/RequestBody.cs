@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Soft.Generator.Shared.Classes
 {
-    public class GetRequestBody
+    public class RequestBody
     {
         public string ControllerName { get; set; }
         public string MethodName { get; set; }

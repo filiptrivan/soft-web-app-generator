@@ -1,8 +1,11 @@
-﻿using Spider.Shared.Entities;
+﻿using Soft.Generator.Shared.Classes;
+using Soft.Generator.Shared.Shared;
+using Spider.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Spider.DesktopApp.Client.Controllers
@@ -11,32 +14,44 @@ namespace Spider.DesktopApp.Client.Controllers
     {
         public Company SaveCompany(Company company, List<long> selectedPermissionIds)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<Company>(new RequestBody
+            {
+                Args = [JsonSerializer.Serialize(company), JsonSerializer.Serialize(selectedPermissionIds)],
+            });
         }
 
         public List<Company> GetCompanyList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<Company>>(new RequestBody());
         }
 
         public Company GetCompany(long id)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<Company>(new RequestBody
+            {
+                Args = [$"{id}"],
+            });
         }
 
         public void DeleteCompany(long id)
         {
-            throw new NotImplementedException();
+            Helpers.Request(new RequestBody
+            {
+                Args = [$"{id}"],
+            });
         }
 
-        public List<Permission> GetPermissionList() 
+        public List<Permission> GetPermissionList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<Permission>>(new RequestBody());
         }
 
         public List<Permission> GetPermissionListForTheCompany(long companyId)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<Permission>>(new RequestBody
+            {
+                Args = [$"{companyId}"],
+            });
         }
     }
 }

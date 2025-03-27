@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using Soft.Generator.Shared.Classes;
 using Soft.Generator.Shared.Shared;
+using System.Reflection;
 
 namespace Spider.DesktopApp.Client.Controllers
 {
@@ -16,56 +17,70 @@ namespace Spider.DesktopApp.Client.Controllers
     {
         public WebApplication SaveWebApplication(WebApplication webApplication)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<WebApplication>(new RequestBody
+            {
+                Args = [JsonSerializer.Serialize(webApplication)],
+            });
         }
 
-        public void DeleteWebApplication(long id)
+        public void DeleteWebApplication(long webApplicationId)
         {
-            return;
+            Helpers.Request(new RequestBody
+            {
+                Args = [$"{webApplicationId}"],
+            });
         }
 
         public List<WebApplication> GetWebApplicationList()
         {
-            return Helpers.Request<List<WebApplication>, GetRequestBody>(new GetRequestBody
-            {
-                ControllerName = $"{nameof(WebApplicationController)}",
-                MethodName = $"{nameof(GetWebApplicationList)}",
-            });
+            return Helpers.Request<List<WebApplication>>(new RequestBody());
         }
 
-        public WebApplication GetWebApplication(long id)
+        public WebApplication GetWebApplication(long webApplicationId)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<WebApplication>(new RequestBody
+            {
+                Args = [$"{webApplicationId}"],
+            });
         }
 
         public List<Company> GetCompanyList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<Company>>(new RequestBody());
         }
 
         public List<Setting> GetSettingList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<Setting>>(new RequestBody());
         }
 
         public List<DllPath> GetDllPathList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<DllPath>>(new RequestBody());
         }
 
         public List<DllPath> GetDllPathListForTheWebApplication(long webApplicationId)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<DllPath>>(new RequestBody
+            {
+                Args = [$"{webApplicationId}"],
+            });
         }
 
         public void GenerateNetAndAngularStructure(long webApplicationId)
         {
-            return;
+            Helpers.Request(new RequestBody
+            {
+                Args = [$"{webApplicationId}"],
+            });
         }
 
         public void GenerateBusinessFiles(long webApplicationId)
         {
-            return;
+            Helpers.Request(new RequestBody
+            {
+                Args = [$"{webApplicationId}"],
+            });
         }
     }
 }

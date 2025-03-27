@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Data.SqlClient;
 using Spider.DesktopApp;
 using Spider.DesktopApp.Entities;
+using Soft.Generator.DesktopApp.Services;
 
 namespace Soft.Generator.DesktopApp
 {
@@ -21,6 +22,7 @@ namespace Soft.Generator.DesktopApp
             ServiceCollection serviceCollection = new ServiceCollection();
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
+            ControllerPipeService controllerPipeService = ServiceProvider.GetService<ControllerPipeService>();
 
             IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Loopback, 1000);
 
@@ -51,32 +53,14 @@ namespace Soft.Generator.DesktopApp
                     }
 
                     string receivedMessage = Encoding.UTF8.GetString(buffer, 0, received);
-                    GetRequestBody getRequestBody = JsonSerializer.Deserialize<GetRequestBody>(receivedMessage);
+                    RequestBody getRequestBody = JsonSerializer.Deserialize<RequestBody>(receivedMessage);
 
-                    string response = GetResponse(getRequestBody);
+                    string response = controllerPipeService.GetResponse(getRequestBody);
 
                     byte[] echoBytes = Encoding.UTF8.GetBytes(response);
                     handler.Send(echoBytes, SocketFlags.None);
                 }
             }
-        }
-
-        private static string GetResponse(GetRequestBody getRequestBody)
-        {
-            WebApplicationController webApplicationController = ServiceProvider.GetRequiredService<WebApplicationController>();
-
-            string controllerName = getRequestBody.ControllerName;
-            string methodName = getRequestBody.MethodName;
-
-            if (controllerName == nameof(WebApplicationController))
-            {
-                if (methodName == nameof(WebApplicationController.GetWebApplicationList))
-                {
-                    return JsonSerializer.Serialize(webApplicationController.GetWebApplicationList());
-                }
-            }
-
-            throw new NotImplementedException($"The controller: {controllerName} and method: {methodName} are not implemented.");
         }
 
         private static void ConfigureServices(ServiceCollection services)
@@ -91,6 +75,7 @@ namespace Soft.Generator.DesktopApp
             services.AddScoped<DllPathController>();
             services.AddScoped<PermissionController>();
             services.AddScoped<SettingController>();
+            services.AddScoped<ControllerPipeService>();
         }
     }
 }

@@ -1,32 +1,44 @@
-﻿using Spider.Shared.Entities;
+﻿using Soft.Generator.Shared.Classes;
+using Soft.Generator.Shared.Shared;
+using Spider.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Spider.DesktopApp.Client.Controllers
 {
     public class DllPathController
     {
-        public DllPath SaveDllPath(DllPath company)
+        public DllPath SaveDllPath(DllPath dllPath)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<DllPath>(new RequestBody
+            {
+                Args = [JsonSerializer.Serialize(dllPath)],
+            });
         }
 
         public List<DllPath> GetDllPathList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<DllPath>>(new RequestBody());
         }
 
         public DllPath GetDllPath(long id)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<DllPath>(new RequestBody
+            {
+                Args = [$"{id}"],
+            });
         }
 
         public void DeleteDllPath(long id)
         {
-            throw new NotImplementedException();
+            Helpers.Request<DllPath>(new RequestBody
+            {
+                Args = [$"{id}"],
+            });
         }
 
         /// <summary>
@@ -34,7 +46,7 @@ namespace Spider.DesktopApp.Client.Controllers
         /// </summary>
         public List<WebApplication> GetWebApplicationList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<WebApplication>>(new RequestBody());
         }
     }
 }

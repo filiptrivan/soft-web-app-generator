@@ -1,8 +1,11 @@
-﻿using Spider.Shared.Entities;
+﻿using Soft.Generator.Shared.Classes;
+using Soft.Generator.Shared.Shared;
+using Spider.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Spider.DesktopApp.Client.Controllers
@@ -11,22 +14,31 @@ namespace Spider.DesktopApp.Client.Controllers
     {
         public Framework SaveFramework(Framework framework)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<Framework>(new RequestBody
+            {
+                Args = [JsonSerializer.Serialize(framework)],
+            });
         }
 
         public List<Framework> GetFrameworkList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<Framework>>(new RequestBody());
         }
 
         public Framework GetFramework(long id)
         {
-            throw new NotImplementedException();
+            return Helpers.Request<Framework>(new RequestBody
+            {
+                Args = [$"{id}"],
+            });
         }
 
         public void DeleteFramework(long id)
         {
-            return;
+            Helpers.Request(new RequestBody
+            {
+                Args = [$"{id}"],
+            });
         }
     }
 }

@@ -21,8 +21,8 @@ namespace Spider.DesktopApp.Services
         }
 
         public void DeleteEntity<TEntity, ID>(ID id)
-    where TEntity : class
-    where ID : struct
+            where TEntity : class
+            where ID : struct
         {
             string query = @$"
 DELETE

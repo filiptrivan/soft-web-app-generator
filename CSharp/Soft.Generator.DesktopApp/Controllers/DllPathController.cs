@@ -17,9 +17,9 @@ namespace Spider.DesktopApp.Controllers
             _desktopAppBusinessService = desktopAppBusinessService;
         }
 
-        public DllPath SaveDllPath(DllPath company)
+        public DllPath SaveDllPath(DllPath dllPath)
         {
-            return _desktopAppBusinessService.SaveDllPath(company);
+            return _desktopAppBusinessService.SaveDllPath(dllPath);
         }
 
         public List<DllPath> GetDllPathList()

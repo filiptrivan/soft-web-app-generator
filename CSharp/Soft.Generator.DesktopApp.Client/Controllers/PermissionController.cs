@@ -1,8 +1,11 @@
-﻿using Spider.Shared.Entities;
+﻿using Soft.Generator.Shared.Classes;
+using Soft.Generator.Shared.Shared;
+using Spider.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Spider.DesktopApp.Client.Controllers
@@ -11,7 +14,7 @@ namespace Spider.DesktopApp.Client.Controllers
     {
         public List<Permission> GetPermissionList()
         {
-            throw new NotImplementedException();
+            return Helpers.Request<List<Permission>>(new RequestBody());
         }
     }
 }
