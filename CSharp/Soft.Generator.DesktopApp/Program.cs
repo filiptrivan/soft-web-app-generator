@@ -26,7 +26,7 @@ namespace Soft.Generator.DesktopApp
 
             IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Loopback, 1000);
 
-            using Socket listener = new(
+            using Socket listener = new Socket(
                 ipEndPoint.AddressFamily,
                 SocketType.Stream,
                 ProtocolType.Tcp
@@ -43,23 +43,35 @@ namespace Soft.Generator.DesktopApp
 
                 while (true)
                 {
-                    byte[] buffer = new byte[1_024];
-                    int received = handler.Receive(buffer, SocketFlags.None);
-
-                    if (received == 0)
+                    try
                     {
-                        Console.WriteLine("Client disconnected.");
+                        byte[] buffer = new byte[2048]; // FT: If we put smaller buffer exception could be thrown
+                        int received = handler.Receive(buffer, SocketFlags.None);
+
+                        if (received == 0)
+                        {
+                            Console.WriteLine("Client disconnected.");
+                            break;
+                        }
+
+                        string receivedMessage = Encoding.UTF8.GetString(buffer, 0, received);
+                        RequestBody getRequestBody = JsonSerializer.Deserialize<RequestBody>(receivedMessage);
+
+                        string response = controllerPipeService.GetResponse(getRequestBody);
+
+                        byte[] echoBytes = Encoding.UTF8.GetBytes(response);
+                        handler.Send(echoBytes, SocketFlags.None);
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"Socket error during Receive: {ex.Message}");
                         break;
                     }
-
-                    string receivedMessage = Encoding.UTF8.GetString(buffer, 0, received);
-                    RequestBody getRequestBody = JsonSerializer.Deserialize<RequestBody>(receivedMessage);
-
-                    string response = controllerPipeService.GetResponse(getRequestBody);
-
-                    byte[] echoBytes = Encoding.UTF8.GetBytes(response);
-                    handler.Send(echoBytes, SocketFlags.None);
                 }
+
+                handler.Shutdown(SocketShutdown.Both);
+                handler.Close();
+                handler.Dispose();
             }
         }
 

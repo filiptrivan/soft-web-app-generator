@@ -6,6 +6,7 @@ using Spider.DesktopApp.Client.Pages;
 using Spider.DesktopApp.Client.Pages.FrameworkPages;
 using Spider.DesktopApp.Client.Services;
 using System;
+using System.Net;
 using System.Windows.Forms.Design;
 
 namespace Spider.DesktopApp
