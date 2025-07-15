@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Soft.Generator.DesktopApp.Generator.Models
 {
-    public class SpiderFile
+    public class SpiderlyFolder
     {
         public string Name { get; set; }
-        public string Data { get; set; }
+        public List<SpiderlyFolder> ChildFolders { get; set; } = new();
+        public List<SpiderlyFile> Files { get; set; } = new();
     }
 }

@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Microsoft.Data.SqlClient;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -146,6 +148,90 @@ namespace Soft.Generator.DesktopApp.Generator.Helpers
 
             return $"/{type.Name.FromPascalToKebabCase()}";
         }
+
+        /// <summary>
+        /// Generates a cryptographically secure JWT secret key as a Base64 string. <br/><br/>
+        /// The strength depends on the byte size (default 64 bytes = 512 bits ~ 88 characters).
+        /// </summary>
+        /// <param name="byteSize">Number of random bytes (default: 64)</param>
+        /// <returns>Base64-encoded secret key</returns>
+        public static string GenerateJwtSecretKey(int byteSize = 64)
+        {
+            if (byteSize < 1)
+                throw new ArgumentException("Byte size must be at least 1.", nameof(byteSize));
+
+            byte[] randomBytes = new byte[byteSize];
+            using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            {
+                rng.GetBytes(randomBytes);
+            }
+            return Convert.ToBase64String(randomBytes);
+        }
+
+        #region SQL Server
+
+        /// <summary>
+        /// Attempts to find an available SQL Server connection string by checking common data sources.
+        /// </summary>
+        public static string GetAvailableSqlServerConnectionString(string databaseName)
+        {
+            List<string> dataSources = new List<string>
+            {
+                "localhost",
+                @"localhost\SQLEXPRESS",
+                @"(localdb)\MSSQLLocalDB"
+            };
+
+            foreach (string dataSource in dataSources)
+            {
+                SqlConnectionStringBuilder connectionStringBuilder = BuildConnectionString(dataSource);
+                if (TryConnect(connectionStringBuilder))
+                {
+                    connectionStringBuilder.InitialCatalog = databaseName;
+                    return connectionStringBuilder.ConnectionString;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Constructs a SQL Server connection string for either the default or SQL Express instance.
+        /// </summary>
+        public static SqlConnectionStringBuilder BuildConnectionString(string dataSource)
+        {
+            SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder
+            {
+                DataSource = dataSource,
+                InitialCatalog = "master",
+                IntegratedSecurity = true,
+                Encrypt = false,
+                MultipleActiveResultSets = true,
+            };
+
+            return builder;
+        }
+
+        /// <summary>
+        /// Tries to open a connection using the provided connection string.
+        /// </summary>
+        private static bool TryConnect(SqlConnectionStringBuilder connectionString)
+        {
+            try
+            {
+                connectionString.ConnectTimeout = 2;
+                using SqlConnection connection = new SqlConnection(connectionString.ConnectionString);
+                connection.Open();
+                connectionString.ConnectTimeout = 15;
+                return true;
+            }
+            catch (Exception) { }
+
+            connectionString.ConnectTimeout = 15;
+            return false;
+        }
+
+        #endregion
 
         #region Assembly Load Helpers
 

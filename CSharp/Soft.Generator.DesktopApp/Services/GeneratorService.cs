@@ -39,7 +39,7 @@ namespace Soft.Generator.DesktopApp.Services
 
         public void GenerateNetAndAngularStructure(string outputPath, string appName, string primaryColor)
         {
-            new NetAndAngularStructureGenerator().Generate(outputPath, appName, primaryColor);
+            NetAndAngularFilesGenerator.Generate(outputPath, appName, "19.2.0", true, primaryColor, false);
         }
 
     }
