@@ -1,4 +1,4 @@
-﻿namespace Spider.DesktopApp.Client.Pages
+﻿namespace Soft.Generator.DesktopApp.Client.Pages
 {
     partial class WebApplicationDetailsPage
     {
@@ -33,8 +33,6 @@
             cb_Company = new Controls.SoftCombobox();
             btn_Save = new Button();
             btn_Return = new Button();
-            btn_GenerateBusinessFiles = new Button();
-            clb_GeneratedFile = new Controls.SoftCheckListBox();
             btn_GenerateNetAndAngularStructure = new Button();
             SuspendLayout();
             // 
@@ -82,7 +80,7 @@
             // 
             // btn_Return
             // 
-            btn_Return.Location = new Point(113, 151);
+            btn_Return.Location = new Point(328, 151);
             btn_Return.Name = "btn_Return";
             btn_Return.Size = new Size(75, 23);
             btn_Return.TabIndex = 4;
@@ -90,28 +88,9 @@
             btn_Return.UseVisualStyleBackColor = true;
             btn_Return.Click += btn_Return_Click;
             // 
-            // btn_GenerateBusinessFiles
-            // 
-            btn_GenerateBusinessFiles.Location = new Point(257, 353);
-            btn_GenerateBusinessFiles.Name = "btn_GenerateBusinessFiles";
-            btn_GenerateBusinessFiles.Size = new Size(183, 23);
-            btn_GenerateBusinessFiles.TabIndex = 6;
-            btn_GenerateBusinessFiles.Text = "Generiši specifične datoteke";
-            btn_GenerateBusinessFiles.UseVisualStyleBackColor = true;
-            btn_GenerateBusinessFiles.Click += btn_GenerateBusinessFiles_Click;
-            // 
-            // clb_GeneratedFile
-            // 
-            clb_GeneratedFile.DisplayMember = "Id";
-            clb_GeneratedFile.LabelValue = "Generisane datoteke";
-            clb_GeneratedFile.Location = new Point(3, 196);
-            clb_GeneratedFile.Name = "clb_GeneratedFile";
-            clb_GeneratedFile.Size = new Size(481, 137);
-            clb_GeneratedFile.TabIndex = 7;
-            // 
             // btn_GenerateNetAndAngularStructure
             // 
-            btn_GenerateNetAndAngularStructure.Location = new Point(16, 353);
+            btn_GenerateNetAndAngularStructure.Location = new Point(97, 151);
             btn_GenerateNetAndAngularStructure.Name = "btn_GenerateNetAndAngularStructure";
             btn_GenerateNetAndAngularStructure.Size = new Size(225, 23);
             btn_GenerateNetAndAngularStructure.TabIndex = 8;
@@ -124,15 +103,13 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             Controls.Add(btn_GenerateNetAndAngularStructure);
-            Controls.Add(clb_GeneratedFile);
-            Controls.Add(btn_GenerateBusinessFiles);
             Controls.Add(btn_Return);
             Controls.Add(btn_Save);
             Controls.Add(cb_Company);
             Controls.Add(cb_Setting);
             Controls.Add(tb_Name);
             Name = "WebApplicationDetailsPage";
-            Size = new Size(609, 561);
+            Size = new Size(609, 234);
             ResumeLayout(false);
         }
 
@@ -143,8 +120,6 @@
         private Controls.SoftCombobox cb_Company;
         private Button btn_Save;
         private Button btn_Return;
-        private Button btn_GenerateBusinessFiles;
-        private Controls.SoftCheckListBox clb_GeneratedFile;
         private Button btn_GenerateNetAndAngularStructure;
     }
 }

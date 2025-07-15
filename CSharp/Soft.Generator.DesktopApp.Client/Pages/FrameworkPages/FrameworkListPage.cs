@@ -1,6 +1,6 @@
-﻿using Spider.DesktopApp.Client.Controllers;
-using Spider.Shared.Entities;
-using Spider.DesktopApp.Client.Pages.FrameworkPages;
+﻿using Soft.Generator.DesktopApp.Client.Controllers;
+using Soft.Generator.Shared.Entities;
+using Soft.Generator.DesktopApp.Client.Pages.FrameworkPages;
 
 using System;
 using System.Collections.Generic;
@@ -11,9 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Spider.DesktopApp.Client.Services;
+using Soft.Generator.DesktopApp.Client.Services;
 
-namespace Spider.DesktopApp.Client.Pages
+namespace Soft.Generator.DesktopApp.Client.Pages
 {
     public partial class FrameworkListPage : UserControl
     {

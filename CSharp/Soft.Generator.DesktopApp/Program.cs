@@ -3,12 +3,12 @@ using System.Net;
 using System.Text;
 using Soft.Generator.Shared.Classes;
 using System.Text.Json;
-using Spider.DesktopApp.Controllers;
-using Spider.DesktopApp.Services;
+using Soft.Generator.DesktopApp.Controllers;
+using Soft.Generator.DesktopApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Data.SqlClient;
-using Spider.DesktopApp;
-using Spider.DesktopApp.Entities;
+using Soft.Generator.DesktopApp;
+using Soft.Generator.DesktopApp.Entities;
 using Soft.Generator.DesktopApp.Services;
 
 namespace Soft.Generator.DesktopApp
@@ -19,7 +19,7 @@ namespace Soft.Generator.DesktopApp
 
         static void Main(string[] args)
         {
-            ServiceCollection serviceCollection = new ServiceCollection();
+            ServiceCollection serviceCollection = new();
             ConfigureServices(serviceCollection);
             ServiceProvider = serviceCollection.BuildServiceProvider();
             ControllerPipeService controllerPipeService = ServiceProvider.GetService<ControllerPipeService>();

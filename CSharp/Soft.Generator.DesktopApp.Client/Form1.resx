@@ -13,7 +13,7 @@
     Example:
 
     ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microspider-resx</resheader>
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
     <resheader name="version">2.0</resheader>
     <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
     <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
@@ -106,7 +106,7 @@
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microspider-resx</value>
+    <value>text/microsoft-resx</value>
   </resheader>
   <resheader name="version">
     <value>2.0</value>

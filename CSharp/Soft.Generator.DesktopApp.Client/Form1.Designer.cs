@@ -1,4 +1,4 @@
-﻿namespace Spider.DesktopApp.Client
+﻿namespace Soft.Generator.DesktopApp.Client
 {
     partial class Form1
     {

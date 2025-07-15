@@ -1,4 +1,4 @@
-﻿namespace Spider.DesktopApp.Client.Pages
+﻿namespace Soft.Generator.DesktopApp.Client.Pages
 {
     partial class CompanyListPage
     {

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Collections;
 using CaseConverter;
 
-namespace Spider.DesktopApp.Generator.Helpers
+namespace Soft.Generator.DesktopApp.Generator.Helpers
 {
     public static class Extensions
     {

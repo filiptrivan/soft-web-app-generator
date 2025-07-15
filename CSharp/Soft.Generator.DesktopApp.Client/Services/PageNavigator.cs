@@ -1,16 +1,16 @@
-﻿using Spider.DesktopApp.Client.Controllers;
-using Spider.DesktopApp.Client.Pages;
-using Spider.DesktopApp.Client.Pages.CompanyPages;
-using Spider.DesktopApp.Client.Pages.DllPathPages;
-using Spider.DesktopApp.Client.Pages.FrameworkPages;
-using Spider.DesktopApp.Client.Pages.SettingPages;
+﻿using Soft.Generator.DesktopApp.Client.Controllers;
+using Soft.Generator.DesktopApp.Client.Pages;
+using Soft.Generator.DesktopApp.Client.Pages.CompanyPages;
+using Soft.Generator.DesktopApp.Client.Pages.DllPathPages;
+using Soft.Generator.DesktopApp.Client.Pages.FrameworkPages;
+using Soft.Generator.DesktopApp.Client.Pages.SettingPages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spider.DesktopApp.Client.Services
+namespace Soft.Generator.DesktopApp.Client.Services
 {
     public class PageNavigator
     {

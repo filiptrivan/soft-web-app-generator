@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spider.DesktopApp
+namespace Soft.Generator.DesktopApp
 {
     public static class Settings
     {

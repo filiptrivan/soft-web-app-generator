@@ -1,5 +1,5 @@
-﻿using Spider.DesktopApp.Entities;
-using Spider.DesktopApp.Services;
+﻿using Soft.Generator.DesktopApp.Entities;
+using Soft.Generator.DesktopApp.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spider.DesktopApp.Controllers
+namespace Soft.Generator.DesktopApp.Controllers
 {
     public class WebApplicationController
     {
@@ -64,9 +64,5 @@ namespace Spider.DesktopApp.Controllers
             _desktopAppBusinessService.GenerateNetAndAngularStructure(webApplicationId);
         }
 
-        public void GenerateBusinessFiles(long webApplicationId)
-        {
-            _desktopAppBusinessService.GenerateBusinessFiles(webApplicationId);
-        }
     }
 }

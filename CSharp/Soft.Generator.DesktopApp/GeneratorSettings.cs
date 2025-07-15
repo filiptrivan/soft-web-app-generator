@@ -1,4 +1,4 @@
-//using Spider.DesktopApp.Attributes;
+//using Soft.Generator.DesktopApp.Attributes;
 
 //namespace Spider.Security.GeneratorSettings
 //{

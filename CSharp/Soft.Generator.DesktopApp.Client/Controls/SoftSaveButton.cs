@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Spider.DesktopApp.Client.Controls
+namespace Soft.Generator.DesktopApp.Client.Controls
 {
     public partial class SoftSaveButton : UserControl
     {

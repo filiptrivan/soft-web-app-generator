@@ -1,15 +1,15 @@
-﻿using Spider.DesktopApp.Generator.Helpers;
-using Spider.DesktopApp.Generator.Models;
+﻿using Soft.Generator.DesktopApp.Generator.Helpers;
+using Soft.Generator.DesktopApp.Generator.Models;
 using CaseConverter;
-using Spider.DesktopApp.Interfaces;
+using Soft.Generator.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Spider.DesktopApp.Services;
+using Soft.Generator.DesktopApp.Services;
 
-namespace Spider.DesktopApp.Generator
+namespace Soft.Generator.DesktopApp.Generator
 {
     public class NetAndAngularStructureGenerator
     {
@@ -2273,7 +2273,7 @@ namespace {{appName}}.Shared.Resources {
     </xsd:element>
   </xsd:schema>
   <resheader name="resmimetype">
-    <value>text/microspider-resx</value>
+    <value>text/microsoft-resx</value>
   </resheader>
   <resheader name="version">
     <value>2.0</value>

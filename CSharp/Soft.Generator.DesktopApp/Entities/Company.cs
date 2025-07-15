@@ -1,13 +1,13 @@
 ﻿using Spider.Shared.Attributes;
 using Spider.Shared.Attributes.UI;
-using Spider.DesktopApp.Interfaces;
+using Soft.Generator.DesktopApp.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spider.DesktopApp.Entities
+namespace Soft.Generator.DesktopApp.Entities
 {
     [MenuName("PartnerAdministration")]
     public class Company : ISoftEntity

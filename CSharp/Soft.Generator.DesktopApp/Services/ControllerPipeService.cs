@@ -1,8 +1,8 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
 using Soft.Generator.Shared.Classes;
-using Spider.DesktopApp.Controllers;
-using Spider.DesktopApp.Entities;
+using Soft.Generator.DesktopApp.Controllers;
+using Soft.Generator.DesktopApp.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -193,11 +193,6 @@ namespace Soft.Generator.DesktopApp.Services
                 else if (methodName == nameof(WebApplicationController.GenerateNetAndAngularStructure))
                 {
                     _webApplicationController.GenerateNetAndAngularStructure(long.Parse(args[0]));
-                    return null;
-                }
-                else if (methodName == nameof(WebApplicationController.GenerateBusinessFiles))
-                {
-                    _webApplicationController.GenerateBusinessFiles(long.Parse(args[0]));
                     return null;
                 }
             }

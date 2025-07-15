@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spider.DesktopApp.Client.Controllers
+namespace Soft.Generator.DesktopApp.Client.Controllers
 {
     public class HomeController
     {

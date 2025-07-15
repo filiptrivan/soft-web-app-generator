@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Spider.DesktopApp.Client.Controls
+namespace Soft.Generator.DesktopApp.Client.Controls
 {
     public partial class SoftCheckbox : UserControl
     {

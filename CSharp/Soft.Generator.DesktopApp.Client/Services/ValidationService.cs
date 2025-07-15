@@ -1,11 +1,11 @@
-﻿using Spider.Shared.Entities;
+﻿using Soft.Generator.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spider.DesktopApp.Client.Services
+namespace Soft.Generator.DesktopApp.Client.Services
 {
     public class ValidationService
     {

@@ -1,13 +1,13 @@
 ﻿using Microsoft.Data.SqlClient;
-using Spider.DesktopApp.Entities;
-using Spider.DesktopApp.Extensions;
+using Soft.Generator.DesktopApp.Entities;
+using Soft.Generator.DesktopApp.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Spider.DesktopApp.Services
+namespace Soft.Generator.DesktopApp.Services
 {
     /// <summary>
     /// Every get method is returning only flat data without any related data, because of performance
@@ -70,19 +70,6 @@ namespace Spider.DesktopApp.Services
                 GeneratorService generatorService = new GeneratorService(null);
 
                 generatorService.GenerateNetAndAngularStructure(Settings.ProjectsPath, webApplication.Name, Settings.PrimaryColor);
-            });
-        }
-
-        public void GenerateBusinessFiles(long webApplicationId)
-        {
-            _connection.WithTransaction(() =>
-            {
-                WebApplication webApplication = GetWebApplication(webApplicationId);
-                List<DllPath> dllPaths = GetDllPathListForWebApplication(webApplicationId);
-
-                GeneratorService generatorService = new GeneratorService(dllPaths);
-
-                generatorService.GenerateBusinessFiles(webApplication);
             });
         }
 

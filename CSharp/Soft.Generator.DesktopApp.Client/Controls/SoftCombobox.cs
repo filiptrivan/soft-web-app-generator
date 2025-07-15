@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace Spider.DesktopApp.Client.Controls
+namespace Soft.Generator.DesktopApp.Client.Controls
 {
     public partial class SoftCombobox : UserControl
     {

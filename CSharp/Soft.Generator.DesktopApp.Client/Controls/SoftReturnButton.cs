@@ -1,5 +1,5 @@
 ﻿
-using Spider.DesktopApp.Client.Services;
+using Soft.Generator.DesktopApp.Client.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Spider.DesktopApp.Client.Controls
+namespace Soft.Generator.DesktopApp.Client.Controls
 {
     public partial class SoftReturnButton : UserControl
     {

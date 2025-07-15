@@ -1,15 +1,15 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
-using Spider.DesktopApp.Client;
-using Spider.DesktopApp.Client.Controllers;
-using Spider.DesktopApp.Client.Pages;
-using Spider.DesktopApp.Client.Pages.FrameworkPages;
-using Spider.DesktopApp.Client.Services;
+using Soft.Generator.DesktopApp.Client;
+using Soft.Generator.DesktopApp.Client.Controllers;
+using Soft.Generator.DesktopApp.Client.Pages;
+using Soft.Generator.DesktopApp.Client.Pages.FrameworkPages;
+using Soft.Generator.DesktopApp.Client.Services;
 using System;
 using System.Net;
 using System.Windows.Forms.Design;
 
-namespace Spider.DesktopApp
+namespace Soft.Generator.DesktopApp
 {
     /// <summary>
     /// TODO NEXT: 

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Transactions;
 
-namespace Spider.DesktopApp.Extensions
+namespace Soft.Generator.DesktopApp.Extensions
 {
     public static class SqlExtensions
     {

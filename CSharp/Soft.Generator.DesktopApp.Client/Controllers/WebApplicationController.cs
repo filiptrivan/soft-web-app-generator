@@ -1,4 +1,4 @@
-﻿using Spider.Shared.Entities;
+﻿using Soft.Generator.Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +11,7 @@ using Soft.Generator.Shared.Classes;
 using Soft.Generator.Shared.Shared;
 using System.Reflection;
 
-namespace Spider.DesktopApp.Client.Controllers
+namespace Soft.Generator.DesktopApp.Client.Controllers
 {
     public class WebApplicationController
     {
@@ -68,14 +68,6 @@ namespace Spider.DesktopApp.Client.Controllers
         }
 
         public void GenerateNetAndAngularStructure(long webApplicationId)
-        {
-            Helpers.Request(new RequestBody
-            {
-                Args = [$"{webApplicationId}"],
-            });
-        }
-
-        public void GenerateBusinessFiles(long webApplicationId)
         {
             Helpers.Request(new RequestBody
             {

@@ -1,7 +1,7 @@
-﻿using Spider.DesktopApp.Client.Controllers;
-using Spider.Shared.Entities;
-using Spider.DesktopApp.Client.Interfaces;
-using Spider.DesktopApp.Client.Services;
+﻿using Soft.Generator.DesktopApp.Client.Controllers;
+using Soft.Generator.Shared.Entities;
+using Soft.Generator.DesktopApp.Client.Interfaces;
+using Soft.Generator.DesktopApp.Client.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -11,9 +11,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Spider.DesktopApp.Interfaces;
+using Soft.Generator.DesktopApp.Interfaces;
 
-namespace Spider.DesktopApp.Client.Pages
+namespace Soft.Generator.DesktopApp.Client.Pages
 {
     public partial class WebApplicationDetailsPage : UserControl, ISoftDetailsPage
     {
@@ -92,17 +92,11 @@ namespace Spider.DesktopApp.Client.Pages
             _webApplicationController.GenerateNetAndAngularStructure(Entity.Id);
         }
 
-        private void btn_GenerateBusinessFiles_Click(object sender, EventArgs e)
-        {
-            ValidateWebApplicationGeneration();
-
-            _webApplicationController.GenerateBusinessFiles(Entity.Id);
-        }
-
         private void ValidateWebApplicationGeneration()
         {
             if (Entity.Id == 0)
                 throw new Exception("Da biste generisali web aplikaciju, prvo morate da sačuvate objekat.");
         }
+
     }
 }
