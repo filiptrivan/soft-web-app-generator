@@ -48,7 +48,7 @@ namespace Soft.Generator.DesktopApp.Services
             {
                 if (
                     company.Id == 0 && currentCompany.Permissions.Any(x => x.Code == "InsertCompany") == false ||
-                    company.Id > 0 && currentCompany.Permissions.Any(x => x.Code == "UpdateCompany" == false)
+                    company.Id > 0 && currentCompany.Permissions.Any(x => x.Code == "UpdateCompany") == false
                 )
                 {
                     throw new Exception("Greška: Nemate potrebna prava da biste izvršili operaciju.");
