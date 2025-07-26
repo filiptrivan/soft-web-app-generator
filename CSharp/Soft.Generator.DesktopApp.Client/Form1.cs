@@ -26,7 +26,7 @@ namespace Soft.Generator.DesktopApp.Client
 
         public Form1(
             PageNavigator pageNavigator, ClientSharedService clientSharedService,
-            WebApplicationController applicationController, CompanyController companyController, FrameworkController frameworkController, HomeController homeController, 
+            WebApplicationController applicationController, CompanyController companyController, FrameworkController frameworkController, HomeController homeController,
             DllPathController pathToDomainFolderController, PermissionController permissionController, SettingController settingController
             )
         {
@@ -44,10 +44,11 @@ namespace Soft.Generator.DesktopApp.Client
 
             InitializeComponent();
 
+            label2.Text = Program.CurrentCompany.Email;
+
             _pageNavigator.InitializeMainPanel(pnl_Main);
+
             homeToolStripMenuItem_Click(null, null);
-            //System.Windows.Forms.Form.WindowState = FormWindowState.Maximized;
-            //Form1.WindowState = FormWindowState.Maximized;
         }
 
         private void homeToolStripMenuItem_Click(object sender, EventArgs e)
@@ -85,5 +86,9 @@ namespace Soft.Generator.DesktopApp.Client
             _pageNavigator.NavigateToPage<DllPathListPage>();
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
     }
 }

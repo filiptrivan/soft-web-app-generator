@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Data.SqlClient;
 using Soft.Generator.DesktopApp;
 using Soft.Generator.DesktopApp.Entities;
-using Soft.Generator.DesktopApp.Services;
+using Azure;
 
 namespace Soft.Generator.DesktopApp
 {
@@ -59,11 +59,11 @@ namespace Soft.Generator.DesktopApp
 
                         string response = controllerPipeService.GetResponse(getRequestBody);
 
-                        byte[] echoBytes = Encoding.UTF8.GetBytes(response);
-                        handler.Send(echoBytes, SocketFlags.None);
+                        handler.Send(Encoding.UTF8.GetBytes(response), SocketFlags.None);
                     }
                     catch (Exception ex)
                     {
+                        handler.Send(Encoding.UTF8.GetBytes($"Greška: {ex.Message}"), SocketFlags.None);
                         Console.WriteLine($"Socket error during Receive: {ex.Message}");
                         break;
                     }

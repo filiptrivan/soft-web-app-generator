@@ -17,9 +17,14 @@ namespace Soft.Generator.DesktopApp.Controllers
             _desktopAppBusinessService = desktopAppBusinessService;
         }
 
-        public Company SaveCompany(Company company, List<long> selectedPermissionIds)
+        public Company Login(Company company)
         {
-            return _desktopAppBusinessService.SaveCompanyExtended(company, selectedPermissionIds);
+            return _desktopAppBusinessService.Login(company);
+        }
+
+        public Company SaveCompany(Company company, List<long> selectedPermissionIds, Company currentCompany)
+        {
+            return _desktopAppBusinessService.SaveCompanyExtended(company, selectedPermissionIds, currentCompany);
         }
 
         public List<Company> GetCompanyList()
@@ -32,7 +37,7 @@ namespace Soft.Generator.DesktopApp.Controllers
             return _desktopAppBusinessService.GetCompany(id);
         }
 
-        public void DeleteCompany(long id)
+        public void DeleteCompany(long id, Company currentCompany)
         {
             _desktopAppBusinessService.DeleteCompany(id);
         }

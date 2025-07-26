@@ -23,10 +23,37 @@ namespace Soft.Generator.DesktopApp.Services
             _connection = connection;
         }
 
-        public Company SaveCompanyExtended(Company company, List<long> selectedPermissionIds)
+        #region Company
+
+        public Company Login(Company login)
         {
             return _connection.WithTransaction(() =>
             {
+                Company company = GetCompanyList()
+                    .Where(x => x.Email == login.Email && x.Password == login.Password)
+                    .SingleOrDefault();
+
+                if (company == null)
+                    throw new Exception("Pogrešni kredencijali.");
+
+                company.Permissions = GetPermissionListForCompanyList([company.Id]);
+
+                return company;
+            });
+        }
+
+        public Company SaveCompanyExtended(Company company, List<long> selectedPermissionIds, Company currentCompany)
+        {
+            return _connection.WithTransaction(() =>
+            {
+                if (
+                    company.Id == 0 && currentCompany.Permissions.Any(x => x.Code == "InsertCompany") == false ||
+                    company.Id > 0 && currentCompany.Permissions.Any(x => x.Code == "UpdateCompany" == false)
+                )
+                {
+                    throw new Exception("Greška: Nemate potrebna prava da biste izvršili operaciju.");
+                }
+
                 Company savedCompany = SaveCompany(company);
 
                 UpdateCompanyPermissionListForCompany(company, selectedPermissionIds);
@@ -35,31 +62,9 @@ namespace Soft.Generator.DesktopApp.Services
             });
         }
 
+        #endregion
+
         #region WebApplication
-
-        [Obsolete("Delete if you don't need this method")]
-        public WebApplication SaveWebApplicationExtended(WebApplication webApplication, List<long> selectedDllPathIds)
-        {
-            return _connection.WithTransaction(() =>
-            {
-                WebApplication savedWebApplication = SaveWebApplication(webApplication);
-
-                return savedWebApplication;
-            });
-        }
-
-        [Obsolete("Delete if you don't need this method")]
-        public void DeleteWebApplicationFile(long webApplicationId, long dllPathId)
-        {
-            _connection.WithTransaction(() =>
-            {
-                WebApplicationFile webApplicationFile = GetWebApplicationFileList()
-                    .Where(x => x.WebApplication.Id == webApplicationId && x.DllPath.Id == dllPathId)
-                    .Single();
-
-                DeleteEntity<WebApplicationFile, long>(webApplicationFile.Id);
-            });
-        }
 
         public void GenerateNetAndAngularStructure(long webApplicationId)
         {
@@ -74,5 +79,6 @@ namespace Soft.Generator.DesktopApp.Services
         }
 
         #endregion
+
     }
 }

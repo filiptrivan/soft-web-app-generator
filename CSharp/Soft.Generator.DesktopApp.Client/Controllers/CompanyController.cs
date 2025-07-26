@@ -12,11 +12,19 @@ namespace Soft.Generator.DesktopApp.Client.Controllers
 {
     public class CompanyController
     {
+        public Company Login(Company company)
+        {
+            return Helpers.Request<Company>(new RequestBody
+            {
+                Args = [JsonSerializer.Serialize(company)],
+            });
+        }
+
         public Company SaveCompany(Company company, List<long> selectedPermissionIds)
         {
             return Helpers.Request<Company>(new RequestBody
             {
-                Args = [JsonSerializer.Serialize(company), JsonSerializer.Serialize(selectedPermissionIds)],
+                Args = [JsonSerializer.Serialize(company), JsonSerializer.Serialize(selectedPermissionIds), JsonSerializer.Serialize(Program.CurrentCompany)],
             });
         }
 
@@ -37,7 +45,7 @@ namespace Soft.Generator.DesktopApp.Client.Controllers
         {
             Helpers.Request(new RequestBody
             {
-                Args = [$"{id}"],
+                Args = [$"{id}", JsonSerializer.Serialize(Program.CurrentCompany)],
             });
         }
 

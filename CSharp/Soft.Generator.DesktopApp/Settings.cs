@@ -17,6 +17,6 @@ namespace Soft.Generator.DesktopApp
         public static string GeneralStylesFrontendPath = @"C:\Users\user\Documents\Projects\PlayertyLoyals\playerty-loyals\Angular\src\assets\primeng\styles";
         public static string GeneralCoreFrontendPath = @"C:\Users\user\Documents\Projects\PlayertyLoyals\playerty-loyals\Angular\src\app\core";
         public static string PrimaryColor = @"#cccccc";
-        public static string ProjectsPath = @"C:\Users\user\Documents\Projects"; // Add this into Company table.
+        public static string ProjectsPath = @"C:\Users\user\Documents\Projects"; // Add this into app table.
     }
 }

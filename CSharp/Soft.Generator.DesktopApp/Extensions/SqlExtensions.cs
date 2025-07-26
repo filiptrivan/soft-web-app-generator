@@ -38,7 +38,10 @@ namespace Soft.Generator.DesktopApp.Extensions
                 T result = action();
 
                 if (isFirstTransaction)
+                {
                     transaction.Commit();
+                    transactionScope.Complete();
+                }
 
                 return result;
             }
@@ -57,10 +60,9 @@ namespace Soft.Generator.DesktopApp.Extensions
                     transactionStack.Pop();
                     _transactionStack.Value = null;
 
-                    connection.Close();
-
-                    transactionScope.Complete();
                     transactionScope.Dispose();
+
+                    connection.Close();
                 }
             }
         }
@@ -91,7 +93,10 @@ namespace Soft.Generator.DesktopApp.Extensions
                 action();
 
                 if (isFirstTransaction)
+                {
                     transaction.Commit();
+                    transactionScope.Complete();
+                }
             }
             catch
             {
@@ -108,10 +113,9 @@ namespace Soft.Generator.DesktopApp.Extensions
                     transactionStack.Pop();
                     _transactionStack.Value = null;
 
-                    connection.Close();
-
-                    transactionScope.Complete();
                     transactionScope.Dispose();
+
+                    connection.Close();
                 }
             }
         }

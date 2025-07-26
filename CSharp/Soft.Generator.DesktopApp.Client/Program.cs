@@ -5,6 +5,7 @@ using Soft.Generator.DesktopApp.Client.Controllers;
 using Soft.Generator.DesktopApp.Client.Pages;
 using Soft.Generator.DesktopApp.Client.Pages.FrameworkPages;
 using Soft.Generator.DesktopApp.Client.Services;
+using Soft.Generator.Shared.Entities;
 using System;
 using System.Net;
 using System.Windows.Forms.Design;
@@ -23,6 +24,7 @@ namespace Soft.Generator.DesktopApp
     internal static class Program
     {
         public static IServiceProvider ServiceProvider { get; private set; }
+        public static Company CurrentCompany { get; set; }
 
         /// <summary>
         ///  The main entry point for the application.
@@ -34,7 +36,7 @@ namespace Soft.Generator.DesktopApp
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            ServiceCollection serviceCollection = new ServiceCollection();
+            ServiceCollection serviceCollection = new();
 
             ConfigureServices(serviceCollection);
 
@@ -46,7 +48,7 @@ namespace Soft.Generator.DesktopApp
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Application.Run(ServiceProvider.GetRequiredService<Form1>());
+            Application.Run(ServiceProvider.GetRequiredService<LoginForm>());
         }
 
         private static void ConfigureServices(ServiceCollection services)
@@ -64,6 +66,7 @@ namespace Soft.Generator.DesktopApp
             services.AddScoped<PermissionController>();
             services.AddScoped<SettingController>();
 
+            services.AddTransient<LoginForm>();
             services.AddTransient<Form1>();
         }
 

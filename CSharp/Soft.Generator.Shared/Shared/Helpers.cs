@@ -49,6 +49,10 @@ namespace Soft.Generator.Shared.Shared
                     if (received != 0)
                     {
                         string response = Encoding.UTF8.GetString(buffer, 0, received);
+                        if (response.StartsWith("Greška:"))
+                        {
+                            throw new Exception(response);
+                        }
                         result = JsonSerializer.Deserialize<T>(response);
                         break;
                     }
@@ -100,6 +104,10 @@ namespace Soft.Generator.Shared.Shared
                 if (received != 0)
                 {
                     string response = Encoding.UTF8.GetString(buffer, 0, received);
+                    if (response.StartsWith("Greška:"))
+                    {
+                        throw new Exception(response);
+                    }
                     break;
                 }
             }

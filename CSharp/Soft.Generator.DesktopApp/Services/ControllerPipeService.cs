@@ -59,12 +59,16 @@ namespace Soft.Generator.DesktopApp.Services
                 }
                 else if (methodName == nameof(CompanyController.SaveCompany))
                 {
-                    return JsonSerializer.Serialize(_companyController.SaveCompany(JsonSerializer.Deserialize<Company>(args[0]), JsonSerializer.Deserialize<List<long>>(args[1])));
+                    return JsonSerializer.Serialize(_companyController.SaveCompany(JsonSerializer.Deserialize<Company>(args[0]), JsonSerializer.Deserialize<List<long>>(args[1]), JsonSerializer.Deserialize<Company>(args[2])));
+                }
+                else if (methodName == nameof(CompanyController.Login))
+                {
+                    return JsonSerializer.Serialize(_companyController.Login(JsonSerializer.Deserialize<Company>(args[0])));
                 }
                 else if (methodName == nameof(CompanyController.DeleteCompany))
                 {
-                    _companyController.DeleteCompany(long.Parse(args[0]));
-                    return null;
+                    _companyController.DeleteCompany(long.Parse(args[0]), JsonSerializer.Deserialize<Company>(args[1]));
+                    return "OK";
                 }
                 else if (methodName == nameof(CompanyController.GetPermissionList))
                 {
@@ -93,7 +97,7 @@ namespace Soft.Generator.DesktopApp.Services
                 else if (methodName == nameof(DllPathController.DeleteDllPath))
                 {
                     _dllPathController.DeleteDllPath(long.Parse(args[0]));
-                    return null;
+                    return "OK";
                 }
                 else if (methodName == nameof(DllPathController.GetWebApplicationList))
                 {
@@ -118,7 +122,7 @@ namespace Soft.Generator.DesktopApp.Services
                 else if (methodName == nameof(FrameworkController.DeleteFramework))
                 {
                     _frameworkController.DeleteFramework(long.Parse(args[0]));
-                    return null;
+                    return "OK";
                 }
             }
 
@@ -147,7 +151,7 @@ namespace Soft.Generator.DesktopApp.Services
                 else if (methodName == nameof(SettingController.DeleteSetting))
                 {
                     _settingController.DeleteSetting(long.Parse(args[0]));
-                    return null;
+                    return "OK";
                 }
                 else if (methodName == nameof(SettingController.GetFrameworkList))
                 {
@@ -172,7 +176,7 @@ namespace Soft.Generator.DesktopApp.Services
                 else if (methodName == nameof(WebApplicationController.DeleteWebApplication))
                 {
                     _webApplicationController.DeleteWebApplication(long.Parse(args[0]));
-                    return null;
+                    return "OK";
                 }
                 else if (methodName == nameof(WebApplicationController.GetCompanyList))
                 {
@@ -193,7 +197,7 @@ namespace Soft.Generator.DesktopApp.Services
                 else if (methodName == nameof(WebApplicationController.GenerateNetAndAngularStructure))
                 {
                     _webApplicationController.GenerateNetAndAngularStructure(long.Parse(args[0]));
-                    return null;
+                    return "OK";
                 }
             }
 
