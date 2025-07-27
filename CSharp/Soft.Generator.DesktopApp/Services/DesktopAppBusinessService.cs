@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Soft.Generator.DesktopApp.Entities;
 using Soft.Generator.DesktopApp.Extensions;
+using Soft.Generator.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,9 +16,9 @@ namespace Soft.Generator.DesktopApp.Services
     /// </summary>
     public class DesktopAppBusinessService : DesktopAppBusinessServiceGenerated
     {
-        private readonly SqlConnection _connection;
+        private readonly ISqlConnection _connection;
 
-        public DesktopAppBusinessService(SqlConnection connection)
+        public DesktopAppBusinessService(ISqlConnection connection)
             : base(connection)
         {
             _connection = connection;

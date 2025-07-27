@@ -64,6 +64,7 @@ using Microsoft.Data.SqlClient;
 using {{basePartOfNamespace}}.Entities;
 using {{basePartOfNamespace}}.Extensions;
 using {{basePartOfNamespace}}.Services;
+using Soft.Generator.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -78,9 +79,9 @@ namespace {{basePartOfNamespace}}.Services
     /// </summary>
     public class {{projectName}}BusinessServiceGenerated : BusinessServiceBase
     {
-        private readonly SqlConnection _connection;
+        private readonly ISqlConnection _connection;
 
-        public {{projectName}}BusinessServiceGenerated(SqlConnection connection)
+        public {{projectName}}BusinessServiceGenerated(ISqlConnection connection)
         : base(connection)
         {
             _connection = connection;
@@ -120,18 +121,18 @@ namespace {{basePartOfNamespace}}.Services
                     sb.AppendLine($$"""
         #region {{nameOfTheEntityClass}}
 
-        public {{nameOfTheEntityClass}} Insert{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        public virtual {{nameOfTheEntityClass}} Insert{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
         {
             if (entity == null)
                 throw new Exception("Ne možete da ubacite prazan objekat.");
 
-            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
+            // TODO FT: Server validation before a database.
 
             string query = $"INSERT INTO [{{nameOfTheEntityClass}}] ({{insertColumnNames}}) VALUES ({{insertParameterNames}});";
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
                         .Select(x => x.Type.PropTypeIsManyToOne() ?
@@ -148,12 +149,12 @@ namespace {{basePartOfNamespace}}.Services
         /// <summary>
         /// TODO FT: Made for M2M with additional attributes, we should remove primary key updates from the code
         /// </summary>
-        public {{nameOfTheEntityClass}} Update{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        public  virtual {{nameOfTheEntityClass}} Update{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
         {
             if (entity == null)
                 throw new Exception("Ne možete da ažurirate prazan objekat.");
 
-            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
+            // TODO FT: Server validation before a database.
 
             string query = @$"
 UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} 
@@ -162,7 +163,7 @@ WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entity
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
                         .Select(x => x.Type.PropTypeIsManyToOne() ?
@@ -179,7 +180,7 @@ WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entity
             return entity;
         }
 
-        public void Delete{{nameOfTheEntityClass}}({{firstPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id, {{secondPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id)
+        public  virtual void Delete{{nameOfTheEntityClass}}({{firstPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id, {{secondPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id)
         {
             string query = @$"
 DELETE
@@ -189,7 +190,7 @@ WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entity
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     cmd.Parameters.AddWithValue("@{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id", {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id);
                     cmd.Parameters.AddWithValue("@{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id", {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id);
@@ -212,7 +213,7 @@ WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entity
                 sb.AppendLine($$"""
         #region {{nameOfTheEntityClass}}
 
-        public {{nameOfTheEntityClass}} Get{{nameOfTheEntityClass}}({{idTypeOfTheEntityClass}} id)
+        public  virtual {{nameOfTheEntityClass}} Get{{nameOfTheEntityClass}}({{idTypeOfTheEntityClass}} id)
         {
             List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
             Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
@@ -227,7 +228,7 @@ WHERE [{{nameOfTheEntityClassFirstLower}}].[{{idPropertyOfTheEntityClass.Identif
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     cmd.Parameters.AddWithValue("@id", id);
 
@@ -249,7 +250,7 @@ WHERE [{{nameOfTheEntityClassFirstLower}}].[{{idPropertyOfTheEntityClass.Identif
             return {{nameOfTheEntityClassFirstLower}};
         }
 
-        public List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}List()
+        public  virtual List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}List()
         {
             List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
             Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
@@ -263,7 +264,7 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
@@ -285,13 +286,13 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
             if (entity == null)
                 throw new Exception("Ne možete da ubacite prazan objekat.");
 
-            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
+            // TODO FT: Server validation before a database.
 
             string query = $"INSERT INTO [{{nameOfTheEntityClass}}] ({{insertColumnNames}}) OUTPUT INSERTED.[{{idPropertyOfTheEntityClass.IdentifierText}}] VALUES ({{insertParameterNames}});";
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
                         .Select(x => x.Type.PropTypeIsManyToOne() ?
@@ -311,13 +312,13 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
             if (entity == null)
                 throw new Exception("Ne možete da ažurirate prazan objekat.");
 
-            // FT: Not validating here property by property, because sql server will throw exception, we should already validate object on the form.
+            // TODO FT: Server validation before a database.
 
             string query = $"UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} WHERE [{{idPropertyOfTheEntityClass.IdentifierText}}] = @{{idPropertyOfTheEntityClass.IdentifierText}};";
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     cmd.Parameters.AddWithValue("@{{idPropertyOfTheEntityClass.IdentifierText}}", entity.{{idPropertyOfTheEntityClass.IdentifierText}});
                     {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId.Select(x => x.Type.PropTypeIsManyToOne() ? $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" : $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
@@ -332,7 +333,7 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
             return entity;
         }
 
-        public {{nameOfTheEntityClass}} Save{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        public virtual {{nameOfTheEntityClass}} Save{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
         {
             if (entity == null)
                 throw new Exception("Ne možete da sačuvate prazan objekat.");
@@ -351,7 +352,7 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
             }
         }
 
-        public void Delete{{nameOfTheEntityClass}}({{idTypeOfTheEntityClass}} id)
+        public virtual void Delete{{nameOfTheEntityClass}}({{idTypeOfTheEntityClass}} id)
         {
             _connection.WithTransaction(() =>
             {
@@ -396,7 +397,7 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
                         string manyToManyName = entityProperty.Attributes.Where(x => x.Name == "ManyToMany").Select(x => x.Value).SingleOrDefault();
 
                         result.Add($$"""
-        public void Update{{manyToManyName}}ListFor{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} {{nameOfTheEntityClassFirstLower}}, List<{{extractedEntityIdProperty.Type}}> selected{{extractedEntityClass.Identifier.Text}}Ids)
+        public  virtual void Update{{manyToManyName}}ListFor{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} {{nameOfTheEntityClassFirstLower}}, List<{{extractedEntityIdProperty.Type}}> selected{{extractedEntityClass.Identifier.Text}}Ids)
         {
             if (selected{{extractedEntityClass.Identifier.Text}}Ids == null)
                 return;
@@ -433,7 +434,7 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
                     }
 
                     result.Add($$"""
-        public List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}List(List<{{extractedEntityIdProperty.Type}}> ids)
+        public  virtual List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}List(List<{{extractedEntityIdProperty.Type}}> ids)
         {
             List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
             Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
@@ -457,7 +458,7 @@ WHERE [{{extractedEntityClass.Identifier.Text.FirstCharToLower()}}].[{{extracted
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     for (int i = 0; i < ids.Count; i++)
                     {
@@ -484,7 +485,7 @@ WHERE [{{extractedEntityClass.Identifier.Text.FirstCharToLower()}}].[{{extracted
                     string extractedEntityIdType = GetIdType(extractedEntityClass, entityClasses);
 
                     result.Add($$"""
-        public List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}({{extractedEntityIdType}} id)
+        public  virtual List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}({{extractedEntityIdType}} id)
         {
             List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
             Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
@@ -499,7 +500,7 @@ WHERE [{{nameOfTheEntityClassFirstLower}}].[{{extractedEntityClass.Identifier.Te
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     cmd.Parameters.AddWithValue("@id", id);
 

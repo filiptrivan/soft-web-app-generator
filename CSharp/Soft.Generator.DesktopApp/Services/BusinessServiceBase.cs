@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 using Soft.Generator.DesktopApp.Extensions;
+using Soft.Generator.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,9 @@ namespace Soft.Generator.DesktopApp.Services
     /// </summary>
     public class BusinessServiceBase
     {
-        private readonly SqlConnection _connection;
+        private readonly ISqlConnection _connection;
 
-        public BusinessServiceBase(SqlConnection connection)
+        public BusinessServiceBase(ISqlConnection connection)
         {
             _connection = connection;
         }
@@ -32,7 +33,7 @@ WHERE Id = @id
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     cmd.Parameters.AddWithValue("@id", id);
 
@@ -66,7 +67,7 @@ WHERE Id IN ({string.Join(", ", parameters)});";
 
             _connection.WithTransaction(() =>
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection))
+                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                 {
                     for (int i = 0; i < ids.Count; i++)
                     {

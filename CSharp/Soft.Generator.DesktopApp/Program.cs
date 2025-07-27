@@ -10,6 +10,7 @@ using Microsoft.Data.SqlClient;
 using Soft.Generator.DesktopApp;
 using Soft.Generator.DesktopApp.Entities;
 using Azure;
+using Soft.Generator.Shared.Interfaces;
 
 namespace Soft.Generator.DesktopApp
 {
@@ -78,6 +79,7 @@ namespace Soft.Generator.DesktopApp
         private static void ConfigureServices(ServiceCollection services)
         {
             services.AddScoped<SqlConnection>(_ => new SqlConnection(Settings.ConnectionString));
+            services.AddScoped<ISqlConnection, SoftSqlConnection>();
             services.AddScoped<DesktopAppBusinessService>();
 
             services.AddScoped<WebApplicationController>();
