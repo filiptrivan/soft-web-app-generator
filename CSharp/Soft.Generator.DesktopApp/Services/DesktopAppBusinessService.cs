@@ -25,9 +25,14 @@ namespace Soft.Generator.DesktopApp.Services
 
         #region Company
 
-        public List<Company> GetCompanyList()
+        public virtual List<Company> GetCompanyList()
         {
             return new GetCompanyListSO(_connection).Execute();
+        }
+
+        public virtual List<Permission> GetPermissionListForCompanyList(List<long> ids)
+        {
+            return new GetPermissionListForCompanyListSO(_connection, ids).Execute();
         }
 
         public Company Login(Company login)
@@ -41,7 +46,7 @@ namespace Soft.Generator.DesktopApp.Services
                 if (company == null)
                     throw new Exception("Pogrešni kredencijali.");
 
-                company.Permissions = new GetPermissionListForCompanyListSO(_connection, [company.Id]).Execute();
+                company.Permissions = GetPermissionListForCompanyList([company.Id]);
 
                 return company;
             });

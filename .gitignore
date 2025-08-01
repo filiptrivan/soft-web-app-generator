@@ -48,7 +48,6 @@
 **/testem.log
 **/typings
 **/*.pid
-**/*.bak
 **/*.tmp
 
 # System files

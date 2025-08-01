@@ -80,8 +80,6 @@ namespace Soft.Generator.Tests.Services
             return new List<Permission>();
         }
 
-
-
     }
 
     public class TestSoftSqlConnection : ISqlConnection
