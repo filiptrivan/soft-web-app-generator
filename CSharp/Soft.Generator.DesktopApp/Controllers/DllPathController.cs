@@ -1,5 +1,6 @@
 ﻿using Soft.Generator.DesktopApp.Entities;
 using Soft.Generator.DesktopApp.Services;
+using Soft.Generator.Shared.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,30 +12,32 @@ namespace Soft.Generator.DesktopApp.Controllers
     public class DllPathController
     {
         DesktopAppBusinessService _desktopAppBusinessService;
+        ISqlConnection _connection;
 
-        public DllPathController(DesktopAppBusinessService desktopAppBusinessService)
+        public DllPathController(DesktopAppBusinessService desktopAppBusinessService, ISqlConnection connection)
         {
             _desktopAppBusinessService = desktopAppBusinessService;
+            _connection = connection;
         }
 
         public DllPath SaveDllPath(DllPath dllPath)
         {
-            return _desktopAppBusinessService.SaveDllPath(dllPath);
+            return new SaveDllPathSO(_connection, dllPath).Execute();
         }
 
         public List<DllPath> GetDllPathList()
         {
-            return _desktopAppBusinessService.GetDllPathList();
+            return new GetDllPathListSO(_connection).Execute();
         }
 
         public DllPath GetDllPath(long id)
         {
-            return _desktopAppBusinessService.GetDllPath(id);
+            return new GetDllPathSO(_connection, id).Execute();
         }
 
         public void DeleteDllPath(long id)
         {
-            _desktopAppBusinessService.DeleteDllPath(id);
+            new DeleteDllPathSO(_connection, id).Execute();
         }
 
         /// <summary>
@@ -42,7 +45,7 @@ namespace Soft.Generator.DesktopApp.Controllers
         /// </summary>
         public List<WebApplication> GetWebApplicationList()
         {
-            return _desktopAppBusinessService.GetWebApplicationList();
+            return new GetWebApplicationListSO(_connection).Execute();
         }
     }
 }

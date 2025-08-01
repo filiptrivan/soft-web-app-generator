@@ -41,7 +41,7 @@ namespace Soft.Generator.Tests.Services
         {
             TestDesktopAppBusinessService testService = new();
 
-            Assert.Throws<Exception>(() => testService.SavePermission(null)); // Because of the null entity
+            Assert.Throws<Exception>(() => new SavePermissionSO(new TestSoftSqlConnection(), null).Execute()); // Because of the null entity
         }
 
         [Fact]
@@ -56,7 +56,7 @@ namespace Soft.Generator.Tests.Services
                 Code = "INV"
             };
 
-            Assert.Throws<InvalidOperationException>(() => testService.SavePermission(entity)); // Because of the negative Id
+            Assert.Throws<InvalidOperationException>(() => new SavePermissionSO(new TestSoftSqlConnection(), entity).Execute()); // Because of the negative Id
         }
     }
 

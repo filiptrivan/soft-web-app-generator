@@ -14,17 +14,21 @@ namespace Soft.Generator.DesktopApp.Services
     /// Every get method is returning only flat data without any related data, because of performance
     /// When inserting data with a foreign key, only the Id field in related data is mandatory. Additionally, the Id must correspond to an existing record in the database.
     /// </summary>
-    public class DesktopAppBusinessService : DesktopAppBusinessServiceGenerated
+    public class DesktopAppBusinessService
     {
         private readonly ISqlConnection _connection;
 
         public DesktopAppBusinessService(ISqlConnection connection)
-            : base(connection)
         {
             _connection = connection;
         }
 
         #region Company
+
+        public List<Company> GetCompanyList()
+        {
+            return new GetCompanyListSO(_connection).Execute();
+        }
 
         public Company Login(Company login)
         {
@@ -37,7 +41,7 @@ namespace Soft.Generator.DesktopApp.Services
                 if (company == null)
                     throw new Exception("Pogrešni kredencijali.");
 
-                company.Permissions = GetPermissionListForCompanyList([company.Id]);
+                company.Permissions = new GetPermissionListForCompanyListSO(_connection, [company.Id]).Execute();
 
                 return company;
             });
@@ -55,9 +59,9 @@ namespace Soft.Generator.DesktopApp.Services
                     throw new Exception("Greška: Nemate potrebna prava da biste izvršili operaciju.");
                 }
 
-                Company savedCompany = SaveCompany(company);
+                Company savedCompany = new SaveCompanySO(_connection, company).Execute();
 
-                UpdateCompanyPermissionListForCompany(company, selectedPermissionIds);
+                new UpdateCompanyPermissionListForCompanySO(_connection, company, selectedPermissionIds).Execute();
 
                 return savedCompany;
             });
@@ -71,7 +75,7 @@ namespace Soft.Generator.DesktopApp.Services
         {
             _connection.WithTransaction(() =>
             {
-                WebApplication webApplication = GetWebApplication(webApplicationId);
+                WebApplication webApplication = new GetWebApplicationSO(_connection, webApplicationId).Execute();
 
                 GeneratorService generatorService = new GeneratorService(null);
 

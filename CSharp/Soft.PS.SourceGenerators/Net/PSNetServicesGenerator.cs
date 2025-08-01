@@ -73,19 +73,19 @@ using System.Threading.Tasks;
 
 namespace {{basePartOfNamespace}}.Services
 {
-    /// <summary>
-    /// Every get method is returning only flat data without any related data, because of performance
-    /// When inserting data with a foreign key, only the Id field in related data is mandatory. Additionally, the Id must correspond to an existing record in the database.
-    /// </summary>
-    public class {{projectName}}BusinessServiceGenerated : BusinessServiceBase
-    {
-        private readonly ISqlConnection _connection;
+    ///// <summary>
+    ///// Every get method is returning only flat data without any related data, because of performance
+    ///// When inserting data with a foreign key, only the Id field in related data is mandatory. Additionally, the Id must correspond to an existing record in the database.
+    ///// </summary>
+    //public class {{projectName}}BusinessServiceGenerated : BusinessServiceBase
+    //{
+    //    private readonly ISqlConnection _connection;
 
-        public {{projectName}}BusinessServiceGenerated(ISqlConnection connection)
-        : base(connection)
-        {
-            _connection = connection;
-        }
+    //    public {{projectName}}BusinessServiceGenerated(ISqlConnection connection)
+    //    : base(connection)
+    //    {
+    //        _connection = connection;
+    //    }
 
 """);
             foreach (ClassDeclarationSyntax entityClass in entityClasses)
@@ -121,86 +121,123 @@ namespace {{basePartOfNamespace}}.Services
                     sb.AppendLine($$"""
         #region {{nameOfTheEntityClass}}
 
-        public virtual {{nameOfTheEntityClass}} Insert{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        public class Insert{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
         {
-            if (entity == null)
-                throw new Exception("Ne možete da ubacite prazan objekat.");
+            private readonly {{nameOfTheEntityClass}} _entity;
 
-            // TODO FT: Server validation before a database.
-
-            string query = $"INSERT INTO [{{nameOfTheEntityClass}}] ({{insertColumnNames}}) VALUES ({{insertParameterNames}});";
-
-            _connection.WithTransaction(() =>
+            public Insert{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{nameOfTheEntityClass}} entity)
+                : base(connection)
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                _entity = entity;
+            }
+
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                if (_entity == null)
+                    throw new Exception("Ne možete da ubacite prazan objekat.");
+
+                // TODO FT: Server validation before a database.
+
+                string query = $"INSERT INTO [{{nameOfTheEntityClass}}] ({{insertColumnNames}}) VALUES ({{insertParameterNames}});";
+
+                _connection.WithTransaction(() =>
                 {
-                    {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
-                        .Select(x => x.Type.PropTypeIsManyToOne() ?
-                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
-                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                    {
+                        {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
+                            .Select(x => x.Type.PropTypeIsManyToOne() ?
+                                $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", _entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
+                                $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", _entity.{x.IdentifierText});"))}}
 
-                    cmd.ExecuteNonQuery();
-                }
-            });
+                        cmd.ExecuteNonQuery();
+                    }
+                });
 
-            return entity;
+                return _entity;
+            }
         }
 
         /// <summary>
         /// TODO FT: Made for M2M with additional attributes, we should remove primary key updates from the code
         /// </summary>
-        public  virtual {{nameOfTheEntityClass}} Update{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        public class Update{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
         {
-            if (entity == null)
-                throw new Exception("Ne možete da ažurirate prazan objekat.");
+            private readonly {{nameOfTheEntityClass}} _entity;
 
-            // TODO FT: Server validation before a database.
+            public Update{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{nameOfTheEntityClass}} entity)
+                : base(connection)
+            {
+                _entity = entity;
+            }
 
-            string query = @$"
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                if (_entity == null)
+                    throw new Exception("Ne možete da ažurirate prazan objekat.");
+
+                // TODO FT: Server validation before a database.
+
+                string query = @$"
 UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} 
 WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id AND {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id
 ";
 
-            _connection.WithTransaction(() =>
-            {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                _connection.WithTransaction(() =>
                 {
-                    {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
-                        .Select(x => x.Type.PropTypeIsManyToOne() ?
-                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
-                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                    {
+                        {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
+                            .Select(x => x.Type.PropTypeIsManyToOne() ?
+                                $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", _entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
+                                $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", _entity.{x.IdentifierText});"))}}
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                        int rowsAffected = cmd.ExecuteNonQuery();
 
-                    if (rowsAffected == 0)
-                        throw new Exception("U sistemu nismo pronašli objekat koji želite da ažurirate.");
-                }
-            });
+                        if (rowsAffected == 0)
+                            throw new Exception("U sistemu nismo pronašli objekat koji želite da ažurirate.");
+                    }
+                });
 
-            return entity;
+                return _entity;
+            }
         }
 
-        public  virtual void Delete{{nameOfTheEntityClass}}({{firstPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id, {{secondPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id)
+        public class Delete{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
         {
-            string query = @$"
+            private readonly {{firstPrimaryKeyClassIdProp.Type}} _{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id;
+            private readonly {{secondPrimaryKeyClassIdProp.Type}} _{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id;
+
+            public Delete{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{firstPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id, {{secondPrimaryKeyClassIdProp.Type}} {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id)
+                : base(connection)
+            {
+                _{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id = {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id;
+                _{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id = {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id;
+            }
+
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                string query = @$"
 DELETE
 FROM {{nameOfTheEntityClass}}
 WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id AND {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText}}Id = @{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id
 ";
 
-            _connection.WithTransaction(() =>
-            {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                _connection.WithTransaction(() =>
                 {
-                    cmd.Parameters.AddWithValue("@{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id", {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id);
-                    cmd.Parameters.AddWithValue("@{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id", {{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id);
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                    {
+                        cmd.Parameters.AddWithValue("@{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id", _{{entityPropertiesWithoutEnumerableAndId[0].IdentifierText.FirstCharToLower()}}Id);
+                        cmd.Parameters.AddWithValue("@{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id", _{{entityPropertiesWithoutEnumerableAndId[1].IdentifierText.FirstCharToLower()}}Id);
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                        int rowsAffected = cmd.ExecuteNonQuery();
 
-                    if (rowsAffected == 0)
-                        throw new Exception("U sistemu nismo pronašli objekat koji želite da obrišete.");
-                }
-            });
+                        if (rowsAffected == 0)
+                            throw new Exception("U sistemu nismo pronašli objekat koji želite da obrišete.");
+                    }
+                });
+
+                return null;
+            }
         }
 
         #endregion
@@ -213,153 +250,221 @@ WHERE {{entityPropertiesWithoutEnumerableAndId[0].IdentifierText}}Id = @{{entity
                 sb.AppendLine($$"""
         #region {{nameOfTheEntityClass}}
 
-        public  virtual {{nameOfTheEntityClass}} Get{{nameOfTheEntityClass}}({{idTypeOfTheEntityClass}} id)
+        public class Get{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
         {
-            List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
-            Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
+            {{idTypeOfTheEntityClass}} _id;
 
-            string query = @$"
-SELECT 
-{{string.Join(", ", GetAllPropertiesForSqlSelect(entityClass, entityClasses))}}
-FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
-{{string.Join("\n", GetManyToOneFirstLevelSqlJoins(entityClass, entityClasses))}}
-WHERE [{{nameOfTheEntityClassFirstLower}}].[{{idPropertyOfTheEntityClass.IdentifierText}}] = @id
-";
-
-            _connection.WithTransaction(() =>
+            public Get{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{idTypeOfTheEntityClass}} id)
+                : base(connection)
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
-                {
-                    cmd.Parameters.AddWithValue("@id", id);
+                _id = id;
+            }
 
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
+                Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
+
+                string query = @$"
+    SELECT 
+    {{string.Join(", ", GetAllPropertiesForSqlSelect(entityClass, entityClasses))}}
+    FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
+    {{string.Join("\n", GetManyToOneFirstLevelSqlJoins(entityClass, entityClasses))}}
+    WHERE [{{nameOfTheEntityClassFirstLower}}].[{{idPropertyOfTheEntityClass.IdentifierText}}] = @id
+    ";
+
+                _connection.WithTransaction(() =>
+                {
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                     {
-                        while (reader.Read())
+                        cmd.Parameters.AddWithValue("@id", _id);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
-{{FillData(entityClass, entityClasses)}}
+                            while (reader.Read())
+                            {
+    {{FillData(entityClass, entityClasses)}}
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            {{nameOfTheEntityClass}} {{nameOfTheEntityClassFirstLower}} = {{nameOfTheEntityClassFirstLower}}List.SingleOrDefault();
+                {{nameOfTheEntityClass}} {{nameOfTheEntityClassFirstLower}} = {{nameOfTheEntityClassFirstLower}}List.SingleOrDefault();
 
-            if ({{nameOfTheEntityClassFirstLower}} == null)
-                throw new Exception("Objekat ne postoji u bazi podataka.");
+                if ({{nameOfTheEntityClassFirstLower}} == null)
+                    throw new Exception("Objekat ne postoji u bazi podataka.");
 
-            return {{nameOfTheEntityClassFirstLower}};
+                return {{nameOfTheEntityClassFirstLower}};
+            }
         }
 
-        public  virtual List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}List()
+        public class Get{{nameOfTheEntityClass}}ListSO : SystemOperationBase<List<{{nameOfTheEntityClass}}>>
         {
-            List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
-            Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
+            public Get{{nameOfTheEntityClass}}ListSO(ISqlConnection connection)
+                : base(connection)
+            {
 
-            string query = @$"
+            }
+
+            public override List<{{nameOfTheEntityClass}}> Execute()
+            {
+                List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
+                Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
+
+                string query = @$"
 SELECT 
 {{string.Join(", ", GetAllPropertiesForSqlSelect(entityClass, entityClasses))}}
 FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
 {{string.Join("\n", GetManyToOneFirstLevelSqlJoins(entityClass, entityClasses))}}
 ";
 
-            _connection.WithTransaction(() =>
-            {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                _connection.WithTransaction(() =>
                 {
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                     {
-                        while (reader.Read())
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
+                            while (reader.Read())
+                            {
 {{FillData(entityClass, entityClasses)}}
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            return {{nameOfTheEntityClassFirstLower}}List;
+                return {{nameOfTheEntityClassFirstLower}}List;
+            }
         }
 
 {{string.Join("\n\n", GetListMethodsWithFilters(entityClass, entityClasses))}}
 
-        private {{nameOfTheEntityClass}} Insert{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        public class Insert{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
         {
-            if (entity == null)
-                throw new Exception("Ne možete da ubacite prazan objekat.");
+            private readonly {{nameOfTheEntityClass}} _entity;
 
-            // TODO FT: Server validation before a database.
-
-            string query = $"INSERT INTO [{{nameOfTheEntityClass}}] ({{insertColumnNames}}) OUTPUT INSERTED.[{{idPropertyOfTheEntityClass.IdentifierText}}] VALUES ({{insertParameterNames}});";
-
-            _connection.WithTransaction(() =>
+            public Insert{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{nameOfTheEntityClass}} entity)
+                : base(connection)
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                _entity = entity;
+            }
+
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                if (_entity == null)
+                    throw new Exception("Ne možete da ubacite prazan objekat.");
+
+                // TODO FT: Server validation before a database.
+
+                string query = $"INSERT INTO [{{nameOfTheEntityClass}}] ({{insertColumnNames}}) OUTPUT INSERTED.[{{idPropertyOfTheEntityClass.IdentifierText}}] VALUES ({{insertParameterNames}});";
+
+                _connection.WithTransaction(() =>
                 {
-                    {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
-                        .Select(x => x.Type.PropTypeIsManyToOne() ?
-                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
-                            $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                    {
+                        {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId
+                            .Select(x => x.Type.PropTypeIsManyToOne() ?
+                                $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", _entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" :
+                                $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", _entity.{x.IdentifierText});"))}}
 
-                    {{idTypeOfTheEntityClass}} newId = ({{idTypeOfTheEntityClass}})cmd.ExecuteScalar();
-                    entity.{{idPropertyOfTheEntityClass.IdentifierText}} = newId;
-                }
-            });
+                        {{idTypeOfTheEntityClass}} newId = ({{idTypeOfTheEntityClass}})cmd.ExecuteScalar();
+                        _entity.{{idPropertyOfTheEntityClass.IdentifierText}} = newId;
+                    }
+                });
 
-            return entity;
+                return _entity;
+            }
         }
 
-        private {{nameOfTheEntityClass}} Update{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
+        public class Update{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
         {
-            if (entity == null)
-                throw new Exception("Ne možete da ažurirate prazan objekat.");
+            private readonly {{nameOfTheEntityClass}} _entity;
 
-            // TODO FT: Server validation before a database.
-
-            string query = $"UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} WHERE [{{idPropertyOfTheEntityClass.IdentifierText}}] = @{{idPropertyOfTheEntityClass.IdentifierText}};";
-
-            _connection.WithTransaction(() =>
+            public Update{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{nameOfTheEntityClass}} entity)
+                : base(connection)
             {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                _entity = entity;
+            }
+
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                if (_entity == null)
+                    throw new Exception("Ne možete da ažurirate prazan objekat.");
+
+                // TODO FT: Server validation before a database.
+
+                string query = $"UPDATE [{{nameOfTheEntityClass}}] SET {{updateParameterNames}} WHERE [{{idPropertyOfTheEntityClass.IdentifierText}}] = @{{idPropertyOfTheEntityClass.IdentifierText}};";
+
+                _connection.WithTransaction(() =>
                 {
-                    cmd.Parameters.AddWithValue("@{{idPropertyOfTheEntityClass.IdentifierText}}", entity.{{idPropertyOfTheEntityClass.IdentifierText}});
-                    {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId.Select(x => x.Type.PropTypeIsManyToOne() ? $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" : $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", entity.{x.IdentifierText});"))}}
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                    {
+                        cmd.Parameters.AddWithValue("@{{idPropertyOfTheEntityClass.IdentifierText}}", _entity.{{idPropertyOfTheEntityClass.IdentifierText}});
+                        {{string.Join("\n\t\t\t\t\t", entityPropertiesWithoutEnumerableAndId.Select(x => x.Type.PropTypeIsManyToOne() ? $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}Id\", _entity.{x.IdentifierText}?.{GetIdentifierProperty(x.Type, entityClasses).IdentifierText});" : $"cmd.Parameters.AddWithValue(\"@{x.IdentifierText}\", _entity.{x.IdentifierText});"))}}
 
-                    int rowsAffected = cmd.ExecuteNonQuery();
+                        int rowsAffected = cmd.ExecuteNonQuery();
 
-                    if (rowsAffected == 0)
-                        throw new Exception("U sistemu nismo pronašli objekat koji želite da ažurirate.");
+                        if (rowsAffected == 0)
+                            throw new Exception("U sistemu nismo pronašli objekat koji želite da ažurirate.");
+                    }
+                });
+
+                return _entity;
+            }
+        }
+
+        public class Save{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
+        {
+            private readonly {{nameOfTheEntityClass}} _entity;
+
+            public Save{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{nameOfTheEntityClass}} entity)
+                : base(connection)
+            {
+                _entity = entity;
+            }
+
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                if (_entity == null)
+                    throw new Exception("Ne možete da sačuvate prazan objekat.");
+
+                if (_entity.Id > 0)
+                {
+                    var updateOperation = new Update{{nameOfTheEntityClass}}SO(_connection, _entity);
+                    return updateOperation.Execute();
                 }
-            });
-
-            return entity;
-        }
-
-        public virtual {{nameOfTheEntityClass}} Save{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} entity)
-        {
-            if (entity == null)
-                throw new Exception("Ne možete da sačuvate prazan objekat.");
-
-            if (entity.Id > 0)
-            {
-                return Update{{nameOfTheEntityClass}}(entity);
-            }
-            else if (entity.Id == 0)
-            {
-                return Insert{{nameOfTheEntityClass}}(entity);
-            }
-            else
-            {
-                throw new InvalidOperationException("Vrednost identifikatora ne sme biti negativna.");
+                else if (_entity.Id == 0)
+                {
+                    var insertOperation = new Insert{{nameOfTheEntityClass}}SO(_connection, _entity);
+                    return insertOperation.Execute();
+                }
+                else
+                {
+                    throw new InvalidOperationException("Vrednost identifikatora ne sme biti negativna.");
+                }
             }
         }
 
-        public virtual void Delete{{nameOfTheEntityClass}}({{idTypeOfTheEntityClass}} id)
+        public class Delete{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
         {
-            _connection.WithTransaction(() =>
+            private readonly {{idTypeOfTheEntityClass}} _id;
+
+            public Delete{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{idTypeOfTheEntityClass}} id)
+                : base(connection)
             {
+                _id = id;
+            }
+
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                _connection.WithTransaction(() =>
+                {
 {{string.Join("\n", GetManyToOneDeleteQueries(entityClass, entityClasses, null, 0))}}
 
-                DeleteEntity<{{nameOfTheEntityClass}}, {{idTypeOfTheEntityClass}}>(id);
-            });
+                    new BusinessServiceBase(_connection).DeleteEntity<{{nameOfTheEntityClass}}, {{idTypeOfTheEntityClass}}>(_id);
+                });
+
+                return null;
+            }
         }
 
         #endregion
@@ -368,7 +473,7 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
             }
 
             sb.Append($$"""
-    }
+    //}
 }
 """);
 
@@ -377,7 +482,7 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
 
         private static List<string> GetListMethodsWithFilters(ClassDeclarationSyntax entityClass, IList<ClassDeclarationSyntax> entityClasses)
         {
-            List<string> result = new List<string>();
+            List<string> result = new();
 
             string nameOfTheEntityClass = entityClass.Identifier.Text;
             string nameOfTheEntityClassFirstLower = entityClass.Identifier.Text.FirstCharToLower();
@@ -397,58 +502,86 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
                         string manyToManyName = entityProperty.Attributes.Where(x => x.Name == "ManyToMany").Select(x => x.Value).SingleOrDefault();
 
                         result.Add($$"""
-        public  virtual void Update{{manyToManyName}}ListFor{{nameOfTheEntityClass}}({{nameOfTheEntityClass}} {{nameOfTheEntityClassFirstLower}}, List<{{extractedEntityIdProperty.Type}}> selected{{extractedEntityClass.Identifier.Text}}Ids)
+        public class Update{{manyToManyName}}ListFor{{nameOfTheEntityClass}}SO : SystemOperationBase<{{nameOfTheEntityClass}}>
         {
-            if (selected{{extractedEntityClass.Identifier.Text}}Ids == null)
-                return;
+            private readonly {{nameOfTheEntityClass}} _{{nameOfTheEntityClassFirstLower}};
+            private readonly List<{{extractedEntityIdProperty.Type}}> _selected{{extractedEntityClass.Identifier.Text}}Ids;
 
-            List<{{extractedEntityIdProperty.Type}}> selectedIdsHelper = selected{{extractedEntityClass.Identifier.Text}}Ids.ToList();
-
-            _connection.WithTransaction(() =>
+            public Update{{manyToManyName}}ListFor{{nameOfTheEntityClass}}SO(ISqlConnection connection, {{nameOfTheEntityClass}} {{nameOfTheEntityClassFirstLower}}, List<{{extractedEntityIdProperty.Type}}> selected{{extractedEntityClass.Identifier.Text}}Ids)
+                : base(connection)
             {
-                // FT: Not doing authorization here, because we can not figure out here if we are updating while inserting object (eg. User), or updating object, we will always get the id which is not 0 here.
+                _{{nameOfTheEntityClassFirstLower}} = {{nameOfTheEntityClassFirstLower}};
+                _selected{{extractedEntityClass.Identifier.Text}}Ids = selected{{extractedEntityClass.Identifier.Text}}Ids;
+            }
 
-                List<{{extractedEntityClass.Identifier.Text}}> {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}List = Get{{extractedEntityClass.Identifier.Text}}ListFor{{nameOfTheEntityClass}}List(new List<{{extractedEntityIdProperty.Type}}> { {{nameOfTheEntityClassFirstLower}}.Id });
+            public override {{nameOfTheEntityClass}} Execute()
+            {
+                if (_selected{{extractedEntityClass.Identifier.Text}}Ids == null)
+                    return null;
 
-                foreach ({{extractedEntityClass.Identifier.Text}} {{extractedEntityClass.Identifier.Text.FirstCharToLower()}} in {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}List.ToList())
+                List<{{extractedEntityIdProperty.Type}}> selectedIdsHelper = _selected{{extractedEntityClass.Identifier.Text}}Ids.ToList();
+
+                _connection.WithTransaction(() =>
                 {
-                    if (selectedIdsHelper.Contains({{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id))
-                        selectedIdsHelper.Remove({{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id);
-                    else
-                        Delete{{manyToManyName}}({{nameOfTheEntityClassFirstLower}}.Id, {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id);
-                }
+                    // FT: Not doing authorization here, because we can not figure out here if we are updating while inserting object (eg. User), or updating object, we will always get the id which is not 0 here.
 
-                List<{{extractedEntityClass.Identifier.Text}}> {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ListToInsert = Get{{extractedEntityClass.Identifier.Text}}List().Where(x => selectedIdsHelper.Contains(x.Id)).ToList(); // TODO FT: Add this to the generator so it is working in the SQL
+                    List<{{extractedEntityClass.Identifier.Text}}> {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}List = new Get{{extractedEntityClass.Identifier.Text}}ListFor{{nameOfTheEntityClass}}ListSO(_connection, new List<{{extractedEntityIdProperty.Type}}> { _{{nameOfTheEntityClassFirstLower}}.Id }).Execute();
 
-                foreach ({{extractedEntityClass.Identifier.Text}} {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ToInsert in {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ListToInsert)
-                {
-                    Insert{{manyToManyName}}(new {{manyToManyName}}
+                    foreach ({{extractedEntityClass.Identifier.Text}} {{extractedEntityClass.Identifier.Text.FirstCharToLower()}} in {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}List.ToList())
                     {
-                        {{nameOfTheEntityClass}} = {{nameOfTheEntityClassFirstLower}},
-                        {{extractedEntityClass.Identifier.Text}} = {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ToInsert
-                    });
-                }
-            });
+                        if (selectedIdsHelper.Contains({{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id))
+                            selectedIdsHelper.Remove({{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id);
+                        else
+                            new Delete{{manyToManyName}}SO(_connection, _{{nameOfTheEntityClassFirstLower}}.Id, {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}.Id).Execute();
+                    }
+
+                    List<{{extractedEntityClass.Identifier.Text}}> {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ListToInsert = new Get{{extractedEntityClass.Identifier.Text}}ListSO(_connection)
+                        .Execute()
+                        .Where(x => selectedIdsHelper.Contains(x.Id))
+                        .ToList(); // TODO FT: Add this to the generator so it is working in the SQL
+
+                    foreach ({{extractedEntityClass.Identifier.Text}} {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ToInsert in {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ListToInsert)
+                    {
+                        new Insert{{manyToManyName}}SO(_connection, new {{manyToManyName}}
+                        {
+                            {{nameOfTheEntityClass}} = _{{nameOfTheEntityClassFirstLower}},
+                            {{extractedEntityClass.Identifier.Text}} = {{extractedEntityClass.Identifier.Text.FirstCharToLower()}}ToInsert
+                        }).Execute();
+                    }
+                });
+
+                return null;
+            }
         }
 """);
                     }
 
                     result.Add($$"""
-        public  virtual List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}List(List<{{extractedEntityIdProperty.Type}}> ids)
+        public class Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}ListSO : SystemOperationBase<List<{{nameOfTheEntityClass}}>>
         {
-            List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
-            Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
+            private readonly List<{{extractedEntityIdProperty.Type}}> _ids;
 
-            if (ids == null || ids.Count == 0)
-                throw new ArgumentException("Lista po kojoj želite da filtrirate ne može da bude prazna.");
-
-            List<string> parameters = new List<string>();
-            for (int i = 0; i < ids.Count; i++)
+            public Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}ListSO(ISqlConnection connection, List<{{extractedEntityIdProperty.Type}}> ids)
+                : base(connection)
             {
-                parameters.Add($"@id{i}");
+                _ids = ids;
             }
 
-            string query = @$"
+            public override List<{{nameOfTheEntityClass}}> Execute()
+            {
+                List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
+                Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
+
+                if (_ids == null || _ids.Count == 0)
+                    throw new ArgumentException("Lista po kojoj želite da filtrirate ne može da bude prazna.");
+
+                List<string> parameters = new List<string>();
+                for (int i = 0; i < _ids.Count; i++)
+                {
+                    parameters.Add($"@id{i}");
+                }
+
+                string query = @$"
 SELECT DISTINCT
 {{string.Join(", ", GetAllPropertiesForSqlSelect(entityClass, entityClasses))}}
 FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
@@ -456,26 +589,27 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
 WHERE [{{extractedEntityClass.Identifier.Text.FirstCharToLower()}}].[{{extractedEntityIdProperty.IdentifierText}}] IN ({string.Join(", ", parameters)});
 ";
 
-            _connection.WithTransaction(() =>
-            {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                _connection.WithTransaction(() =>
                 {
-                    for (int i = 0; i < ids.Count; i++)
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                     {
-                        cmd.Parameters.AddWithValue($"@id{i}", ids[i]);
-                    }
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
+                        for (int i = 0; i < _ids.Count; i++)
                         {
+                            cmd.Parameters.AddWithValue($"@id{i}", _ids[i]);
+                        }
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
 {{FillData(entityClass, entityClasses)}}
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            return {{nameOfTheEntityClassFirstLower}}List;
+                return {{nameOfTheEntityClassFirstLower}}List;
+            }
         }
 """);
                 }
@@ -485,12 +619,22 @@ WHERE [{{extractedEntityClass.Identifier.Text.FirstCharToLower()}}].[{{extracted
                     string extractedEntityIdType = GetIdType(extractedEntityClass, entityClasses);
 
                     result.Add($$"""
-        public  virtual List<{{nameOfTheEntityClass}}> Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}({{extractedEntityIdType}} id)
+        public class Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}SO : SystemOperationBase<List<{{nameOfTheEntityClass}}>>
         {
-            List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
-            Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
+            private readonly {{extractedEntityIdType}} _id;
 
-            string query = @$"
+            public Get{{nameOfTheEntityClass}}ListFor{{extractedEntityClass.Identifier.Text}}SO(ISqlConnection connection, {{extractedEntityIdType}} id)
+                : base(connection)
+            {
+                _id = id;
+            }
+
+            public override List<{{nameOfTheEntityClass}}> Execute()
+            {
+                List<{{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}List = new List<{{nameOfTheEntityClass}}>();
+                Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}> {{nameOfTheEntityClassFirstLower}}Dict = new Dictionary<{{idTypeOfTheEntityClass}}, {{nameOfTheEntityClass}}>();
+
+                string query = @$"
 SELECT
 {{string.Join(", ", GetAllPropertiesForSqlSelect(entityClass, entityClasses))}}
 FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
@@ -498,23 +642,24 @@ FROM [{{nameOfTheEntityClass}}] AS [{{nameOfTheEntityClassFirstLower}}]
 WHERE [{{nameOfTheEntityClassFirstLower}}].[{{extractedEntityClass.Identifier.Text}}Id] = @id;
 ";
 
-            _connection.WithTransaction(() =>
-            {
-                using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
+                _connection.WithTransaction(() =>
                 {
-                    cmd.Parameters.AddWithValue("@id", id);
-
-                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlCommand cmd = new SqlCommand(query, _connection.GetConnection()))
                     {
-                        while (reader.Read())
+                        cmd.Parameters.AddWithValue("@id", _id);
+
+                        using (SqlDataReader reader = cmd.ExecuteReader())
                         {
+                            while (reader.Read())
+                            {
 {{FillData(entityClass, entityClasses)}}
+                            }
                         }
                     }
-                }
-            });
+                });
 
-            return {{nameOfTheEntityClassFirstLower}}List;
+                return {{nameOfTheEntityClassFirstLower}}List;
+            }
         }
 """);
                 }
@@ -738,7 +883,10 @@ LEFT JOIN [{{extractedEntityClass.Identifier.Text}}] AS [{{extractedEntityClass.
                 if (recursiveIteration == 0)
                 {
                     result.Add($$"""
-                List<{{nestedEntityClassIdentifierProperty.Type}}> {{nameOfTheEntityClassFirstLower}}{{nestedEntityClassName}}ListToDelete = Get{{nestedEntityClassName}}ListFor{{nameOfTheEntityClass}}(id).Select(x => x.{{identifierPropertyOfTheEntityClass.IdentifierText}}).ToList();
+                List<{{nestedEntityClassIdentifierProperty.Type}}> {{nameOfTheEntityClassFirstLower}}{{nestedEntityClassName}}ListToDelete = new Get{{nestedEntityClassName}}ListFor{{nameOfTheEntityClass}}SO(_connection, _id)
+                    .Execute()
+                    .Select(x => x.{{identifierPropertyOfTheEntityClass.IdentifierText}})
+                    .ToList();
 """);
                 }
                 else
@@ -746,14 +894,16 @@ LEFT JOIN [{{extractedEntityClass.Identifier.Text}}] AS [{{extractedEntityClass.
                     SoftProperty parentEntityClassIdentifierProperty = GetIdentifierProperty(parentNameOfTheEntityClass, entityClasses);
 
                     result.Add($$"""
-                List<{{nestedEntityClassIdentifierProperty.Type}}> {{nameOfTheEntityClassFirstLower}}{{nestedEntityClassName}}ListToDelete = Get{{nestedEntityClassName}}List().Where(x => {{parentNameOfTheEntityClass.FirstCharToLower()}}{{nameOfTheEntityClass}}ListToDelete.Contains(x.{{prop.IdentifierText}}.{{nestedEntityClassIdentifierProperty.IdentifierText}})).Select(x => x.{{parentEntityClassIdentifierProperty.IdentifierText}}).ToList();
+                List<{{nestedEntityClassIdentifierProperty.Type}}> {{nameOfTheEntityClassFirstLower}}{{nestedEntityClassName}}ListToDelete = new Get{{nestedEntityClassName}}ListSO(_connection)
+                    .Execute()
+                    .Where(x => {{parentNameOfTheEntityClass.FirstCharToLower()}}{{nameOfTheEntityClass}}ListToDelete.Contains(x.{{prop.IdentifierText}}.{{nestedEntityClassIdentifierProperty.IdentifierText}})).Select(x => x.{{parentEntityClassIdentifierProperty.IdentifierText}}).ToList();
 """);
                 }
 
                 result.AddRange(GetManyToOneDeleteQueries(nestedEntityClass, entityClasses, nameOfTheEntityClass, recursiveIteration + 1));
 
                 result.Add($$"""
-                DeleteEntities<{{nestedEntityClassName}}, {{nestedEntityClassIdentifierProperty.Type}}>({{nameOfTheEntityClassFirstLower}}{{nestedEntityClassName}}ListToDelete);
+                new BusinessServiceBase(_connection).DeleteEntities<{{nestedEntityClassName}}, {{nestedEntityClassIdentifierProperty.Type}}>({{nameOfTheEntityClassFirstLower}}{{nestedEntityClassName}}ListToDelete);
 """);
             }
 

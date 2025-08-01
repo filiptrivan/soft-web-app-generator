@@ -7,56 +7,62 @@ using System.Net.Sockets;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Soft.Generator.Shared.Interfaces;
 
 namespace Soft.Generator.DesktopApp.Controllers
 {
     public class WebApplicationController
     {
         DesktopAppBusinessService _desktopAppBusinessService;
+        ISqlConnection _connection;
 
-        public WebApplicationController(DesktopAppBusinessService desktopAppBusinessService)
+        public WebApplicationController(
+            DesktopAppBusinessService desktopAppBusinessService, 
+            ISqlConnection connection
+        )
         {
             _desktopAppBusinessService = desktopAppBusinessService;
+            _connection = connection;
         }
 
         public WebApplication SaveWebApplication(WebApplication webApplication)
         {
-            return _desktopAppBusinessService.SaveWebApplication(webApplication);
+            return new SaveWebApplicationSO(_connection, webApplication).Execute();
         }
 
         public void DeleteWebApplication(long webApplicationId)
         {
-            _desktopAppBusinessService.DeleteWebApplication(webApplicationId);
+            new DeleteWebApplicationSO(_connection, webApplicationId).Execute();
         }
 
         public List<WebApplication> GetWebApplicationList()
         {
-            return _desktopAppBusinessService.GetWebApplicationList();
+            return new GetWebApplicationListSO(_connection).Execute();
         }
 
         public WebApplication GetWebApplication(long webApplicationId)
         {
-            return _desktopAppBusinessService.GetWebApplication(webApplicationId);
+            return new GetWebApplicationSO(_connection, webApplicationId).Execute();
         }
 
         public List<Company> GetCompanyList()
         {
-            return _desktopAppBusinessService.GetCompanyList();
+            return new GetCompanyListSO(_connection).Execute();
         }
 
         public List<Setting> GetSettingList()
         {
-            return _desktopAppBusinessService.GetSettingList();
+            return new GetSettingListSO(_connection).Execute();
         }
 
         public List<DllPath> GetDllPathList()
         {
-            return _desktopAppBusinessService.GetDllPathList();
+            return new GetDllPathListSO(_connection).Execute();
         }
 
         public List<DllPath> GetDllPathListForTheWebApplication(long webApplicationId)
         {
-            return _desktopAppBusinessService.GetDllPathListForWebApplication(webApplicationId);
+            return new GetDllPathListForWebApplicationSO(_connection, webApplicationId).Execute();
         }
 
         public void GenerateNetAndAngularStructure(long webApplicationId)
