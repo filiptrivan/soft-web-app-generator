@@ -54,5 +54,18 @@ namespace Soft.Generator.DesktopApp.Client.Pages
             );
         }
 
+        private void button1_Click(object sender, EventArgs e)
+        {
+            List<WebApplication> webApplications = _webApplicationController.GetWebApplicationList().Where(x => x.Name.StartsWith(textBox1.Text)).ToList();
+
+            if (webApplications.Count == 0)
+            {
+                MessageBox.Show("Систем не може да нађе апликације по задатим критеријумима.");
+            }
+            else
+            {
+                softDataGridView1.SoftInitializeComponent<WebApplication>(webApplications, true, ApplicationAddEventHandler, true, true, CellContentClickHandler);
+            }
+        }
     }
 }

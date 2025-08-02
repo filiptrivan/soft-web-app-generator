@@ -56,5 +56,19 @@ namespace Soft.Generator.DesktopApp.Client.Pages
                 LoadTable
             );
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            List<Company> companies = _companyController.GetCompanyList().Where(x => x.Name.StartsWith(textBox1.Text)).ToList();
+
+            if (companies.Count == 0)
+            {
+                MessageBox.Show("Систем не може да нађе компаније по задатим критеријумима.");
+            }
+            else
+            {
+                softDataGridView1.SoftInitializeComponent<Company>(companies, true, CompanyAddEventHandler, true, true, CellContentClickHandler);
+            }
+        }
     }
 }
