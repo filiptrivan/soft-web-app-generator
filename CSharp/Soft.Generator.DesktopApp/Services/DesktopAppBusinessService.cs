@@ -78,14 +78,10 @@ namespace Soft.Generator.DesktopApp.Services
 
         public void GenerateNetAndAngularStructure(long webApplicationId)
         {
-            _connection.WithTransaction(() =>
-            {
-                WebApplication webApplication = new GetWebApplicationSO(_connection, webApplicationId).Execute();
+            WebApplication webApplication = new GetWebApplicationSO(_connection, webApplicationId).Execute();
 
-                GeneratorService generatorService = new GeneratorService(null);
-
-                generatorService.GenerateNetAndAngularStructure(Settings.ProjectsPath, webApplication.Name, Settings.PrimaryColor);
-            });
+            GeneratorService generatorService = new GeneratorService(null);
+            generatorService.GenerateNetAndAngularStructure(Settings.ProjectsPath, webApplication.Name, Settings.PrimaryColor);
         }
 
         #endregion
